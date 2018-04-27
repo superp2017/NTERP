@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -6,7 +6,7 @@
 namespace Ui {
 class MainWindow;
 }
-
+#pragma execution_character_set("utf-8")
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
