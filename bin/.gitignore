@@ -17,6 +17,9 @@ release
 *.core
 *.moc
 *.o
+*.exe
+*.lik
+*.pdb
 *.obj
 *.orig
 *.rej
