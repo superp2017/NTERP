@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "centerform.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +19,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    CenterForm m_center;
 };
 
 #endif // MAINWINDOW_H

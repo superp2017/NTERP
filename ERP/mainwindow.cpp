@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
      QAction * gys=  dbs->addAction("供应商管理");
      QAction * kh=  dbs->addAction("客户管理");
      QAction * gsjj=  about->addAction("公司简介");
+     this->setCentralWidget(&m_center);
 }
 
 MainWindow::~MainWindow()

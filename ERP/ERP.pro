@@ -34,8 +34,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    centerform.cpp \
+    login.cpp \
+    mainspace.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    centerform.h \
+    login.h \
+    mainspace.h
 
 FORMS    += mainwindow.ui
