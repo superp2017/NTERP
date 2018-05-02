@@ -3,9 +3,7 @@
 
 #include <QWidget>
 #include <QStackedLayout>
-#include "mainspace.h"
-#include "login.h"
-
+#pragma execution_character_set("utf-8")
 namespace Ui {
 class CenterForm;
 }
@@ -18,12 +16,10 @@ public:
     explicit CenterForm(QWidget *parent = 0);
     ~CenterForm();
 public slots:
-    void test();
+
 
 private:
-    QStackedLayout m_layout;
-    Login          m_login;
-    MainSpace      m_space;
+
 };
 
 #endif // CENTERFORM_H

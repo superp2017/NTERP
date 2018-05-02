@@ -37,11 +37,18 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     centerform.cpp \
     login.cpp \
-    mainspace.cpp
+    datacenter.cpp \
+    centerwidget.cpp
 
 HEADERS  += mainwindow.h \
     centerform.h \
     login.h \
-    mainspace.h
+    datacenter.h \
+    centerwidget.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    login.ui \
+    centerwidget.ui
+
+RESOURCES += \
+    res.qrc

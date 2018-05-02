@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "centerform.h"
+#include "centerwidget.h"
 
 
 namespace Ui {
@@ -19,7 +19,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    CenterForm m_center;
+    CenterWidget m_center;
 };
 
 #endif // MAINWINDOW_H

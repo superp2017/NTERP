@@ -1,17 +1,25 @@
-#ifndef LOGIN_H
-#define LOGIN_H
+﻿#ifndef NLOGIN_H
+#define NLOGIN_H
 
-#include <QWidget>
+#include <QDialog>
 
-class Login : public QWidget
+namespace Ui {
+class NLogin;
+}
+
+class NLogin : public QDialog
 {
     Q_OBJECT
+
 public:
-    explicit Login(QWidget *parent = 0);
+    explicit NLogin(QWidget *parent = 0);
+    ~NLogin();
 
-signals:
+private:
+    Ui::NLogin *ui;
 
-public slots:
+private slots:
+    void login();
 };
 
-#endif // LOGIN_H
+#endif // NLOGIN_H
