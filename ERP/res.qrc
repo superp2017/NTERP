@@ -4,5 +4,57 @@
         <file>icon/login-a.png</file>
         <file>icon/loginButton-a.png</file>
         <file>icon/loginButton-two.png</file>
+        <file>icon/SignoutFront.png</file>
+        <file>icon/SignInoutpng.png</file>
+        <file>icon/SignoutAFter.png</file>
+        <file>icon/app.ico</file>
+        <file>icon/color.png</file>
+        <file>icon/colors.png</file>
+        <file>icon/CommunicationAfter.png</file>
+        <file>icon/communicationFront.png</file>
+        <file>icon/CommunicationIn.png</file>
+        <file>icon/deciceAfter.png</file>
+        <file>icon/deciceIn.png</file>
+        <file>icon/deleteone.png</file>
+        <file>icon/deletetwo.png</file>
+        <file>icon/deviceFront.png</file>
+        <file>icon/home.jpg</file>
+        <file>icon/home.png</file>
+        <file>icon/implementone.png</file>
+        <file>icon/implementProhibit.png</file>
+        <file>icon/implementtwo.png</file>
+        <file>icon/layouttwo.JPG</file>
+        <file>icon/loginvideo.gif</file>
+        <file>icon/modifyone.png</file>
+        <file>icon/modifytwo.png</file>
+        <file>icon/monitorAfter.png</file>
+        <file>icon/monitorFront.png</file>
+        <file>icon/monitorIn.png</file>
+        <file>icon/newone.png</file>
+        <file>icon/newtwo.png</file>
+        <file>icon/planAfter.png</file>
+        <file>icon/planFront.png</file>
+        <file>icon/planIn.png</file>
+        <file>icon/plcAfter.png</file>
+        <file>icon/plcFront.png</file>
+        <file>icon/plcIn.png</file>
+        <file>icon/refreshone.png</file>
+        <file>icon/refreshProhibit.png</file>
+        <file>icon/refreshtwo.png</file>
+        <file>icon/startAfter.png</file>
+        <file>icon/startFront.png</file>
+        <file>icon/startIn.png</file>
+        <file>icon/stopone.png</file>
+        <file>icon/stopProhibit.png</file>
+        <file>icon/stoptwo.png</file>
+        <file>icon/upone.png</file>
+        <file>icon/upProhibit.png</file>
+        <file>icon/uptwo.png</file>
+        <file>icon/urgentone.png</file>
+        <file>icon/urgentProhibit.png</file>
+        <file>icon/urgenttwo.png</file>
+        <file>icon/valverAfter.png</file>
+        <file>icon/valverFront.png</file>
+        <file>icon/valverIn.png</file>
     </qresource>
 </RCC>

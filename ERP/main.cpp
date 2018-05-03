@@ -6,10 +6,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    NLogin login;
-    login.showMaximized();
-    if (login.exec()==123){
+//    NLogin login;
+//    login.showMaximized();
+//    if (login.exec()==123){
         w.showMaximized();
-    }
+    //}
     return a.exec();
 }

@@ -35,20 +35,32 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    centerform.cpp \
     login.cpp \
     datacenter.cpp \
-    centerwidget.cpp
+    customtabstyle.cpp \
+    ordermanager.cpp \
+    personmanager.cpp \
+    storemanager.cpp \
+    systemmanager.cpp \
+    formcenter.cpp
 
 HEADERS  += mainwindow.h \
-    centerform.h \
     login.h \
     datacenter.h \
-    centerwidget.h
+    customtabstyle.h \
+    ordermanager.h \
+    personmanager.h \
+    storemanager.h \
+    systemmanager.h \
+    formcenter.h
 
 FORMS    += mainwindow.ui \
     login.ui \
-    centerwidget.ui
+    ordermanager.ui \
+    personmanager.ui \
+    storemanager.ui \
+    systemmanager.ui \
+    formcenter.ui
 
 RESOURCES += \
     res.qrc

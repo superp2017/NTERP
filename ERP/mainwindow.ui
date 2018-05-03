@@ -6,21 +6,23 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>914</width>
-    <height>683</height>
+    <width>833</width>
+    <height>702</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>生产管理系统</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout"/>
+  </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>914</width>
+     <width>833</width>
      <height>22</height>
     </rect>
    </property>

@@ -1,5 +1,5 @@
 ﻿#include "login.h"
-#include "ui_nlogin.h"
+#include "ui_login.h"
 #include <QStatusBar>
 #include <QLabel>
 #include <QMovie>
