@@ -1,6 +1,7 @@
 ﻿#include "formcenter.h"
 #include "ui_formcenter.h"
 #include <QMessageBox>
+#include <QDockWidget>
 FormCenter::FormCenter(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FormCenter)

@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     personmanager.cpp \
     storemanager.cpp \
     systemmanager.cpp \
-    formcenter.cpp
+    formcenter.cpp \
+    ordertable.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -52,7 +53,8 @@ HEADERS  += mainwindow.h \
     personmanager.h \
     storemanager.h \
     systemmanager.h \
-    formcenter.h
+    formcenter.h \
+    ordertable.h
 
 FORMS    += mainwindow.ui \
     login.ui \
