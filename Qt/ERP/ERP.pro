@@ -12,14 +12,14 @@ TARGET = ERP
 TEMPLATE = app
 
 
-DESTDIR = ../bin
-QMAKE_LIBDIR += ../bin
+DESTDIR = ../../bin
+QMAKE_LIBDIR += ../../bin
 
 QMAKE_CXXFLAGS += -wd4100  -wd4005 -wd4503 -wd4101
 QMAKE_CXXFLAGS += -wd4996  -wd4522 -wd4189 -wd4819
-UI_DIR = ../../temp/ui/ERP
-OBJECTS_DIR = ../../temp/obj/ERP
-MOC_DIR = ../../temp/moc/ERP
+UI_DIR = ../../../temp/ui/ERP
+OBJECTS_DIR = ../../../temp/obj/ERP
+MOC_DIR = ../../../temp/moc/ERP
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
