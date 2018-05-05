@@ -18,7 +18,7 @@ QMAKE_LIBDIR += ../../bin
 QMAKE_CXXFLAGS += -wd4100  -wd4005 -wd4503 -wd4101
 QMAKE_CXXFLAGS += -wd4996  -wd4522 -wd4189 -wd4819
 UI_DIR = ../../../temp/ui/ERP
-OBJECTS_DIR = ../../../temp/obj/ERP
+OBJECTS_DIR = ../../../../temp/obj/ERP
 MOC_DIR = ../../../temp/moc/ERP
 
 # The following define makes your compiler emit warnings if you use
@@ -54,7 +54,8 @@ HEADERS  += mainwindow.h \
     storemanager.h \
     systemmanager.h \
     formcenter.h \
-    ordertable.h
+    ordertable.h \
+    struct.h
 
 FORMS    += mainwindow.ui \
     login.ui \

@@ -5,8 +5,8 @@ bin/
 *pdb
 *lik
 matlab
-debug
-release
+debug/
+release/
 *.bak
 *.qmake
 *.qmake.stash

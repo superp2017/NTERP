@@ -12,29 +12,15 @@ OrderManager::OrderManager(QWidget *parent) :
     m_tab_success = new OrderTable();
     m_tab_all = new OrderTable();
 
-    m_tab_new->setEditTriggers(QTableWidget::NoEditTriggers);
-    m_tab_new->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
-    m_tab_new->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
-    m_tab_new->horizontalHeader()->setSectionResizeMode(tab_mode);
-
-    m_tab_success->setEditTriggers(QTableWidget::NoEditTriggers);
-    m_tab_success->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
-    m_tab_success->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
-    m_tab_success->horizontalHeader()->setSectionResizeMode(tab_mode);
-
-    m_tab_all->setEditTriggers(QTableWidget::NoEditTriggers);
-    m_tab_all->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
-    m_tab_all->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
-    m_tab_all->horizontalHeader()->setSectionResizeMode(tab_mode);
-
-
-    ui->tabWidget->addTab(m_tab_new,"新订单");
+    ui->tabWidget->addTab(m_tab_new,QIcon(":/icon/all.ico"),"新订单");
     ui->tabWidget->addTab(m_tab_success,"已完成");
     ui->tabWidget->addTab(m_tab_all,"全部");
-
+    ui->tabWidget->tabBar()->setMovable(true);
+    ui->tabWidget->setFont(QFont("Times", 16, QFont::Bold));
     connect(ui->radioButton_ave,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_content,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_manu,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
+    ui->radioButton_ave->setChecked(true);
 }
 
 OrderManager::~OrderManager()
@@ -59,8 +45,8 @@ void OrderManager::changeCol()
     if(ui->radioButton_manu->isChecked()){
         tab_mode = QHeaderView::Interactive;
     }
-    m_tab_new->horizontalHeader()->setSectionResizeMode(tab_mode);
-    m_tab_success->horizontalHeader()->setSectionResizeMode(tab_mode);
-    m_tab_all->horizontalHeader()->setSectionResizeMode(tab_mode);
+    m_tab_new->setHeaderColModel(tab_mode);
+    m_tab_success->setHeaderColModel(tab_mode);
+    m_tab_all->setHeaderColModel(tab_mode);
 }
 

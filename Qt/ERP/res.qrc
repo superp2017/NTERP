@@ -56,5 +56,10 @@
         <file>icon/valverAfter.png</file>
         <file>icon/valverFront.png</file>
         <file>icon/valverIn.png</file>
+        <file>icon/all.ico</file>
+        <file>icon/close.ico</file>
+        <file>icon/ooopic_1525502574.ico</file>
+        <file>icon/plus.ico</file>
+        <file>icon/set.ico</file>
     </qresource>
 </RCC>

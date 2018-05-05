@@ -3,12 +3,7 @@
 
 #include <QObject>
 
-
-struct User {
-   std::string UID;
-   std::string Name;
-   std::string Author;
-};
+#include "struct.h"
 
 class dataCenter : public QObject
 {
