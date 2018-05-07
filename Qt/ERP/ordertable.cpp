@@ -3,7 +3,7 @@
 OrderTable::OrderTable(QTableWidget *w):
     QTableWidget(w)
 {
-      this->setRowCount(50);
+
     this->setColumnCount(9);
     this->setEditTriggers(QTableWidget::NoEditTriggers);
     this->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
