@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "struct.h"
+#include "global"
 
 class dataCenter : public QObject
 {
@@ -18,6 +18,9 @@ public:
     }
     void setCurUser(User* u);
     User* CurUser();
+    QVector<Order*> getStatusOrder(QString status);
+    Order *getOrder(QString OrderID);
+    void appendOrder(Order *order);
 signals:
 
 public slots:
@@ -25,6 +28,7 @@ public slots:
 
 private:
     User* cur_user;
+    QVector<Order*> m_orders;
 
 };
 

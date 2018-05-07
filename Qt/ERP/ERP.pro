@@ -43,7 +43,8 @@ SOURCES += main.cpp\
     storemanager.cpp \
     systemmanager.cpp \
     formcenter.cpp \
-    ordertable.cpp
+    ordertable.cpp \
+    dialogorderdetail.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -55,7 +56,8 @@ HEADERS  += mainwindow.h \
     systemmanager.h \
     formcenter.h \
     ordertable.h \
-    struct.h
+    dialogorderdetail.h \
+    global
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -63,7 +65,8 @@ FORMS    += mainwindow.ui \
     personmanager.ui \
     storemanager.ui \
     systemmanager.ui \
-    formcenter.ui
+    formcenter.ui \
+    dialogorderdetail.ui
 
 RESOURCES += \
     res.qrc

@@ -30,6 +30,7 @@ private:
     OrderTable *m_tab_success;
     OrderTable *m_tab_all;
 
+    int id;
 };
 
 #endif // ORDERMANAGER_H
