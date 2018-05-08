@@ -1,6 +1,7 @@
 ﻿#include "ordermanager.h"
 #include "ui_ordermanager.h"
 #include "datacenter.h"
+#include "dialogneworder.h"
 
 OrderManager::OrderManager(QWidget *parent) :
     QWidget(parent),
@@ -12,8 +13,8 @@ OrderManager::OrderManager(QWidget *parent) :
     m_tab_new = new OrderTable();
     m_tab_success = new OrderTable();
     m_tab_all = new OrderTable();
-
-    ui->tabWidget->addTab(m_tab_new,QIcon(":/icon/all.ico"),"新订单");
+//QIcon(":/icon/all.ico")
+    ui->tabWidget->addTab(m_tab_new,"新订单");
     ui->tabWidget->addTab(m_tab_success,"已完成");
     ui->tabWidget->addTab(m_tab_all,"全部");
     ui->tabWidget->tabBar()->setMovable(true);
@@ -32,6 +33,9 @@ OrderManager::~OrderManager()
 
 void OrderManager::on_pushButton_new_clicked()
 {
+    DialogNewOrder neworer;
+    neworer.exec();
+
     Order *order = new Order();
     order->OrderID =QString("%1").arg(id);
     order->MaterielID = QString("%1").arg(id+100);
