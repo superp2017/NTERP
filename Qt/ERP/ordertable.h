@@ -3,7 +3,7 @@
 
 #include <QTableWidget>
 #include <QHeaderView>
-#include "global"
+#include "global.h"
 #include "dialogorderdetail.h"
 
 #pragma execution_character_set("utf-8")

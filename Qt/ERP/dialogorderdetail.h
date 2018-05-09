@@ -2,7 +2,7 @@
 #define DIALOGORDERDETAIL_H
 
 #include <QDialog>
-#include "global"
+#include "global.h"
 
 namespace Ui {
 class DialogOrderDetail;

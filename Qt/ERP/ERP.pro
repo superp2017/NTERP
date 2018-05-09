@@ -59,9 +59,9 @@ HEADERS  += mainwindow.h \
     formcenter.h \
     ordertable.h \
     dialogorderdetail.h \
-    global \
     dialogneworder.h \
-    dialognewcustom.h
+    dialognewcustom.h \
+    global.h
 
 FORMS    += mainwindow.ui \
     login.ui \
