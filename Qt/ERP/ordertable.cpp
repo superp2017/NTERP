@@ -49,6 +49,9 @@ void OrderTable::setHeaderColModel(QHeaderView::ResizeMode mode)
 //设置表格一行
 void OrderTable::setRowData(Order *para,int row)
 {
+    if (para==NULL){
+        return;
+    }
     QTableWidgetItem *item1 = this->item(row,0);
     QTableWidgetItem *item2 = this->item(row,1);
     QTableWidgetItem *item3 = this->item(row,2);

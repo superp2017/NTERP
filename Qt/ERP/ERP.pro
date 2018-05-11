@@ -33,6 +33,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     login.cpp \
@@ -46,7 +47,8 @@ SOURCES += main.cpp\
     ordertable.cpp \
     dialogorderdetail.cpp \
     dialogneworder.cpp \
-    dialognewcustom.cpp
+    dialognewcustom.cpp \
+    loadding.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -61,7 +63,8 @@ HEADERS  += mainwindow.h \
     dialogorderdetail.h \
     dialogneworder.h \
     dialognewcustom.h \
-    global.h
+    global.h \
+    loadding.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -72,7 +75,15 @@ FORMS    += mainwindow.ui \
     formcenter.ui \
     dialogorderdetail.ui \
     dialogneworder.ui \
-    dialognewcustom.ui
+    dialognewcustom.ui \
+    loadding.ui
 
 RESOURCES += \
     res.qrc
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Service/release/ -lService
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Service/debug/ -lService
+else:unix: LIBS += -L$$OUT_PWD/../Service/ -lService
+
+INCLUDEPATH += $$PWD/../Service
+DEPENDPATH += $$PWD/../Service

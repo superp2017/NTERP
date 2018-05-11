@@ -61,5 +61,6 @@
         <file>icon/ooopic_1525502574.ico</file>
         <file>icon/plus.ico</file>
         <file>icon/set.ico</file>
+        <file>icon/loading.gif</file>
     </qresource>
 </RCC>

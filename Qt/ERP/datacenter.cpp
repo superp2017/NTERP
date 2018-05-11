@@ -4,6 +4,9 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)
 {
 
     cur_user = new User();
+    cur_user->UID="1234";
+    cur_user->Author = "admin";
+    cur_user->Name = "admin";
 
     m_units.append("EA");
     m_units.append("KG");
@@ -48,6 +51,24 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)
     m_customers.append(c2);
     m_customers.append(c3);
 }
+
+void dataCenter::showMessage(QString msg, int sec)
+{
+    emit showStatusMessage(msg,sec);
+}
+
+
+void dataCenter::showLoadding(QString str,int sec,QColor c )
+{
+    m_load.showTime(str,sec,c);
+}
+
+void dataCenter::hideLoadding()
+{
+    m_load.showOver();
+}
+
+
 
 void dataCenter::setCurUser(User *u)
 {
@@ -113,6 +134,16 @@ QVector<Materiel *> dataCenter::Materiels()
     return m_maters;
 }
 
+bool dataCenter::checkMaterielID(QString id)
+{
+    for(Materiel *m:m_maters){
+        if (m->MaterID==id){
+            return true;
+        }
+    }
+    return false;
+}
+
 void dataCenter::appendBatch(QString b)
 {
     m_batch.append(b);
@@ -122,6 +153,7 @@ QVector<QString> dataCenter::Batchs()
 {
     return m_batch;
 }
+
 
 void dataCenter::appendCustomer(Customer *c)
 {

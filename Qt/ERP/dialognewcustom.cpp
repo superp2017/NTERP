@@ -1,4 +1,4 @@
-#include "dialognewcustom.h"
+﻿#include "dialognewcustom.h"
 #include "ui_dialognewcustom.h"
 
 DialogNewCustom::DialogNewCustom(QWidget *parent) :

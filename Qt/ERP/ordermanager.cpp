@@ -33,13 +33,15 @@ OrderManager::~OrderManager()
 void OrderManager::on_pushButton_new_clicked()
 {
     DialogNewOrder neworer;
-    neworer.exec();
-
-    Order * order;
-    if (order!=NULL){
-        m_tab_new->appendOrder(order);
-        dataCenter::instance()->appendOrder(order);
+    if(neworer.exec()==123){
+        Order * order = neworer.getOrder();
+        if (order!=NULL){
+            m_tab_new->appendOrder(order);
+            dataCenter::instance()->appendOrder(order);
+        }
     }
+
+
 }
 
 

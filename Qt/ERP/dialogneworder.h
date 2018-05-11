@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "global.h"
+
 namespace Ui {
 class DialogNewOrder;
 }
@@ -16,14 +17,27 @@ public:
     explicit DialogNewOrder(QWidget *parent = 0);
     ~DialogNewOrder();
     Order* getOrder();
+
+
+
+public slots:
+    void newOrderCb(bool ok);
+
+
 private slots:
     void on_pushButton_ok_clicked();
+
+    void on_pushButton_cancel_clicked();
 
 private:
     void initCombox(QVector<Customer*> custom,QVector<QString> batch,\
                     QVector<Materiel*> materID,QVector<QString> unit);
+    bool checkOrder();
+
+
+
     Ui::DialogNewOrder *ui;
-     Order * curorder;
+    Order * curorder;
 };
 
 #endif // DIALOGNEWORDER_H

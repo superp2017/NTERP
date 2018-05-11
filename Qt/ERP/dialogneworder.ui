@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>296</width>
-    <height>461</height>
+    <width>312</width>
+    <height>469</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -37,7 +37,7 @@
      <property name="bottomMargin">
       <number>15</number>
      </property>
-     <item row="0" column="0">
+     <item row="1" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>客户名称</string>
@@ -47,7 +47,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="1" column="1">
       <widget class="QComboBox" name="comboBox_customerName">
        <property name="minimumSize">
         <size>
@@ -60,7 +60,7 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
+     <item row="2" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>客户批次</string>
@@ -70,7 +70,7 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item row="2" column="1">
       <widget class="QComboBox" name="comboBox_CustomBatch">
        <property name="minimumSize">
         <size>
@@ -83,7 +83,7 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="3" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>物料编码</string>
@@ -93,7 +93,7 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="3" column="1">
       <widget class="QComboBox" name="comboBox_MaterielID">
        <property name="minimumSize">
         <size>
@@ -106,7 +106,7 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
+     <item row="4" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
         <string>物料描述</string>
@@ -116,7 +116,7 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="4" column="1">
       <widget class="QLineEdit" name="lineEdit_MaterielDes">
        <property name="minimumSize">
         <size>
@@ -126,7 +126,7 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
+     <item row="5" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>订单数量</string>
@@ -136,7 +136,7 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
+     <item row="5" column="1">
       <widget class="QSpinBox" name="spinBox_num">
        <property name="minimumSize">
         <size>
@@ -152,7 +152,7 @@
        </property>
       </widget>
      </item>
-     <item row="5" column="0">
+     <item row="6" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
         <string>计量单位</string>
@@ -162,7 +162,7 @@
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
+     <item row="6" column="1">
       <widget class="QComboBox" name="comboBox_unit">
        <property name="minimumSize">
         <size>
@@ -185,7 +185,7 @@
        </item>
       </widget>
      </item>
-     <item row="6" column="0">
+     <item row="7" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
         <string>客户备注</string>
@@ -195,12 +195,32 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
-      <widget class="QTextEdit" name="textEdit">
+     <item row="7" column="1">
+      <widget class="QTextEdit" name="textEdit_custom_note">
        <property name="minimumSize">
         <size>
          <width>0</width>
          <height>100</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>订单类型</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="comboBox_orderType">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
         </size>
        </property>
       </widget>
