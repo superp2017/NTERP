@@ -17,8 +17,7 @@ public:
     explicit DialogNewOrder(QWidget *parent = 0);
     ~DialogNewOrder();
     Order* getOrder();
-
-
+    void test();
 
 public slots:
     void newOrderCb(bool ok);

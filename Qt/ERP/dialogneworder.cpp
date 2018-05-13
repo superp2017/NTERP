@@ -3,6 +3,8 @@
 #include "datacenter.h"
 #include <QCompleter>
 #include <QToolTip>
+
+
 DialogNewOrder::DialogNewOrder(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogNewOrder)
@@ -25,6 +27,12 @@ Order *DialogNewOrder::getOrder()
     return curorder;
 }
 
+void DialogNewOrder::test()
+{
+
+}
+
+
 
 
 //QString           UID;            //用户id
@@ -45,6 +53,8 @@ Order *DialogNewOrder::getOrder()
 //int               OrderNum;       //订单数量
 //int               Money;          //价格
 
+
+
 void DialogNewOrder::on_pushButton_ok_clicked()
 {
     curorder = new Order();
@@ -63,6 +73,7 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     if(!checkOrder()){
         return;
     }
+
     dataCenter::instance()->showLoadding("正在网络请求...",4000,Qt::black);
 }
 

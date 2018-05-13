@@ -17,6 +17,12 @@ public:
         static dataCenter*u =new dataCenter();
         return u;
     }
+    ///////////////////////////////////////////////////////
+    void newOrder(Order *order);
+
+
+
+
     /////////////////////////////////////////////////////
     void showMessage(QString msg,int sec=0);
 

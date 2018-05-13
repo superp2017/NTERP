@@ -51,6 +51,12 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)
     m_customers.append(c2);
     m_customers.append(c3);
 }
+#include <QDebug>
+
+void dataCenter::newOrder(Order *order)
+{
+    qDebug()<<"dataCenter::newOrder:"<<order->CustomName;
+}
 
 void dataCenter::showMessage(QString msg, int sec)
 {
