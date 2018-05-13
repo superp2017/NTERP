@@ -35,7 +35,6 @@ void Loadding::showTime(QString str, int sec, QColor c)
     showOver();
     movie->start();
     m_timer->start(sec);
-    //ui->label__content->setFont(QFont());
     QPalette pe;
     pe.setColor(QPalette::WindowText,c);
     ui->label__content->setPalette(pe);

@@ -7,6 +7,7 @@ class SERVICESHARED_EXPORT OrderService
 {
 public:
     OrderService();
+    void newOrder();
 };
 
 #endif // ORDERSERVICE_H

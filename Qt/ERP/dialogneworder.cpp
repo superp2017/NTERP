@@ -84,6 +84,10 @@ bool DialogNewOrder::checkOrder()
     if(curorder==NULL){
         return false;
     }
+    if(curorder->CustomName==""){
+        QToolTip::showText(ui->comboBox_customerName->mapToGlobal(QPoint(100, 0)), "客户不能为空!");
+        return false;
+    }
     if(curorder->MaterielID==""){
         QToolTip::showText(ui->comboBox_MaterielID->mapToGlobal(QPoint(100, 0)), "物料编号不能为空!");
         return false;
@@ -93,14 +97,12 @@ bool DialogNewOrder::checkOrder()
         QToolTip::showText(ui->lineEdit_MaterielDes->mapToGlobal(QPoint(100, 0)), "物料描述不能为空!");
         return false;
     }
+
     if(curorder->Unit==""){
         QToolTip::showText(ui->comboBox_unit->mapToGlobal(QPoint(100, 0)), "单位不能为空!");
         return false;
     }
-    if(curorder->CustomName==""){
-        QToolTip::showText(ui->comboBox_customerName->mapToGlobal(QPoint(100, 0)), "客户不能为空!");
-        return false;
-    }
+
     if(curorder->OrderNum<=0){
         QToolTip::showText(ui->spinBox_num->mapToGlobal(QPoint(100, 0)), "订单数量填写不正确!");
         return false;

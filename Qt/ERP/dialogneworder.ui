@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>312</width>
-    <height>469</height>
+    <width>268</width>
+    <height>443</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -202,6 +202,9 @@
          <width>0</width>
          <height>100</height>
         </size>
+       </property>
+       <property name="documentTitle">
+        <string/>
        </property>
       </widget>
      </item>
