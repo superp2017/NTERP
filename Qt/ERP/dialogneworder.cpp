@@ -3,18 +3,19 @@
 #include "datacenter.h"
 #include <QCompleter>
 #include <QToolTip>
-
+#include <boost/thread/thread.hpp>
+#include "orderservice.h"
 
 DialogNewOrder::DialogNewOrder(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogNewOrder)
 {
     ui->setupUi(this);
-    curorder = NULL;
     initCombox(dataCenter::instance()->Customers(),\
                dataCenter::instance()->Batchs(),\
                dataCenter::instance()->Materiels(),\
                dataCenter::instance()->Units());
+    connect(dataCenter::instance(),SIGNAL(sig_newPlan(Order,bool)),this,SLOT(newOrderCb(Order,bool)));
 }
 
 DialogNewOrder::~DialogNewOrder()
@@ -22,104 +23,75 @@ DialogNewOrder::~DialogNewOrder()
     delete ui;
 }
 
-Order *DialogNewOrder::getOrder()
-{
-    return curorder;
-}
-
-void DialogNewOrder::test()
-{
-
-}
-
-
-
-
-//QString           UID;            //用户id
-//QString           UserName;       //用户姓名
-//QString           OrderID;        //订单id
-//QString           MaterielID;     //材料id
-//QString           MaterielDes;    //材料描述
-//QString           Unit;           //单位
-//QString           CustomID;       //客户ID
-//QString           CustomName;     //客户姓名
-//QString           CustomBatch;    //客户批次
-//QString           CustomNote;     //客户备注
-//QString           ProduceID;      //生产编号
-//QString           SuccessTime;    //出货时间
-//QString           CreatTime;      //创建时间
-//OderFlow          Current;        //当前状态
-//QVector<OderFlow> Flow;           //订单流程
-//int               OrderNum;       //订单数量
-//int               Money;          //价格
-
 
 
 void DialogNewOrder::on_pushButton_ok_clicked()
 {
-    curorder = new Order();
-    curorder->OrderType = ui->comboBox_orderType->currentData().toString();
-    curorder->UID = dataCenter::instance()->CurUser()->UID ;
-    curorder->UserName = dataCenter::instance()->CurUser()->Name;
-    curorder->MaterielID = ui->comboBox_MaterielID->currentText();
-    curorder->MaterielDes = ui->lineEdit_MaterielDes->text();
-    curorder->Unit = ui->comboBox_unit->currentText();
-    curorder->CustomID = ui->comboBox_customerName->currentData().toString();
-    curorder->CustomName = ui->comboBox_customerName->currentText();
-    curorder->CustomBatch = ui->comboBox_CustomBatch->currentText();
-    curorder->CustomNote = ui->textEdit_custom_note->toPlainText();
-    curorder->OrderNum =ui->spinBox_num->value();
+    Order  order;
+    order.OrderType = ui->comboBox_orderType->currentData().toString();
+    order.UID = dataCenter::instance()->CurUser().UID ;
+    order.UserName = dataCenter::instance()->CurUser().Name;
+    order.MaterielID = ui->comboBox_MaterielID->currentText();
+    order.MaterielDes = ui->lineEdit_MaterielDes->text();
+    order.Unit = ui->comboBox_unit->currentText();
+    order.CustomID = ui->comboBox_customerName->currentData().toString();
+    order.CustomName = ui->comboBox_customerName->currentText();
+    order.CustomBatch = ui->comboBox_CustomBatch->currentText();
+    order.CustomNote = ui->textEdit_custom_note->toPlainText();
+    order.OrderNum =ui->spinBox_num->value();
 
-    if(!checkOrder()){
+    if(!checkOrder(order)){
         return;
     }
-
-    dataCenter::instance()->showLoadding("正在网络请求...",4000,Qt::black);
+    para = OrderService::toJsonObject(order);
+    boost::thread t(boost::bind(&dataCenter::newOrder,dataCenter::instance(),para));
+    t.detach();
+    dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
 }
 
-void DialogNewOrder::newOrderCb(bool ok)
+void DialogNewOrder::newOrderCb(Order order,bool ok)
 {
     dataCenter::instance()->hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("下单成功!",2000);
+        dataCenter::instance()->showMessage("下单成功!",4000);
+        curorder = order;
         done(123);
     }else{
-        dataCenter::instance()->showMessage("下单失败!",2000);
+        dataCenter::instance()->showMessage("下单失败!",4000);
+        curorder = order;
         done(0);
     }
 }
 
 
-bool DialogNewOrder::checkOrder()
+bool DialogNewOrder::checkOrder(Order order)
 {
-    if(curorder==NULL){
-        return false;
-    }
-    if(curorder->CustomName==""){
+
+    if(order.CustomName==""){
         QToolTip::showText(ui->comboBox_customerName->mapToGlobal(QPoint(100, 0)), "客户不能为空!");
         return false;
     }
-    if(curorder->MaterielID==""){
+    if(order.MaterielID==""){
         QToolTip::showText(ui->comboBox_MaterielID->mapToGlobal(QPoint(100, 0)), "物料编号不能为空!");
         return false;
     }
 
-    if(curorder->MaterielDes==""){
+    if(order.MaterielDes==""){
         QToolTip::showText(ui->lineEdit_MaterielDes->mapToGlobal(QPoint(100, 0)), "物料描述不能为空!");
         return false;
     }
 
-    if(curorder->Unit==""){
+    if(order.Unit==""){
         QToolTip::showText(ui->comboBox_unit->mapToGlobal(QPoint(100, 0)), "单位不能为空!");
         return false;
     }
 
-    if(curorder->OrderNum<=0){
+    if(order.OrderNum<=0){
         QToolTip::showText(ui->spinBox_num->mapToGlobal(QPoint(100, 0)), "订单数量填写不正确!");
         return false;
     }
 
-    if(dataCenter::instance()->checkMaterielID(curorder->MaterielID)){
+    if(dataCenter::instance()->checkMaterielID(order.MaterielID)){
         QToolTip::showText(ui->comboBox_MaterielID->mapToGlobal(QPoint(100, 0)), "物料编号已经存在!");
         return false;
     }
@@ -127,12 +99,20 @@ bool DialogNewOrder::checkOrder()
     return true;
 }
 
+Order DialogNewOrder::getCurorder() const
+{
+    return curorder;
+}
+
+QJsonObject DialogNewOrder::getPara() const
+{
+    return para;
+}
 
 
 
-
-void DialogNewOrder::initCombox(QVector<Customer*> custom, QVector<QString> batch, \
-                                QVector<Materiel *> materID, QVector<QString> unit)
+void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch, \
+                                QVector<Materiel > materID, QVector<QString> unit)
 
 {
     ui->comboBox_orderType->clear();
@@ -142,9 +122,9 @@ void DialogNewOrder::initCombox(QVector<Customer*> custom, QVector<QString> batc
 
     ui->comboBox_customerName->clear();
     QStringList customlist;
-    for(Customer* c:custom){
-        customlist<<c->Name;
-        ui->comboBox_customerName->addItem(c->Name,c->CID);
+    for(Customer c:custom){
+        customlist<<c.Name;
+        ui->comboBox_customerName->addItem(c.Name,c.CID);
     }
     QCompleter *completerCustomer = new QCompleter(customlist, this);
 
@@ -159,8 +139,8 @@ void DialogNewOrder::initCombox(QVector<Customer*> custom, QVector<QString> batc
     ui->comboBox_CustomBatch->setCompleter(completerBatch);
 
     QStringList materlist;
-    for(Materiel* c:materID){
-        materlist<<c->MaterDes;
+    for(Materiel c:materID){
+        materlist<<c.MaterDes;
     }
 
     QCompleter *completerMater = new QCompleter(materlist, this);

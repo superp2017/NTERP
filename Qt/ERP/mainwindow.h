@@ -15,6 +15,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void showMessage(QString msg,int delay);
+
 private:
     Ui::MainWindow *ui;
     FormCenter  m_center;

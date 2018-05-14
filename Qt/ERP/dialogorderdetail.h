@@ -1,4 +1,4 @@
-#ifndef DIALOGORDERDETAIL_H
+﻿#ifndef DIALOGORDERDETAIL_H
 #define DIALOGORDERDETAIL_H
 
 #include <QDialog>
@@ -15,7 +15,7 @@ class DialogOrderDetail : public QDialog
 public:
     explicit DialogOrderDetail(QWidget *parent = 0);
     ~DialogOrderDetail();
-    void init(Order *order);
+    void init(Order order);
 
 private slots:
     void on_pushButton_ok_clicked();

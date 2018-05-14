@@ -14,7 +14,7 @@ class OrderTable : public QTableWidget
 public:
     OrderTable(QTableWidget*w=0);
     void setHeaderColModel( QHeaderView::ResizeMode mode);
-    void appendOrder(Order *para);
+    void appendOrder(Order para);
 
 
 private slots:
@@ -22,13 +22,13 @@ private slots:
 
 private:
     void removeAllRow();
-    void setRowData(Order *para, int row);
+    void setRowData(Order para, int row);
 
 
 
 private:
     DialogOrderDetail *order_detail;
-    Order* cur_order;
+    Order cur_order;
 };
 
 #endif // ORDERTABLE_H

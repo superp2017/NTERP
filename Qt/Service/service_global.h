@@ -4,7 +4,7 @@
 #include <QtCore/qglobal.h>
 #include <QString>
 #include <QVector>
-
+#include <QJsonValue>
 
 
 #if defined(SERVICE_LIBRARY)
@@ -12,6 +12,16 @@
 #else
 #  define SERVICESHARED_EXPORT Q_DECL_IMPORT
 #endif
+
+const std::string  Net_Login="/userlogin";                       //用户登录
+const std::string  Net_NewOrder="/neworder";                     //新建订单
+
+
+struct Ret{
+    QString     msg;
+    bool        ret;
+    QJsonValue data;
+};
 
 
 

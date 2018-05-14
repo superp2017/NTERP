@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include "global.h"
-
+#include <QJsonObject>
 namespace Ui {
 class DialogNewOrder;
 }
@@ -16,11 +16,11 @@ class DialogNewOrder : public QDialog
 public:
     explicit DialogNewOrder(QWidget *parent = 0);
     ~DialogNewOrder();
-    Order* getOrder();
-    void test();
+    QJsonObject getPara() const;
+    Order getCurorder() const;
 
 public slots:
-    void newOrderCb(bool ok);
+    void newOrderCb(Order order, bool ok);
 
 
 private slots:
@@ -29,14 +29,13 @@ private slots:
     void on_pushButton_cancel_clicked();
 
 private:
-    void initCombox(QVector<Customer*> custom,QVector<QString> batch,\
-                    QVector<Materiel*> materID,QVector<QString> unit);
-    bool checkOrder();
-
-
+    void initCombox(QVector<Customer> custom,QVector<QString> batch,\
+                    QVector<Materiel> materID,QVector<QString> unit);
+    bool checkOrder(Order curorder);
 
     Ui::DialogNewOrder *ui;
-    Order * curorder;
+    QJsonObject para;
+    Order  curorder;
 };
 
 #endif // DIALOGNEWORDER_H

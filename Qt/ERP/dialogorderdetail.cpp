@@ -1,4 +1,4 @@
-#include "dialogorderdetail.h"
+﻿#include "dialogorderdetail.h"
 #include "ui_dialogorderdetail.h"
 
 
@@ -14,13 +14,9 @@ DialogOrderDetail::~DialogOrderDetail()
     delete ui;
 }
 
-void DialogOrderDetail::init(Order *order)
+void DialogOrderDetail::init(Order order)
 {
-    if(order==NULL){
-        ui->label->setText("");
-        return;
-    }
-    ui->label->setText(order->OrderID);
+    ui->label->setText(order.OrderID);
 }
 
 void DialogOrderDetail::on_pushButton_ok_clicked()

@@ -2,7 +2,8 @@
 #include "ui_ordermanager.h"
 #include "datacenter.h"
 #include "dialogneworder.h"
-
+#include "orderservice.h"
+#include "boost/shared_ptr.hpp"
 OrderManager::OrderManager(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OrderManager)
@@ -30,18 +31,14 @@ OrderManager::~OrderManager()
     delete ui;
 }
 
+
 void OrderManager::on_pushButton_new_clicked()
 {
     DialogNewOrder neworer;
     if(neworer.exec()==123){
-        Order * order = neworer.getOrder();
-        if (order!=NULL){
-            m_tab_new->appendOrder(order);
-            dataCenter::instance()->appendOrder(order);
-        }
+        Order order = neworer.getCurorder();
+        m_tab_new->appendOrder(order);
     }
-
-
 }
 
 

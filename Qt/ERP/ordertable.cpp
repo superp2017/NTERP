@@ -24,14 +24,13 @@ OrderTable::OrderTable(QTableWidget *w):
     this->setSortingEnabled(true);//允许列排序
 
     order_detail = NULL;
-    cur_order = NULL;
     connect(this,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(clickRow(int,int)));
 
 }
 
 
 //新建
-void OrderTable::appendOrder(Order *para)
+void OrderTable::appendOrder(Order para)
 {
     this->setRowCount(this->rowCount()+1);
     int row=this->rowCount()-1;
@@ -47,11 +46,9 @@ void OrderTable::setHeaderColModel(QHeaderView::ResizeMode mode)
 }
 
 //设置表格一行
-void OrderTable::setRowData(Order *para,int row)
+void OrderTable::setRowData(Order para,int row)
 {
-    if (para==NULL){
-        return;
-    }
+
     QTableWidgetItem *item1 = this->item(row,0);
     QTableWidgetItem *item2 = this->item(row,1);
     QTableWidgetItem *item3 = this->item(row,2);
@@ -99,15 +96,15 @@ void OrderTable::setRowData(Order *para,int row)
     }
 
 
-    item1->setText(para->OrderID);
-    item2->setText(para->MaterielID);
-    item3->setText(para->MaterielDes);
-    item4->setText(QString("%1").arg(para->OrderNum));
-    item5->setText(para->Unit);
-    item6->setText(para->CustomBatch);
-    item7->setText(para->CustomNote);
-    item8->setText(para->ProduceID);
-    item9->setText(QString("%1").arg(para->Money));
+    item1->setText(para.OrderID);
+    item2->setText(para.MaterielID);
+    item3->setText(para.MaterielDes);
+    item4->setText(QString("%1").arg(para.OrderNum));
+    item5->setText(para.Unit);
+    item6->setText(para.CustomBatch);
+    item7->setText(para.CustomNote);
+    item8->setText(para.ProduceID);
+    item9->setText(QString("%1").arg(para.Money));
 
 
     item1->setTextAlignment(Qt::AlignCenter);
@@ -136,7 +133,6 @@ void OrderTable::clickRow(int row, int ool)
         return;
     }
     ool = 0;
-    cur_order = NULL;
     QTableWidgetItem* item = this->item(row,0);
     cur_order = dataCenter::instance()->getOrder(item->text());
     if(order_detail ==NULL){

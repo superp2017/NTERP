@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -32,6 +33,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+ROOT = "E:/workspace/Qt/SimLib"
+
+
+INCLUDEPATH += $${ROOT}/boost_1_59_0/boost
+QMAKE_INCDIR += $${ROOT}/boost_1_59_0/boost
+QMAKE_LIBDIR += $${ROOT}/boost_1_59_0/lib64
+
+LIBS += boost_system-vc140-mt-1_59.lib
+LIBS += boost_thread-vc140-mt-1_59.lib
 
 
 SOURCES += main.cpp\
@@ -48,7 +58,8 @@ SOURCES += main.cpp\
     dialogorderdetail.cpp \
     dialogneworder.cpp \
     dialognewcustom.cpp \
-    loadding.cpp
+    loadding.cpp \
+    nsysconfig.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -64,7 +75,8 @@ HEADERS  += mainwindow.h \
     dialogneworder.h \
     dialognewcustom.h \
     global.h \
-    loadding.h
+    loadding.h \
+    nsysconfig.h
 
 FORMS    += mainwindow.ui \
     login.ui \
