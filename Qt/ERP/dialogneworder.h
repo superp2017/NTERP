@@ -16,7 +16,6 @@ class DialogNewOrder : public QDialog
 public:
     explicit DialogNewOrder(QWidget *parent = 0);
     ~DialogNewOrder();
-    QJsonObject getPara() const;
     Order getCurorder() const;
 
 public slots:
@@ -28,13 +27,15 @@ private slots:
 
     void on_pushButton_cancel_clicked();
 
+    void customChange(QString name);
+    void materielChange(QString mater);
+    void unitChange(QString un);
 private:
     void initCombox(QVector<Customer> custom,QVector<QString> batch,\
                     QVector<Materiel> materID,QVector<QString> unit);
     bool checkOrder(Order curorder);
 
     Ui::DialogNewOrder *ui;
-    QJsonObject para;
     Order  curorder;
 };
 

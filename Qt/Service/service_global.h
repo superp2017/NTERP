@@ -64,13 +64,16 @@ struct User {
 //客户
 struct Customer{
     QString CID;                    //客户编号
-    QString Name;                   //客户姓名
-    QString Icon;                   //客户logo
-    QString Addr;                   //客户地址
-    QString Tel;                    //联系电话
+    QString Name;                   //客户公司名称
+    QString Icon;                   //客户公司logo
+    QString Addr;                   //客户公司地址
+    QString Tel;                    //公司电话
+    QString ContactName;            //联系人
+    QString ContactCell;            //联系人电话
     QString BankName;               //开户行
     QString BankNumber;             //银行卡号
     QString Bankbranch;             //银行支行
+    QString CertificatesNum;        //税号
     QString Certificates;           //客户证件（营业执照）
     QString Note;                   //备注
 };

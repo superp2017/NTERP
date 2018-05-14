@@ -22,7 +22,10 @@ private slots:
 
     void on_pushButton_cancel_clicked();
 
+
+
 private:
+
     Ui::DialogOrderDetail *ui;
 };
 

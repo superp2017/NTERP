@@ -3,8 +3,11 @@
 #include "datacenter.h"
 #include <QCompleter>
 #include <QToolTip>
-#include <boost/thread/thread.hpp>
 #include "orderservice.h"
+#include "dialognewcustom.h"
+#include "service_global.h"
+#include "dialognewmateriel.h"
+#include "dialognewunit.h"
 
 DialogNewOrder::DialogNewOrder(QWidget *parent) :
     QDialog(parent),
@@ -16,6 +19,9 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
                dataCenter::instance()->Materiels(),\
                dataCenter::instance()->Units());
     connect(dataCenter::instance(),SIGNAL(sig_newPlan(Order,bool)),this,SLOT(newOrderCb(Order,bool)));
+    connect(ui->comboBox_customerName,SIGNAL(currentIndexChanged(QString)),this,SLOT(customChange(QString)));
+    connect(ui->comboBox_MaterielID,SIGNAL(currentIndexChanged(QString)),this,SLOT(materielChange(QString)));
+    connect(ui->comboBox_unit,SIGNAL(currentIndexChanged(QString)),this,SLOT(unitChange(QString)));
 }
 
 DialogNewOrder::~DialogNewOrder()
@@ -43,10 +49,12 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     if(!checkOrder(order)){
         return;
     }
-    para = OrderService::toJsonObject(order);
-    boost::thread t(boost::bind(&dataCenter::newOrder,dataCenter::instance(),para));
-    t.detach();
+    QJsonObject para = OrderService::toJsonObject(order);
+    //    boost::thread t(boost::bind(&dataCenter::newOrder,dataCenter::instance(),para));
+    //    t.detach();
+
     dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+    dataCenter::instance()->newOrder(para);
 }
 
 void DialogNewOrder::newOrderCb(Order order,bool ok)
@@ -104,12 +112,6 @@ Order DialogNewOrder::getCurorder() const
     return curorder;
 }
 
-QJsonObject DialogNewOrder::getPara() const
-{
-    return para;
-}
-
-
 
 void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch, \
                                 QVector<Materiel > materID, QVector<QString> unit)
@@ -138,22 +140,22 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch
     ui->comboBox_CustomBatch->setEditable(true);
     ui->comboBox_CustomBatch->setCompleter(completerBatch);
 
+    ui->comboBox_MaterielID->clear();
+    ui->comboBox_MaterielID->setEditable(true);
     QStringList materlist;
     for(Materiel c:materID){
-        materlist<<c.MaterDes;
+        materlist<<c.MaterID;
+        ui->comboBox_MaterielID->addItem(c.MaterID,c.MaterDes);
     }
 
     QCompleter *completerMater = new QCompleter(materlist, this);
-    ui->comboBox_MaterielID->clear();
-    ui->comboBox_MaterielID->addItems(materlist);
-    ui->comboBox_MaterielID->setEditable(true);
     ui->comboBox_MaterielID->setCompleter(completerMater);
 
     QCompleter *completerUnit = new QCompleter(unit.toList(), this);
-    ui->comboBox_MaterielID->clear();
-    ui->comboBox_MaterielID->addItems(unit.toList());
-    ui->comboBox_MaterielID->setEditable(true);
-    ui->comboBox_MaterielID->setCompleter(completerUnit);
+    ui->comboBox_unit->clear();
+    ui->comboBox_unit->addItems(unit.toList());
+    ui->comboBox_unit->setEditable(true);
+    ui->comboBox_unit->setCompleter(completerUnit);
 
 
     ui->comboBox_MaterielID->addItem(ItemNewMater);
@@ -170,4 +172,53 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch
 void DialogNewOrder::on_pushButton_cancel_clicked()
 {
     done(-1);
+}
+
+void DialogNewOrder::customChange(QString name)
+{
+
+    if(name==ItemNewCustom){
+        DialogNewCustom cus;
+        if(cus.exec()==123){
+            ui->comboBox_customerName->blockSignals(true);
+            Customer custom = cus.getCurCustom();
+            ui->comboBox_customerName->insertItem(ui->comboBox_customerName->count()-1,custom.Name);
+            ui->comboBox_customerName->setCurrentIndex(ui->comboBox_customerName->count()-2);
+            ui->comboBox_customerName->blockSignals(false);
+        }
+    }
+
+}
+
+void DialogNewOrder::materielChange(QString mater)
+{
+
+    if(mater==ItemNewMater){
+        DialogNewMateriel mater;
+        if(mater.exec()==123){
+            ui->comboBox_MaterielID->blockSignals(true);
+            Materiel ma = mater.getMater();
+            ui->comboBox_MaterielID->insertItem(ui->comboBox_MaterielID->count()-1,ma.MaterID,ma.MaterDes);
+            ui->comboBox_MaterielID->setCurrentIndex(ui->comboBox_MaterielID->count()-2);
+            ui->lineEdit_MaterielDes->setText(ma.MaterDes);
+            ui->comboBox_MaterielID->blockSignals(false);
+        }
+    }else{
+        ui->lineEdit_MaterielDes->setText(ui->comboBox_MaterielID->currentData().toString());
+    }
+
+}
+
+void DialogNewOrder::unitChange(QString un)
+{
+    if(un==ItemNewUnit){
+        DialogNewUnit unit;
+        if(unit.exec()==123){
+            ui->comboBox_unit->blockSignals(true);
+            QString u = unit.getUnit();
+            ui->comboBox_unit->insertItem(ui->comboBox_unit->count()-1,u);
+            ui->comboBox_unit->setCurrentIndex(ui->comboBox_unit->count()-2);
+            ui->comboBox_unit->blockSignals(false);
+        }
+    }
 }

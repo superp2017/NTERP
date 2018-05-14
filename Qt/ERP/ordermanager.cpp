@@ -3,7 +3,6 @@
 #include "datacenter.h"
 #include "dialogneworder.h"
 #include "orderservice.h"
-#include "boost/shared_ptr.hpp"
 OrderManager::OrderManager(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OrderManager)
