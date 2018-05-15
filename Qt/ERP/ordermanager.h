@@ -20,8 +20,14 @@ public:
 
 private slots:
     void on_pushButton_new_clicked();
-
     void changeCol();
+    void orderClick(QString orderID);
+    void on_pushButton_mod_clicked();
+
+    void on_pushButton_cancle_clicked();
+
+    void on_pushButton_success_clicked();
+    void clearAllSelect();
 
 private:
     Ui::OrderManager *ui;

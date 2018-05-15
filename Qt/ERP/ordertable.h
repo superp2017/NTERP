@@ -17,18 +17,18 @@ public:
     void appendOrder(Order para);
 
 
-private slots:
-    void clickRow(int row,int ool);
+signals:
+    void orderClick(QString orderID);
 
+private slots:
+    void doubleclickRow(int row,int ool);
+    void clickRow(int row,int col);
 private:
     void removeAllRow();
     void setRowData(Order para, int row);
 
-
-
 private:
     DialogOrderDetail *order_detail;
-    Order cur_order;
 };
 
 #endif // ORDERTABLE_H

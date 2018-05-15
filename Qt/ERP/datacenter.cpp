@@ -70,7 +70,7 @@ void dataCenter::newOrder(const QJsonObject para)
     Order order = OrderService::fromJsonObject(para);
     order.OrderID = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
     order.ProduceID =  QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch()/130);
-    order.CreatTime = QDateTime::currentDateTime().toString("yyyy:MM:dd hh:mm:ss");
+    order.CreatTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     OderFlow flow;
     flow.UserName =cur_user.Name;
     flow.Action="新建订单";
@@ -78,8 +78,6 @@ void dataCenter::newOrder(const QJsonObject para)
     flow.OpreatTime =order.CreatTime;
     order.Current = flow;
     order.Flow.push_back(flow);
-
-
 
     this->appendOrder(order);
     emit sig_newPlan(order,true);

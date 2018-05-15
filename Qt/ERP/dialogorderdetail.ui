@@ -206,6 +206,9 @@
    </item>
    <item row="3" column="1" colspan="3">
     <widget class="QTextEdit" name="textEdit_materDes">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -388,6 +391,9 @@
    </item>
    <item row="7" column="1" colspan="3">
     <widget class="QTextEdit" name="textEdit_customNote">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>

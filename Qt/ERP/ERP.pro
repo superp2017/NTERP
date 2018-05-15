@@ -16,7 +16,7 @@ TEMPLATE = app
 DESTDIR = ../../bin
 QMAKE_LIBDIR += ../../bin
 
-QMAKE_CXXFLAGS += -wd4100  -wd4005 -wd4503 -wd4101
+QMAKE_CXXFLAGS += -wd4100  -wd4005 -wd4503 -wd4101 -wd4100
 QMAKE_CXXFLAGS += -wd4996  -wd4522 -wd4189 -wd4819
 UI_DIR = ../../../temp/ui/ERP
 OBJECTS_DIR = ../../../../temp/obj/ERP
@@ -33,7 +33,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-ROOT = "E:/workspace/Qt/SimLib/boost_1_59_0"
+ROOT = "D:/workspace/libs/boost_1_59_0"
 
 
 INCLUDEPATH += $${ROOT}/boost

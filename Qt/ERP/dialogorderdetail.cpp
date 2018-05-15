@@ -17,6 +17,7 @@ DialogOrderDetail::DialogOrderDetail(QWidget *parent) :
     header<<tr("操作者")<<tr("动作")<<tr("操作时间");
     ui->tableWidget->setHorizontalHeaderLabels(header);
     ui->tableWidget->setSortingEnabled(true);//允许列排序
+    ui->tableWidget->horizontalHeader()->setStyleSheet("QHeaderView::section{background:skyblue;}"); //设置表头背景色
 }
 
 DialogOrderDetail::~DialogOrderDetail()

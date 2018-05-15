@@ -24,8 +24,8 @@ OrderTable::OrderTable(QTableWidget *w):
     this->setSortingEnabled(true);//允许列排序
 
     order_detail = NULL;
-    connect(this,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(clickRow(int,int)));
-
+    connect(this,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(doubleclickRow(int,int)));
+    connect(this,SIGNAL(cellClicked(int,int)),this,SLOT(clickRow(int,int)));
 }
 
 
@@ -127,15 +127,17 @@ void OrderTable::removeAllRow()
     }
 }
 
-void OrderTable::clickRow(int row, int ool)
+void OrderTable::doubleclickRow(int row, int ool)
 {
     if(row<0){
         return;
     }
     ool = 0;
     QTableWidgetItem* item = this->item(row,0);
+    if(item==NULL)
+        return;
     bool exist =false;
-    cur_order = dataCenter::instance()->getOrder(item->text(),exist);
+    Order cur_order = dataCenter::instance()->getOrder(item->text(),exist);
     if(!exist){
         return;
     }
@@ -148,7 +150,17 @@ void OrderTable::clickRow(int row, int ool)
     }
 }
 
-
+void OrderTable::clickRow(int row, int col)
+{
+    if(row<0){
+        return;
+    }
+    col =0;
+    QTableWidgetItem* item = this->item(row,0);
+    if (item!=NULL){
+        emit orderClick(item->text());
+    }
+}
 
 
 
