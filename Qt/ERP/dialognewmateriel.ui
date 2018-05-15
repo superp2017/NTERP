@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>345</width>
-    <height>457</height>
+    <width>300</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -44,7 +44,7 @@
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
      <property name="horizontalSpacing">
-      <number>15</number>
+      <number>5</number>
      </property>
      <property name="verticalSpacing">
       <number>11</number>
@@ -52,7 +52,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>客户</string>
+        <string>客户  </string>
        </property>
       </widget>
      </item>
@@ -70,14 +70,14 @@
       <widget class="QPushButton" name="pushButton_add_custom">
        <property name="minimumSize">
         <size>
-         <width>30</width>
-         <height>30</height>
+         <width>25</width>
+         <height>25</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>30</width>
-         <height>30</height>
+         <width>25</width>
+         <height>25</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -94,7 +94,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>颜色</string>
+        <string>颜色  </string>
        </property>
       </widget>
      </item>
@@ -112,14 +112,14 @@
       <widget class="QPushButton" name="pushButton_Add_color">
        <property name="minimumSize">
         <size>
-         <width>30</width>
-         <height>30</height>
+         <width>25</width>
+         <height>25</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>30</width>
-         <height>30</height>
+         <width>25</width>
+         <height>25</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -136,7 +136,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>镀种</string>
+        <string>镀种  </string>
        </property>
       </widget>
      </item>
@@ -154,14 +154,14 @@
       <widget class="QPushButton" name="pushButton_add_type">
        <property name="minimumSize">
         <size>
-         <width>30</width>
-         <height>30</height>
+         <width>25</width>
+         <height>25</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>30</width>
-         <height>30</height>
+         <width>25</width>
+         <height>25</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -178,7 +178,7 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>描述</string>
+        <string>描述  </string>
        </property>
       </widget>
      </item>
@@ -196,14 +196,14 @@
       <widget class="QPushButton" name="pushButton_clear">
        <property name="minimumSize">
         <size>
-         <width>30</width>
-         <height>30</height>
+         <width>25</width>
+         <height>25</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>30</width>
-         <height>29</height>
+         <width>25</width>
+         <height>25</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -219,13 +219,13 @@
    <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
-      <number>25</number>
+      <number>30</number>
      </property>
      <property name="leftMargin">
-      <number>15</number>
+      <number>20</number>
      </property>
      <property name="rightMargin">
-      <number>15</number>
+      <number>20</number>
      </property>
      <item>
       <widget class="QPushButton" name="pushButton_cancle">

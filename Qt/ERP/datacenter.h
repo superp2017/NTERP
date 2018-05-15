@@ -30,17 +30,18 @@ public:
     User CurUser();
     ////////////////////////////////////////////////////
     QVector<Order> StatusOrders(QString status);
-    Order getOrder(QString OrderID);
+    Order getOrder(QString OrderID,bool &ok);
     ////////////////////////////////////////////////////
     QVector<QString> Units();
+    bool checkUnitExist(QString unit);
     ////////////////////////////////////////////////////
     QVector<Materiel>Materiels();
     bool checkMaterielID(QString id);
     ////////////////////////////////////////////////////
     QVector<QString> Batchs();
     ////////////////////////////////////////////////////
-
     QVector<Customer>Customers();
+    bool checkCustomerExist(QString name);
 signals:
     void showStatusMessage(QString msg,int sec);
     void sig_newPlan(Order,bool);

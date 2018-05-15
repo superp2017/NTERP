@@ -33,15 +33,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-#ROOT = "D:/workspace/libs/boost_1_66_0"
+ROOT = "E:/workspace/Qt/SimLib/boost_1_59_0"
 
 
-#INCLUDEPATH += $${ROOT}/boost
-#QMAKE_INCDIR += $${ROOT}/boost
-#QMAKE_LIBDIR += $${ROOT}/lib64
+INCLUDEPATH += $${ROOT}/boost
+QMAKE_INCDIR += $${ROOT}/boost
+QMAKE_LIBDIR += $${ROOT}/lib64
 
-#LIBS += boost_system-vc140-mt-x64-1_66.lib
-#LIBS += boost_thread-vc140-mt-x64-1_66.lib
+LIBS += boost_system-vc140-mt-1_59.lib
+LIBS += boost_thread-vc140-mt-1_59.lib
 
 
 SOURCES += main.cpp\

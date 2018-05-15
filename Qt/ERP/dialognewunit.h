@@ -2,6 +2,8 @@
 #define DIALOGNEWUNIT_H
 
 #include <QDialog>
+#pragma execution_character_set("utf-8")
+
 
 namespace Ui {
 class DialogNewUnit;

@@ -134,12 +134,15 @@ void OrderTable::clickRow(int row, int ool)
     }
     ool = 0;
     QTableWidgetItem* item = this->item(row,0);
-    cur_order = dataCenter::instance()->getOrder(item->text());
+    bool exist =false;
+    cur_order = dataCenter::instance()->getOrder(item->text(),exist);
+    if(!exist){
+        return;
+    }
     if(order_detail ==NULL){
         order_detail = new DialogOrderDetail();
     }
     order_detail->init(cur_order);
-
     if (order_detail->exec()==123){
 
     }

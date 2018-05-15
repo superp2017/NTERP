@@ -1,7 +1,9 @@
-#ifndef SYSTEMMANAGER_H
+﻿#ifndef SYSTEMMANAGER_H
 #define SYSTEMMANAGER_H
 
 #include <QWidget>
+#pragma execution_character_set("utf-8")
+
 
 namespace Ui {
 class SystemManager;

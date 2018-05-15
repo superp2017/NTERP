@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include "global.h"
+#pragma execution_character_set("utf-8")
+
 
 namespace Ui {
 class DialogOrderDetail;
@@ -19,10 +21,7 @@ public:
 
 private slots:
     void on_pushButton_ok_clicked();
-
-    void on_pushButton_cancel_clicked();
-
-
+    void removeAllRow();
 
 private:
 

@@ -1,5 +1,7 @@
 ﻿#include "orderservice.h"
 #include <QJsonArray>
+#include <QDebug>
+#include "http.h"
 OrderService::OrderService()
 {
 
@@ -7,9 +9,28 @@ OrderService::OrderService()
 
 Order OrderService::newOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-   Order order;
+#if 1
+    Order order;
     ok = true;
     return order;
+#endif
+#if 0
+    Order order;
+    std::string url = Net_NewOrder;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            order = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  order;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"newPlan ret is not 0";
+    ok = false;
+    return order;
+#endif
 }
 
 

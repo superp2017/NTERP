@@ -2,6 +2,8 @@
 #define NACCOUNTSETTINGS_H
 
 #include <QString>
+#pragma execution_character_set("utf-8")
+
 
 class nSysConfig
 {

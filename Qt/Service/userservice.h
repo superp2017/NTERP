@@ -7,6 +7,10 @@ class SERVICESHARED_EXPORT UserService
 {
 public:
     UserService();
+    static User newUser(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static QJsonObject toJsonObject(User user);
+    static User fromJsonObject(QJsonObject obj);
+
 };
 
 #endif // USERSERVICE_H

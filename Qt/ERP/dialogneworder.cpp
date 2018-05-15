@@ -8,6 +8,7 @@
 #include "service_global.h"
 #include "dialognewmateriel.h"
 #include "dialognewunit.h"
+#include "boost/thread.hpp"
 
 DialogNewOrder::DialogNewOrder(QWidget *parent) :
     QDialog(parent),
@@ -29,90 +30,6 @@ DialogNewOrder::~DialogNewOrder()
     delete ui;
 }
 
-
-
-void DialogNewOrder::on_pushButton_ok_clicked()
-{
-    Order  order;
-    order.OrderType = ui->comboBox_orderType->currentData().toString();
-    order.UID = dataCenter::instance()->CurUser().UID ;
-    order.UserName = dataCenter::instance()->CurUser().Name;
-    order.MaterielID = ui->comboBox_MaterielID->currentText();
-    order.MaterielDes = ui->lineEdit_MaterielDes->text();
-    order.Unit = ui->comboBox_unit->currentText();
-    order.CustomID = ui->comboBox_customerName->currentData().toString();
-    order.CustomName = ui->comboBox_customerName->currentText();
-    order.CustomBatch = ui->comboBox_CustomBatch->currentText();
-    order.CustomNote = ui->textEdit_custom_note->toPlainText();
-    order.OrderNum =ui->spinBox_num->value();
-
-    if(!checkOrder(order)){
-        return;
-    }
-    QJsonObject para = OrderService::toJsonObject(order);
-    //    boost::thread t(boost::bind(&dataCenter::newOrder,dataCenter::instance(),para));
-    //    t.detach();
-
-    dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
-    dataCenter::instance()->newOrder(para);
-}
-
-void DialogNewOrder::newOrderCb(Order order,bool ok)
-{
-    dataCenter::instance()->hideLoadding();
-    if(ok){
-        dataCenter::instance()->showMessage("下单成功!",4000);
-        curorder = order;
-        done(123);
-    }else{
-        dataCenter::instance()->showMessage("下单失败!",4000);
-        curorder = order;
-        done(0);
-    }
-}
-
-
-bool DialogNewOrder::checkOrder(Order order)
-{
-
-    if(order.CustomName==""){
-        QToolTip::showText(ui->comboBox_customerName->mapToGlobal(QPoint(100, 0)), "客户不能为空!");
-        return false;
-    }
-    if(order.MaterielID==""){
-        QToolTip::showText(ui->comboBox_MaterielID->mapToGlobal(QPoint(100, 0)), "物料编号不能为空!");
-        return false;
-    }
-
-    if(order.MaterielDes==""){
-        QToolTip::showText(ui->lineEdit_MaterielDes->mapToGlobal(QPoint(100, 0)), "物料描述不能为空!");
-        return false;
-    }
-
-    if(order.Unit==""){
-        QToolTip::showText(ui->comboBox_unit->mapToGlobal(QPoint(100, 0)), "单位不能为空!");
-        return false;
-    }
-
-    if(order.OrderNum<=0){
-        QToolTip::showText(ui->spinBox_num->mapToGlobal(QPoint(100, 0)), "订单数量填写不正确!");
-        return false;
-    }
-
-    if(dataCenter::instance()->checkMaterielID(order.MaterielID)){
-        QToolTip::showText(ui->comboBox_MaterielID->mapToGlobal(QPoint(100, 0)), "物料编号已经存在!");
-        return false;
-    }
-
-    return true;
-}
-
-Order DialogNewOrder::getCurorder() const
-{
-    return curorder;
-}
-
-
 void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch, \
                                 QVector<Materiel > materID, QVector<QString> unit)
 
@@ -120,7 +37,7 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch
     ui->comboBox_orderType->clear();
     ui->comboBox_orderType->addItem("普通订单","0");
     ui->comboBox_orderType->addItem("批量订单","1");
-    ui->comboBox_orderType->addItem("试样订单","1");
+    ui->comboBox_orderType->addItem("试样订单","2");
 
     ui->comboBox_customerName->clear();
     QStringList customlist;
@@ -168,6 +85,93 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch
 
 
 
+void DialogNewOrder::on_pushButton_ok_clicked()
+{
+    Order  order;
+    order.OrderType = ui->comboBox_orderType->currentData().toString();
+    order.UID = dataCenter::instance()->CurUser().UID ;
+    order.UserName = dataCenter::instance()->CurUser().Name;
+    order.MaterielID = ui->comboBox_MaterielID->currentText();
+    order.MaterielDes = ui->lineEdit_MaterielDes->text();
+    order.Unit = ui->comboBox_unit->currentText();
+    order.CustomID = ui->comboBox_customerName->currentData().toString();
+    order.CustomName = ui->comboBox_customerName->currentText();
+    order.CustomBatch = ui->comboBox_CustomBatch->currentText();
+    order.CustomNote = ui->textEdit_custom_note->toPlainText();
+    order.OrderNum =ui->spinBox_num->value();
+
+    if(!checkOrder(order)){
+        return;
+    }
+    QJsonObject para = OrderService::toJsonObject(order);
+    boost::thread t(boost::bind(&dataCenter::newOrder,dataCenter::instance(),para));
+    t.detach();
+    dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+}
+
+void DialogNewOrder::newOrderCb(Order order,bool ok)
+{
+    dataCenter::instance()->hideLoadding();
+    if(ok){
+        dataCenter::instance()->showMessage("下单成功!",4000);
+        curorder = order;
+        done(123);
+    }else{
+        dataCenter::instance()->showMessage("下单失败!",4000);
+        curorder = order;
+        done(0);
+    }
+}
+
+
+bool DialogNewOrder::checkOrder(Order order)
+{
+
+    if(order.CustomName==""){
+        QToolTip::showText(ui->comboBox_customerName->mapToGlobal(QPoint(100, 0)), "客户不能为空!");
+        return false;
+    }
+    if(order.MaterielID==""){
+        QToolTip::showText(ui->comboBox_MaterielID->mapToGlobal(QPoint(100, 0)), "物料编号不能为空!");
+        return false;
+    }
+
+    if(order.MaterielDes==""){
+        QToolTip::showText(ui->lineEdit_MaterielDes->mapToGlobal(QPoint(100, 0)), "物料描述不能为空!");
+        return false;
+    }
+
+    if(order.Unit==""){
+        QToolTip::showText(ui->comboBox_unit->mapToGlobal(QPoint(100, 0)), "单位不能为空!");
+        return false;
+    }
+
+    if(order.OrderNum<=0){
+        QToolTip::showText(ui->spinBox_num->mapToGlobal(QPoint(100, 0)), "订单数量填写不正确!");
+        return false;
+    }
+
+
+    if(!dataCenter::instance()->checkCustomerExist(order.CustomName)){
+        QToolTip::showText(ui->comboBox_customerName->mapToGlobal(QPoint(100, 0)), "该客户不存在!");
+        return false;
+    }
+
+
+    if(dataCenter::instance()->checkMaterielID(order.MaterielID)){
+        QToolTip::showText(ui->comboBox_MaterielID->mapToGlobal(QPoint(100, 0)), "物料编号已经存在!");
+        return false;
+    }
+
+    return true;
+}
+
+Order DialogNewOrder::getCurorder() const
+{
+    return curorder;
+}
+
+
 
 void DialogNewOrder::on_pushButton_cancel_clicked()
 {
@@ -176,7 +180,6 @@ void DialogNewOrder::on_pushButton_cancel_clicked()
 
 void DialogNewOrder::customChange(QString name)
 {
-
     if(name==ItemNewCustom){
         DialogNewCustom cus;
         if(cus.exec()==123){
@@ -185,6 +188,8 @@ void DialogNewOrder::customChange(QString name)
             ui->comboBox_customerName->insertItem(ui->comboBox_customerName->count()-1,custom.Name);
             ui->comboBox_customerName->setCurrentIndex(ui->comboBox_customerName->count()-2);
             ui->comboBox_customerName->blockSignals(false);
+        }else{
+            ui->comboBox_customerName->setCurrentIndex(-1);
         }
     }
 
@@ -202,6 +207,8 @@ void DialogNewOrder::materielChange(QString mater)
             ui->comboBox_MaterielID->setCurrentIndex(ui->comboBox_MaterielID->count()-2);
             ui->lineEdit_MaterielDes->setText(ma.MaterDes);
             ui->comboBox_MaterielID->blockSignals(false);
+        }else{
+            ui->comboBox_MaterielID->setCurrentIndex(-1);
         }
     }else{
         ui->lineEdit_MaterielDes->setText(ui->comboBox_MaterielID->currentData().toString());
@@ -219,6 +226,8 @@ void DialogNewOrder::unitChange(QString un)
             ui->comboBox_unit->insertItem(ui->comboBox_unit->count()-1,u);
             ui->comboBox_unit->setCurrentIndex(ui->comboBox_unit->count()-2);
             ui->comboBox_unit->blockSignals(false);
+        }else{
+            ui->comboBox_unit->setCurrentIndex(-1);
         }
     }
 }

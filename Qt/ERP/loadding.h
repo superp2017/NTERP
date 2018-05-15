@@ -5,6 +5,11 @@
 #include <QTimer>
 #include <QMovie>
 #include <QColor>
+
+#pragma execution_character_set("utf-8")
+
+
+
 namespace Ui {
 class Loadding;
 }

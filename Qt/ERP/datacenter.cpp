@@ -70,6 +70,17 @@ void dataCenter::newOrder(const QJsonObject para)
     Order order = OrderService::fromJsonObject(para);
     order.OrderID = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
     order.ProduceID =  QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch()/130);
+    order.CreatTime = QDateTime::currentDateTime().toString("yyyy:MM:dd hh:mm:ss");
+    OderFlow flow;
+    flow.UserName =cur_user.Name;
+    flow.Action="新建订单";
+    flow.Status = Status_New;
+    flow.OpreatTime =order.CreatTime;
+    order.Current = flow;
+    order.Flow.push_back(flow);
+
+
+
     this->appendOrder(order);
     emit sig_newPlan(order,true);
 #endif
@@ -121,14 +132,16 @@ QVector<Order> dataCenter::StatusOrders(QString status)
 }
 
 //获取单个订单
-Order dataCenter::getOrder(QString OrderID)
+Order dataCenter::getOrder(QString OrderID, bool &ok)
 {
     Order a;
     for(Order o: m_orders) {
         if (o.OrderID.compare(OrderID)==0){
+            ok = true;
             return o;
         }
     }
+    ok = false;
     return a;
 }
 
@@ -145,6 +158,16 @@ void dataCenter::appendUnit(QString u)
 QVector<QString> dataCenter::Units()
 {
     return m_units;
+}
+
+bool dataCenter::checkUnitExist(QString unit)
+{
+    for(QString m:m_units){
+        if (m==unit){
+            return true;
+        }
+    }
+    return false;
 }
 
 void dataCenter::appendMaters(Materiel m)
@@ -186,4 +209,14 @@ void dataCenter::appendCustomer(Customer c)
 QVector<Customer> dataCenter::Customers()
 {
     return m_customers;
+}
+
+bool dataCenter::checkCustomerExist(QString name)
+{
+    for(Customer m:m_customers){
+        if (m.Name==name){
+            return true;
+        }
+    }
+    return false;
 }

@@ -13,8 +13,12 @@
 #  define SERVICESHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-const std::string  Net_Login="/userlogin";                       //用户登录
-const std::string  Net_NewOrder="/neworder";                     //新建订单
+const std::string  Net_Login="/userlogin";               //用户登录
+const std::string  Net_NewUser="/newuser";               //新建用户
+const std::string  Net_NewOrder="/neworder";             //新建订单
+const std::string  Net_NewCustomer="/newcustomer";       //新建客户
+const std::string  Net_NewMateril="/newmateriel";        //新建物料
+const std::string  Net_NewUnit="/newunit";               //新建单位
 
 
 struct Ret{
@@ -57,6 +61,7 @@ struct Order{
 struct User {
     QString UID;        //用户id
     QString Name;       //用户姓名
+    QString Department; //部门
     QString Author;     //用户权限
 };
 

@@ -1,9 +1,11 @@
-#ifndef DIALOGNEWCUSTOM_H
+﻿#ifndef DIALOGNEWCUSTOM_H
 #define DIALOGNEWCUSTOM_H
 
 #include <QDialog>
 #include <QJsonObject>
 #include "service_global.h"
+#pragma execution_character_set("utf-8")
+
 
 namespace Ui {
 class DialogNewCustom;

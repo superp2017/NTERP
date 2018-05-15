@@ -1,7 +1,9 @@
-#ifndef STOREMANAGER_H
+﻿#ifndef STOREMANAGER_H
 #define STOREMANAGER_H
 
 #include <QWidget>
+#pragma execution_character_set("utf-8")
+
 
 namespace Ui {
 class StoreManager;
