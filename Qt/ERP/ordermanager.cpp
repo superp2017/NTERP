@@ -135,7 +135,9 @@ void OrderManager::on_pushButton_mod_clicked()
 
 void OrderManager::on_pushButton_cancle_clicked()
 {
-
+    if(cur_order.OrderID==""){
+        return;
+    }
 }
 
 void OrderManager::on_pushButton_success_clicked()
