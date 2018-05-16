@@ -18,6 +18,7 @@ DialogOrderDetail::DialogOrderDetail(QWidget *parent) :
     ui->tableWidget->setHorizontalHeaderLabels(header);
     ui->tableWidget->setSortingEnabled(true);//允许列排序
     ui->tableWidget->horizontalHeader()->setStyleSheet("QHeaderView::section{background:skyblue;}"); //设置表头背景色
+     ui->pushButton_out_table->setVisible(false);
 }
 
 DialogOrderDetail::~DialogOrderDetail()
@@ -57,6 +58,7 @@ void DialogOrderDetail::init(Order order)
     }
     if(order.Current.Status==Status_Success){
         status="已出货";
+        ui->pushButton_out_table->setVisible(true);
     }
     if(order.Current.Status==Status_Cancle){
         status="已取消";
@@ -81,7 +83,6 @@ void DialogOrderDetail::init(Order order)
         item2->setTextAlignment(Qt::AlignCenter);
         item3->setTextAlignment(Qt::AlignCenter);
     }
-
 }
 
 void DialogOrderDetail::removeAllRow()
@@ -98,3 +99,8 @@ void DialogOrderDetail::on_pushButton_ok_clicked()
     this->done(123);
 }
 
+
+void DialogOrderDetail::on_pushButton_out_table_clicked()
+{
+
+}

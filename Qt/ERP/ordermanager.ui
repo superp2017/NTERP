@@ -83,18 +83,37 @@
       </size>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <spacer name="horizontalSpacer_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item>
        <widget class="QPushButton" name="pushButton_new">
         <property name="minimumSize">
          <size>
-          <width>0</width>
-          <height>45</height>
+          <width>60</width>
+          <height>60</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>150</width>
-          <height>16777215</height>
+          <width>60</width>
+          <height>60</height>
          </size>
         </property>
         <property name="font">
@@ -104,22 +123,36 @@
          </font>
         </property>
         <property name="text">
-         <string>新增</string>
+         <string>新增
+订单</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_mod">
         <property name="minimumSize">
          <size>
-          <width>0</width>
-          <height>45</height>
+          <width>60</width>
+          <height>60</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>150</width>
-          <height>16777215</height>
+          <width>60</width>
+          <height>60</height>
          </size>
         </property>
         <property name="font">
@@ -129,22 +162,36 @@
          </font>
         </property>
         <property name="text">
-         <string>修改</string>
+         <string>修改
+订单</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_cancle">
         <property name="minimumSize">
          <size>
-          <width>0</width>
-          <height>45</height>
+          <width>60</width>
+          <height>60</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>150</width>
-          <height>16777215</height>
+          <width>60</width>
+          <height>60</height>
          </size>
         </property>
         <property name="font">
@@ -154,22 +201,36 @@
          </font>
         </property>
         <property name="text">
-         <string>取消</string>
+         <string>取消
+订单</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_success">
         <property name="minimumSize">
          <size>
-          <width>0</width>
-          <height>45</height>
+          <width>60</width>
+          <height>60</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>150</width>
-          <height>16777215</height>
+          <width>60</width>
+          <height>60</height>
          </size>
         </property>
         <property name="font">
@@ -179,9 +240,23 @@
          </font>
         </property>
         <property name="text">
-         <string>出库</string>
+         <string>订单
+出库</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_6">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>

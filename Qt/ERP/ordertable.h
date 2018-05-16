@@ -15,7 +15,7 @@ public:
     OrderTable(QTableWidget*w=0);
     void setHeaderColModel( QHeaderView::ResizeMode mode);
     void appendOrder(Order para);
-
+    void modOrder(Order para);
 
 signals:
     void orderClick(QString orderID);

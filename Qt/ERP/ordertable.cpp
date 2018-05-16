@@ -4,7 +4,7 @@
 OrderTable::OrderTable(QTableWidget *w):
     QTableWidget(w)
 {
-    this->setColumnCount(9);
+    this->setColumnCount(10);
     this->setEditTriggers(QTableWidget::NoEditTriggers);
     this->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
     this->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
@@ -18,7 +18,7 @@ OrderTable::OrderTable(QTableWidget *w):
     //设置表头内容
     QStringList header;
     header<<tr("生产订单")<<tr("物料编码")<<tr("物料描述")\
-         <<tr("订单数量")<<tr("单位")<<tr("客户批次")<<tr("客户备注")<<tr("生产批号")<<tr("价格");
+         <<tr("订单数量")<<tr("单位")<<tr("客户批次")<<tr("客户备注")<<tr("生产批号")<<tr("价格")<<tr("状态");
     this->setHorizontalHeaderLabels(header);
 
     this->setSortingEnabled(true);//允许列排序
@@ -37,6 +37,18 @@ void OrderTable::appendOrder(Order para)
     setRowData(para,row);
 }
 
+void OrderTable::modOrder(Order para)
+{
+    int count = this->rowCount();
+    for(int i;i<count;++i){
+        QTableWidgetItem *item0 =  this->item(i,0);
+        if(item0!=NULL&&item0->text()==para.OrderID){
+            setRowData(para,i);
+            break;
+        }
+    }
+}
+
 
 
 //设置表头模式
@@ -49,64 +61,80 @@ void OrderTable::setHeaderColModel(QHeaderView::ResizeMode mode)
 void OrderTable::setRowData(Order para,int row)
 {
 
-    QTableWidgetItem *item1 = this->item(row,0);
-    QTableWidgetItem *item2 = this->item(row,1);
-    QTableWidgetItem *item3 = this->item(row,2);
-    QTableWidgetItem *item4 = this->item(row,3);
-    QTableWidgetItem *item5 = this->item(row,4);
-    QTableWidgetItem *item6 = this->item(row,5);
-    QTableWidgetItem *item7 = this->item(row,6);
-    QTableWidgetItem *item8 = this->item(row,7);
-    QTableWidgetItem *item9 = this->item(row,8);
+    QTableWidgetItem *item0 = this->item(row,0);
+    QTableWidgetItem *item1 = this->item(row,1);
+    QTableWidgetItem *item2 = this->item(row,2);
+    QTableWidgetItem *item3 = this->item(row,3);
+    QTableWidgetItem *item4 = this->item(row,4);
+    QTableWidgetItem *item5 = this->item(row,5);
+    QTableWidgetItem *item6 = this->item(row,6);
+    QTableWidgetItem *item7 = this->item(row,7);
+    QTableWidgetItem *item8 = this->item(row,8);
+    QTableWidgetItem *item9 = this->item(row,9);
+    if(item0==NULL){
+        item0 = new QTableWidgetItem();
+        this->setItem(row,0,item0);
+    }
     if(item1==NULL){
         item1 = new QTableWidgetItem();
-        this->setItem(row,0,item1);
+        this->setItem(row,1,item1);
     }
     if(item2==NULL){
         item2 = new QTableWidgetItem();
-        this->setItem(row,1,item2);
+        this->setItem(row,2,item2);
     }
     if(item3==NULL){
         item3 = new QTableWidgetItem();
-        this->setItem(row,2,item3);
+        this->setItem(row,3,item3);
     }
     if(item4==NULL){
         item4 = new QTableWidgetItem();
-        this->setItem(row,3,item4);
+        this->setItem(row,4,item4);
     }
     if(item5==NULL){
         item5 = new QTableWidgetItem();
-        this->setItem(row,4,item5);
+        this->setItem(row,5,item5);
     }
     if(item6==NULL){
         item6 = new QTableWidgetItem();
-        this->setItem(row,5,item6);
+        this->setItem(row,6,item6);
     }
     if(item7==NULL){
         item7 = new QTableWidgetItem();
-        this->setItem(row,6,item7);
+        this->setItem(row,7,item7);
     }
     if(item8==NULL){
         item8 = new QTableWidgetItem();
-        this->setItem(row,7,item8);
+        this->setItem(row,8,item8);
     }
     if(item9==NULL){
         item9 = new QTableWidgetItem();
-        this->setItem(row,8,item9);
+        this->setItem(row,9,item9);
     }
 
+    item0->setText(para.OrderID);
+    item1->setText(para.MaterielID);
+    item2->setText(para.MaterielDes);
+    item3->setText(QString("%1").arg(para.OrderNum));
+    item4->setText(para.Unit);
+    item5->setText(para.CustomBatch);
+    item6->setText(para.CustomNote);
+    item7->setText(para.ProduceID);
+    item8->setText(QString("%1").arg(para.Money));
+    QString status;
+    if(para.Current.Status==Status_New){
+        status="新建";
+    }
+    if(para.Current.Status==Status_Success){
+        status="已出货";
+    }
+    if(para.Current.Status==Status_Cancle){
+        status="已取消";
+    }
 
-    item1->setText(para.OrderID);
-    item2->setText(para.MaterielID);
-    item3->setText(para.MaterielDes);
-    item4->setText(QString("%1").arg(para.OrderNum));
-    item5->setText(para.Unit);
-    item6->setText(para.CustomBatch);
-    item7->setText(para.CustomNote);
-    item8->setText(para.ProduceID);
-    item9->setText(QString("%1").arg(para.Money));
+    item9->setText(QString("%1").arg(status));
 
-
+    item0->setTextAlignment(Qt::AlignCenter);
     item1->setTextAlignment(Qt::AlignCenter);
     item2->setTextAlignment(Qt::AlignCenter);
     item3->setTextAlignment(Qt::AlignCenter);

@@ -45,6 +45,7 @@ public:
 signals:
     void showStatusMessage(QString msg,int sec);
     void sig_newPlan(Order,bool);
+    void sig_modPlan(Order,bool);
 public slots:
 
 private:

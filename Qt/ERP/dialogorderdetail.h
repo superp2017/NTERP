@@ -23,6 +23,8 @@ private slots:
     void on_pushButton_ok_clicked();
     void removeAllRow();
 
+    void on_pushButton_out_table_clicked();
+
 private:
 
     Ui::DialogOrderDetail *ui;
