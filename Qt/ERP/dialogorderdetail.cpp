@@ -48,7 +48,7 @@ void DialogOrderDetail::init(Order order)
     if(order.OrderType=="2"){
         orderType = "试样订单";
     }
-    ui->lineEdit_orderType->setText(order.OrderType);
+    ui->lineEdit_orderType->setText(orderType);
     ui->lineEdit_outTime->setText(order.SuccessTime);
     ui->lineEdit_produceID->setText(order.ProduceID);
 

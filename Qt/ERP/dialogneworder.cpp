@@ -165,8 +165,13 @@ void DialogNewOrder::on_pushButton_ok_clicked()
         return;
     }
     QJsonObject para = OrderService::toJsonObject(order);
-    boost::thread t(boost::bind(&dataCenter::newOrder,dataCenter::instance(),para));
-    t.detach();
+    if(m_isNewMode){
+        boost::thread t(boost::bind(&dataCenter::newOrder,dataCenter::instance(),para));
+        t.detach();
+    }else{
+        boost::thread t(boost::bind(&dataCenter::modOrder,dataCenter::instance(),para));
+        t.detach();
+    }
     dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
 }
 

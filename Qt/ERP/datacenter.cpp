@@ -84,6 +84,20 @@ void dataCenter::newOrder(const QJsonObject para)
 #endif
 }
 
+void dataCenter::modOrder(const QJsonObject para)
+{
+    Order order = OrderService::fromJsonObject(para);
+
+
+    for(int i=0;i<m_orders.size();++i){
+        if(m_orders[i].OrderID==order.OrderID){
+            m_orders[i] = order;
+            break;
+        }
+    }
+    emit sig_modPlan(order,true);
+}
+
 void dataCenter::showMessage(QString msg, int sec)
 {
     emit showStatusMessage(msg,sec);
