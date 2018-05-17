@@ -20,6 +20,9 @@ public:
     ///////////////////////////////////////////////////////
     void newOrder(const QJsonObject para);
     void modOrder(const QJsonObject para);
+    void cancleOrder(const QJsonObject para);
+    void finishOrder(const QJsonObject para);
+    void modOrderPrice(const QJsonObject para);
     /////////////////////////////////////////////////////
     void showMessage(QString msg,int sec=0);
     ////////////////////////////////////////////////////
@@ -44,8 +47,11 @@ public:
     bool checkCustomerExist(QString name);
 signals:
     void showStatusMessage(QString msg,int sec);
-    void sig_newPlan(Order,bool);
-    void sig_modPlan(Order,bool);
+    void sig_newOrder(Order,bool);
+    void sig_modOrder(Order,bool);
+    void sig_cancleOrder(Order,bool);
+    void sig_finishOrder(Order,bool);
+    void sig_modOrderPrice(Order,bool);
 public slots:
 
 private:

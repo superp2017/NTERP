@@ -13,10 +13,13 @@ class OrderTable : public QTableWidget
     Q_OBJECT
 public:
     OrderTable(QTableWidget*w=0);
-    void setHeaderColModel( QHeaderView::ResizeMode mode);
+
+    void initOrder(QVector<Order>list);
+    void updateOrder(QVector<Order>list);
     void appendOrder(Order para);
     void modOrder(Order para);
-
+    void removeOrder(Order para);
+    void setHeaderColModel( QHeaderView::ResizeMode mode);
 signals:
     void orderClick(QString orderID);
 

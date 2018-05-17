@@ -10,7 +10,7 @@ OrderService::OrderService()
 Order OrderService::newOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
 #if 1
-    Order order;
+    Order order = fromJsonObject(para);
     ok = true;
     return order;
 #endif
@@ -28,6 +28,110 @@ Order OrderService::newOrder(const QJsonObject para, bool &ok, QString hostname,
     }
     if(!ret.ret)
         qDebug()<<"newPlan ret is not 0";
+    ok = false;
+    return order;
+#endif
+}
+
+Order OrderService::modOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+#if 1
+    Order order = fromJsonObject(para);
+    ok = true;
+    return order;
+#endif
+#if 0
+    Order order;
+    std::string url = Net_ModOrder;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            order = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  order;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"modOrder ret is not 0";
+    ok = false;
+    return order;
+#endif
+}
+
+Order OrderService::cancleOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+#if 1
+    Order order = fromJsonObject(para);
+    ok = true;
+    return order;
+#endif
+#if 0
+    Order order;
+    std::string url = Net_CancelOrder;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            order = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  order;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"cancleOrder ret is not 0";
+    ok = false;
+    return order;
+#endif
+}
+
+Order OrderService::finishOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+#if 1
+    Order order = fromJsonObject(para);
+    ok = true;
+    return order;
+#endif
+#if 0
+    Order order;
+    std::string url = Net_SuccessOrder;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            order = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  order;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"finishOrder ret is not 0";
+    ok = false;
+    return order;
+#endif
+}
+
+Order OrderService::modOrderPrice(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+#if 1
+    Order order = fromJsonObject(para);
+    ok = true;
+    return order;
+#endif
+#if 0
+    Order order;
+    std::string url = Net_ModOrderPrice;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            order = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  order;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"modOrder ret is not 0";
     ok = false;
     return order;
 #endif

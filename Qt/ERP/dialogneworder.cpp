@@ -21,8 +21,8 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
                dataCenter::instance()->Materiels(),\
                dataCenter::instance()->Units());
 
-    connect(dataCenter::instance(),SIGNAL(sig_newPlan(Order,bool)),this,SLOT(newOrderCb(Order,bool)));
-    connect(dataCenter::instance(),SIGNAL(sig_modPlan(Order,bool)),this,SLOT(modOrderCb(Order,bool)));
+    connect(dataCenter::instance(),SIGNAL(sig_newOrder(Order,bool)),this,SLOT(newOrderCb(Order,bool)));
+    connect(dataCenter::instance(),SIGNAL(sig_modOrder(Order,bool)),this,SLOT(modOrderCb(Order,bool)));
 
     connect(ui->comboBox_customerName,SIGNAL(currentIndexChanged(QString)),this,SLOT(customChange(QString)));
     connect(ui->comboBox_MaterielID,SIGNAL(currentIndexChanged(QString)),this,SLOT(materielChange(QString)));

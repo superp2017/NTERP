@@ -18,7 +18,7 @@ OrderTable::OrderTable(QTableWidget *w):
     //设置表头内容
     QStringList header;
     header<<tr("生产订单")<<tr("物料编码")<<tr("物料描述")\
-         <<tr("订单数量")<<tr("单位")<<tr("客户批次")<<tr("客户备注")<<tr("生产批号")<<tr("价格")<<tr("状态");
+         <<tr("订单数量")<<tr("单位")<<tr("客户批次")<<tr("客户备注")<<tr("生产批号")<<tr("价格(元)")<<tr("状态");
     this->setHorizontalHeaderLabels(header);
 
     this->setSortingEnabled(true);//允许列排序
@@ -29,6 +29,27 @@ OrderTable::OrderTable(QTableWidget *w):
 }
 
 
+
+//初始化所有数据
+void OrderTable::initOrder(QVector<Order> list)
+{
+    removeAllRow();
+    for(Order o:list){
+       appendOrder(o);
+    }
+}
+
+//更新所有数据
+void OrderTable::updateOrder(QVector<Order> list)
+{
+    this->setRowCount(list.size());
+    for(int i=0;i<list.size();++i){
+      setRowData(list.at(i),i);
+    }
+}
+
+
+
 //新建
 void OrderTable::appendOrder(Order para)
 {
@@ -37,10 +58,11 @@ void OrderTable::appendOrder(Order para)
     setRowData(para,row);
 }
 
+//更新一行
 void OrderTable::modOrder(Order para)
 {
     int count = this->rowCount();
-    for(int i;i<count;++i){
+    for(int i=0;i<count;++i){
         QTableWidgetItem *item0 =  this->item(i,0);
         if(item0!=NULL&&item0->text()==para.OrderID){
             setRowData(para,i);
@@ -48,6 +70,20 @@ void OrderTable::modOrder(Order para)
         }
     }
 }
+
+//移除一行
+void OrderTable::removeOrder(Order para)
+{
+    int count = this->rowCount();
+    for(int i=0;i<count;++i){
+        QTableWidgetItem *item0 =  this->item(i,0);
+        if(item0!=NULL&&item0->text()==para.OrderID){
+            this->removeRow(i);
+            break;
+        }
+    }
+}
+
 
 
 
@@ -120,7 +156,7 @@ void OrderTable::setRowData(Order para,int row)
     item5->setText(para.CustomBatch);
     item6->setText(para.CustomNote);
     item7->setText(para.ProduceID);
-    item8->setText(QString("%1").arg(para.Money));
+    item8->setText(QString("%1").arg(para.Money/100));
     QString status;
     if(para.Current.Status==Status_New){
         status="新建";

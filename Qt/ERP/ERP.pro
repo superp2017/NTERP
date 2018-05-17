@@ -61,7 +61,8 @@ SOURCES += main.cpp\
     loadding.cpp \
     nsysconfig.cpp \
     dialognewmateriel.cpp \
-    dialognewunit.cpp
+    dialognewunit.cpp \
+    dialogmodprice.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -80,7 +81,8 @@ HEADERS  += mainwindow.h \
     loadding.h \
     nsysconfig.h \
     dialognewmateriel.h \
-    dialognewunit.h
+    dialognewunit.h \
+    dialogmodprice.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -94,7 +96,8 @@ FORMS    += mainwindow.ui \
     dialognewcustom.ui \
     loadding.ui \
     dialognewmateriel.ui \
-    dialognewunit.ui
+    dialognewunit.ui \
+    dialogmodprice.ui
 
 RESOURCES += \
     res.qrc

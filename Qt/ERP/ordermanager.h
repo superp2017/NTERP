@@ -18,7 +18,7 @@ class OrderManager : public QWidget
 public:
     explicit OrderManager(QWidget *parent = 0);
     ~OrderManager();
-
+    void updataData();
 private slots:
     void on_pushButton_new_clicked();
     void changeCol();
@@ -27,6 +27,12 @@ private slots:
     void on_pushButton_cancle_clicked();
     void on_pushButton_success_clicked();
     void clearAllSelect();
+    void cancleOrderCb(Order order,bool ok);
+    void finishOrderCb(Order order,bool ok);
+    void on_pushButton_reflash_clicked();
+
+    void on_pushButton_change_price_clicked();
+
 private:
     void clearCurOrder();
 

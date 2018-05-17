@@ -18,7 +18,7 @@ DialogOrderDetail::DialogOrderDetail(QWidget *parent) :
     ui->tableWidget->setHorizontalHeaderLabels(header);
     ui->tableWidget->setSortingEnabled(true);//允许列排序
     ui->tableWidget->horizontalHeader()->setStyleSheet("QHeaderView::section{background:skyblue;}"); //设置表头背景色
-     ui->pushButton_out_table->setVisible(false);
+    ui->pushButton_out_table->setVisible(false);
 }
 
 DialogOrderDetail::~DialogOrderDetail()
@@ -34,7 +34,7 @@ void DialogOrderDetail::init(Order order)
     ui->lineEdit_customerName->setText(order.CustomName);
     ui->lineEdit_customer_batch->setText(order.CustomBatch);
     ui->lineEdit_materID->setText(order.MaterielID);
-    ui->lineEdit_money->setText(QString("%1").arg(order.Money));
+    ui->lineEdit_money->setText(QString("%1").arg(order.Money/100));
     ui->lineEdit_orderID->setText(order.OrderID);
     ui->lineEdit_orderNum->setText(order.OrderNum+order.Unit);
 
@@ -70,8 +70,9 @@ void DialogOrderDetail::init(Order order)
 
     removeAllRow();
 
-    int row =ui->tableWidget->rowCount();
+
     for(OderFlow flow:order.Flow){
+        int row =ui->tableWidget->rowCount();
         ui->tableWidget->setRowCount(row+1);
         QTableWidgetItem *item1= new QTableWidgetItem(flow.UserName);
         QTableWidgetItem *item2= new QTableWidgetItem(flow.Action);

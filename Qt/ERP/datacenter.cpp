@@ -61,10 +61,10 @@ void dataCenter::newOrder(const QJsonObject para)
     Order order = OrderService::newOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(isOK){
         this->appendOrder(order);
-        emit sig_newPlan(order,true);
+        emit sig_newOrder(order,true);
         return;
     }
-    emit sig_newPlan(order,false);
+    emit sig_newOrder(order,false);
 #endif
 #if 1
     Order order = OrderService::fromJsonObject(para);
@@ -80,22 +80,153 @@ void dataCenter::newOrder(const QJsonObject para)
     order.Flow.push_back(flow);
 
     this->appendOrder(order);
-    emit sig_newPlan(order,true);
+    emit sig_newOrder(order,true);
 #endif
 }
 
 void dataCenter::modOrder(const QJsonObject para)
 {
+#if 0
+    bool isOK   = false;
+    Order order = OrderService::modOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK){
+        for(int i=0;i<m_orders.size();++i){
+            if(m_orders[i].OrderID==order.OrderID){
+                m_orders[i] = order;
+                break;
+            }
+        }
+        emit sig_modOrder(order,true);
+        return;
+    }
+    emit sig_modOrder(order,false);
+#endif
+#if 1
     Order order = OrderService::fromJsonObject(para);
-
-
+    OderFlow flow;
+    flow.UserName =cur_user.Name;
+    flow.Action="订单修改";
+    flow.Status = order.Current.Status;
+    flow.OpreatTime =QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    order.Current = flow;
+    order.Flow.push_back(flow);
     for(int i=0;i<m_orders.size();++i){
         if(m_orders[i].OrderID==order.OrderID){
             m_orders[i] = order;
             break;
         }
     }
-    emit sig_modPlan(order,true);
+    emit sig_modOrder(order,true);
+#endif
+}
+
+void dataCenter::cancleOrder(const QJsonObject para)
+{
+#if 0
+    bool isOK   = false;
+    Order order = OrderService::cancleOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK){
+        for(int i=0;i<m_orders.size();++i){
+            if(m_orders[i].OrderID==order.OrderID){
+                m_orders[i] = order;
+                break;
+            }
+        }
+        emit sig_cancleOrder(order,true);
+        return;
+    }
+    emit sig_cancleOrder(order,false);
+#endif
+#if 1
+    Order order = OrderService::fromJsonObject(para);
+    OderFlow flow;
+    flow.UserName =cur_user.Name;
+    flow.Action=" 取消订单";
+    flow.Status = Status_Cancle;
+    flow.OpreatTime =QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    order.Current = flow;
+    order.Flow.push_back(flow);
+    for(int i=0;i<m_orders.size();++i){
+        if(m_orders[i].OrderID==order.OrderID){
+            m_orders[i] = order;
+            break;
+        }
+    }
+    emit sig_cancleOrder(order,true);
+#endif
+}
+
+void dataCenter::finishOrder(const QJsonObject para)
+{
+#if 0
+    bool isOK   = false;
+    Order order = OrderService::finishOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK){
+        for(int i=0;i<m_orders.size();++i){
+            if(m_orders[i].OrderID==order.OrderID){
+                m_orders[i] = order;
+                break;
+            }
+        }
+        emit sig_finishOrder(order,true);
+        return;
+    }
+    emit sig_finishOrder(order,false);
+#endif
+#if 1
+    Order order = OrderService::fromJsonObject(para);
+    OderFlow flow;
+    flow.UserName =cur_user.Name;
+    flow.Action="订单出库";
+    flow.Status = Status_Success;
+    flow.OpreatTime =QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    order.Current = flow;
+    order.Flow.push_back(flow);
+    order.SuccessTime =QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    for(int i=0;i<m_orders.size();++i){
+        if(m_orders[i].OrderID==order.OrderID){
+            m_orders[i] = order;
+            break;
+        }
+    }
+    emit sig_finishOrder(order,true);
+#endif
+}
+
+void dataCenter::modOrderPrice(const QJsonObject para)
+{
+#if 0
+    bool isOK   = false;
+    Order order = OrderService::modOrderPrice(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK){
+        for(int i=0;i<m_orders.size();++i){
+            if(m_orders[i].OrderID==order.OrderID){
+                m_orders[i] = order;
+                break;
+            }
+        }
+        emit sig_modOrderPrice(order,true);
+        return;
+    }
+    emit sig_modOrderPrice(order,false);
+#endif
+#if 1
+    Order order = OrderService::fromJsonObject(para);
+    OderFlow flow;
+    flow.UserName =cur_user.Name;
+    flow.Action="订单定价";
+    flow.Status = order.Current.Status;
+    flow.OpreatTime =QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    order.Current = flow;
+    order.Flow.push_back(flow);
+    for(int i=0;i<m_orders.size();++i){
+        if(m_orders[i].OrderID==order.OrderID){
+            m_orders[i] = order;
+            break;
+        }
+    }
+    emit sig_modOrderPrice(order,true);
+#endif
 }
 
 void dataCenter::showMessage(QString msg, int sec)
