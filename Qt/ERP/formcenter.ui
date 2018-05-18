@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>843</width>
-    <height>714</height>
+    <height>728</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -62,12 +62,15 @@ border-image: url(:/icon/SignoutAFter.png);</string>
      </property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="spacing">
+        <number>14</number>
+       </property>
        <item>
         <widget class="QToolButton" name="order_btn">
          <property name="minimumSize">
           <size>
-           <width>150</width>
-           <height>150</height>
+           <width>120</width>
+           <height>120</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -93,8 +96,8 @@ border-image: url(:/icon/monitorAfter.png);</string>
         <widget class="QToolButton" name="store_btn">
          <property name="minimumSize">
           <size>
-           <width>150</width>
-           <height>150</height>
+           <width>120</width>
+           <height>120</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -120,8 +123,8 @@ border-image: url(:/icon/valverAfter.png);</string>
         <widget class="QToolButton" name="person_btn">
          <property name="minimumSize">
           <size>
-           <width>150</width>
-           <height>150</height>
+           <width>120</width>
+           <height>120</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -147,8 +150,8 @@ border-image: url(:/icon/planAfter.png);</string>
         <widget class="QToolButton" name="set_Btn">
          <property name="minimumSize">
           <size>
-           <width>150</width>
-           <height>150</height>
+           <width>120</width>
+           <height>120</height>
           </size>
          </property>
          <property name="styleSheet">

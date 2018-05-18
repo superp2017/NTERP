@@ -112,10 +112,10 @@ void DialogNewOrder::initOrder(Order order)
 
 void DialogNewOrder::clearUI()
 {
-    ui->comboBox_orderType->setCurrentIndex(-1);
+    ui->comboBox_orderType->setCurrentIndex(0);
     ui->comboBox_MaterielID->setCurrentText("");
     ui->lineEdit_MaterielDes->setText("");
-    ui->comboBox_unit->setCurrentText("");
+    ui->comboBox_unit->setCurrentIndex(0);
     ui->spinBox_num->setValue(0);
     ui->comboBox_customerName->setCurrentText("");
     ui->comboBox_CustomBatch->setCurrentText("");
