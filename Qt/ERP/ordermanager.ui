@@ -54,6 +54,25 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButton_print">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>导出</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButton_reflash">
        <property name="minimumSize">
         <size>

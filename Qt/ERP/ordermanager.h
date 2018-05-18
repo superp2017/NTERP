@@ -33,6 +33,8 @@ private slots:
 
     void on_pushButton_change_price_clicked();
 
+    void on_pushButton_print_clicked();
+
 private:
     void clearCurOrder();
 

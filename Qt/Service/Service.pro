@@ -33,7 +33,7 @@ MOC_DIR = ../../../temp/moc/ERP
 
 
 
-ROOT = "E:/workspace/Qt/SimLib/boost_1_59_0"
+ROOT = "D:/workspace/libs/boost_1_59_0"
 
 
 INCLUDEPATH += $${ROOT}/boost

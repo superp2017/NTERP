@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include "boost/thread.hpp"
 #include "dialogmodprice.h"
+#include "dialogorderprint.h"
 
 OrderManager::OrderManager(QWidget *parent) :
     QWidget(parent),
@@ -235,6 +236,24 @@ void OrderManager::on_pushButton_change_price_clicked()
 }
 
 
+void OrderManager::on_pushButton_print_clicked()
+{
+    DialogOrderPrint  print;
+    QString status;
+    if(ui->tabWidget->currentWidget()==m_tab_new){
+        status = Status_New;
+    }
+    if(ui->tabWidget->currentWidget()==m_tab_success){
+        status =Status_Success;
+    }
+    if(ui->tabWidget->currentWidget()==m_tab_all){
+        status =Status_All;
+    }
+    print.initData(status);
+    print.exec();
+}
+
+
 
 void OrderManager::cancleOrderCb(Order order, bool ok)
 {
@@ -270,6 +289,7 @@ void OrderManager::clearAllSelect()
     ui->pushButton_mod->setVisible(false);
     ui->pushButton_cancle->setVisible(false);
     ui->pushButton_success->setVisible(false);
+    ui->pushButton_change_price->setVisible(false);
     clearCurOrder();
 }
 
@@ -300,6 +320,7 @@ void OrderManager::clearCurOrder()
     cur_order.OrderNum=0;
     cur_order.Money=0;
 }
+
 
 
 
