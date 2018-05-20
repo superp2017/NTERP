@@ -17,6 +17,13 @@ public:
     explicit PersonManager(QWidget *parent = 0);
     ~PersonManager();
 
+private slots:
+    void on_pushButton_newUser_clicked();
+
+    void on_pushButton_out_clicked();
+
+    void on_pushButton_del_clicked();
+
 private:
     Ui::PersonManager *ui;
 };

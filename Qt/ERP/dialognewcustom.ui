@@ -6,13 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>323</width>
-    <height>604</height>
+    <width>390</width>
+    <height>730</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>390</width>
+    <height>730</height>
+   </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>500</width>
+    <width>550</width>
     <height>800</height>
    </size>
   </property>
@@ -20,6 +26,9 @@
    <string>新增客户</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
    <property name="bottomMargin">
     <number>15</number>
    </property>
@@ -31,11 +40,8 @@
    </property>
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
-     <property name="horizontalSpacing">
-      <number>12</number>
-     </property>
-     <property name="verticalSpacing">
-      <number>9</number>
+     <property name="spacing">
+      <number>15</number>
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
@@ -52,7 +58,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>35</height>
         </size>
        </property>
       </widget>
@@ -67,12 +73,12 @@
      <item row="1" column="1">
       <widget class="QLineEdit" name="lineEdit_logo">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>35</height>
         </size>
        </property>
       </widget>
@@ -105,7 +111,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>35</height>
         </size>
        </property>
       </widget>
@@ -125,7 +131,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>35</height>
         </size>
        </property>
       </widget>
@@ -145,7 +151,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>35</height>
         </size>
        </property>
       </widget>
@@ -165,7 +171,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>35</height>
         </size>
        </property>
       </widget>
@@ -185,7 +191,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>35</height>
         </size>
        </property>
       </widget>
@@ -205,7 +211,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>35</height>
         </size>
        </property>
       </widget>
@@ -225,7 +231,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>35</height>
         </size>
        </property>
       </widget>
@@ -242,7 +248,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>35</height>
         </size>
        </property>
       </widget>
@@ -260,12 +266,12 @@
      <item row="10" column="1">
       <widget class="QLineEdit" name="lineEdit_cart">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>35</height>
         </size>
        </property>
        <property name="readOnly">
@@ -311,7 +317,7 @@
    <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
-      <number>30</number>
+      <number>15</number>
      </property>
      <property name="leftMargin">
       <number>15</number>
@@ -319,6 +325,19 @@
      <property name="rightMargin">
       <number>15</number>
      </property>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
      <item>
       <widget class="QPushButton" name="pushButton_cancel">
        <property name="minimumSize">

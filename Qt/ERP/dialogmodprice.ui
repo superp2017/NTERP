@@ -29,7 +29,7 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>125</y>
+     <y>130</y>
      <width>75</width>
      <height>35</height>
     </rect>
@@ -47,8 +47,8 @@
   <widget class="QPushButton" name="pushButton__cancle">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>125</y>
+     <x>125</x>
+     <y>130</y>
      <width>75</width>
      <height>35</height>
     </rect>
@@ -69,7 +69,7 @@
      <x>20</x>
      <y>20</y>
      <width>281</width>
-     <height>91</height>
+     <height>101</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -100,7 +100,7 @@
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>30</height>
+        <height>35</height>
        </size>
       </property>
      </widget>
@@ -126,7 +126,7 @@
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>30</height>
+        <height>35</height>
        </size>
       </property>
      </widget>
@@ -137,7 +137,7 @@
    <property name="geometry">
     <rect>
      <x>308</x>
-     <y>80</y>
+     <y>90</y>
      <width>72</width>
      <height>15</height>
     </rect>

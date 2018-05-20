@@ -14,9 +14,11 @@ public:
     static Order finishOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static Order modOrderPrice(const QJsonObject para, bool &ok, QString hostname, QString hostport);
 
-
     static QJsonObject toJsonObject(Order order);
     static Order fromJsonObject(QJsonObject obj);
+
+    static bool exportOrders(QVector<Order> list);
+    static bool printOrders(QVector<Order> list);
 };
 
 #endif // ORDERSERVICE_H

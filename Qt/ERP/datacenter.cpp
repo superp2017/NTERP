@@ -52,6 +52,19 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)
     m_customers.append(c1);
     m_customers.append(c2);
     m_customers.append(c3);
+
+
+    m_authors.push_back("操作员");
+    m_authors.push_back("仓库");
+    m_authors.push_back("财务");
+    m_authors.push_back("管理员");
+    m_authors.push_back("超级管理员");
+
+    m_departments.push_back("生产部");
+    m_departments.push_back("仓库部");
+    m_departments.push_back("行政部");
+    m_departments.push_back("财务部");
+    m_departments.push_back("销售部");
 }
 
 void dataCenter::newOrder(const QJsonObject para)
@@ -347,6 +360,16 @@ QVector<QString> dataCenter::Batchs()
 void dataCenter::appendCustomer(Customer c)
 {
     m_customers.append(c);
+}
+
+QVector<QString> dataCenter::getAuthors() const
+{
+    return m_authors;
+}
+
+QVector<QString> dataCenter::getDepartments() const
+{
+    return m_departments;
 }
 
 QVector<Customer> dataCenter::Customers()

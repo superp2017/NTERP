@@ -5,6 +5,8 @@
 #include <QCheckBox>
 #include "orderservice.h"
 
+#pragma execution_character_set("utf-8")
+
 
 namespace Ui {
 class DialogOrderPrint;
@@ -21,7 +23,7 @@ public:
     void initData(QString status);
 
 private slots:
-    void on_pushButton_expot_clicked();
+    void on_pushButton_export_clicked();
 
     void on_pushButton_print_clicked();
 
@@ -33,12 +35,21 @@ private slots:
 
     void cellChecked(int row,int col);
 
+
+signals:
+    void showMessage(QString msg,int delay);
+
+
+
 private:
     void removeAllRow();
     void setRowData(Order order, int row);
     void updateData(QString status);
-    Ui::DialogOrderPrint *ui;
+    QVector<Order> getSelectOrders();
+
+
 private:
+    Ui::DialogOrderPrint *ui;
     QVector<Order>    m_orders;
     QVector<QCheckBox*> m_checkboxs;
     QString cur_Status;

@@ -31,6 +31,8 @@ FormCenter::FormCenter(QWidget *parent) :
     ui->stackedWidget->addWidget(&m_store);
     ui->stackedWidget->addWidget(&m_person);
     ui->stackedWidget->addWidget(&m_sys);
+
+    ui->order_btn->setChecked(true);
 }
 
 FormCenter::~FormCenter()

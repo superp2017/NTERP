@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>365</width>
-    <height>514</height>
+    <width>363</width>
+    <height>538</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
     <number>20</number>
    </property>
    <property name="verticalSpacing">
-    <number>13</number>
+    <number>11</number>
    </property>
    <item row="9" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -64,7 +64,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_expot">
+      <widget class="QPushButton" name="pushButton_export">
        <property name="minimumSize">
         <size>
          <width>0</width>

@@ -1,5 +1,7 @@
-#include "personmanager.h"
+﻿#include "personmanager.h"
 #include "ui_personmanager.h"
+#include "dialognewuser.h"
+
 
 PersonManager::PersonManager(QWidget *parent) :
     QWidget(parent),
@@ -11,4 +13,20 @@ PersonManager::PersonManager(QWidget *parent) :
 PersonManager::~PersonManager()
 {
     delete ui;
+}
+
+void PersonManager::on_pushButton_newUser_clicked()
+{
+    DialogNewUser newuser;
+    newuser.exec();
+}
+
+void PersonManager::on_pushButton_out_clicked()
+{
+
+}
+
+void PersonManager::on_pushButton_del_clicked()
+{
+
 }

@@ -62,7 +62,8 @@ SOURCES += main.cpp\
     dialognewmateriel.cpp \
     dialognewunit.cpp \
     dialogmodprice.cpp \
-    dialogorderprint.cpp
+    dialogorderprint.cpp \
+    dialognewuser.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -83,7 +84,8 @@ HEADERS  += mainwindow.h \
     dialognewmateriel.h \
     dialognewunit.h \
     dialogmodprice.h \
-    dialogorderprint.h
+    dialogorderprint.h \
+    dialognewuser.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -99,7 +101,8 @@ FORMS    += mainwindow.ui \
     dialognewmateriel.ui \
     dialognewunit.ui \
     dialogmodprice.ui \
-    dialogorderprint.ui
+    dialogorderprint.ui \
+    dialognewuser.ui
 
 RESOURCES += \
     res.qrc

@@ -19,5 +19,8 @@ const QString ItemNewCustom("新增客户...");
 const QString ItemNewUnit("新增单位...");
 const QString ItemNewMater("新增物料...");
 
+const QString ItemNewDepartment("部门设置...");
+const QString ItemNewAuthor("权限设置...");
+
 
 #endif // STRUCT_H

@@ -324,3 +324,14 @@ Order OrderService::fromJsonObject(QJsonObject obj)
     return order;
 }
 
+bool OrderService::printOrders(QVector<Order> list)
+{
+
+    return true;
+}
+
+bool OrderService::exportOrders(QVector<Order> list)
+{
+return true;
+}
+

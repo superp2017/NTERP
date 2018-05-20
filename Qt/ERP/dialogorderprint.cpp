@@ -2,6 +2,8 @@
 #include "ui_dialogorderprint.h"
 #include "datacenter.h"
 #include "global.h"
+#include "orderservice.h"
+#include <QMessageBox>
 
 DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
     QDialog(parent),
@@ -24,10 +26,10 @@ DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
     ui->tableWidget->setHorizontalHeaderLabels(header);
     ui->tableWidget->setSortingEnabled(true);//允许列排序
 
-    ui->comboBox_order_status->addItem("新建",Status_New);
-    ui->comboBox_order_status->addItem("全部",Status_All);
-    ui->comboBox_order_status->addItem("完成",Status_Success);
-    ui->comboBox_order_status->addItem("取消",Status_Cancle);
+    ui->comboBox_order_status->addItem("新建订单",Status_New);
+    ui->comboBox_order_status->addItem("全部订单",Status_All);
+    ui->comboBox_order_status->addItem("完成订单",Status_Success);
+    ui->comboBox_order_status->addItem("取消订单",Status_Cancle);
 
     connect(ui->checkBox_check_all,SIGNAL(clicked(bool)),this,SLOT(selectAll(bool)));
     connect(ui->comboBox_order_status,SIGNAL(currentIndexChanged(int)),this,SLOT(orderStatusChange(int)));
@@ -73,15 +75,51 @@ void DialogOrderPrint::updateData(QString status)
     }
 }
 
-
-
-void DialogOrderPrint::on_pushButton_expot_clicked()
+QVector<Order> DialogOrderPrint::getSelectOrders()
 {
-    done(456);
+    QVector<Order> ls;
+    if(m_orders.size()!=m_checkboxs.size()){
+        emit showMessage("操作失败!",3000);
+        return ls;
+    }
+
+    for(int i =0;i<m_checkboxs.size();++i){
+        if(m_checkboxs.at(i)->isChecked()){
+            ls.push_back(m_orders.at(i));
+        }
+    }
+    return ls;
 }
+
+void DialogOrderPrint::on_pushButton_export_clicked()
+{
+    QVector<Order> ls= getSelectOrders();
+    if(ls.size()==0){
+        QMessageBox::information(this,"提示","请至少选择一个订单...");
+        return;
+    }
+    if(OrderService::exportOrders(ls)){
+        dataCenter::instance()->showMessage("导出成功!",3000);
+    }else{
+        dataCenter::instance()->showMessage("导出失败!",3000);
+    }
+    done(123);
+}
+
+
 
 void DialogOrderPrint::on_pushButton_print_clicked()
 {
+    QVector<Order> ls= getSelectOrders();
+    if(ls.size()==0){
+        QMessageBox::information(this,"提示","请至少选择一个订单...");
+        return;
+    }
+    if(OrderService::printOrders(ls)){
+        dataCenter::instance()->showMessage("打印成功!",3000);
+    }else{
+        dataCenter::instance()->showMessage("打印失败!",3000);
+    }
     done(123);
 }
 
@@ -139,4 +177,6 @@ void DialogOrderPrint::setRowData(Order order, int row)
         item0->setTextAlignment(Qt::AlignCenter);
     }
 }
+
+
 

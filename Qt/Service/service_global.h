@@ -65,10 +65,21 @@ struct Order{
 };
 
 struct User {
-    QString UID;        //用户id
-    QString Name;       //用户姓名
-    QString Department; //部门
-    QString Author;     //用户权限
+    QString UID;            //用户id
+    QString Name;           //用户姓名
+    QString Sex;            //性别
+    QString Cell;           //联系方式
+    QString CID;            //公司ID
+    QString CommpanyName;   //公司名称
+    QString Department;     //部门
+    QString Author;         //用户权限
+    QString InTime;         //入职时间
+    QString OutTime;        //离职时间
+    QString CreatTime;      //创建时间
+    QString Status;         //状态
+    int     Age;            //年龄
+    int    Salary;          //薪水
+
 };
 
 

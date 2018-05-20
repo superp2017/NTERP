@@ -37,5 +37,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::showMessage(QString msg, int delay)
 {
+    statusBar()->setStyleSheet("color:white");
     ui->statusBar->showMessage(msg,delay);
 }

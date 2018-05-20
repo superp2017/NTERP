@@ -45,6 +45,10 @@ public:
     ////////////////////////////////////////////////////
     QVector<Customer>Customers();
     bool checkCustomerExist(QString name);
+    ////////////////////////////////////////////////////
+    QVector<QString> getDepartments() const;
+    QVector<QString> getAuthors() const;
+
 signals:
     void showStatusMessage(QString msg,int sec);
     void sig_newOrder(Order,bool);
@@ -67,7 +71,9 @@ private:
     QVector<QString>   m_batch;      //所有用户批次
     QVector<Materiel>  m_maters;     //所有物料
     QVector<Customer>  m_customers;  //所有客户
-    Loadding           m_load;
+    QVector<QString>   m_authors;    //所有的权限
+    QVector<QString>   m_departments;//所有的部门
+    Loadding           m_load;       //加载动画
     nSysConfig         m_Config;   //保存系统配置
 };
 
