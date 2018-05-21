@@ -152,7 +152,7 @@ User UserService::fromJsonObject(QJsonObject obj)
     if(obj.contains("Salary")){
         QJsonValue value = obj.value("Salary");
         if(value.isDouble())
-            user.Department = value.toInt();
+            user.Salary = value.toInt();
     }
     if(obj.contains("Age")){
         QJsonValue value = obj.value("Age");
@@ -161,13 +161,13 @@ User UserService::fromJsonObject(QJsonObject obj)
     }
     if(obj.contains("Account")){
         QJsonValue value = obj.value("Account");
-        if(value.isDouble())
-            user.Account = value.toInt();
+        if(value.isString())
+            user.Account = value.toString();
     }
     if(obj.contains("Code")){
         QJsonValue value = obj.value("Code");
-        if(value.isDouble())
-            user.Code = value.toInt();
+        if(value.isString())
+            user.Code = value.toString();
     }
     return user;
 }

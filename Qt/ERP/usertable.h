@@ -4,6 +4,8 @@
 #include <QTableWidget>
 #include <QHeaderView>
 #include "userservice.h"
+#include <QMouseEvent>
+
 #pragma execution_character_set("utf-8")
 
 class userTable : public QTableWidget
@@ -20,10 +22,13 @@ public:
     void setHeaderColModel( QHeaderView::ResizeMode mode);
 signals:
     void userClick(QString UID);
+protected:
+  //  void mousePressEvent(QMouseEvent *e);
 
 private slots:
     void doubleclickRow(int row,int ool);
     void clickRow(int row,int col);
+
 private:
     void removeAllRow();
     void setRowData(User para, int row);

@@ -96,17 +96,42 @@ void dataCenter::newUser(const QJsonObject para)
 
 void dataCenter::modUser(const QJsonObject para)
 {
-
+    User user = UserService::fromJsonObject(para);
+    for(int i=0;i<m_employee.size();++i){
+        if(m_employee[i].UID==user.UID){
+            m_employee[i] = user;
+            break;
+        }
+    }
+    emit sig_modEmployee(user,true);
 }
 
 void dataCenter::outUser(const QJsonObject para)
 {
-
+    User user = UserService::fromJsonObject(para);
+    user.Status ="1";
+    user.OutTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    for(int i=0;i<m_employee.size();++i){
+        if(m_employee[i].UID==user.UID){
+            m_employee[i] = user;
+            break;
+        }
+    }
+    emit sig_outEmployee(user,true);
 }
 
 void dataCenter::delUser(const QJsonObject para)
 {
-
+    User user = UserService::fromJsonObject(para);
+    user.Status ="-1";
+    user.OutTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    for(int i=0;i<m_employee.size();++i){
+        if(m_employee[i].UID==user.UID){
+            m_employee.remove(i);
+            break;
+        }
+    }
+    emit sig_delEmployee(user,true);
 }
 
 void dataCenter::newOrder(const QJsonObject para)
@@ -412,6 +437,19 @@ QVector<QString> dataCenter::getAuthors() const
 QVector<User> dataCenter::employees() const
 {
     return m_employee;
+}
+
+User dataCenter::getUser(QString UID, bool &ok)
+{
+    User a;
+    for(User o: m_employee) {
+        if (o.UID.compare(UID)==0){
+            ok = true;
+            return o;
+        }
+    }
+    ok = false;
+    return a;
 }
 
 void dataCenter::appendEmployee(User user)

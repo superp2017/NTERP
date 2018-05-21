@@ -32,8 +32,11 @@ OrderManager::OrderManager(QWidget *parent) :
 
     connect(m_tab_new,SIGNAL(orderClick(QString)),this,SLOT(orderClick(QString)));
     connect(m_tab_all,SIGNAL(orderClick(QString)),this,SLOT(orderClick(QString)));
+    connect(m_tab_success,SIGNAL(orderClick(QString)),this,SLOT(orderClick(QString)));
+
 
     connect(ui->tabWidget,SIGNAL(currentChanged(int)),this,SLOT(clearAllSelect()));
+
     connect(dataCenter::instance(),SIGNAL(sig_cancleOrder(Order,bool)),this,SLOT(cancleOrderCb(Order,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_finishOrder(Order,bool)),this,SLOT(finishOrderCb(Order,bool)));
 

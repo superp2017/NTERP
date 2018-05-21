@@ -64,7 +64,7 @@ void userTable::removeUser(User para)
     int count = this->rowCount();
     for(int i=0;i<count;++i){
         QTableWidgetItem *item0 =  this->item(i,0);
-        if(item0!=NULL&&item0->text()==para.Name){
+        if(item0!=NULL&&item0->text()==para.UID){
             this->removeRow(i);
             break;
         }
@@ -75,6 +75,18 @@ void userTable::setHeaderColModel(QHeaderView::ResizeMode mode)
 {
     this->horizontalHeader()->setSectionResizeMode(mode);
 }
+
+#include <QDebug>
+
+//void userTable::mousePressEvent(QMouseEvent *e)
+//{
+//    e->accept();
+//    QTableWidget::mousePressEvent(e);
+//    return;
+////    if(e->buttons()==Qt::RightButton){
+
+////    }
+//}
 
 void userTable::doubleclickRow(int row, int ool)
 {
@@ -181,3 +193,5 @@ void userTable::setRowData(User para, int row)
     item8->setTextAlignment(Qt::AlignCenter);
     item9->setTextAlignment(Qt::AlignCenter);
 }
+
+

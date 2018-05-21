@@ -60,6 +60,10 @@ void DialogNewUser::initUI(User user)
     ui->spinBox_age->setValue(user.Age);
     ui->spinBox_salary->setValue(user.Salary);
     ui->dateEdit_in_time->setDate(QDate::fromString(user.InTime,"yyyy-MM-dd"));
+    ui->lineEdit_accout->setText(user.Account);
+    ui->lineEdit_code->setText(user.Code);
+
+    m_curUser = user;
 }
 
 void DialogNewUser::clearUI()
@@ -72,6 +76,8 @@ void DialogNewUser::clearUI()
     ui->spinBox_age->setValue(18);
     ui->spinBox_salary->setValue(0);
     ui->dateEdit_in_time->setDate(QDate::currentDate());
+    ui->lineEdit_accout->setText("");
+    ui->lineEdit_code->setText("");
 }
 
 void DialogNewUser::setModel(bool isNew)
@@ -81,15 +87,18 @@ void DialogNewUser::setModel(bool isNew)
 
 void DialogNewUser::on_pushButton_creat_clicked()
 {
-    User user;
+    User user = m_curUser;
+
     user.Name        = ui->lineEdit_name->text().trimmed();
     user.Cell        = ui->lineEdit_cell->text().trimmed();
-    user.Department  = ui->comboBox_department->currentText();
-    user.Author      = ui->comboBox_author->currentText();
-    user.Sex         = ui->comboBox_sex->currentData().toString();
-    user.InTime      = ui->dateEdit_in_time->text();
+    user.Department  = ui->comboBox_department->currentText().trimmed();
+    user.Author      = ui->comboBox_author->currentText().trimmed();
+    user.Sex         = ui->comboBox_sex->currentData().toString().trimmed();
+    user.InTime      = ui->dateEdit_in_time->text().trimmed();
     user.Salary      = ui->spinBox_salary->value();
     user.Age         = ui->spinBox_age->value();
+    user.Account     = ui->lineEdit_accout->text().trimmed();
+    user.Code        = ui->lineEdit_code->text().trimmed();
     if(user.Name.isEmpty()){
         QToolTip::showText(ui->lineEdit_name->mapToGlobal(QPoint(100, 0)), "姓名不能为空!");
         return ;
@@ -98,6 +107,17 @@ void DialogNewUser::on_pushButton_creat_clicked()
         QToolTip::showText(ui->lineEdit_cell->mapToGlobal(QPoint(100, 0)), "手机号填写不正确!");
         return ;
     }
+
+    if(user.Account.trimmed().isEmpty()){
+        QToolTip::showText(ui->lineEdit_accout->mapToGlobal(QPoint(100, 0)), "账号不能为空!");
+        return ;
+    }
+
+    if(user.Code.trimmed().isEmpty()){
+        QToolTip::showText(ui->lineEdit_code->mapToGlobal(QPoint(100, 0)), "密码不能为空!");
+        return ;
+    }
+
     QJsonObject para = UserService::toJsonObject(user);
     if(m_isNewMode){
         boost::thread t(boost::bind(&dataCenter::newUser,dataCenter::instance(),para));

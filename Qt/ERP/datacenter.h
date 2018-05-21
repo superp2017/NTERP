@@ -57,6 +57,7 @@ public:
     QVector<QString> getAuthors() const;
     ////////////////////////////////////////////////////
     QVector<User> employees()const;
+    User getUser(QString UID,bool &ok);
 signals:
     void showStatusMessage(QString msg,int sec);
     ///////////////////////////////////////////
@@ -68,6 +69,8 @@ signals:
     //////////////////////////////////////
     void sig_newEmployee(User,bool);
     void sig_modEmployee(User,bool);
+    void sig_outEmployee(User,bool);
+    void sig_delEmployee(User,bool);
 public slots:
 
 private:
