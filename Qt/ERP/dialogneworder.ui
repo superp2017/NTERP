@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>360</width>
-    <height>666</height>
+    <width>330</width>
+    <height>640</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>360</width>
-    <height>666</height>
+    <width>330</width>
+    <height>640</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -48,6 +48,12 @@
      </property>
      <item row="1" column="0">
       <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
        <property name="text">
         <string>客户名称</string>
        </property>
@@ -71,6 +77,12 @@
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
        <property name="text">
         <string>客户批次</string>
        </property>
@@ -94,6 +106,12 @@
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_3">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
        <property name="text">
         <string>物料编码</string>
        </property>
@@ -117,6 +135,12 @@
      </item>
      <item row="4" column="0">
       <widget class="QLabel" name="label_5">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
        <property name="text">
         <string>物料描述</string>
        </property>
@@ -137,6 +161,12 @@
      </item>
      <item row="5" column="0">
       <widget class="QLabel" name="label_4">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
        <property name="text">
         <string>订单数量</string>
        </property>
@@ -163,6 +193,12 @@
      </item>
      <item row="6" column="0">
       <widget class="QLabel" name="label_6">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
        <property name="text">
         <string>计量单位</string>
        </property>
@@ -219,6 +255,12 @@
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_8">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
        <property name="text">
         <string>订单类型</string>
        </property>

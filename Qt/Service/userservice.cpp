@@ -69,14 +69,17 @@ QJsonObject UserService::toJsonObject(User user)
     obj.insert("Name",user.Name);
     obj.insert("Sex",user.Sex);
     obj.insert("Cell",user.Cell);
+    obj.insert("CID",user.CID);
     obj.insert("CommpanyName",user.CommpanyName);
     obj.insert("Department",user.Department);
     obj.insert("Author",user.Author);
     obj.insert("InTime",user.InTime);
     obj.insert("OutTime",user.OutTime);
     obj.insert("CreatTime",user.CreatTime);
-    obj.insert("Salary",user.Salary);
     obj.insert("Status",user.Status);
+    obj.insert("Account",user.Account);
+    obj.insert("Code",user.Code);
+    obj.insert("Salary",user.Salary);
     obj.insert("Age",user.Age);
 
     return obj;
@@ -105,6 +108,11 @@ User UserService::fromJsonObject(QJsonObject obj)
         QJsonValue value = obj.value("Cell");
         if(value.isString())
             user.Cell = value.toString();
+    }
+    if(obj.contains("CID")){
+        QJsonValue value = obj.value("CID");
+        if(value.isString())
+            user.CID = value.toString();
     }
     if(obj.contains("CommpanyName")){
         QJsonValue value = obj.value("CommpanyName");
@@ -150,6 +158,16 @@ User UserService::fromJsonObject(QJsonObject obj)
         QJsonValue value = obj.value("Age");
         if(value.isDouble())
             user.Age = value.toInt();
+    }
+    if(obj.contains("Account")){
+        QJsonValue value = obj.value("Account");
+        if(value.isDouble())
+            user.Account = value.toInt();
+    }
+    if(obj.contains("Code")){
+        QJsonValue value = obj.value("Code");
+        if(value.isDouble())
+            user.Code = value.toInt();
     }
     return user;
 }

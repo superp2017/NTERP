@@ -70,7 +70,7 @@
     </layout>
    </item>
    <item row="1" column="0">
-    <widget class="QTableWidget" name="tableWidget"/>
+    <widget class="userTable" name="tableWidget"/>
    </item>
    <item row="2" column="0">
     <widget class="QWidget" name="widget" native="true">
@@ -225,6 +225,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>userTable</class>
+   <extends>QTableWidget</extends>
+   <header>usertable.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

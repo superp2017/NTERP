@@ -77,6 +77,8 @@ struct User {
     QString OutTime;        //离职时间
     QString CreatTime;      //创建时间
     QString Status;         //状态
+    QString Account;        //账号
+    QString Code;           //密码
     int     Age;            //年龄
     int    Salary;          //薪水
 

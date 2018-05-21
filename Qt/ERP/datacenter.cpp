@@ -2,6 +2,7 @@
 #include  "orderservice.h"
 #include <QDebug>
 #include <QDateTime>
+#include "userservice.h"
 
 
 dataCenter::dataCenter(QObject *parent) : QObject(parent)
@@ -9,6 +10,8 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)
     cur_user.UID="1234";
     cur_user.Author = "admin";
     cur_user.Name = "admin";
+    cur_user.CID = "CID001";
+    cur_user.CommpanyName="南通公司";
 
     m_units.append("EA");
     m_units.append("KG");
@@ -65,6 +68,45 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)
     m_departments.push_back("行政部");
     m_departments.push_back("财务部");
     m_departments.push_back("销售部");
+}
+
+void dataCenter::newUser(const QJsonObject para)
+{
+#if 0
+    bool isOK   = false;
+    User user = UserService::newUser(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK){
+        this->appendEmployee(user);
+        emit sig_newEmployee(user,true);
+        return;
+    }
+    emit sig_newEmployee(user,false);
+#endif
+#if 1
+    User user = UserService::fromJsonObject(para);
+    user.UID = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
+    user.CreatTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    user.CID = cur_user.CID;
+    user.CommpanyName = cur_user.CommpanyName;
+    user.Status = "0";
+    this->appendEmployee(user);
+    emit sig_newEmployee(user,true);
+#endif
+}
+
+void dataCenter::modUser(const QJsonObject para)
+{
+
+}
+
+void dataCenter::outUser(const QJsonObject para)
+{
+
+}
+
+void dataCenter::delUser(const QJsonObject para)
+{
+
 }
 
 void dataCenter::newOrder(const QJsonObject para)
@@ -365,6 +407,16 @@ void dataCenter::appendCustomer(Customer c)
 QVector<QString> dataCenter::getAuthors() const
 {
     return m_authors;
+}
+
+QVector<User> dataCenter::employees() const
+{
+    return m_employee;
+}
+
+void dataCenter::appendEmployee(User user)
+{
+    m_employee.append(user);
 }
 
 QVector<QString> dataCenter::getDepartments() const

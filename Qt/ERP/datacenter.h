@@ -18,11 +18,18 @@ public:
         return u;
     }
     ///////////////////////////////////////////////////////
+    void newUser(const QJsonObject para);
+    void modUser(const QJsonObject para);
+    void outUser(const QJsonObject para);
+    void delUser(const QJsonObject para);
+    ///////////////////////////////////////////////////////
     void newOrder(const QJsonObject para);
     void modOrder(const QJsonObject para);
     void cancleOrder(const QJsonObject para);
     void finishOrder(const QJsonObject para);
     void modOrderPrice(const QJsonObject para);
+    /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////
     /////////////////////////////////////////////////////
     void showMessage(QString msg,int sec=0);
     ////////////////////////////////////////////////////
@@ -48,24 +55,31 @@ public:
     ////////////////////////////////////////////////////
     QVector<QString> getDepartments() const;
     QVector<QString> getAuthors() const;
-
+    ////////////////////////////////////////////////////
+    QVector<User> employees()const;
 signals:
     void showStatusMessage(QString msg,int sec);
+    ///////////////////////////////////////////
     void sig_newOrder(Order,bool);
     void sig_modOrder(Order,bool);
     void sig_cancleOrder(Order,bool);
     void sig_finishOrder(Order,bool);
     void sig_modOrderPrice(Order,bool);
+    //////////////////////////////////////
+    void sig_newEmployee(User,bool);
+    void sig_modEmployee(User,bool);
 public slots:
 
 private:
+    void appendEmployee(User user);
     void appendOrder(Order order);
     void appendUnit(QString u);
     void appendMaters(Materiel m);
     void appendBatch(QString b);
     void appendCustomer(Customer c);
 private:
-    User  cur_user;
+    User               cur_user;     //当前登录的账号
+    QVector<User>      m_employee;   //所有的员工
     QVector<Order>     m_orders;     //所有订单
     QVector<QString>   m_units;      //所有计量单位
     QVector<QString>   m_batch;      //所有用户批次

@@ -129,6 +129,7 @@ void OrderManager::on_pushButton_new_clicked()
         neworer = new DialogNewOrder();
     }
     neworer->clearUI();
+    neworer->setModel(true);
     if(neworer->exec()==123){
         Order order = neworer->getCurorder();
         m_tab_new->appendOrder(order);

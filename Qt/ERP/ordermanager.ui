@@ -64,24 +64,6 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_print">
-       <property name="minimumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
        <property name="text">
         <string>导出</string>
        </property>
@@ -89,24 +71,6 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_reflash">
-       <property name="minimumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
        <property name="text">
         <string>刷新</string>
        </property>
@@ -121,6 +85,9 @@
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(218, 218, 218);</string>
+     </property>
+     <property name="tabPosition">
+      <enum>QTabWidget::South</enum>
      </property>
      <property name="currentIndex">
       <number>-1</number>

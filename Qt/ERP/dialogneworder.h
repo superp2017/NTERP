@@ -23,9 +23,8 @@ public:
     ~DialogNewOrder();
     void  initOrder(Order order);
     void  setModel(bool isNew);
-    Order getCurorder() const;
     void  clearUI();
-
+    Order getCurorder() const;
 private slots:
     void on_pushButton_ok_clicked();
     void on_pushButton_cancel_clicked();

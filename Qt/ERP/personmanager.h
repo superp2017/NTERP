@@ -2,6 +2,10 @@
 #define PERSONMANAGER_H
 
 #include <QWidget>
+#include "dialognewuser.h"
+#include <QHeaderView>
+
+
 #pragma execution_character_set("utf-8")
 
 
@@ -26,6 +30,8 @@ private slots:
 
 private:
     Ui::PersonManager *ui;
+    DialogNewUser *newuser;
+    QHeaderView::ResizeMode tab_mode;
 };
 
 #endif // PERSONMANAGER_H
