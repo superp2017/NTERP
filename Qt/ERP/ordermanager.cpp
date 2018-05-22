@@ -41,12 +41,27 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_finishOrder(Order,bool)),this,SLOT(finishOrderCb(Order,bool)));
 
 
-    ui->radioButton_ave->setChecked(true);
+    connect(m_tab_new,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
+    connect(m_tab_new,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
+    connect(m_tab_new,SIGNAL(cancleOrder()),this,SLOT(on_pushButton_cancle_clicked()));
+    connect(m_tab_new,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
-    ui->pushButton_mod->setVisible(false);
-    ui->pushButton_cancle->setVisible(false);
-    ui->pushButton_success->setVisible(false);
-    ui->pushButton_change_price->setVisible(false);
+    connect(m_tab_all,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
+    connect(m_tab_all,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
+    connect(m_tab_all,SIGNAL(cancleOrder()),this,SLOT(on_pushButton_cancle_clicked()));
+    connect(m_tab_all,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
+
+    connect(m_tab_success,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
+    connect(m_tab_success,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
+    connect(m_tab_success,SIGNAL(cancleOrder()),this,SLOT(on_pushButton_cancle_clicked()));
+    connect(m_tab_success,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
+
+
+    ui->radioButton_ave->setChecked(true);
+    ui->pushButton_mod->setEnabled(false);
+    ui->pushButton_cancle->setEnabled(false);
+    ui->pushButton_success->setEnabled(false);
+    ui->pushButton_change_price->setEnabled(false);
 
     updataData();
 }
@@ -74,36 +89,36 @@ void OrderManager::orderClick(QString orderID)
 
     if(ui->tabWidget->currentWidget()==m_tab_all){
         if(cur_order.Current.Status == Status_New){
-            ui->pushButton_mod->setVisible(true);
-            ui->pushButton_cancle->setVisible(true);
-            ui->pushButton_success->setVisible(true);
-            ui->pushButton_change_price->setVisible(true);
+            ui->pushButton_mod->setEnabled(true);
+            ui->pushButton_cancle->setEnabled(true);
+            ui->pushButton_success->setEnabled(true);
+            ui->pushButton_change_price->setEnabled(true);
         }
         if(cur_order.Current.Status == Status_Success){
-            ui->pushButton_mod->setVisible(false);
-            ui->pushButton_cancle->setVisible(false);
-            ui->pushButton_success->setVisible(false);
-            ui->pushButton_change_price->setVisible(false);
+            ui->pushButton_mod->setEnabled(false);
+            ui->pushButton_cancle->setEnabled(false);
+            ui->pushButton_success->setEnabled(false);
+            ui->pushButton_change_price->setEnabled(false);
         }
         if(cur_order.Current.Status == Status_Cancle){
-            ui->pushButton_mod->setVisible(false);
-            ui->pushButton_cancle->setVisible(false);
-            ui->pushButton_success->setVisible(false);
-            ui->pushButton_change_price->setVisible(false);
+            ui->pushButton_mod->setEnabled(false);
+            ui->pushButton_cancle->setEnabled(false);
+            ui->pushButton_success->setEnabled(false);
+            ui->pushButton_change_price->setEnabled(false);
         }
     }
 
     if(ui->tabWidget->currentWidget()==m_tab_new){
-        ui->pushButton_mod->setVisible(true);
-        ui->pushButton_cancle->setVisible(true);
-        ui->pushButton_success->setVisible(true);
-        ui->pushButton_change_price->setVisible(true);
+        ui->pushButton_mod->setEnabled(true);
+        ui->pushButton_cancle->setEnabled(true);
+        ui->pushButton_success->setEnabled(true);
+        ui->pushButton_change_price->setEnabled(true);
     }
     if(ui->tabWidget->currentWidget()==m_tab_success){
-        ui->pushButton_mod->setVisible(false);
-        ui->pushButton_cancle->setVisible(false);
-        ui->pushButton_success->setVisible(false);
-        ui->pushButton_change_price->setVisible(false);
+        ui->pushButton_mod->setEnabled(false);
+        ui->pushButton_cancle->setEnabled(false);
+        ui->pushButton_success->setEnabled(false);
+        ui->pushButton_change_price->setEnabled(false);
     }
 
 }
@@ -166,7 +181,7 @@ void OrderManager::on_pushButton_cancle_clicked()
     }
 
     QMessageBox msgBox;
-
+    msgBox.setWindowTitle("提示");
     msgBox.setText("您即将取消订单"+cur_order.OrderID);
     msgBox.setInformativeText("是否继续操作?");
     msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
@@ -196,6 +211,7 @@ void OrderManager::on_pushButton_success_clicked()
         return;
     }
     QMessageBox msgBox;
+    msgBox.setWindowTitle("提示");
     msgBox.setText("您准备完成订单"+cur_order.OrderID);
     msgBox.setInformativeText("是否继续操作?");
     msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
@@ -284,16 +300,21 @@ void OrderManager::finishOrderCb(Order order, bool ok)
     }
 }
 
+void OrderManager::mousePressEvent(QMouseEvent *e)
+{
+    e->ignore();
+}
+
 
 void OrderManager::clearAllSelect()
 {
     m_tab_all->clearSelection();
     m_tab_new->clearSelection();
     m_tab_success->clearSelection();
-    ui->pushButton_mod->setVisible(false);
-    ui->pushButton_cancle->setVisible(false);
-    ui->pushButton_success->setVisible(false);
-    ui->pushButton_change_price->setVisible(false);
+    ui->pushButton_mod->setEnabled(false);
+    ui->pushButton_cancle->setEnabled(false);
+    ui->pushButton_success->setEnabled(false);
+    ui->pushButton_change_price->setEnabled(false);
     clearCurOrder();
 }
 

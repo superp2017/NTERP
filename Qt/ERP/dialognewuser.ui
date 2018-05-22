@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>660</height>
+    <width>280</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>300</width>
-    <height>570</height>
+    <width>280</width>
+    <height>580</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -41,7 +41,7 @@
       <number>35</number>
      </property>
      <property name="verticalSpacing">
-      <number>25</number>
+      <number>17</number>
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">

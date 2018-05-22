@@ -25,7 +25,26 @@ OrderTable::OrderTable(QTableWidget *w):
 
     order_detail = NULL;
     connect(this,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(doubleclickRow(int,int)));
-    connect(this,SIGNAL(cellClicked(int,int)),this,SLOT(clickRow(int,int)));
+
+    connect(this,SIGNAL(cellPressed(int,int)),this,SLOT(clickRow(int,int)));
+
+
+
+    m_menu = new QMenu();
+
+    m_new      = m_menu->addAction("新建");
+    m_mod      = m_menu->addAction("修改");
+    m_cancle   = m_menu->addAction("取消");
+    m_out      = m_menu->addAction("出库");
+    m_mod_price= m_menu->addAction("定价");
+    m_menu->addAction("放弃");
+
+    connect(m_new,SIGNAL(triggered(bool)),this,SIGNAL(newOrder()));
+    connect(m_mod,SIGNAL(triggered(bool)),this,SIGNAL(modOrder()));
+    connect(m_cancle,SIGNAL(triggered(bool)),this,SIGNAL(cancleOrder()));
+    connect(m_out,SIGNAL(triggered(bool)),this,SIGNAL(outOrder()));
+    connect(m_mod_price,SIGNAL(triggered(bool)),this,SIGNAL(modPrice()));
+
 }
 
 
@@ -35,7 +54,7 @@ void OrderTable::initOrder(QVector<Order> list)
 {
     removeAllRow();
     for(Order o:list){
-       appendOrder(o);
+        appendOrder(o);
     }
 }
 
@@ -44,7 +63,7 @@ void OrderTable::updateOrder(QVector<Order> list)
 {
     this->setRowCount(list.size());
     for(int i=0;i<list.size();++i){
-      setRowData(list.at(i),i);
+        setRowData(list.at(i),i);
     }
 }
 
@@ -180,6 +199,58 @@ void OrderTable::setRowData(Order para,int row)
     item7->setTextAlignment(Qt::AlignCenter);
     item8->setTextAlignment(Qt::AlignCenter);
     item9->setTextAlignment(Qt::AlignCenter);
+}
+
+
+void OrderTable::mousePressEvent(QMouseEvent *e)
+{
+    QTableWidget::mousePressEvent(e);
+    e->accept();
+    if(e->buttons()==Qt::RightButton){
+        int count =this->rowCount();
+        if(count>0){
+            if(e->pos().y()<=this->rowHeight(0)*count)  {
+                if(this->selectedRanges().size()>0){
+                    int row = this->selectedRanges().at(0).topRow();
+                    if(row<0){
+                        return;
+                    }
+                    QTableWidgetItem* item = this->item(row,0);
+                    if(item==NULL)
+                        return;
+                    bool exist =false;
+                    Order cur_order = dataCenter::instance()->getOrder(item->text(),exist);
+                    if(!exist){
+                        return;
+                    }
+
+                    if(cur_order.Current.Status==Status_New){
+                        m_new->setEnabled(true);
+                        m_mod->setEnabled(true);
+                        m_cancle->setEnabled(true);
+                        m_out->setEnabled(true);
+                        m_mod_price->setEnabled(true);
+                    }
+                    if(cur_order.Current.Status==Status_Cancle){
+                        m_new->setEnabled(true);
+                        m_mod->setEnabled(false);
+                        m_cancle->setEnabled(false);
+                        m_out->setEnabled(false);
+                        m_mod_price->setEnabled(false);
+                    }
+                    if(cur_order.Current.Status==Status_Success){
+                        m_new->setEnabled(true);
+                        m_mod->setEnabled(false);
+                        m_cancle->setEnabled(false);
+                        m_out->setEnabled(false);
+                        m_mod_price->setEnabled(false);
+                    }
+                    m_menu->exec(e->globalPos());
+                }
+            }
+        }
+    }
+
 }
 
 

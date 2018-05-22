@@ -4,9 +4,11 @@
 #include <QWidget>
 #include <QHeaderView>
 #include "ordertable.h"
-#pragma execution_character_set("utf-8")
+#include <QMouseEvent>
 
 #include "dialogneworder.h"
+#pragma execution_character_set("utf-8")
+
 namespace Ui {
 class OrderManager;
 }
@@ -21,23 +23,23 @@ public:
     void updataData();
 private slots:
     void on_pushButton_new_clicked();
-    void changeCol();
-    void orderClick(QString orderID);
     void on_pushButton_mod_clicked();
     void on_pushButton_cancle_clicked();
     void on_pushButton_success_clicked();
+    void on_pushButton_reflash_clicked();
+    void on_pushButton_change_price_clicked();
+    void on_pushButton_print_clicked();
+
+    void changeCol();
+    void orderClick(QString orderID);
     void clearAllSelect();
     void cancleOrderCb(Order order,bool ok);
     void finishOrderCb(Order order,bool ok);
-    void on_pushButton_reflash_clicked();
-
-    void on_pushButton_change_price_clicked();
-
-    void on_pushButton_print_clicked();
+protected:
+    void mousePressEvent(QMouseEvent *e);
 
 private:
     void clearCurOrder();
-
 
 private:
     Ui::OrderManager *ui;

@@ -171,3 +171,13 @@ User UserService::fromJsonObject(QJsonObject obj)
     }
     return user;
 }
+
+bool UserService::exportUser(QVector<User> list)
+{
+    return true;
+}
+
+bool UserService::printUser(QVector<User> list)
+{
+    return true;
+}

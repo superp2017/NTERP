@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>330</width>
-    <height>640</height>
+    <width>280</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>330</width>
-    <height>640</height>
+    <width>280</width>
+    <height>600</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -32,7 +32,7 @@
       <number>25</number>
      </property>
      <property name="verticalSpacing">
-      <number>25</number>
+      <number>17</number>
      </property>
      <property name="leftMargin">
       <number>15</number>
@@ -46,6 +46,32 @@
      <property name="bottomMargin">
       <number>15</number>
      </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>订单类型</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="comboBox_orderType">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label">
        <property name="minimumSize">
@@ -149,16 +175,6 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
-      <widget class="QLineEdit" name="lineEdit_MaterielDes">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>35</height>
-        </size>
-       </property>
-      </widget>
-     </item>
      <item row="5" column="0">
       <widget class="QLabel" name="label_4">
        <property name="minimumSize">
@@ -253,31 +269,8 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_8">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>35</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>订单类型</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="comboBox_orderType">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>35</height>
-        </size>
-       </property>
-      </widget>
+     <item row="4" column="1">
+      <widget class="QTextEdit" name="lineEdit_MaterielDes"/>
      </item>
     </layout>
    </item>

@@ -1,4 +1,6 @@
 ﻿#include "usertable.h"
+#include <QDebug>
+#include "datacenter.h"
 
 userTable::userTable(QWidget *w):QTableWidget(w)
 {
@@ -20,8 +22,21 @@ userTable::userTable(QWidget *w):QTableWidget(w)
 
     this->setSortingEnabled(true);//允许列排序
 
-    connect(this,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(doubleclickRow(int,int)));
-    connect(this,SIGNAL(cellClicked(int,int)),this,SLOT(clickRow(int,int)));
+    connect(this,SIGNAL(cellPressed(int,int)),this,SLOT(clickRow(int,int)));
+
+    m_menu = new QMenu();
+
+    m_new      = m_menu->addAction("新增");
+    m_mod      = m_menu->addAction("修改");
+    m_out      = m_menu->addAction("离职");
+    m_del      = m_menu->addAction("删除");
+    m_menu->addAction("放弃");
+
+    connect(m_new,SIGNAL(triggered(bool)),this,SIGNAL(newUser()));
+    connect(m_mod,SIGNAL(triggered(bool)),this,SIGNAL(modUser()));
+    connect(m_out,SIGNAL(triggered(bool)),this,SIGNAL(outUser()));
+    connect(m_del,SIGNAL(triggered(bool)),this,SIGNAL(delUser()));
+
 }
 
 void userTable::initUser(QVector<User> list)
@@ -76,22 +91,58 @@ void userTable::setHeaderColModel(QHeaderView::ResizeMode mode)
     this->horizontalHeader()->setSectionResizeMode(mode);
 }
 
-#include <QDebug>
 
-//void userTable::mousePressEvent(QMouseEvent *e)
-//{
-//    e->accept();
-//    QTableWidget::mousePressEvent(e);
-//    return;
-////    if(e->buttons()==Qt::RightButton){
-
-////    }
-//}
-
-void userTable::doubleclickRow(int row, int ool)
+void userTable::mousePressEvent(QMouseEvent *e)
 {
+    QTableWidget::mousePressEvent(e);
+    e->accept();
+
+    if(e->buttons()==Qt::RightButton){
+        int count =this->rowCount();
+        if(count>0){
+            if(e->pos().y()<=this->rowHeight(0)*count)  {
+                if(this->selectedRanges().size()>0){
+
+
+                    int row = this->selectedRanges().at(0).topRow();
+                    if(row<0){
+                        return;
+                    }
+                    QTableWidgetItem* item = this->item(row,0);
+                    if(item==NULL)
+                        return;
+                    bool exist =false;
+                    User user = dataCenter::instance()->getUser(item->text(),exist);
+                    if(!exist){
+                        return;
+                    }
+                    if(user.Status=="-1"){
+                        m_new->setEnabled(false);
+                        m_mod->setEnabled(false);
+                        m_out->setEnabled(false);
+                        m_del->setEnabled(false);
+                    }
+                    if(user.Status=="0"){
+                        m_new->setEnabled(true);
+                        m_mod->setEnabled(true);
+                        m_out->setEnabled(true);
+                        m_del->setEnabled(true);
+                    }
+                    if(user.Status=="1"){
+                        m_new->setEnabled(true);
+                        m_mod->setEnabled(false);
+                        m_out->setEnabled(false);
+                        m_del->setEnabled(true);
+                    }
+                    m_menu->exec(e->globalPos());
+                }
+            }
+        }
+    }
 
 }
+
+
 
 void userTable::clickRow(int row, int col)
 {

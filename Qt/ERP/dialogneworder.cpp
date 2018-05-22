@@ -155,7 +155,7 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     }
     order.OrderType = ui->comboBox_orderType->currentData().toString();
     order.MaterielID = ui->comboBox_MaterielID->currentText();
-    order.MaterielDes = ui->lineEdit_MaterielDes->text();
+    order.MaterielDes = ui->lineEdit_MaterielDes->toPlainText();
     order.Unit = ui->comboBox_unit->currentText();
     order.CustomBatch = ui->comboBox_CustomBatch->currentText();
     order.CustomNote = ui->textEdit_custom_note->toPlainText();

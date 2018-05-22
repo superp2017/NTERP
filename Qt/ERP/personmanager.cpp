@@ -2,7 +2,9 @@
 #include "ui_personmanager.h"
 #include "datacenter.h"
 #include <QMessageBox>
+#include "dialoguserprint.h"
 #include "boost/thread.hpp"
+#include <QDebug>
 
 PersonManager::PersonManager(QWidget *parent) :
     QWidget(parent),
@@ -16,19 +18,42 @@ PersonManager::PersonManager(QWidget *parent) :
     connect(ui->radioButton_connent,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_manue,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->tableWidget,SIGNAL(userClick(QString)),this,SLOT(userClick(QString)));
+
     connect(dataCenter::instance(),SIGNAL(sig_outEmployee(User,bool)),this,SLOT(outUserCb(User,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_delEmployee(User,bool)),this,SLOT(delUserCb(User,bool)));
 
-    ui->pushButton_mod->setVisible(false);
-    ui->pushButton_out->setVisible(false);
-    ui->pushButton_del->setVisible(false);
+    connect(ui->tableWidget,SIGNAL(newUser()),this,SLOT(on_pushButton_newUser_clicked()));
+    connect(ui->tableWidget,SIGNAL(modUser()),this,SLOT(on_pushButton_mod_clicked()));
+    connect(ui->tableWidget,SIGNAL(outUser()),this,SLOT(on_pushButton_out_clicked()));
+    connect(ui->tableWidget,SIGNAL(delUser()),this,SLOT(on_pushButton_del_clicked()));
 
+
+    ui->pushButton_mod->setEnabled(false);
+    ui->pushButton_out->setEnabled(false);
+    ui->pushButton_del->setEnabled(false);
+    updateData();
 }
 
 PersonManager::~PersonManager()
 {
     delete ui;
 }
+
+
+void PersonManager::updateData()
+{
+    ui->tableWidget->initUser(dataCenter::instance()->employees());
+}
+
+void PersonManager::clearAllSelect()
+{
+    ui->tableWidget->clearSelection();
+    ui->pushButton_mod->setEnabled(false);
+    ui->pushButton_out->setEnabled(false);
+    ui->pushButton_del->setEnabled(false);
+    curUser.UID=="";
+}
+
 
 void PersonManager::on_pushButton_newUser_clicked()
 {
@@ -65,19 +90,19 @@ void PersonManager::userClick(QString UID)
     bool ok =false;
     curUser = dataCenter::instance()->getUser(UID,ok);
     if(curUser.Status=="-1"){
-        ui->pushButton_mod->setVisible(false);
-        ui->pushButton_out->setVisible(false);
-        ui->pushButton_del->setVisible(false);
+        ui->pushButton_mod->setEnabled(false);
+        ui->pushButton_out->setEnabled(false);
+        ui->pushButton_del->setEnabled(false);
     }
     if(curUser.Status=="0"){
-        ui->pushButton_mod->setVisible(true);
-        ui->pushButton_out->setVisible(true);
-        ui->pushButton_del->setVisible(true);
+        ui->pushButton_mod->setEnabled(true);
+        ui->pushButton_out->setEnabled(true);
+        ui->pushButton_del->setEnabled(true);
     }
     if(curUser.Status=="1"){
-        ui->pushButton_mod->setVisible(false);
-        ui->pushButton_out->setVisible(false);
-        ui->pushButton_del->setVisible(true);
+        ui->pushButton_mod->setEnabled(false);
+        ui->pushButton_out->setEnabled(false);
+        ui->pushButton_del->setEnabled(true);
     }
 
 }
@@ -88,8 +113,8 @@ void PersonManager::on_pushButton_out_clicked()
     if(curUser.UID==""){
         return;
     }
-
     QMessageBox msgBox;
+    msgBox.setWindowTitle("提示");
     msgBox.setText("您将离职员工:"+curUser.Name);
     msgBox.setInformativeText("是否继续操作?");
     msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
@@ -117,6 +142,7 @@ void PersonManager::on_pushButton_del_clicked()
     }
 
     QMessageBox msgBox;
+    msgBox.setWindowTitle("提示");
     msgBox.setText("您将永久删除员工:"+curUser.Name+"的全部信息,");
     msgBox.setInformativeText("是否继续操作?");
     msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
@@ -148,13 +174,16 @@ void PersonManager::outUserCb(User user, bool ok)
         dataCenter::instance()->showMessage("离职失败!",4000);
     }
 }
-#include <QDebug>
+
 void PersonManager::delUserCb(User user, bool ok)
 {
     dataCenter::instance()->hideLoadding();
     if(ok){
         dataCenter::instance()->showMessage("删除成功!",4000);
         ui->tableWidget->removeUser(user);
+        ui->pushButton_mod->setEnabled(false);
+        ui->pushButton_out->setEnabled(false);
+        ui->pushButton_del->setEnabled(false);
     }else{
         dataCenter::instance()->showMessage("删除失败!",4000);
     }
@@ -173,6 +202,20 @@ void PersonManager::changeCol()
     if(ui->radioButton_manue->isChecked()){
         ui->tableWidget->setHeaderColModel(QHeaderView::Interactive);
     }
+    clearAllSelect();
 }
 
+
+
+void PersonManager::on_pushButton_export_clicked()
+{
+    DialogUserPrint  print;
+    print.initData(dataCenter::instance()->employees());
+    print.exec();
+}
+
+void PersonManager::on_pushButton_reflash_clicked()
+{
+    updateData();
+}
 

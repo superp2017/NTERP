@@ -83,6 +83,13 @@ void DialogNewUser::clearUI()
 void DialogNewUser::setModel(bool isNew)
 {
     m_isNewMode = isNew;
+    if(m_isNewMode){
+        ui->pushButton_creat->setText("新增");
+        this->setWindowTitle("新增员工");
+    }else{
+        this->setWindowTitle("员工修改");
+        ui->pushButton_creat->setText("修改");
+    }
 }
 
 void DialogNewUser::on_pushButton_creat_clicked()

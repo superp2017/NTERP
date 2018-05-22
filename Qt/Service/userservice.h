@@ -14,6 +14,9 @@ public:
     static QJsonObject toJsonObject(User user);
     static User fromJsonObject(QJsonObject obj);
 
+    static bool exportUser(QVector<User> list);
+    static bool printUser(QVector<User> list);
+
 };
 
 #endif // USERSERVICE_H

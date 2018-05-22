@@ -36,11 +36,6 @@ private slots:
     void cellChecked(int row,int col);
 
 
-signals:
-    void showMessage(QString msg,int delay);
-
-
-
 private:
     void removeAllRow();
     void setRowData(Order order, int row);

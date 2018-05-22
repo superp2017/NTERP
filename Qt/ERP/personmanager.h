@@ -23,22 +23,21 @@ public:
 
 private slots:
     void on_pushButton_newUser_clicked();
-
+    void on_pushButton_mod_clicked();
     void on_pushButton_out_clicked();
-
     void on_pushButton_del_clicked();
+    void on_pushButton_export_clicked();
+    void on_pushButton_reflash_clicked();
 
     void changeCol();
-
-    void on_pushButton_mod_clicked();
-
     void userClick(QString UID);
-
     void outUserCb(User user, bool ok);
-
     void delUserCb(User user,bool ok);
 
 private:
+    void updateData();
+    void clearAllSelect();
+
     Ui::PersonManager *ui;
     DialogNewUser *newuser;
     QHeaderView::ResizeMode tab_mode;

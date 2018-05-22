@@ -10,7 +10,7 @@ DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
     ui(new Ui::DialogOrderPrint)
 {
     ui->setupUi(this);
-    ui->tableWidget->setColumnCount(2);
+    ui->tableWidget->setColumnCount(1);
     ui->tableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
     //    ui->tableWidget->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
     //    ui->tableWidget->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
@@ -22,7 +22,7 @@ DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
 
     //设置表头内容
     QStringList header;
-    header<<tr("选择")<<tr("生产订单");
+    header<<tr("生产订单");
     ui->tableWidget->setHorizontalHeaderLabels(header);
     ui->tableWidget->setSortingEnabled(true);//允许列排序
 
@@ -79,7 +79,7 @@ QVector<Order> DialogOrderPrint::getSelectOrders()
 {
     QVector<Order> ls;
     if(m_orders.size()!=m_checkboxs.size()){
-        emit showMessage("操作失败!",3000);
+        dataCenter::instance()->showMessage("操作失败!",3000);
         return ls;
     }
 
@@ -130,6 +130,7 @@ void DialogOrderPrint::on_pushButton_cancle_clicked()
 
 void DialogOrderPrint::orderStatusChange(int index)
 {
+    index =0;
     QString status = ui->comboBox_order_status->currentData().toString();
     if(status==cur_Status) return;
     initData(status);
@@ -147,6 +148,7 @@ void DialogOrderPrint::selectAll(bool checked)
 
 void DialogOrderPrint::cellChecked(int row, int col)
 {
+    col=0;
     if(row<m_checkboxs.size()&&row>=0){
         m_checkboxs.at(row)->setChecked(!m_checkboxs.at(row)->isChecked());
     }
@@ -162,20 +164,9 @@ void DialogOrderPrint::removeAllRow()
 
 void DialogOrderPrint::setRowData(Order order, int row)
 {
-    QCheckBox *check1 = new QCheckBox();
+    QCheckBox *check1 = new QCheckBox(order.OrderID);
     ui->tableWidget->setCellWidget(row,0,check1);
     m_checkboxs.push_back(check1);
-    QTableWidgetItem *item1 = ui->tableWidget->item(row,1);
-    if(item1==NULL){
-        item1 = new QTableWidgetItem();
-        ui->tableWidget->setItem(row,1,item1);
-    }
-    item1->setText(order.OrderID);
-    item1->setTextAlignment(Qt::AlignCenter);
-    QTableWidgetItem *item0 = ui->tableWidget->item(row,0);
-    if(item0!=NULL){
-        item0->setTextAlignment(Qt::AlignCenter);
-    }
 }
 
 
