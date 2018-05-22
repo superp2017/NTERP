@@ -2,6 +2,8 @@
 #define ORDERSERVICE_H
 #include "service_global.h"
 #include <QJsonObject>
+#pragma execution_character_set("utf-8")
+
 
 
 class SERVICESHARED_EXPORT OrderService

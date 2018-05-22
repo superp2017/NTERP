@@ -44,16 +44,19 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(m_tab_new,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_new,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
     connect(m_tab_new,SIGNAL(cancleOrder()),this,SLOT(on_pushButton_cancle_clicked()));
+    connect(m_tab_new,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
     connect(m_tab_new,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
     connect(m_tab_all,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_all,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
     connect(m_tab_all,SIGNAL(cancleOrder()),this,SLOT(on_pushButton_cancle_clicked()));
+    connect(m_tab_all,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
     connect(m_tab_all,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
     connect(m_tab_success,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_success,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
     connect(m_tab_success,SIGNAL(cancleOrder()),this,SLOT(on_pushButton_cancle_clicked()));
+    connect(m_tab_success,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
     connect(m_tab_success,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
 
@@ -247,6 +250,7 @@ void OrderManager::on_pushButton_change_price_clicked()
         return;
     }
     DialogModPrice mod;
+    mod.setWindowTitle("定价");
     mod.initData(cur_order);
     if(mod.exec()==123){
         Order order = mod.getCurOrder();

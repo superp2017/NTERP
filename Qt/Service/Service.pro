@@ -11,6 +11,8 @@ TEMPLATE = lib
 
 DEFINES += SERVICE_LIBRARY
 
+QT       += axcontainer
+
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -32,9 +34,7 @@ OBJECTS_DIR = ../../../../temp/obj/ERPService
 MOC_DIR = ../../../temp/moc/ERPService
 
 
-
-
-ROOT = "E:/workspace/Qt/SimLib/boost_1_59_0"
+ROOT = "D:/workspace/libs/boost_1_59_0"
 
 
 INCLUDEPATH += $${ROOT}/boost
