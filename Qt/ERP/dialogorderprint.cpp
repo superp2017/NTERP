@@ -4,7 +4,8 @@
 #include "global.h"
 #include "orderservice.h"
 #include <QMessageBox>
-
+#include <QFileDialog>
+#include "boost/thread.hpp"
 
 DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
     QDialog(parent),
@@ -35,6 +36,8 @@ DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
     connect(ui->checkBox_check_all,SIGNAL(clicked(bool)),this,SLOT(selectAll(bool)));
     connect(ui->comboBox_order_status,SIGNAL(currentIndexChanged(int)),this,SLOT(orderStatusChange(int)));
     connect(ui->tableWidget,SIGNAL(cellClicked(int,int)),this,SLOT(cellChecked(int,int)));
+
+    connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
 
     cur_Status="";
     m_checkboxs.clear();
@@ -99,14 +102,34 @@ void DialogOrderPrint::on_pushButton_export_clicked()
         QMessageBox::information(this,"提示","请至少选择一个订单...");
         return;
     }
-    if(OrderService::exportOrders(ls)){
+
+    QString filepath= QFileDialog::getSaveFileName(NULL,"Save orders",".","Microsoft Office 2007 (*.xlsx)");//获取保存路径
+    if(!filepath.isEmpty()){
+        boost::thread t(boost::bind(&DialogOrderPrint::doExport,this,ls,filepath));
+        t.detach();
+        dataCenter::instance()->showLoadding("正在导出...",10000);
+    }else{
+        dataCenter::instance()->showMessage("保存路劲为空!",3000);
+    }
+}
+
+
+void DialogOrderPrint::exportCb(bool ok)
+{
+    dataCenter::instance()->hideLoadding();
+    if(ok){
+        done(123);
         dataCenter::instance()->showMessage("导出成功!",3000);
     }else{
         dataCenter::instance()->showMessage("导出失败!",3000);
     }
-    done(123);
 }
 
+void DialogOrderPrint::doExport(QVector<Order> ls,QString filepath)
+{
+    bool ok = OrderService::exportOrders(ls,filepath,true);
+    emit sig_exportCb(ok);
+}
 
 
 void DialogOrderPrint::on_pushButton_print_clicked()
@@ -154,6 +177,8 @@ void DialogOrderPrint::cellChecked(int row, int col)
         m_checkboxs.at(row)->setChecked(!m_checkboxs.at(row)->isChecked());
     }
 }
+
+
 
 void DialogOrderPrint::removeAllRow()
 {

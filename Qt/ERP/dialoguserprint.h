@@ -34,7 +34,13 @@ private slots:
 
     void setRowData(User user, int row);
     QVector<User> getSelectUsers();
+
+    void exportCb(bool ok);
+signals:
+    void sig_exportCb(bool);
 private:
+    void doExport(QVector<User> ls, QString filepath);
+
     Ui::DialogUserPrint *ui;
     QVector<User>    m_employeess;
     QVector<QCheckBox*> m_checkboxs;

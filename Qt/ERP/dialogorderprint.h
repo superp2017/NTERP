@@ -35,8 +35,12 @@ private slots:
 
     void cellChecked(int row,int col);
 
+    void exportCb(bool ok);
+signals:
+    void sig_exportCb(bool);
 
 private:
+    void doExport(QVector<Order> ls, QString filepath);
     void removeAllRow();
     void setRowData(Order order, int row);
     void updateData(QString status);

@@ -1,5 +1,10 @@
 ﻿#include "userservice.h"
 #include <QJsonObject>
+#include <QAxObject>
+#include "excelservice.h"
+#include <QFileDialog>
+#include <QDir>
+
 UserService::UserService()
 {
 
@@ -172,9 +177,25 @@ User UserService::fromJsonObject(QJsonObject obj)
     return user;
 }
 
-bool UserService::exportUser(QVector<User> list)
-{
-    return true;
+bool UserService::exportUser(QVector<User> list,QString filepath,bool isOpen)
+{  
+    QVector<QVariant> datalist;
+    datalist<<"用户编号"<<"姓名"<<"性别"<<"联系方式"<<"部门"<<"账号"<<"密码"<<"入职时间"<<"离职时间"<<"基本工资";
+
+    QVector<QVector<QVariant>> data;
+    for(int i=0;i<list.size();++i){
+        User user  = list.at(i);
+        QVector<QVariant> datalist;
+        QString sex;
+        if(user.Sex=="0")sex="男";else sex="女";
+        datalist<<"'"+user.UID<<"'"+user.Name\
+               <<"'"+sex<<user.Cell\
+              <<user.Department<<"'"+user.Account\
+             <<"'"+user.Code<<"'"+user.InTime\
+            <<user.OutTime<<user.Salary;
+        data.push_back(datalist);
+    }
+    return ExcelService::dataExport(filepath,datalist,data,isOpen);
 }
 
 bool UserService::printUser(QVector<User> list)

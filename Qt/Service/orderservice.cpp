@@ -5,6 +5,9 @@
 #include <QAxObject>
 #include <QDir>
 #include <QFileDialog>
+#include "excelservice.h"
+#include "boost/thread.hpp"
+
 OrderService::OrderService()
 {
 
@@ -333,119 +336,32 @@ bool OrderService::printOrders(QVector<Order> list)
     return true;
 }
 
-bool OrderService::exportOrders(QVector<Order> list)
+
+
+bool OrderService::exportOrders(QVector<Order> list, QString filepath, bool isOpen)
 {
-    QString filepath= QFileDialog::getSaveFileName(NULL,"Save orders",".","Microsoft Office 2007 (*.xlsx)");//获取保存路径
-    if(!filepath.isEmpty()){
+    QVector<QVariant> datalist;
+    datalist<<"生产订单"<<"物料编码"<<"物料描述"<<"订单数量"<<"单位"<<"客户批次"<<"客户备注"<<"生产批号"<<"价格(元)"<<"状态";
+    QVector<QVector<QVariant>> data;
+    for(int i=0;i<list.size();++i){
+        Order order  = list.at(i);
+        QString status;
+        if(order.Current.Status=="Status_New")
+            status="新建";
+        if(order.Current.Status=="Status_Success")
+            status="已出货";
+        if(order.Current.Status=="Status_Cancle")
+            status="已取消";
 
-        QAxObject *excel = new QAxObject();
-        excel->setControl("Excel.Application");//连接Excel控件
-        excel->dynamicCall("SetVisible (bool Visible)","false");//不显示窗体
-        excel->setProperty("DisplayAlerts", false);//不显示任何警告信息。如果为true那么在关闭是会出现类似“文件已修改，是否保存”的提示
-
-        QAxObject *workbooks = excel->querySubObject("WorkBooks");//获取工作簿集合
-        workbooks->dynamicCall("Add");//新建一个工作簿
-        QAxObject *workbook   = excel->querySubObject("ActiveWorkBook");//获取当前工作簿
-        QAxObject *worksheets = workbook->querySubObject("Sheets");//获取工作表集合
-        QAxObject *worksheet  = worksheets->querySubObject("Item(int)",1);//获取工作表集合的工作表1，即sheet1
-
-
-        QString A="A"+QString::number(1);//设置要操作的单元格，如A1
-        QString B="B"+QString::number(1);
-        QString C="C"+QString::number(1);
-        QString D="D"+QString::number(1);
-        QString E="E"+QString::number(1);
-        QString F="F"+QString::number(1);
-        QString G="G"+QString::number(1);
-        QString H="H"+QString::number(1);
-        QString I="I"+QString::number(1);
-        QString J="J"+QString::number(1);
-        QAxObject *cellA = worksheet->querySubObject("Range(QVariant, QVariant)",A);//获取单元格
-        QAxObject *cellB = worksheet->querySubObject("Range(QVariant, QVariant)",B);
-        QAxObject *cellC = worksheet->querySubObject("Range(QVariant, QVariant)",C);
-        QAxObject *cellD = worksheet->querySubObject("Range(QVariant, QVariant)",D);
-        QAxObject *cellE = worksheet->querySubObject("Range(QVariant, QVariant)",E);
-        QAxObject *cellF = worksheet->querySubObject("Range(QVariant, QVariant)",F);
-        QAxObject *cellG = worksheet->querySubObject("Range(QVariant, QVariant)",G);
-        QAxObject *cellH = worksheet->querySubObject("Range(QVariant, QVariant)",H);
-        QAxObject *cellI = worksheet->querySubObject("Range(QVariant, QVariant)",I);
-        QAxObject *cellJ = worksheet->querySubObject("Range(QVariant, QVariant)",J);
-
-        cellA->dynamicCall("SetValue(const QVariant&)",QVariant("生产订单"));//设置单元格的值
-        cellB->dynamicCall("SetValue(const QVariant&)",QVariant("物料编码"));
-        cellC->dynamicCall("SetValue(const QVariant&)",QVariant("物料描述"));
-        cellD->dynamicCall("SetValue(const QVariant&)",QVariant("订单数量"));
-        cellE->dynamicCall("SetValue(const QVariant&)",QVariant("单位"));
-        cellF->dynamicCall("SetValue(const QVariant&)",QVariant("客户批次"));
-        cellG->dynamicCall("SetValue(const QVariant&)",QVariant("客户备注"));
-        cellH->dynamicCall("SetValue(const QVariant&)",QVariant("生产批号"));
-        cellI->dynamicCall("SetValue(const QVariant&)",QVariant("价格(元)"));
-        cellJ->dynamicCall("SetValue(const QVariant&)",QVariant("状态"));
-
-
-        for(int i=0;i<list.size();++i){
-            Order order  = list.at(i);
-            int cellrow = i+2;
-
-            QString A="A"+QString::number(cellrow);//设置要操作的单元格，如A1
-            QString B="B"+QString::number(cellrow);
-            QString C="C"+QString::number(cellrow);
-            QString D="D"+QString::number(cellrow);
-            QString E="E"+QString::number(cellrow);
-            QString F="F"+QString::number(cellrow);
-            QString G="G"+QString::number(cellrow);
-            QString H="H"+QString::number(cellrow);
-            QString I="I"+QString::number(cellrow);
-            QString J="J"+QString::number(cellrow);
-            QAxObject *cellA = worksheet->querySubObject("Range(QVariant, QVariant)",A);//获取单元格
-            QAxObject *cellB = worksheet->querySubObject("Range(QVariant, QVariant)",B);
-            QAxObject *cellC = worksheet->querySubObject("Range(QVariant, QVariant)",C);
-            QAxObject *cellD = worksheet->querySubObject("Range(QVariant, QVariant)",D);
-            QAxObject *cellE = worksheet->querySubObject("Range(QVariant, QVariant)",E);
-            QAxObject *cellF = worksheet->querySubObject("Range(QVariant, QVariant)",F);
-            QAxObject *cellG = worksheet->querySubObject("Range(QVariant, QVariant)",G);
-            QAxObject *cellH = worksheet->querySubObject("Range(QVariant, QVariant)",H);
-            QAxObject *cellI = worksheet->querySubObject("Range(QVariant, QVariant)",I);
-            QAxObject *cellJ = worksheet->querySubObject("Range(QVariant, QVariant)",J);
-
-
-            cellA->dynamicCall("SetValue(const QVariant&)",QVariant("'"+order.OrderID));//设置单元格的值
-            cellB->dynamicCall("SetValue(const QVariant&)",QVariant("'"+order.MaterielID));
-            cellC->dynamicCall("SetValue(const QVariant&)",QVariant("'"+order.MaterielDes));
-            cellD->dynamicCall("SetValue(const QVariant&)",QVariant(order.OrderNum));
-            cellE->dynamicCall("SetValue(const QVariant&)",QVariant(order.Unit));
-            cellF->dynamicCall("SetValue(const QVariant&)",QVariant("'"+order.CustomBatch));
-            cellG->dynamicCall("SetValue(const QVariant&)",QVariant("'"+order.CustomNote));
-            cellH->dynamicCall("SetValue(const QVariant&)",QVariant("'"+order.ProduceID));
-            cellI->dynamicCall("SetValue(const QVariant&)",QVariant(order.Money));
-            QString status;
-            if(order.Current.Status=="Status_New"){
-                status="新建";
-            }
-            if(order.Current.Status=="Status_Success"){
-                status="已出货";
-            }
-            if(order.Current.Status=="Status_Cancle"){
-                status="已取消";
-            }
-            cellJ->dynamicCall("SetValue(const QVariant&)",QVariant(status));
-        }
-
-        QString merge_cell = QString("A1:I%1").arg(list.size()+1); // 设置A1至Z10范围内的单元格的属性
-        QAxObject *merge_range = worksheet->querySubObject("Range(const QString&)", merge_cell);
-        merge_range->setProperty("HorizontalAlignment", -4108); // 水平居中
-        merge_range->setProperty("VerticalAlignment", -4108);  // 垂直居中
-        merge_range->setProperty("NumberFormatLocal", "@");  // 设置为文本
-        merge_range->setProperty("WrapText", true);
-
-
-        workbook->dynamicCall("SaveAs(const QString&)",QDir::toNativeSeparators(filepath));//保存至filepath，注意一定要用QDir::toNativeSeparators将路径中的"/"转换为"\"，不然一定保存不了。
-        workbook->dynamicCall("Close()");//关闭工作簿
-        excel->dynamicCall("Quit()");//关闭excel
-        delete excel;
-        excel=NULL;
-        return true;
+        QVector<QVariant> datalist;
+        datalist<<"'"+order.OrderID<<"'"+order.MaterielID\
+               <<"'"+order.MaterielDes<<order.OrderNum\
+              <<order.Unit<<"'"+order.CustomBatch\
+             <<"'"+order.CustomNote<<"'"+order.ProduceID\
+            <<order.Money<<status;
+        data.push_back(datalist);
     }
-    return false;
+    return  ExcelService::dataExport(filepath,datalist,data,isOpen);
 }
+
 

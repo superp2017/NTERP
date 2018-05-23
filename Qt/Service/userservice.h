@@ -1,6 +1,8 @@
 ﻿#ifndef USERSERVICE_H
 #define USERSERVICE_H
 #include "service_global.h"
+#pragma execution_character_set("utf-8")
+
 
 
 class SERVICESHARED_EXPORT UserService
@@ -14,7 +16,7 @@ public:
     static QJsonObject toJsonObject(User user);
     static User fromJsonObject(QJsonObject obj);
 
-    static bool exportUser(QVector<User> list);
+    static bool exportUser(QVector<User> list, QString filepath, bool isOpen=false);
     static bool printUser(QVector<User> list);
 
 };

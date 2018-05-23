@@ -34,7 +34,7 @@ OBJECTS_DIR = ../../../../temp/obj/ERPService
 MOC_DIR = ../../../temp/moc/ERPService
 
 
-ROOT = "D:/workspace/libs/boost_1_59_0"
+ROOT = "E:/workspace/Qt/SimLib/boost_1_59_0"
 
 
 INCLUDEPATH += $${ROOT}/boost
@@ -53,7 +53,8 @@ SOURCES += service.cpp \
     userservice.cpp \
     orderservice.cpp \
     customerservice.cpp \
-    unitservice.cpp
+    unitservice.cpp \
+    excelservice.cpp
 
 HEADERS += service.h\
         service_global.h \
@@ -61,7 +62,8 @@ HEADERS += service.h\
     userservice.h \
     orderservice.h \
     customerservice.h \
-    unitservice.h
+    unitservice.h \
+    excelservice.h
 
 unix {
     target.path = /usr/lib

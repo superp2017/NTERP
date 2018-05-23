@@ -55,6 +55,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_export">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(229, 229, 229);</string>
+       </property>
        <property name="text">
         <string>导出</string>
        </property>
@@ -62,6 +65,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_reflash">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(229, 229, 229);</string>
+       </property>
        <property name="text">
         <string>刷新</string>
        </property>

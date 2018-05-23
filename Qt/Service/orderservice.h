@@ -5,7 +5,6 @@
 #pragma execution_character_set("utf-8")
 
 
-
 class SERVICESHARED_EXPORT OrderService
 {
 public:
@@ -19,8 +18,9 @@ public:
     static QJsonObject toJsonObject(Order order);
     static Order fromJsonObject(QJsonObject obj);
 
-    static bool exportOrders(QVector<Order> list);
+    static bool exportOrders(QVector<Order> list, QString filepath, bool isOpen=false);
     static bool printOrders(QVector<Order> list);
+private:
 };
 
 #endif // ORDERSERVICE_H
