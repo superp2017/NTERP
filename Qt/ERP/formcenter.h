@@ -20,6 +20,17 @@ public:
     explicit FormCenter(QWidget *parent = 0);
     ~FormCenter();
 
+signals:
+    void  action_new_order();
+    void  action_new_user();
+
+public slots:
+    void  action_store_manage();
+    void  action_material_manage();
+    void  action_supplier_manage();
+    void  action_customs_manage();
+    void  action_unit_manage();
+
 private slots:
     void on_order_btn_clicked();
 

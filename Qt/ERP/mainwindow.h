@@ -18,6 +18,10 @@ public:
 public slots:
     void showMessage(QString msg,int delay);
 
+private slots:
+    void aboutCommany();
+    void abountSystem();
+
 private:
     Ui::MainWindow *ui;
     FormCenter  m_center;

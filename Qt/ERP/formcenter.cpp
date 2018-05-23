@@ -2,6 +2,13 @@
 #include "ui_formcenter.h"
 #include <QMessageBox>
 #include <QDockWidget>
+#include "dialogcustommanage.h"
+#include "dialogmaterialmanage.h"
+#include "dialogsuppliermanage.h"
+#include "dialogunitmanage.h"
+#include "dialogwarehousemanage.h"
+
+
 FormCenter::FormCenter(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FormCenter)
@@ -32,12 +39,60 @@ FormCenter::FormCenter(QWidget *parent) :
     ui->stackedWidget->addWidget(&m_person);
     ui->stackedWidget->addWidget(&m_sys);
 
+    connect(this,SIGNAL(action_new_order()),&m_order,SLOT(new_order()));
+    connect(this,SIGNAL(action_new_user()),&m_person,SLOT(new_employee()));
+
     ui->order_btn->setChecked(true);
 }
 
 FormCenter::~FormCenter()
 {
     delete ui;
+}
+
+/*! 仓库管理
+ * \brief FormCenter::action_store_manage
+ */
+void FormCenter::action_store_manage()
+{
+    DialogWarehouseManage manage;
+    manage.exec();
+}
+
+/*! 物料管理
+ * \brief FormCenter::action_material_manage
+ */
+void FormCenter::action_material_manage()
+{
+    DialogMaterialManage manage;
+    manage.exec();
+}
+
+/*! 供货商管理
+ * \brief FormCenter::action_supplier_manage
+ */
+void FormCenter::action_supplier_manage()
+{
+    DialogSupplierManage manage;
+    manage.exec();
+}
+
+/*! 客户管理
+ * \brief FormCenter::action_customs_manage
+ */
+void FormCenter::action_customs_manage()
+{
+    DialogCustomManage manage;
+    manage.exec();
+}
+
+/*! 单位管理
+ * \brief FormCenter::action_unit_manage
+ */
+void FormCenter::action_unit_manage()
+{
+    DialogUnitManage manage;
+    manage.exec();
 }
 
 void FormCenter::on_order_btn_clicked()

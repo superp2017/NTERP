@@ -82,6 +82,8 @@ void OrderManager::updataData()
 }
 
 
+
+
 void OrderManager::orderClick(QString orderID)
 {
     bool exist =false;
@@ -143,8 +145,7 @@ void OrderManager::changeCol()
     m_tab_all->setHeaderColModel(tab_mode);
 }
 
-
-void OrderManager::on_pushButton_new_clicked()
+void OrderManager::new_order()
 {
     if(neworer==NULL){
         neworer = new DialogNewOrder();
@@ -156,6 +157,12 @@ void OrderManager::on_pushButton_new_clicked()
         m_tab_new->appendOrder(order);
         m_tab_all->appendOrder(order);
     }
+}
+
+
+void OrderManager::on_pushButton_new_clicked()
+{
+    new_order();
 }
 
 

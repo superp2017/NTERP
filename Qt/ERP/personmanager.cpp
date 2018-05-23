@@ -40,6 +40,7 @@ PersonManager::~PersonManager()
 }
 
 
+
 void PersonManager::updateData()
 {
     ui->tableWidget->initUser(dataCenter::instance()->employees());
@@ -55,7 +56,7 @@ void PersonManager::clearAllSelect()
 }
 
 
-void PersonManager::on_pushButton_newUser_clicked()
+void PersonManager::new_employee()
 {
     if(newuser==NULL){
         newuser = new DialogNewUser();
@@ -66,6 +67,13 @@ void PersonManager::on_pushButton_newUser_clicked()
         User user = newuser->CurUser();
         ui->tableWidget->appendUser(user);
     }
+}
+
+
+
+void PersonManager::on_pushButton_newUser_clicked()
+{
+    new_employee();
 }
 
 void PersonManager::on_pushButton_mod_clicked()

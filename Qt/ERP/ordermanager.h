@@ -21,6 +21,9 @@ public:
     explicit OrderManager(QWidget *parent = 0);
     ~OrderManager();
     void updataData();
+
+public slots:
+    void new_order();
 private slots:
     void on_pushButton_new_clicked();
     void on_pushButton_mod_clicked();

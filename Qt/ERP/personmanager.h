@@ -21,6 +21,9 @@ public:
     explicit PersonManager(QWidget *parent = 0);
     ~PersonManager();
 
+public slots:
+    void new_employee();
+
 private slots:
     void on_pushButton_newUser_clicked();
     void on_pushButton_mod_clicked();
