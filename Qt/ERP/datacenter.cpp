@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QDateTime>
 #include "userservice.h"
+#include "customerservice.h"
 
 
 dataCenter::dataCenter(QObject *parent) : QObject(parent)
@@ -25,59 +26,87 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)
     Materiel m ;
     m.MaterID = "61013567";
     m.MaterDes="IMCN/5261097/银白色锌铝涂层";
-    m.CID ="C102";
+    m.CID ="C101";
     m.CustomName = "上海某某科技公司";
     m.OrderNum = 1;
     m.Unit = "吨";
-    m.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
+    m.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
     m.Status = "0";
     m_maters.append(m);
 
     Materiel m1 ;
     m1.MaterID = "610134207";
-    m1.CID ="C103";
+    m1.CID ="C102";
     m1.MaterDes="C924/项目12法兰焊接/银白色锌铝涂层";
     m1.CustomName = "昆山某某科技公司";
     m1.OrderNum = 2;
     m1.Unit = "KG";
-    m1.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
+    m1.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
     m1.Status = "0";
     m_maters.append(m1);
 
     Materiel m2 ;
     m2.MaterID = "61013112";
-    m2.CID ="C104";
+    m2.CID ="C103";
     m2.CustomName = "昆山某某科技公司";
     m2.OrderNum = 2;
     m2.Unit = "EA";
-    m2.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
+    m2.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
     m2.Status = "1";
     m2.MaterDes="IMCN/5261097/银白色锌铝涂层";
     m_maters.append(m2);
 
     Materiel m3 ;
     m3.MaterID = "61013204";
-    m3.CID ="C105";
+    m3.CID ="C104";
     m3.CustomName = "张江某某科技公司";
     m3.CustomName = "昆山某某科技公司";
     m3.OrderNum = 12;
     m3.Unit = "EA";
-    m3.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
+    m3.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
     m3.Status = "1";
     m3.MaterDes="C407/0SEA003061/黑色锌铝涂层";
     m_maters.append(m3);
 
     Customer c1;
-    c1.CID = "C102";
+    c1.CID = "C105";
     c1.Name="上海某某科技公司";
+    c1.Addr = "祖冲之路2305弄";
+    c1.Bankbranch = "张江支行";
+    c1.BankName = "建设银行";
+    c1.BankNumber="6222100011120320130";
+    c1.ContactCell="138999999999";
+    c1.ContactName="张某某";
+    c1.Note="无";
+    c1.Tel="021-62223123";
+    c1.CertificatesNum="92323232312312312312";
 
     Customer c2;
     c2.CID = "C103";
     c2.Name="昆山某某科技公司";
+    c2.Addr = "祖冲之路2305弄";
+    c2.Bankbranch = "张江支行";
+    c2.BankName = "交通银行";
+    c2.BankNumber="6222100011120320130";
+    c2.ContactCell="1389123123999";
+    c2.ContactName="张某某";
+    c2.Note="无";
+    c2.Tel="021-62223123";
+    c2.CertificatesNum="92322312312312312312";
 
     Customer c3;
     c3.CID = "C102";
     c3.Name="南通某某科技公司";
+    c3.Addr = "祖冲之路2305弄";
+    c3.Bankbranch = "张江支行";
+    c3.BankName = "招行银行";
+    c3.BankNumber="623434341120320130";
+    c3.ContactCell="1389131231239999";
+    c3.ContactName="张某某";
+    c3.Note="无";
+    c3.Tel="021-62223123";
+    c3.CertificatesNum="92323232312312312312";
+
     m_customers.append(c1);
     m_customers.append(c2);
     m_customers.append(c3);
@@ -335,6 +364,37 @@ void dataCenter::modOrderPrice(const QJsonObject para)
 #endif
 }
 
+void dataCenter::newCustomer(const QJsonObject para)
+{
+    Customer cus =CustomerService::fromJsonObject(para);
+    appendCustomer(cus);
+    emit sig_newCustomer(cus,true);
+}
+
+void dataCenter::modCustomer(const QJsonObject para)
+{
+    Customer cus =CustomerService::fromJsonObject(para);
+    for(int i=0;i<m_customers.size();++i){
+        if(m_customers[i].CID==cus.CID){
+            m_customers[i] = cus;
+            break;
+        }
+    }
+    emit sig_modCustomer(cus,true);
+}
+
+void dataCenter::delCustomer(const QJsonObject para)
+{
+    Customer cus =CustomerService::fromJsonObject(para);
+    for(int i=0;i<m_customers.size();++i){
+        if(m_customers[i].CID==cus.CID){
+            m_customers.remove(i);
+            break;
+        }
+    }
+    emit sig_delCustomer(cus,true);
+}
+
 
 void dataCenter::showMessage(QString msg, int sec)
 {
@@ -517,4 +577,17 @@ bool dataCenter::checkCustomerExist(QString name)
         }
     }
     return false;
+}
+
+Customer dataCenter::getCustomer(QString CID, bool &ok)
+{
+    Customer a;
+    for(Customer o: m_customers) {
+        if (o.CID == CID){
+            ok = true;
+            return o;
+        }
+    }
+    ok = false;
+    return a;
 }

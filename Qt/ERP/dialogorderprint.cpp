@@ -109,7 +109,7 @@ void DialogOrderPrint::on_pushButton_export_clicked()
         t.detach();
         dataCenter::instance()->showLoadding("正在导出...",10000);
     }else{
-        dataCenter::instance()->showMessage("保存路劲为空!",3000);
+        dataCenter::instance()->showMessage("保存路径为空!",3000);
     }
 }
 

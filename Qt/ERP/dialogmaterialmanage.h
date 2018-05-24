@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QCheckBox>
-
 #include "service_global.h"
 
 

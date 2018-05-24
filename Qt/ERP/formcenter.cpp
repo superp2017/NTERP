@@ -61,6 +61,7 @@ void FormCenter::action_store_manage()
  */
 void FormCenter::action_material_manage()
 {
+    Material.closeAllStatus();
     Material.exec();
 }
 
@@ -77,7 +78,8 @@ void FormCenter::action_supplier_manage()
  */
 void FormCenter::action_customs_manage()
 {
-    Custom.showNormal();
+    Custom.closeAllStatus();
+    Custom.showMaximized();
 }
 
 /*! 单位管理

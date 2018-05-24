@@ -20,6 +20,7 @@ void registerMetaType(){
     qRegisterMetaType<QAbstractSocket::SocketError>("QAbstractSocket::SocketError");
     qRegisterMetaType<Order>("Order");
     qRegisterMetaType<User>("User");
+    qRegisterMetaType<Customer>("Customer");
 }
 
 int main(int argc, char *argv[])

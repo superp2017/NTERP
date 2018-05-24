@@ -21,6 +21,8 @@ public:
 
     Customer getCurCustom() const;
 
+    void initCustomer(Customer cus);
+    void setMode(bool isNew);
 private slots:
     void on_pushButton_ok_clicked();
 
@@ -30,9 +32,13 @@ private slots:
 
     void on_pushButton_select_logo_clicked();
 
+    void modCustomerCb(Customer c,bool ok);
+    void newCustomerCb(Customer c,bool ok);
+
 private:
     Ui::DialogNewCustom *ui;
     Customer curCustom;
+    bool m_isNewMod;
 
 };
 

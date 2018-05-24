@@ -28,6 +28,10 @@ public:
     void cancleOrder(const QJsonObject para);
     void finishOrder(const QJsonObject para);
     void modOrderPrice(const QJsonObject para);
+    /////////////////////////////////////////////////////
+    void newCustomer(const QJsonObject para);
+    void modCustomer(const QJsonObject para);
+    void delCustomer(const QJsonObject para);
 
     /////////////////////////////////////////////////////
     /////////////////////////////////////////////////////
@@ -54,6 +58,7 @@ public:
     ////////////////////////////////////////////////////
     QVector<Customer>Customers();
     bool checkCustomerExist(QString name);
+    Customer getCustomer(QString CID,bool &ok);
     ////////////////////////////////////////////////////
     QVector<QString> getDepartments() const;
     QVector<QString> getAuthors() const;
@@ -73,8 +78,10 @@ signals:
     void sig_modEmployee(User,bool);
     void sig_outEmployee(User,bool);
     void sig_delEmployee(User,bool);
-    //////////////////////////////////////
-    void sig_delMaterial(Materiel,bool);
+    ////////////////////////////////////
+    void sig_newCustomer(Customer,bool);
+    void sig_modCustomer(Customer,bool);
+    void sig_delCustomer(Customer,bool);
 public slots:
 
 private:

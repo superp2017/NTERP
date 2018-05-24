@@ -22,7 +22,7 @@ DialogMaterialManage::DialogMaterialManage(QWidget *parent) :
 
     //设置表头内容
     QStringList header;
-    header<<tr("物料编号")<<tr("物料描述")<<tr("客户名称")<<tr("订单数量")<<tr("单位")<<tr("入库时间")<<tr("状态");
+    header<<tr("物料编号")<<tr("物料描述")<<tr("客户名称")<<tr("数量")<<tr("单位")<<tr("入库时间")<<tr("状态");
     ui->tableWidget->setHorizontalHeaderLabels(header);
     ui->tableWidget->setSortingEnabled(true);//允许列排序
 
@@ -112,7 +112,7 @@ void DialogMaterialManage::on_pushButton_export_clicked()
         t.detach();
         dataCenter::instance()->showLoadding("正在导出...",10000);
     }else{
-        dataCenter::instance()->showMessage("保存路劲为空!",3000);
+        dataCenter::instance()->showMessage("保存路径为空!",3000);
     }
 }
 
@@ -138,18 +138,27 @@ void DialogMaterialManage::checkBox()
 
 
 void DialogMaterialManage::setRowData(Materiel ma, int row)
-{
-    QCheckBox *box = new QCheckBox(ma.MaterID);
-    m_boxs.push_back(box);
-    ui->tableWidget->setCellWidget(row,0,box);
-    connect(box,SIGNAL(clicked(bool)),this,SLOT(checkBox()));
+{    
+    QCheckBox *box ;
+    QWidget *w= ui->tableWidget->cellWidget(row,0);
+    if(w ==NULL){
+        box  = new QCheckBox(ma.CID);
+        m_boxs.push_back(box);
+        ui->tableWidget->setCellWidget(row,0,box);
+        connect(box,SIGNAL(clicked(bool)),this,SLOT(checkBox()));
+    }else{
+        box = reinterpret_cast<QCheckBox *>(w);
+    }
+    if(box!=NULL){
+        box->setText(ma.MaterID);
+    }
 
     QTableWidgetItem *item1 = ui->tableWidget->item(row,1);
     QTableWidgetItem *item2 = ui->tableWidget->item(row,2);
     QTableWidgetItem *item3 = ui->tableWidget->item(row,3);
-    QTableWidgetItem *item4 = ui->tableWidget->item(row,3);
-    QTableWidgetItem *item5 = ui->tableWidget->item(row,4);
-    QTableWidgetItem *item6 = ui->tableWidget->item(row,5);
+    QTableWidgetItem *item4 = ui->tableWidget->item(row,4);
+    QTableWidgetItem *item5 = ui->tableWidget->item(row,5);
+    QTableWidgetItem *item6 = ui->tableWidget->item(row,6);
     if(item1==NULL){
         item1 = new QTableWidgetItem();
         ui->tableWidget->setItem(row,1,item1);
@@ -182,6 +191,13 @@ void DialogMaterialManage::setRowData(Materiel ma, int row)
     item4->setText(ma.Unit);
     item5->setText(ma.CreatTime);
     item6->setText(status);
+
+    item1->setTextAlignment(Qt::AlignCenter);
+    item2->setTextAlignment(Qt::AlignCenter);
+    item3->setTextAlignment(Qt::AlignCenter);
+    item4->setTextAlignment(Qt::AlignCenter);
+    item5->setTextAlignment(Qt::AlignCenter);
+    item6->setTextAlignment(Qt::AlignCenter);
 
 }
 

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>768</width>
-    <height>623</height>
+    <width>999</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>物料明细</string>
+   <string>物料管理</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>739</width>
-    <height>561</height>
+    <width>878</width>
+    <height>732</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,10 +23,10 @@
    <property name="rightMargin">
     <number>15</number>
    </property>
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="M_TableWidget" name="tableWidget"/>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
       <number>11</number>
@@ -38,7 +38,7 @@
       <number>11</number>
      </property>
      <item>
-      <widget class="QPushButton" name="pushButton_del">
+      <widget class="QPushButton" name="pushButton_new">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -47,8 +47,8 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>80</width>
-         <height>16777215</height>
+         <width>16777215</width>
+         <height>80</height>
         </size>
        </property>
        <property name="text">
@@ -72,6 +72,44 @@
        </property>
        <property name="text">
         <string>修改</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_del">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>删除</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_export">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>80</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>导出</string>
        </property>
       </widget>
      </item>
@@ -108,6 +146,13 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="0" column="0">
+    <widget class="QCheckBox" name="checkBox_check_all">
+     <property name="text">
+      <string>全选</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

@@ -2,6 +2,10 @@
 #include "http.h"
 #include "orderservice.h"
 #include <QDebug>
+#include "excelservice.h"
+
+
+
 CustomerService::CustomerService()
 {
 
@@ -10,9 +14,9 @@ CustomerService::CustomerService()
 Customer CustomerService::newCustomer(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
 #if 1
-     Customer cus;
-     ok = true;
-     return cus;
+    Customer cus;
+    ok = true;
+    return cus;
 #endif
 #if 0
     Customer cus;
@@ -121,4 +125,26 @@ Customer CustomerService::fromJsonObject(QJsonObject obj)
             customer.Note = value.toString();
     }
     return customer;
+}
+
+bool CustomerService::exportCustomer(QVector<Customer> list, QString filepath,bool isOpen)
+{
+    QVector<QVariant> datalist;
+    datalist<<"客户编号"<<"客户姓名"<<"公司电话"<<"公司地址"\
+           <<"联系人"<<"联系电话"<<"开户行"<<"银行卡号"\
+          <<"支行名称" <<"税号"<<"备注";
+    QVector<QVector<QVariant>> data;
+
+    for(int i=0;i<list.size();++i){
+        Customer ma  = list.at(i);
+        QVector<QVariant> datalist;
+        datalist<<"'"+ma.CID<<ma.Name\
+               <<"'"+ma.Tel<<ma.Addr\
+              <<ma.ContactName<<"'"+ma.ContactCell\
+             <<ma.BankName<<"'"+ma.BankNumber\
+            <<ma.Bankbranch<<"'"+ma.CertificatesNum\
+           <<ma.Note;
+        data.push_back(datalist);
+    }
+    return  ExcelService::dataExport(filepath,datalist,data,isOpen);
 }
