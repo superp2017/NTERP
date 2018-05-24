@@ -2,16 +2,16 @@
 #define USERTABLE_H
 
 #include <QTableWidget>
-#include <QHeaderView>
 #include "userservice.h"
 #include <QMouseEvent>
 #include <QMenu>
 #include <QAction>
+#include "m_tablewidget.h"
 
 
 #pragma execution_character_set("utf-8")
 
-class userTable : public QTableWidget
+class userTable : public M_TableWidget
 {
     Q_OBJECT
 public:
@@ -22,7 +22,6 @@ public:
     void appendUser(User para);
     void modUser(User para);
     void removeUser(User para);
-    void setHeaderColModel( QHeaderView::ResizeMode mode);
 signals:
     void userClick(QString UID);
     void newUser();
@@ -36,7 +35,6 @@ private slots:
     void clickRow(int row,int col);
 
 private:
-    void removeAllRow();
     void setRowData(User para, int row);
 
     QMenu *m_menu;

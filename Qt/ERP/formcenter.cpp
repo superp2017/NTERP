@@ -2,11 +2,8 @@
 #include "ui_formcenter.h"
 #include <QMessageBox>
 #include <QDockWidget>
-#include "dialogcustommanage.h"
-#include "dialogmaterialmanage.h"
-#include "dialogsuppliermanage.h"
-#include "dialogunitmanage.h"
-#include "dialogwarehousemanage.h"
+
+
 
 
 FormCenter::FormCenter(QWidget *parent) :
@@ -55,8 +52,8 @@ FormCenter::~FormCenter()
  */
 void FormCenter::action_store_manage()
 {
-    DialogWarehouseManage manage;
-    manage.exec();
+
+    Warehouse.showNormal();
 }
 
 /*! 物料管理
@@ -64,8 +61,7 @@ void FormCenter::action_store_manage()
  */
 void FormCenter::action_material_manage()
 {
-    DialogMaterialManage manage;
-    manage.exec();
+    Material.exec();
 }
 
 /*! 供货商管理
@@ -73,8 +69,7 @@ void FormCenter::action_material_manage()
  */
 void FormCenter::action_supplier_manage()
 {
-    DialogSupplierManage manage;
-    manage.exec();
+    Supplier.showNormal();
 }
 
 /*! 客户管理
@@ -82,8 +77,7 @@ void FormCenter::action_supplier_manage()
  */
 void FormCenter::action_customs_manage()
 {
-    DialogCustomManage manage;
-    manage.exec();
+    Custom.showNormal();
 }
 
 /*! 单位管理
@@ -91,8 +85,7 @@ void FormCenter::action_customs_manage()
  */
 void FormCenter::action_unit_manage()
 {
-    DialogUnitManage manage;
-    manage.exec();
+    Unit.showNormal();
 }
 
 void FormCenter::on_order_btn_clicked()

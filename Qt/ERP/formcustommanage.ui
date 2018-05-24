@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DialogMaterialManage</class>
- <widget class="QDialog" name="DialogMaterialManage">
+ <class>FormCustommanage</class>
+ <widget class="QWidget" name="FormCustommanage">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>768</width>
-    <height>623</height>
+    <width>739</width>
+    <height>561</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>物料明细</string>
+   <string>客户管理</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
@@ -23,8 +23,11 @@
    <property name="rightMargin">
     <number>15</number>
    </property>
-   <item row="2" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item row="0" column="0">
+    <widget class="M_TableWidget" name="tableWidget"/>
+   </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
       <number>11</number>
      </property>
@@ -35,7 +38,7 @@
       <number>11</number>
      </property>
      <item>
-      <widget class="QPushButton" name="pushButton_export">
+      <widget class="QPushButton" name="pushButton_del">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -49,7 +52,26 @@
         </size>
        </property>
        <property name="text">
-        <string>导出</string>
+        <string>新增</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_mod">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>修改</string>
        </property>
       </widget>
      </item>
@@ -86,16 +108,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item row="1" column="0">
-    <widget class="M_TableWidget" name="tableWidget"/>
-   </item>
-   <item row="0" column="0">
-    <widget class="QCheckBox" name="checkBox_check_all">
-     <property name="text">
-      <string>全选</string>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>

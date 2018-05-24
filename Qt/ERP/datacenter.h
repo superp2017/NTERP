@@ -28,6 +28,7 @@ public:
     void cancleOrder(const QJsonObject para);
     void finishOrder(const QJsonObject para);
     void modOrderPrice(const QJsonObject para);
+
     /////////////////////////////////////////////////////
     /////////////////////////////////////////////////////
     /////////////////////////////////////////////////////
@@ -47,6 +48,7 @@ public:
     ////////////////////////////////////////////////////
     QVector<Materiel>Materiels();
     bool checkMaterielID(QString id);
+    Materiel getMateriel(QString MID,bool &ok);
     ////////////////////////////////////////////////////
     QVector<QString> Batchs();
     ////////////////////////////////////////////////////
@@ -71,6 +73,8 @@ signals:
     void sig_modEmployee(User,bool);
     void sig_outEmployee(User,bool);
     void sig_delEmployee(User,bool);
+    //////////////////////////////////////
+    void sig_delMaterial(Materiel,bool);
 public slots:
 
 private:

@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>新增物料</string>
+   <string>物料编辑</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <property name="leftMargin">

@@ -21,23 +21,49 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)
     m_batch.append("180410004");
     m_batch.append("132645004");
     m_batch.append("52516464");
+
     Materiel m ;
     m.MaterID = "61013567";
     m.MaterDes="IMCN/5261097/银白色锌铝涂层";
+    m.CID ="C102";
+    m.CustomName = "上海某某科技公司";
+    m.OrderNum = 1;
+    m.Unit = "吨";
+    m.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
+    m.Status = "0";
     m_maters.append(m);
 
     Materiel m1 ;
     m1.MaterID = "610134207";
+    m1.CID ="C103";
     m1.MaterDes="C924/项目12法兰焊接/银白色锌铝涂层";
+    m1.CustomName = "昆山某某科技公司";
+    m1.OrderNum = 2;
+    m1.Unit = "KG";
+    m1.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
+    m1.Status = "0";
     m_maters.append(m1);
 
     Materiel m2 ;
     m2.MaterID = "61013112";
+    m2.CID ="C104";
+    m2.CustomName = "昆山某某科技公司";
+    m2.OrderNum = 2;
+    m2.Unit = "EA";
+    m2.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
+    m2.Status = "1";
     m2.MaterDes="IMCN/5261097/银白色锌铝涂层";
     m_maters.append(m2);
 
     Materiel m3 ;
     m3.MaterID = "61013204";
+    m3.CID ="C105";
+    m3.CustomName = "张江某某科技公司";
+    m3.CustomName = "昆山某某科技公司";
+    m3.OrderNum = 12;
+    m3.Unit = "EA";
+    m3.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
+    m3.Status = "1";
     m3.MaterDes="C407/0SEA003061/黑色锌铝涂层";
     m_maters.append(m3);
 
@@ -309,6 +335,7 @@ void dataCenter::modOrderPrice(const QJsonObject para)
 #endif
 }
 
+
 void dataCenter::showMessage(QString msg, int sec)
 {
     emit showStatusMessage(msg,sec);
@@ -413,6 +440,20 @@ bool dataCenter::checkMaterielID(QString id)
     return false;
 }
 
+Materiel dataCenter::getMateriel(QString MID, bool &ok)
+{
+    ok = true;
+    for(Materiel m:m_maters){
+        if (m.MaterID==MID){
+            ok = true;
+            return m;
+        }
+    }
+    ok = false;
+    Materiel s;
+    return s;
+}
+
 void dataCenter::appendBatch(QString b)
 {
     m_batch.append(b);
@@ -428,6 +469,7 @@ void dataCenter::appendCustomer(Customer c)
 {
     m_customers.append(c);
 }
+
 
 QVector<QString> dataCenter::getAuthors() const
 {

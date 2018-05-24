@@ -36,6 +36,8 @@ private slots:
     QVector<User> getSelectUsers();
 
     void exportCb(bool ok);
+
+    void checkBox();
 signals:
     void sig_exportCb(bool);
 private:

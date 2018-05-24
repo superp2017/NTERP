@@ -121,6 +121,12 @@ struct Supplier{
 struct Materiel{
     QString MaterID;            //物料编号
     QString MaterDes;           //物料描述
+    QString Unit;               //单位
+    int     OrderNum;           //订单数量
+    QString CID;                //客户ID
+    QString CustomName;         //客户姓名
+    QString Status;             //状态
+    QString CreatTime;          //创建时间
 };
 
 

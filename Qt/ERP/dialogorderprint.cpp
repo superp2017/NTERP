@@ -26,7 +26,7 @@ DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
     QStringList header;
     header<<tr("生产订单");
     ui->tableWidget->setHorizontalHeaderLabels(header);
-    ui->tableWidget->setSortingEnabled(true);//允许列排序
+//    ui->tableWidget->setSortingEnabled(true);//允许列排序
 
     ui->comboBox_order_status->addItem("新建订单",Status_New);
     ui->comboBox_order_status->addItem("全部订单",Status_All);
@@ -114,6 +114,26 @@ void DialogOrderPrint::on_pushButton_export_clicked()
 }
 
 
+void DialogOrderPrint::checkBox()
+{
+    bool check = true;
+    bool check_one = false;
+    for(QCheckBox* ch:m_checkboxs){
+        check    &= ch->isChecked();
+        check_one|= ch->isChecked();
+    }
+    if(check){
+        ui->checkBox_check_all->setCheckState(Qt::Checked);
+    }else{
+        if(check_one)
+            ui->checkBox_check_all->setCheckState(Qt::PartiallyChecked);
+        else{
+            ui->checkBox_check_all->setCheckState(Qt::Unchecked);
+        }
+    }
+}
+
+
 void DialogOrderPrint::exportCb(bool ok)
 {
     dataCenter::instance()->hideLoadding();
@@ -192,6 +212,7 @@ void DialogOrderPrint::setRowData(Order order, int row)
 {
     QCheckBox *check1 = new QCheckBox(order.OrderID);
     ui->tableWidget->setCellWidget(row,0,check1);
+    connect(check1,SIGNAL(clicked(bool)),this,SLOT(checkBox()));
     m_checkboxs.push_back(check1);
 }
 

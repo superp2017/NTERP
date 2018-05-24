@@ -1,8 +1,8 @@
 ﻿#include "ordertable.h"
 #include "datacenter.h"
 
-OrderTable::OrderTable(QTableWidget *w):
-    QTableWidget(w)
+OrderTable::OrderTable(QWidget *w):
+    M_TableWidget(w)
 {
     this->setColumnCount(10);
     this->setEditTriggers(QTableWidget::NoEditTriggers);
@@ -105,12 +105,6 @@ void OrderTable::removeOrder(Order para)
 
 
 
-
-//设置表头模式
-void OrderTable::setHeaderColModel(QHeaderView::ResizeMode mode)
-{
-    this->horizontalHeader()->setSectionResizeMode(mode);
-}
 
 //设置表格一行
 void OrderTable::setRowData(Order para,int row)
@@ -254,13 +248,13 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
 }
 
 
-void OrderTable::removeAllRow()
-{
-    int count = this->rowCount();
-    for(int i=0;i<count;++i){
-        this->removeRow(0);
-    }
-}
+//void OrderTable::removeAllRow()
+//{
+//    int count = this->rowCount();
+//    for(int i=0;i<count;++i){
+//        this->removeRow(0);
+//    }
+//}
 
 void OrderTable::doubleclickRow(int row, int ool)
 {

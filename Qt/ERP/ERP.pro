@@ -36,7 +36,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
-ROOT = "D:/workspace/libs/boost_1_59_0"
+ROOT = "E:/workspace/Qt/SimLib/boost_1_59_0"
 
 
 INCLUDEPATH += $${ROOT}/boost
@@ -70,11 +70,12 @@ SOURCES += main.cpp\
     dialognewuser.cpp \
     usertable.cpp \
     dialoguserprint.cpp \
-    dialogwarehousemanage.cpp \
-    dialogmaterialmanage.cpp \
-    dialogunitmanage.cpp \
-    dialogsuppliermanage.cpp \
-    dialogcustommanage.cpp
+    formcustommanage.cpp \
+    formsuppliermanage.cpp \
+    formunitmanage.cpp \
+    formwarehousemanage.cpp \
+    m_tablewidget.cpp \
+    dialogmaterialmanage.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -99,11 +100,12 @@ HEADERS  += mainwindow.h \
     dialognewuser.h \
     usertable.h \
     dialoguserprint.h \
-    dialogwarehousemanage.h \
-    dialogmaterialmanage.h \
-    dialogunitmanage.h \
-    dialogsuppliermanage.h \
-    dialogcustommanage.h
+    formcustommanage.h \
+    formsuppliermanage.h \
+    formunitmanage.h \
+    formwarehousemanage.h \
+    m_tablewidget.h \
+    dialogmaterialmanage.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -122,11 +124,11 @@ FORMS    += mainwindow.ui \
     dialogorderprint.ui \
     dialognewuser.ui \
     dialoguserprint.ui \
-    dialogwarehousemanage.ui \
-    dialogmaterialmanage.ui \
-    dialogunitmanage.ui \
-    dialogsuppliermanage.ui \
-    dialogcustommanage.ui
+    formcustommanage.ui \
+    formsuppliermanage.ui \
+    formunitmanage.ui \
+    formwarehousemanage.ui \
+    dialogmaterialmanage.ui
 
 RESOURCES += \
     res.qrc

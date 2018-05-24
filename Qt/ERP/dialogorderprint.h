@@ -36,6 +36,8 @@ private slots:
     void cellChecked(int row,int col);
 
     void exportCb(bool ok);
+
+    void checkBox();
 signals:
     void sig_exportCb(bool);
 

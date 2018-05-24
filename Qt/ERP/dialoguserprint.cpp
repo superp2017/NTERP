@@ -23,7 +23,7 @@ DialogUserPrint::DialogUserPrint(QWidget *parent) :
     QStringList header;
     header<<tr("员工姓名");
     ui->tableWidget->setHorizontalHeaderLabels(header);
-    ui->tableWidget->setSortingEnabled(true);//允许列排序
+//    ui->tableWidget->setSortingEnabled(true);//允许列排序
 
     connect(ui->tableWidget,SIGNAL(cellClicked(int,int)),this,SLOT(cellChecked(int,int)));
     connect(ui->checkBox_check_all,SIGNAL(clicked(bool)),this,SLOT(checkAll()));
@@ -107,6 +107,28 @@ void DialogUserPrint::exportCb(bool ok)
     }
 }
 
+
+void DialogUserPrint::checkBox()
+{
+    bool check = true;
+    bool check_one = false;
+    for(QCheckBox* ch:m_checkboxs){
+        check    &= ch->isChecked();
+        check_one|= ch->isChecked();
+    }
+    if(check){
+        ui->checkBox_check_all->setCheckState(Qt::Checked);
+    }else{
+        if(check_one)
+            ui->checkBox_check_all->setCheckState(Qt::PartiallyChecked);
+        else{
+            ui->checkBox_check_all->setCheckState(Qt::Unchecked);
+        }
+    }
+}
+
+
+
 QVector<User> DialogUserPrint::getSelectUsers()
 {
     QVector<User> ls;
@@ -129,6 +151,7 @@ void DialogUserPrint::setRowData(User user, int row)
 {
     QCheckBox *check1 = new QCheckBox(user.Name);
     ui->tableWidget->setCellWidget(row,0,check1);
+    connect(check1,SIGNAL(clicked(bool)),this,SLOT(checkBox()));
     m_checkboxs.push_back(check1);
 }
 

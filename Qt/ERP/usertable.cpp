@@ -2,7 +2,7 @@
 #include <QDebug>
 #include "datacenter.h"
 
-userTable::userTable(QWidget *w):QTableWidget(w)
+userTable::userTable(QWidget *w):M_TableWidget(w)
 {
     this->setColumnCount(10);
     this->setEditTriggers(QTableWidget::NoEditTriggers);
@@ -86,10 +86,7 @@ void userTable::removeUser(User para)
     }
 }
 
-void userTable::setHeaderColModel(QHeaderView::ResizeMode mode)
-{
-    this->horizontalHeader()->setSectionResizeMode(mode);
-}
+
 
 
 void userTable::mousePressEvent(QMouseEvent *e)
@@ -156,13 +153,6 @@ void userTable::clickRow(int row, int col)
     }
 }
 
-void userTable::removeAllRow()
-{
-    int count = this->rowCount();
-    for(int i=0;i<count;++i){
-        this->removeRow(0);
-    }
-}
 
 void userTable::setRowData(User para, int row)
 {
