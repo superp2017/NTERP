@@ -37,6 +37,13 @@ Customer CustomerService::newCustomer(const QJsonObject para, bool &ok, QString 
 #endif
 }
 
+Customer CustomerService::modCustomer(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    Customer cus;
+    ok = true;
+    return cus;
+}
+
 QJsonObject CustomerService::toJsonObject(Customer customer)
 {
     QJsonObject obj;

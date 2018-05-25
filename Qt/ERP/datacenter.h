@@ -35,7 +35,10 @@ public:
     /////////////////////////////////////////////////////
     void newUnit(const QJsonObject para);
     void delUnit(const QJsonObject para);
-
+    /////////////////////////////////////////////////////
+    void newSupplier(const QJsonObject para);
+    void modSupplier(const QJsonObject para);
+    void delSupplier(const QJsonObject para);
     /////////////////////////////////////////////////////
     /////////////////////////////////////////////////////
     /////////////////////////////////////////////////////
@@ -68,6 +71,9 @@ public:
     ////////////////////////////////////////////////////
     QVector<User> employees()const;
     User getUser(QString UID,bool &ok);
+    ///////////////////////////////////////////////////
+    QVector<Supplier>Suppliers();
+    Supplier getSupplier(QString CID,bool &ok);
 signals:
     void showStatusMessage(QString msg,int sec);
     ///////////////////////////////////////////
@@ -88,6 +94,11 @@ signals:
     ////////////////////////////////////
     void sig_newUnit(QString,bool);
     void sig_delUnit(QString,bool);
+    ////////////////////////////////////
+    void sig_newSupplier(Supplier,bool);
+    void sig_modSUpplier(Supplier,bool);
+    void sig_delSUpplier(Supplier,bool);
+
 public slots:
 
 private:
@@ -97,6 +108,7 @@ private:
     void appendMaters(Materiel m);
     void appendBatch(QString b);
     void appendCustomer(Customer c);
+    void appendSupplier(Supplier c);
 private:
     User               cur_user;     //当前登录的账号
     QVector<User>      m_employee;   //所有的员工
@@ -105,6 +117,7 @@ private:
     QVector<QString>   m_batch;      //所有用户批次
     QVector<Materiel>  m_maters;     //所有物料
     QVector<Customer>  m_customers;  //所有客户
+    QVector<Supplier>  m_suppliers;  //所有供应商
     QVector<QString>   m_authors;    //所有的权限
     QVector<QString>   m_departments;//所有的部门
     Loadding           m_load;       //加载动画

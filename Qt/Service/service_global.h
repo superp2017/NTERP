@@ -104,17 +104,20 @@ struct Customer{
 
 //供应商
 struct Supplier{
-    QString SID;                    //客户编号
-    QString Name;                   //客户姓名
-    QString Icon;                   //客户logo
-    QString Addr;                   //客户地址
+    QString SID;                    //供应商编号
+    QString Name;                   //供应商姓名
+    QString Icon;                   //供应商logo
+    QString Addr;                   //供应商地址
     QString Tel;                    //联系电话
+    QString ContactName;            //联系人
+    QString ContactCell;            //联系人电话
     QString BankName;               //开户行
     QString BankNumber;             //银行卡号
     QString Bankbranch;             //银行支行
-    QString Certificates;           //客户证件（营业执照）
-    QString Note;                   //备注
-    QVector<QString> Goods;         //供应的商品列表
+    QString CertificatesNum;        //税号
+    QString Certificates;           //供应商证件（营业执照）
+    QString Note;                   //供应商备注
+    QString Goods;                  //供应的商品列表
 };
 
 //物料

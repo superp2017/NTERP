@@ -5,6 +5,7 @@
 #include "userservice.h"
 #include "customerservice.h"
 #include "unitservice.h"
+#include "supplierservice.h"
 
 dataCenter::dataCenter(QObject *parent) : QObject(parent)
 {
@@ -367,6 +368,7 @@ void dataCenter::modOrderPrice(const QJsonObject para)
 void dataCenter::newCustomer(const QJsonObject para)
 {
     Customer cus =CustomerService::fromJsonObject(para);
+    cus.CID = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
     appendCustomer(cus);
     emit sig_newCustomer(cus,true);
 }
@@ -407,6 +409,38 @@ void dataCenter::delUnit(const QJsonObject para)
     QString unit = UnitService::fromJsonObject(para);
     m_units.removeOne(unit);
     emit sig_delUnit(unit,true);
+}
+
+void dataCenter::newSupplier(const QJsonObject para)
+{
+    Supplier cus =SupplierService::fromJsonObject(para);
+    cus.SID  = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
+    appendSupplier(cus);
+    emit sig_newSupplier(cus,true);
+}
+
+void dataCenter::modSupplier(const QJsonObject para)
+{
+    Supplier cus =SupplierService::fromJsonObject(para);
+    for(int i=0;i<m_suppliers.size();++i){
+        if(m_suppliers[i].SID==cus.SID){
+            m_suppliers[i] = cus;
+            break;
+        }
+    }
+    emit sig_modSUpplier(cus,true);
+}
+
+void dataCenter::delSupplier(const QJsonObject para)
+{
+    Supplier cus =SupplierService::fromJsonObject(para);
+    for(int i=0;i<m_suppliers.size();++i){
+        if(m_suppliers[i].SID==cus.SID){
+            m_suppliers.remove(i);
+            break;
+        }
+    }
+    emit sig_delSUpplier(cus,true);
 }
 
 
@@ -544,6 +578,11 @@ void dataCenter::appendCustomer(Customer c)
     m_customers.append(c);
 }
 
+void dataCenter::appendSupplier(Supplier c)
+{
+    m_suppliers.push_back(c);
+}
+
 
 QVector<QString> dataCenter::getAuthors() const
 {
@@ -560,6 +599,24 @@ User dataCenter::getUser(QString UID, bool &ok)
     User a;
     for(User o: m_employee) {
         if (o.UID.compare(UID)==0){
+            ok = true;
+            return o;
+        }
+    }
+    ok = false;
+    return a;
+}
+
+QVector<Supplier> dataCenter::Suppliers()
+{
+    return m_suppliers;
+}
+
+Supplier dataCenter::getSupplier(QString CID, bool &ok)
+{
+    Supplier a;
+    for(Supplier o: m_suppliers) {
+        if (o.SID == CID){
             ok = true;
             return o;
         }
