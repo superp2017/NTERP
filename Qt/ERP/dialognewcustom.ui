@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>370</width>
-    <height>730</height>
+    <width>300</width>
+    <height>660</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>370</width>
-    <height>730</height>
+    <width>300</width>
+    <height>660</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>550</width>
-    <height>800</height>
+    <width>450</width>
+    <height>750</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -30,18 +30,21 @@
     <number>9</number>
    </property>
    <property name="bottomMargin">
-    <number>15</number>
+    <number>9</number>
    </property>
    <property name="horizontalSpacing">
     <number>6</number>
    </property>
    <property name="verticalSpacing">
-    <number>12</number>
+    <number>9</number>
    </property>
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
-     <property name="spacing">
-      <number>15</number>
+     <property name="horizontalSpacing">
+      <number>9</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>11</number>
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
@@ -58,7 +61,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -78,7 +81,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -111,7 +114,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -131,7 +134,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -151,7 +154,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -171,7 +174,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -191,7 +194,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -211,8 +214,11 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
@@ -231,7 +237,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -248,7 +254,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -271,7 +277,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="readOnly">
@@ -323,7 +329,7 @@
       <number>15</number>
      </property>
      <property name="rightMargin">
-      <number>15</number>
+      <number>11</number>
      </property>
      <item>
       <spacer name="horizontalSpacer">
@@ -343,7 +349,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="text">
@@ -356,7 +362,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="text">

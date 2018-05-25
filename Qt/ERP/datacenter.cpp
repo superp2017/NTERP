@@ -4,7 +4,7 @@
 #include <QDateTime>
 #include "userservice.h"
 #include "customerservice.h"
-
+#include "unitservice.h"
 
 dataCenter::dataCenter(QObject *parent) : QObject(parent)
 {
@@ -393,6 +393,20 @@ void dataCenter::delCustomer(const QJsonObject para)
         }
     }
     emit sig_delCustomer(cus,true);
+}
+
+void dataCenter::newUnit(const QJsonObject para)
+{
+    QString unit = UnitService::fromJsonObject(para);
+    appendUnit(unit);
+    emit sig_newUnit(unit,true);
+}
+
+void dataCenter::delUnit(const QJsonObject para)
+{
+    QString unit = UnitService::fromJsonObject(para);
+    m_units.removeOne(unit);
+    emit sig_delUnit(unit,true);
 }
 
 

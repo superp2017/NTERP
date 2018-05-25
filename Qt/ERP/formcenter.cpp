@@ -79,7 +79,7 @@ void FormCenter::action_supplier_manage()
 void FormCenter::action_customs_manage()
 {
     Custom.closeAllStatus();
-    Custom.showMaximized();
+    Custom.showNormal();
 }
 
 /*! 单位管理

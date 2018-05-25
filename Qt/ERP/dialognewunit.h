@@ -24,6 +24,8 @@ private slots:
 
     void on_pushButton_cancle_clicked();
 
+    void newUnitCb(QString unit,bool ok);
+
 private:
     Ui::DialogNewUnit *ui;
     QString cur_unit;

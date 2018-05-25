@@ -3,11 +3,11 @@
 #include <QJsonObject>
 #include <QString>
 #include "service_global.h"
-class UnitService
+class SERVICESHARED_EXPORT UnitService
 {
 public:
     UnitService();
-    static QString newUnit(const QString para, bool &ok, QString hostname, QString hostport);
+    static QString newUnit(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QJsonObject toJsonObject(QString unit);
     static QString fromJsonObject(QJsonObject obj);
 };

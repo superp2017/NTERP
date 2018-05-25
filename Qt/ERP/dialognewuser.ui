@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>280</width>
-    <height>580</height>
+    <width>265</width>
+    <height>530</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>280</width>
-    <height>580</height>
+    <width>265</width>
+    <height>530</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -27,21 +27,27 @@
   </property>
   <layout class="QGridLayout" name="gridLayout" rowstretch="8,0">
    <property name="leftMargin">
-    <number>20</number>
+    <number>15</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
    </property>
    <property name="rightMargin">
-    <number>20</number>
+    <number>11</number>
    </property>
    <property name="bottomMargin">
-    <number>11</number>
+    <number>9</number>
    </property>
    <item row="0" column="0">
     <layout class="QFormLayout" name="formLayout">
      <property name="horizontalSpacing">
-      <number>35</number>
+      <number>30</number>
      </property>
      <property name="verticalSpacing">
-      <number>17</number>
+      <number>11</number>
+     </property>
+     <property name="rightMargin">
+      <number>4</number>
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
@@ -61,7 +67,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -84,7 +90,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -107,7 +113,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maxLength">
@@ -133,7 +139,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="minimum">
@@ -162,7 +168,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -211,7 +217,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -221,7 +227,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="minimumDateTime">
@@ -248,7 +254,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximum">
@@ -287,7 +293,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -297,7 +303,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -333,7 +339,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="text">
@@ -346,7 +352,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="text">

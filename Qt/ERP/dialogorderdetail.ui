@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>593</width>
-    <height>661</height>
+    <width>445</width>
+    <height>598</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -55,7 +55,7 @@
        <property name="minimumSize">
         <size>
          <width>60</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="alignment">
@@ -87,7 +87,7 @@
        <property name="minimumSize">
         <size>
          <width>60</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="alignment">
@@ -113,7 +113,7 @@
        <property name="minimumSize">
         <size>
          <width>60</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="alignment">
@@ -139,7 +139,7 @@
        <property name="minimumSize">
         <size>
          <width>60</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="alignment">
@@ -165,7 +165,7 @@
        <property name="minimumSize">
         <size>
          <width>60</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="alignment">
@@ -191,7 +191,7 @@
        <property name="minimumSize">
         <size>
          <width>60</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="alignment">
@@ -243,7 +243,7 @@
        <property name="minimumSize">
         <size>
          <width>80</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="alignment">
@@ -269,7 +269,7 @@
        <property name="minimumSize">
         <size>
          <width>60</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="alignment">
@@ -295,7 +295,7 @@
        <property name="minimumSize">
         <size>
          <width>60</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="alignment">
@@ -321,7 +321,7 @@
        <property name="minimumSize">
         <size>
          <width>60</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="alignment">
@@ -347,7 +347,7 @@
        <property name="minimumSize">
         <size>
          <width>60</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="alignment">
@@ -373,7 +373,7 @@
        <property name="minimumSize">
         <size>
          <width>60</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="text">
@@ -438,17 +438,17 @@
    <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="leftMargin">
-      <number>15</number>
+      <number>11</number>
      </property>
      <property name="rightMargin">
-      <number>15</number>
+      <number>11</number>
      </property>
      <item>
       <widget class="QPushButton" name="pushButton_out_table">
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -480,7 +480,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">

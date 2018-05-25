@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>280</width>
-    <height>600</height>
+    <height>555</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>280</width>
-    <height>600</height>
+    <height>555</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -26,22 +26,31 @@
    <string>新建订单</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
    <item>
     <layout class="QFormLayout" name="formLayout">
      <property name="horizontalSpacing">
       <number>25</number>
      </property>
      <property name="verticalSpacing">
-      <number>17</number>
+      <number>11</number>
      </property>
      <property name="leftMargin">
-      <number>15</number>
+      <number>6</number>
      </property>
      <property name="topMargin">
       <number>15</number>
      </property>
      <property name="rightMargin">
-      <number>15</number>
+      <number>6</number>
      </property>
      <property name="bottomMargin">
       <number>15</number>
@@ -67,7 +76,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
@@ -93,7 +102,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="editable">
@@ -122,7 +131,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="editable">
@@ -151,7 +160,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="editable">
@@ -196,7 +205,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="minimum">
@@ -228,7 +237,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="editable">
@@ -277,13 +286,13 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
-      <number>15</number>
+      <number>11</number>
      </property>
      <property name="leftMargin">
       <number>30</number>
      </property>
      <property name="rightMargin">
-      <number>15</number>
+      <number>11</number>
      </property>
      <item>
       <spacer name="horizontalSpacer">
@@ -303,7 +312,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="text">
@@ -316,7 +325,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="text">

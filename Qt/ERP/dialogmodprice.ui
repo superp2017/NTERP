@@ -29,15 +29,15 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>130</y>
+     <y>135</y>
      <width>75</width>
-     <height>35</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
      <width>0</width>
-     <height>35</height>
+     <height>30</height>
     </size>
    </property>
    <property name="text">
@@ -48,15 +48,15 @@
    <property name="geometry">
     <rect>
      <x>125</x>
-     <y>130</y>
+     <y>135</y>
      <width>75</width>
-     <height>35</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
      <width>0</width>
-     <height>35</height>
+     <height>30</height>
     </size>
    </property>
    <property name="text">
@@ -69,7 +69,7 @@
      <x>20</x>
      <y>20</y>
      <width>281</width>
-     <height>101</height>
+     <height>111</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">

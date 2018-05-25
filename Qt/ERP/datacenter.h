@@ -32,6 +32,9 @@ public:
     void newCustomer(const QJsonObject para);
     void modCustomer(const QJsonObject para);
     void delCustomer(const QJsonObject para);
+    /////////////////////////////////////////////////////
+    void newUnit(const QJsonObject para);
+    void delUnit(const QJsonObject para);
 
     /////////////////////////////////////////////////////
     /////////////////////////////////////////////////////
@@ -82,6 +85,9 @@ signals:
     void sig_newCustomer(Customer,bool);
     void sig_modCustomer(Customer,bool);
     void sig_delCustomer(Customer,bool);
+    ////////////////////////////////////
+    void sig_newUnit(QString,bool);
+    void sig_delUnit(QString,bool);
 public slots:
 
 private:
@@ -102,7 +108,7 @@ private:
     QVector<QString>   m_authors;    //所有的权限
     QVector<QString>   m_departments;//所有的部门
     Loadding           m_load;       //加载动画
-    nSysConfig         m_Config;   //保存系统配置
+    nSysConfig         m_Config;     //保存系统配置
 };
 
 #endif // DATACENTER_H

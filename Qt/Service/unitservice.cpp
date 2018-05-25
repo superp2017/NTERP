@@ -5,11 +5,11 @@ UnitService::UnitService()
 
 }
 
-QString UnitService::newUnit(const QString para, bool &ok, QString hostname, QString hostport)
+QString UnitService::newUnit(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
 #if 1
     ok= true;
-    return para;
+    return fromJsonObject(para);
 #endif
 
 #if 0
@@ -29,5 +29,23 @@ QString UnitService::newUnit(const QString para, bool &ok, QString hostname, QSt
     ok = false;
     return unit;
 #endif
+}
+
+QJsonObject UnitService::toJsonObject(QString unit)
+{
+    QJsonObject obj;
+    obj.insert("Unit",unit);
+    return obj;
+}
+
+QString UnitService::fromJsonObject(QJsonObject obj)
+{
+    QString un;
+    if(obj.contains("Unit")){
+        QJsonValue value = obj.value("Unit");
+        if(value.isString())
+           un = value.toString();
+    }
+    return un;
 }
 
