@@ -1,5 +1,5 @@
 package main
 
-type Unit struct{
+type Unit struct {
 	Unit string
 }

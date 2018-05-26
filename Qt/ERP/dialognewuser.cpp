@@ -53,10 +53,7 @@ void DialogNewUser::initUI(User user)
     ui->lineEdit_cell->setText(user.Cell);
     ui->comboBox_department->setCurrentText(user.Author);
     ui->comboBox_department->setCurrentText(user.Department);
-    if(user.Sex=="0")
-        ui->comboBox_sex->setCurrentText("男");
-    else
-        ui->comboBox_sex->setCurrentText("女");
+    ui->comboBox_sex->setCurrentText(user.Sex);
     ui->spinBox_age->setValue(user.Age);
     ui->spinBox_salary->setValue(user.Salary);
     ui->dateEdit_in_time->setDate(QDate::fromString(user.InTime,"yyyy-MM-dd"));
@@ -100,7 +97,7 @@ void DialogNewUser::on_pushButton_creat_clicked()
     user.Cell        = ui->lineEdit_cell->text().trimmed();
     user.Department  = ui->comboBox_department->currentText().trimmed();
     user.Author      = ui->comboBox_author->currentText().trimmed();
-    user.Sex         = ui->comboBox_sex->currentData().toString().trimmed();
+    user.Sex         = ui->comboBox_sex->currentText().trimmed();
     user.InTime      = ui->dateEdit_in_time->text().trimmed();
     user.Salary      = ui->spinBox_salary->value();
     user.Age         = ui->spinBox_age->value();
@@ -171,8 +168,8 @@ void DialogNewUser::modUserCb(User user, bool ok)
 
 void DialogNewUser::initComBox(QVector<QString>department,QVector<QString>autor)
 {
-    ui->comboBox_sex->addItem("男","0");
-    ui->comboBox_sex->addItem("女","1");
+    ui->comboBox_sex->addItem("男");
+    ui->comboBox_sex->addItem("女");
 
     ui->comboBox_department->clear();
     QCompleter *completerauthor = new QCompleter(department.toList(), this);

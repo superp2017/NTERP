@@ -209,11 +209,7 @@ void userTable::setRowData(User para, int row)
 
     item0->setText(para.UID);
     item1->setText(para.Name);
-
-    if(para.Sex=="0")
-        item2->setText("男");
-    else
-        item2->setText("女");
+    item2->setText(para.Se);
     item3->setText(para.Cell);
     item4->setText(para.Department);
     item5->setText(para.Account);
