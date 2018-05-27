@@ -1,6 +1,5 @@
 package main
 
-
 import (
 	"JsGo/JsExit"
 	"JsGo/JsHttp"
@@ -11,10 +10,9 @@ func exit() int {
 	return 0
 }
 
-func initRoute()  {
-	
-}
+func initRoute() {
 
+}
 
 func main() {
 	JsExit.RegisterExitCb(exit)
