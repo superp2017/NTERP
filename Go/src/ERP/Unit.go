@@ -10,7 +10,7 @@ type Unit struct {
 }
 
 //新增一个单位
-func NewUnit(session JsHttp.Session) {
+func NewUnit(session *JsHttp.Session) {
 	type Para struct {
 		Unit string
 	}
@@ -31,7 +31,7 @@ func NewUnit(session JsHttp.Session) {
 }
 
 //删除一个单位
-func DelUnit(session JsHttp.Session) {
+func DelUnit(session *JsHttp.Session) {
 	type Para struct {
 		Unit string
 	}
@@ -52,7 +52,7 @@ func DelUnit(session JsHttp.Session) {
 }
 
 //获取所有单位
-func GetAllUnit(session JsHttp.Session) {
+func GetAllUnit(session *JsHttp.Session) {
 	data := []string{}
 	list, err := JsRedis.Redis_Sget(Key_Unit)
 	if err != nil {

@@ -27,7 +27,7 @@ type Supplier struct {
 }
 
 //新建一个客户
-func NewSupplier(session JsHttp.Session) {
+func NewSupplier(session *JsHttp.Session) {
 	st := &Supplier{}
 	if err := session.GetPara(st); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -50,7 +50,7 @@ func NewSupplier(session JsHttp.Session) {
 }
 
 //修改客户信息
-func ModSupplier(session JsHttp.Session) {
+func ModSupplier(session *JsHttp.Session) {
 	type Para struct {
 		SID             string //客户编号
 		Name            string //客户公司名称
@@ -102,7 +102,7 @@ func ModSupplier(session JsHttp.Session) {
 }
 
 ///客户的解约和合作
-func UpDownSupplier(session JsHttp.Session) {
+func UpDownSupplier(session *JsHttp.Session) {
 	type Para struct {
 		SID  string
 		IsUp bool
@@ -130,7 +130,7 @@ func UpDownSupplier(session JsHttp.Session) {
 }
 
 //删除一个客户
-func DelSupplier(session JsHttp.Session) {
+func DelSupplier(session *JsHttp.Session) {
 	type Para struct {
 		SID string
 	}

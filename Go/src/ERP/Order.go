@@ -37,7 +37,7 @@ type Order struct {
 }
 
 //新建订单
-func NewOrder(session JsHttp.Session) {
+func NewOrder(session *JsHttp.Session) {
 	st := &Order{}
 	if err := session.GetPara(st); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -87,7 +87,7 @@ func NewOrder(session JsHttp.Session) {
 }
 
 //修改订单
-func ModOrder(session JsHttp.Session) {
+func ModOrder(session *JsHttp.Session) {
 	type Para struct {
 		OrderID     string //订单id
 		MaterielID  string //材料id
@@ -140,7 +140,7 @@ func ModOrder(session JsHttp.Session) {
 }
 
 //修改订单价格
-func ModOrderPrice(session JsHttp.Session) {
+func ModOrderPrice(session *JsHttp.Session) {
 	type Para struct {
 		OrderID string //订单id
 		Money   int    //价格
@@ -174,7 +174,7 @@ func ModOrderPrice(session JsHttp.Session) {
 }
 
 //取消订单
-func CancelOrder(session JsHttp.Session) {
+func CancelOrder(session *JsHttp.Session) {
 	type Para struct {
 		OrderID string //订单id
 	}
@@ -203,7 +203,7 @@ func CancelOrder(session JsHttp.Session) {
 }
 
 //删除订单
-func DelOrder(session JsHttp.Session) {
+func DelOrder(session *JsHttp.Session) {
 	type Para struct {
 		OrderID string //订单id
 	}
@@ -233,7 +233,7 @@ func DelOrder(session JsHttp.Session) {
 }
 
 //订单进入生产
-func PorduceOrder(session JsHttp.Session) {
+func PorduceOrder(session *JsHttp.Session) {
 	type Para struct {
 		OrderID string //订单id
 	}
@@ -264,7 +264,7 @@ func PorduceOrder(session JsHttp.Session) {
 }
 
 //订单完成
-func SuccessOrder(session JsHttp.Session) {
+func SuccessOrder(session *JsHttp.Session) {
 	type Para struct {
 		OrderID string //订单id
 	}
@@ -294,7 +294,7 @@ func SuccessOrder(session JsHttp.Session) {
 }
 
 //获取所有订单列表
-func GetGlobalOrders(session JsHttp.Session) {
+func GetGlobalOrders(session *JsHttp.Session) {
 	list, err := JsRedis.Redis_hkeys(Hash_Order)
 	if err != nil {
 		session.Forward("1", err.Error(), nil)

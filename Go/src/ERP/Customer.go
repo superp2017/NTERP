@@ -26,7 +26,7 @@ type Customer struct {
 }
 
 //新建一个客户
-func NewCustomer(session JsHttp.Session) {
+func NewCustomer(session *JsHttp.Session) {
 	st := &Customer{}
 	if err := session.GetPara(st); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -49,7 +49,7 @@ func NewCustomer(session JsHttp.Session) {
 }
 
 //修改客户信息
-func ModCustomer(session JsHttp.Session) {
+func ModCustomer(session *JsHttp.Session) {
 	type Para struct {
 		CID             string //客户编号
 		Name            string //客户公司名称
@@ -101,7 +101,7 @@ func ModCustomer(session JsHttp.Session) {
 }
 
 ///客户的解约和合作
-func UpDownCustomer(session JsHttp.Session) {
+func UpDownCustomer(session *JsHttp.Session) {
 	type Para struct {
 		CID  string
 		IsUp bool
@@ -129,7 +129,7 @@ func UpDownCustomer(session JsHttp.Session) {
 }
 
 //删除一个客户
-func DelCustomer(session JsHttp.Session) {
+func DelCustomer(session *JsHttp.Session) {
 	type Para struct {
 		CID string
 	}

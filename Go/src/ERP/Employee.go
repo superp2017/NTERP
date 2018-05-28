@@ -27,7 +27,7 @@ type Employee struct {
 }
 
 //新增一个员工
-func NewEmployee(session JsHttp.Session) {
+func NewEmployee(session *JsHttp.Session) {
 	st := &Employee{}
 	if err := session.GetPara(st); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -57,7 +57,7 @@ func NewEmployee(session JsHttp.Session) {
 }
 
 //修改员工信息
-func ModEmployee(session JsHttp.Session) {
+func ModEmployee(session *JsHttp.Session) {
 	type Para struct {
 		UID        string //用户id
 		Name       string //用户姓名
@@ -108,7 +108,7 @@ func ModEmployee(session JsHttp.Session) {
 }
 
 //删除某一个员工
-func DelEmployee(session JsHttp.Session) {
+func DelEmployee(session *JsHttp.Session) {
 	type Para struct {
 		UID string //用户id
 	}
@@ -135,7 +135,7 @@ func DelEmployee(session JsHttp.Session) {
 }
 
 // 获取所有的员工信息
-func GetAllEmployeess(session JsHttp.Session) {
+func GetAllEmployeess(session *JsHttp.Session) {
 	ids, err := JsRedis.Redis_hkeys(Hash_Employee)
 	if err != nil {
 		session.Forward("1", err.Error(), nil)

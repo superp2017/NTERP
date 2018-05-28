@@ -13,7 +13,7 @@ type Account struct {
 	Code    string //密码
 }
 
-func Login(session JsHttp.Session) {
+func Login(session *JsHttp.Session) {
 	type Para struct {
 		Account string
 		Code    string
