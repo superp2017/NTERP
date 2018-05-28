@@ -118,14 +118,14 @@ func ModOrder(session JsHttp.Session) {
 		return
 	}
 
-	data.MaterielID  = st.MaterielID
+	data.MaterielID = st.MaterielID
 	data.MaterielDes = st.MaterielDes
-	data.OrderNum 	 = st.OrderNum
-	data.Unit 		 = st.Unit
-	data.CustomID 	 = st.CustomID
-	data.CustomName  = st.CustomName
+	data.OrderNum = st.OrderNum
+	data.Unit = st.Unit
+	data.CustomID = st.CustomID
+	data.CustomName = st.CustomName
 	data.CustomBatch = st.CustomBatch
-	data.CustomNote  = st.CustomNote
+	data.CustomNote = st.CustomNote
 	////////////////添加状态///////////////////////////////
 	appendStatus(data, data.UserName, CurTime(), "修改订单", data.Current)
 
@@ -292,21 +292,20 @@ func SuccessOrder(session JsHttp.Session) {
 
 //获取所有订单列表
 func GetGlobalOrders(session JsHttp.Session) {
-	list,err:= JsRedis.Redis_hkeys(Hash_Order)
-	if err!=nil{
-		session.Forward("1",err.Error(),nil)
+	list, err := JsRedis.Redis_hkeys(Hash_Order)
+	if err != nil {
+		session.Forward("1", err.Error(), nil)
 		return
 	}
-	data :=[]*Order{}
-	for _,v:=range list{
+	data := []*Order{}
+	for _, v := range list {
 		d := &Order{}
 		if err := JsRedis.Redis_hget(Hash_Order, v, data); err == nil {
-			data = append(data,d)
+			data = append(data, d)
 		}
 	}
-	session.Forward("0","success",data)
+	session.Forward("0", "success", data)
 }
-
 
 //添加状态
 func appendStatus(order *Order, name, time, action, status string) {

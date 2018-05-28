@@ -1,5 +1,12 @@
 package main
 
+import (
+	"JsGo/JsHttp"
+	"JsGo/JsLogger"
+	"JsGo/JsStore/JsRedis"
+	"fmt"
+)
+
 type Customer struct {
 	CID             string //客户编号
 	Name            string //客户公司名称
@@ -14,4 +21,113 @@ type Customer struct {
 	CertificatesNum string //税号
 	Certificates    string //客户证件（营业执照）
 	Note            string //备注
+	Status          string //状态 0:正常 1:删除
+	CreatTime       string //创建时间
+}
+
+//新建一个客户
+func NewCustomer(session JsHttp.Session) {
+	st := &Customer{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.Name == "" || st.Tel == "" {
+		str := fmt.Sprintf("NewCustomer faild,Name = %s,Tel = %s\n", st.Name, st.Tel)
+		JsLogger.Error(str)
+		session.Forward("1", str, nil)
+		return
+	}
+	st.CID = getCustomerID()
+	st.CreatTime = CurTime()
+	if err := JsRedis.Redis_hset(Hash_Customer, st.CID, st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	session.Forward("0", "success", st)
+}
+
+//修改客户信息
+func ModCustomer(session JsHttp.Session) {
+	type Para struct {
+		CID             string //客户编号
+		Name            string //客户公司名称
+		Icon            string //客户公司logo
+		Addr            string //客户公司地址
+		Tel             string //公司电话
+		ContactName     string //联系人
+		ContactCell     string //联系人电话
+		BankName        string //开户行
+		BankNumber      string //银行卡号
+		Bankbranch      string //银行支行
+		CertificatesNum string //税号
+		Certificates    string //客户证件（营业执照）
+		Note            string //备注
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	data := &Customer{}
+	if err := JsRedis.Redis_hget(Hash_Customer, st.CID, data); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	data.Name 			= st.Name
+	data.Icon 			= st.Icon
+	data.Addr 			= st.Addr
+	data.Tel 			= st.Tel
+	data.ContactName 	= st.ContactName
+	data.ContactCell 	= st.ContactCell
+	data.BankName 		= st.BankName
+	data.BankNumber 	= st.BankNumber
+	data.Bankbranch	 	= st.Bankbranch
+	data.CertificatesNum= st.CertificatesNum
+	data.Certificates 	= st.Certificates
+	data.Note 			= st.Note
+	if err:=JsRedis.Redis_hset(Hash_Customer, st.CID, data);err!=nil{
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	session.Forward("0","success",data)
+}
+
+
+func upDownCustomer(session JsHttp.Session) {
+
+}
+
+
+//删除一个客户
+func DelCustomer(session JsHttp.Session) {
+	type Para struct {
+		CID string
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.CID == "" {
+		str := fmt.Sprintf("DelCustomer CID is enpty\n")
+		JsLogger.Error(str)
+		session.Forward("1", str, nil)
+		return
+	}
+	if err := JsRedis.Redis_hdel(Hash_Customer, st.CID); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	go delCustomerOrderID(st.CID)
+	session.Forward("0", "success", st.CID)
+}
+
+//添加一个订单到 客户订单列表中
+func appendCustomerOrderID(CID, OrderID string) error {
+	return JsRedis.Redis_hset(Hash_CustomerOrder, CID, OrderID)
+}
+
+func delCustomerOrderID(CID string) error {
+	return JsRedis.Redis_hdel(Hash_CustomerOrder, CID)
 }

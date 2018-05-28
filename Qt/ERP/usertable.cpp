@@ -209,7 +209,7 @@ void userTable::setRowData(User para, int row)
 
     item0->setText(para.UID);
     item1->setText(para.Name);
-    item2->setText(para.Se);
+    item2->setText(para.Sex);
     item3->setText(para.Cell);
     item4->setText(para.Department);
     item5->setText(para.Account);

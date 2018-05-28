@@ -38,7 +38,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 ROOT = "E:/workspace/Qt/SimLib/boost_1_59_0"
 
-
 INCLUDEPATH += $${ROOT}/boost
 QMAKE_INCDIR += $${ROOT}/boost
 QMAKE_LIBDIR += $${ROOT}/lib64
