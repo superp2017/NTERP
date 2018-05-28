@@ -80,6 +80,9 @@ func NewOrder(session JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	if st.CustomID != "" {
+		go appendCustomerOrderID(st.OrderID, st.CustomID)
+	}
 	session.Forward("0", "success", st)
 }
 

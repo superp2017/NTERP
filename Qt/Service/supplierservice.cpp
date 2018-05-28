@@ -39,6 +39,8 @@ QJsonObject SupplierService::toJsonObject(Supplier super)
     obj.insert("Certificates",super.Certificates);
     obj.insert("Note",super.Note);
     obj.insert("Goods",super.Goods);
+    obj.insert("Status",super.Status);
+    obj.insert("CreatTime",super.CreatTime);
     return obj;
 }
 
@@ -115,6 +117,16 @@ Supplier SupplierService::fromJsonObject(QJsonObject obj)
         if(value.isString()){
             sup.Goods = value.toString();
         }
+    }
+    if(obj.contains("Status")){
+        QJsonValue value = obj.value("Status");
+        if(value.isString())
+            sup.Status = value.toString();
+    }
+    if(obj.contains("CreatTime")){
+        QJsonValue value = obj.value("CreatTime");
+        if(value.isString())
+            sup.CreatTime = value.toString();
     }
 
     return sup;

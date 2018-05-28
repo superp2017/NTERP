@@ -100,6 +100,8 @@ struct Customer{
     QString CertificatesNum;        //税号
     QString Certificates;           //客户证件（营业执照）
     QString Note;                   //备注
+    QString Status;                 //状态 0:正常 1:删除
+    QString CreatTime;              //创建时间
 };
 
 //供应商
@@ -118,6 +120,8 @@ struct Supplier{
     QString Certificates;           //供应商证件（营业执照）
     QString Note;                   //供应商备注
     QString Goods;                  //供应的商品列表
+    QString Status;                 //状态 0:正常 1:删除
+    QString CreatTime;              //创建时间
 };
 
 //物料

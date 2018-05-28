@@ -40,6 +40,7 @@ func NewCustomer(session JsHttp.Session) {
 	}
 	st.CID = getCustomerID()
 	st.CreatTime = CurTime()
+	st.Status = "0"
 	if err := JsRedis.Redis_hset(Hash_Customer, st.CID, st); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
@@ -69,35 +70,63 @@ func ModCustomer(session JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	if st.Name == "" || st.Tel == "" {
+		str := fmt.Sprintf("ModCustomer faild,Name = %s,Tel = %s\n", st.Name, st.Tel)
+		JsLogger.Error(str)
+		session.Forward("1", str, nil)
+		return
+	}
 	data := &Customer{}
 	if err := JsRedis.Redis_hget(Hash_Customer, st.CID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	data.Name 			= st.Name
-	data.Icon 			= st.Icon
-	data.Addr 			= st.Addr
-	data.Tel 			= st.Tel
-	data.ContactName 	= st.ContactName
-	data.ContactCell 	= st.ContactCell
-	data.BankName 		= st.BankName
-	data.BankNumber 	= st.BankNumber
-	data.Bankbranch	 	= st.Bankbranch
-	data.CertificatesNum= st.CertificatesNum
-	data.Certificates 	= st.Certificates
-	data.Note 			= st.Note
-	if err:=JsRedis.Redis_hset(Hash_Customer, st.CID, data);err!=nil{
+	data.Name = st.Name
+	data.Icon = st.Icon
+	data.Addr = st.Addr
+	data.Tel = st.Tel
+	data.ContactName = st.ContactName
+	data.ContactCell = st.ContactCell
+	data.BankName = st.BankName
+	data.BankNumber = st.BankNumber
+	data.Bankbranch = st.Bankbranch
+	data.CertificatesNum = st.CertificatesNum
+	data.Certificates = st.Certificates
+	data.Note = st.Note
+	if err := JsRedis.Redis_hset(Hash_Customer, st.CID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	session.Forward("0","success",data)
+	session.Forward("0", "success", data)
 }
 
-
-func upDownCustomer(session JsHttp.Session) {
-
+///客户的解约和合作
+func UpDownCustomer(session JsHttp.Session) {
+	type Para struct {
+		CID  string
+		IsUp bool
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	data := &Customer{}
+	if err := JsRedis.Redis_hget(Hash_Customer, st.CID, data); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.IsUp {
+		data.Status = "0"
+	} else {
+		data.Status = "1"
+	}
+	if err := JsRedis.Redis_hset(Hash_Customer, st.CID, data); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	session.Forward("0", "success", data)
 }
-
 
 //删除一个客户
 func DelCustomer(session JsHttp.Session) {
@@ -128,6 +157,7 @@ func appendCustomerOrderID(CID, OrderID string) error {
 	return JsRedis.Redis_hset(Hash_CustomerOrder, CID, OrderID)
 }
 
+//删除客户订单
 func delCustomerOrderID(CID string) error {
 	return JsRedis.Redis_hdel(Hash_CustomerOrder, CID)
 }

@@ -60,6 +60,8 @@ QJsonObject CustomerService::toJsonObject(Customer customer)
     obj.insert("CertificatesNum",customer.CertificatesNum);
     obj.insert("Certificates",customer.Certificates);
     obj.insert("Note",customer.Note);
+    obj.insert("Status",customer.Status);
+    obj.insert("CreatTime",customer.CreatTime);
     return obj;
 }
 
@@ -130,6 +132,16 @@ Customer CustomerService::fromJsonObject(QJsonObject obj)
         QJsonValue value = obj.value("Note");
         if(value.isString())
             customer.Note = value.toString();
+    }
+    if(obj.contains("Status")){
+        QJsonValue value = obj.value("Status");
+        if(value.isString())
+            customer.Status = value.toString();
+    }
+    if(obj.contains("CreatTime")){
+        QJsonValue value = obj.value("CreatTime");
+        if(value.isString())
+            customer.CreatTime = value.toString();
     }
     return customer;
 }

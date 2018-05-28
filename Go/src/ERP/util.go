@@ -3,7 +3,7 @@ package main
 import (
 	"JsGo/JsStore/JsRedis"
 	"JsGo/JsUuid"
-	"qiniupkg.com/x/log.v7"
+
 	"strconv"
 	"time"
 )
