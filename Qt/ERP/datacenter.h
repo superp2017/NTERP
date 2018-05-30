@@ -28,6 +28,7 @@ public:
     void cancleOrder(const QJsonObject para);
     void finishOrder(const QJsonObject para);
     void modOrderPrice(const QJsonObject para);
+    void getglobalOrders();
     /////////////////////////////////////////////////////
     void newCustomer(const QJsonObject para);
     void modCustomer(const QJsonObject para);
@@ -82,6 +83,7 @@ signals:
     void sig_cancleOrder(Order,bool);
     void sig_finishOrder(Order,bool);
     void sig_modOrderPrice(Order,bool);
+    void sig_globalOrders(bool);
     //////////////////////////////////////
     void sig_newEmployee(User,bool);
     void sig_modEmployee(User,bool);

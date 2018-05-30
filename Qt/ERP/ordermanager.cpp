@@ -39,7 +39,7 @@ OrderManager::OrderManager(QWidget *parent) :
 
     connect(dataCenter::instance(),SIGNAL(sig_cancleOrder(Order,bool)),this,SLOT(cancleOrderCb(Order,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_finishOrder(Order,bool)),this,SLOT(finishOrderCb(Order,bool)));
-
+    connect(dataCenter::instance(),SIGNAL(sig_globalOrders(bool)),this,SLOT(GlobalOrdersCb(bool)));
 
     connect(m_tab_new,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_new,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
@@ -66,7 +66,7 @@ OrderManager::OrderManager(QWidget *parent) :
     ui->pushButton_success->setEnabled(false);
     ui->pushButton_change_price->setEnabled(false);
 
-    updataData();
+    get_AllOrders();
 }
 
 OrderManager::~OrderManager()
@@ -81,6 +81,11 @@ void OrderManager::updataData()
     m_tab_all->initOrder(dataCenter::instance()->StatusOrders(Status_All));
 }
 
+void OrderManager::get_AllOrders()
+{
+    boost::thread t(boost::bind(&dataCenter::getglobalOrders,dataCenter::instance()));
+    t.detach();
+}
 
 
 
@@ -158,6 +163,7 @@ void OrderManager::new_order()
         m_tab_all->appendOrder(order);
     }
 }
+
 
 
 void OrderManager::on_pushButton_new_clicked()
@@ -248,6 +254,7 @@ void OrderManager::on_pushButton_success_clicked()
 void OrderManager::on_pushButton_reflash_clicked()
 {
     clearCurOrder();
+    dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
     updataData();
 }
 
@@ -308,6 +315,17 @@ void OrderManager::finishOrderCb(Order order, bool ok)
         m_tab_all->modOrder(order);
     }else{
         dataCenter::instance()->showMessage("出库失败!",4000);
+    }
+}
+
+void OrderManager::GlobalOrdersCb(bool ok)
+{
+    dataCenter::instance()->hideLoadding();
+    if(ok){
+        dataCenter::instance()->showMessage("刷新订单成功!",4000);
+        updataData();
+    }else{
+        dataCenter::instance()->showMessage("刷新订单失败!",4000);
     }
 }
 

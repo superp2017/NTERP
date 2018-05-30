@@ -74,9 +74,9 @@ void DialogMaterialManage::exportCb(bool ok)
 
 void DialogMaterialManage::checkAll()
 {
-     for(QCheckBox* box:m_boxs){
-         box->setChecked(ui->checkBox_check_all->isChecked());
-     }
+    for(QCheckBox* box:m_boxs){
+        box->setChecked(ui->checkBox_check_all->isChecked());
+    }
 }
 
 
@@ -184,7 +184,11 @@ void DialogMaterialManage::setRowData(Materiel ma, int row)
         ui->tableWidget->setItem(row,6,item6);
     }
     QString status;
-    if(ma.Status=="0")status="已入库";else status="已出库";
+    if(ma.Status=="0")status="已入库";
+    if(ma.Status=="1")
+        status="已出库";
+    if(ma.Status=="-1")
+        status = "已取消";
     item1->setText(ma.MaterDes);
     item2->setText(ma.CustomName);
     item3->setText(QString("%1").arg(ma.OrderNum));

@@ -143,6 +143,29 @@ Order OrderService::modOrderPrice(const QJsonObject para, bool &ok, QString host
 #endif
 }
 
+QVector<Order> OrderService::getAllOrders(bool &ok,QString hostname, QString hostport)
+{
+    QVector<Order> data;
+    std::string url = Net_GlobalOrders;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isArray()){
+            QJsonArray arr = ret.data.toArray();
+            for(QJsonValue v:arr){
+                Order r = fromJsonObject(v.toObject());
+                data.push_back(r);
+            }
+        }
+        ok = true;
+        return data;
+    }
+    if(!ret.ret)
+        qDebug()<<"getAllOrders ret is not 0";
+    ok = false;
+    return data;
+}
+
 
 QJsonObject OrderService::toJsonObject(Order order)
 {
@@ -299,6 +322,12 @@ Order OrderService::fromJsonObject(QJsonObject obj)
             }
         }
     }
+
+//        if(obj.contains("Current")){
+//            QJsonValue v = obj.value("Current");
+//            if(v.isString())
+//                order.Current = v.toString();
+//        }
 
     if(obj.contains("Current")){
         QJsonValue v = obj.value("Current");

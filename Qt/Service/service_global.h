@@ -13,13 +13,23 @@
 #  define SERVICESHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-const std::string  Net_Login="/userlogin";               //用户登录
-const std::string  Net_NewUser="/newuser";               //新建用户
-const std::string  Net_ModOrder="/modorder";             //修改订单
-const std::string  Net_CancelOrder="/cancleorder";       //取消订单
-const std::string  Net_SuccessOrder="/finishorder";      //完成订单
-const std::string  Net_ModOrderPrice="/modpriceorder";   //修改订单价格
+const std::string  Net_Login="/userlogin";                  //用户登录
+const std::string  Net_NewUser="/newuser";                  //新建用户
 
+const std::string  Net_NewOrder="/neworder";                //新建订单
+const std::string  Net_ModOrder="/modorder";                //修改订单
+const std::string  Net_DelOrder="/delorder";                //删除订单
+const std::string  Net_ProductOrder="/produceorder";        //订单生产
+const std::string  Net_CancelOrder="/cancleorder";          //取消订单
+const std::string  Net_SuccessOrder="/successorder";        //完成订单
+const std::string  Net_ModOrderPrice="/modorderprice";      //修改订单价格
+const std::string  Net_GlobalOrders="/getglobalorders";     //获取所有订单
+
+
+
+
+
+const std::string  Net_GetAllOrder="/getglobalorders";   //获取所有订单
 
 
 const std::string  Net_NewCustomer="/newcustomer";       //新建客户

@@ -124,6 +124,7 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)
     m_departments.push_back("行政部");
     m_departments.push_back("财务部");
     m_departments.push_back("销售部");
+
 }
 
 void dataCenter::newUser(const QJsonObject para)
@@ -363,6 +364,13 @@ void dataCenter::modOrderPrice(const QJsonObject para)
     }
     emit sig_modOrderPrice(order,true);
 #endif
+}
+
+void dataCenter::getglobalOrders()
+{
+    bool ok =false;
+    m_orders = OrderService::getAllOrders(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_globalOrders(ok);
 }
 
 void dataCenter::newCustomer(const QJsonObject para)
