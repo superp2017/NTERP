@@ -114,13 +114,19 @@ func ModOrder(session *JsHttp.Session) {
 		session.Forward("1", str, nil)
 		return
 	}
-	go modMaterial(st.MaterielID, st.MaterielDes, st.CustomID, st.CustomName)
+
+
 	data := &Order{}
 	if err := JsRedis.Redis_hget(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-
+	if data.Current == Status_Cancle||data.Current==Status_Success{
+		str := fmt.Sprintf("ModOrder faild,Current=%s not support modify\n",data.Current)
+		JsLogger.Error(str)
+		session.Forward("1", str, nil)
+		return
+	}
 	data.MaterielID = st.MaterielID
 	data.MaterielDes = st.MaterielDes
 	data.OrderNum = st.OrderNum
@@ -136,6 +142,7 @@ func ModOrder(session *JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	go modMaterial(st.MaterielID, st.MaterielDes, st.CustomID, st.CustomName)
 	session.Forward("0", "success", data)
 }
 
@@ -161,6 +168,14 @@ func ModOrderPrice(session *JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+
+	if data.Current == Status_Cancle||data.Current==Status_Success{
+		str := fmt.Sprintf("ModOrderPrice faild,Current=%s not support modify price \n",data.Current)
+		JsLogger.Error(str)
+		session.Forward("1", str, nil)
+		return
+	}
+
 	data.Money = st.Money
 
 	////////////////添加状态///////////////////////////////
@@ -192,6 +207,14 @@ func CancelOrder(session *JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+
+	if data.Current == Status_Cancle||data.Current==Status_Success{
+		str := fmt.Sprintf("CancelOrder faild,Current=%s not support cancle \n",data.Current)
+		JsLogger.Error(str)
+		session.Forward("1", str, nil)
+		return
+	}
+
 	////////////////添加状态///////////////////////////////
 	appendStatus(data, data.UserName, CurTime(), "订单取消", Status_Cancle)
 
@@ -199,6 +222,8 @@ func CancelOrder(session *JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+
+	go cancleMaterial(data.MaterielID)
 	session.Forward("0", "success", data)
 }
 
@@ -221,7 +246,12 @@ func DelOrder(session *JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-
+	if data.Current == Status_Produce{
+		str := fmt.Sprintf("DelOrder faild,order is on produce  \n",data.Current)
+		JsLogger.Error(str)
+		session.Forward("1", str, nil)
+		return
+	}
 	if err := JsRedis.Redis_hdel(Hash_Order, st.OrderID); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
@@ -251,7 +281,12 @@ func PorduceOrder(session *JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-
+	if data.Current == Status_Cancle||data.Current==Status_Success{
+		str := fmt.Sprintf("PorduceOrder faild,Current=%s not support produce \n",data.Current)
+		JsLogger.Error(str)
+		session.Forward("1", str, nil)
+		return
+	}
 	data.ProduceID = time.Unix(time.Now().Unix(), 0).Format("20060102150405")
 	////////////////添加状态///////////////////////////////
 	appendStatus(data, data.UserName, CurTime(), "订单进入生产", Status_Produce)
@@ -282,6 +317,13 @@ func SuccessOrder(session *JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	if data.Current == Status_Cancle||data.Current==Status_Success{
+		str := fmt.Sprintf("SuccessOrder faild,Current=%s not support finish \n",data.Current)
+		JsLogger.Error(str)
+		session.Forward("1", str, nil)
+		return
+	}
+
 	go successMaterial(data.MaterielID)
 	////////////////添加状态///////////////////////////////
 	appendStatus(data, data.UserName, CurTime(), "订单完成", Status_Success)
@@ -303,8 +345,8 @@ func GetGlobalOrders(session *JsHttp.Session) {
 	data := []*Order{}
 	for _, v := range list {
 		d := &Order{}
-		if err := JsRedis.Redis_hget(Hash_Order, v, data); err == nil {
-			data = append(data, d)
+		if err := JsRedis.Redis_hget(Hash_Order, v, d); err == nil {
+				data = append(data, d)
 		}
 	}
 	session.Forward("0", "success", data)

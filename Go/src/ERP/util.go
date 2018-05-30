@@ -65,7 +65,7 @@ func getCustomerID() string {
 func getSupplierID() string {
 	gSupplierSeed++
 	go JsRedis.Redis_set(Ider_Supplier, &gSupplierSeed)
-	return "S" + strconv.Itoa(gMaterialSeed)
+	return "S" + strconv.Itoa(gSupplierSeed)
 }
 
 //返回当前时间：例如 2017-02-17 16:33

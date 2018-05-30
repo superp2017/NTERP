@@ -44,7 +44,7 @@ func modMaterial(id, des, cid, name string) error {
 	return nil
 }
 
-//删除物料
+//完成物料
 func successMaterial(id string) error {
 	st := &Material{}
 	if err := JsRedis.Redis_hget(Hash_Material, id, st); err != nil {
@@ -56,6 +56,20 @@ func successMaterial(id string) error {
 	}
 	return nil
 }
+
+//取消物料
+func cancleMaterial(id string) error {
+	st := &Material{}
+	if err := JsRedis.Redis_hget(Hash_Material, id, st); err != nil {
+		return err
+	}
+	st.Status = "-1"
+	if err := JsRedis.Redis_hset(Hash_Material, id, st); err != nil {
+		return err
+	}
+	return nil
+}
+
 
 //删除物料
 func delMaterial(id string) error {
