@@ -62,12 +62,12 @@ func checkAccount(account, code string) bool {
 	if account == "" {
 		return false
 	}
-	c := ""
-	if err := JsRedis.Redis_hget(Hash_Account, account, &c); err != nil {
+	c:=&Account{}
+	if err := JsRedis.Redis_hget(Hash_Account, account, c); err != nil {
 		JsLogger.Error(err.Error())
 		return false
 	}
-	if code == c {
+	if code == c.Code {
 		return true
 	}
 	return true

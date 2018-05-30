@@ -37,13 +37,19 @@ func NewEmployee(session *JsHttp.Session) {
 		session.Forward("1", "NewEmployee failed,Name is empty\n", nil)
 		return
 	}
-	st.UID = getCustomerID()
+	st.UID = getEmployeeID()
 	st.CreatTime = CurTime()
 	if st.Author == "" {
 		st.Author = "0"
 	}
 	st.Status = "0"
 	if st.Account != "" && st.Code != "" {
+		if exist,e:=JsRedis.Redis_hexists(Hash_Account,st.Account);e==nil&&exist{
+			str := fmt.Sprintf("NewEmployee faild,Account is exist\n")
+			JsLogger.Error(str)
+			session.Forward("2", str, nil)
+			return
+		}
 		if err := newAccount(st.UID, st.Name, st.Account, st.Code); err != nil {
 			session.Forward("1", err.Error(), nil)
 			return
@@ -94,6 +100,11 @@ func ModEmployee(session *JsHttp.Session) {
 		go newAccount(st.UID, st.Name, st.Account, st.Code)
 	}
 	data.Name = st.Name
+	data.Department = st.Department
+	data.Sex = st.Sex
+	data.Cell = st.Cell
+	data.Age = st.Age
+	data.Salary = st.Salary
 	data.Account = st.Account
 	data.Code = st.Code
 	data.Author = st.Author

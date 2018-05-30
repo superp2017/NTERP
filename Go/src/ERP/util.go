@@ -20,16 +20,16 @@ func init() {
 		log.Fatalln("Redis_get gOderSeed failed\n")
 	}
 	if err := JsRedis.Redis_get(Ider_Employee, &gEmployeeSeed); err != nil {
-		log.Fatalln("Redis_get gOderSeed failed\n")
+		log.Fatalln("Redis_get gEmployeeSeed failed\n")
 	}
 	if err := JsRedis.Redis_get(Ider_Material, &gMaterialSeed); err != nil {
-		log.Fatalln("Redis_get gOderSeed failed\n")
+		log.Fatalln("Redis_get gMaterialSeed failed\n")
 	}
 	if err := JsRedis.Redis_get(Ider_Customer, &gCustomerSeed); err != nil {
-		log.Fatalln("Redis_get gOderSeed failed\n")
+		log.Fatalln("Redis_get gCustomerSeed failed\n")
 	}
 	if err := JsRedis.Redis_get(Ider_Supplier, &gSupplierSeed); err != nil {
-		log.Fatalln("Redis_get gOderSeed failed\n")
+		log.Fatalln("Redis_get gSupplierSeed failed\n")
 	}
 }
 
