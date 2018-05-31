@@ -13,7 +13,7 @@
 #  define SERVICESHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-const std::string  Net_Login="/userlogin";                  //用户登录
+const std::string  Net_Login="/login";                      //用户登录
 const std::string  Net_NewUser="/newuser";                  //新建用户
 
 const std::string  Net_NewOrder="/neworder";                //新建订单
@@ -34,7 +34,9 @@ const std::string  Net_GetAllOrder="/getglobalorders";   //获取所有订单
 
 const std::string  Net_NewCustomer="/newcustomer";       //新建客户
 const std::string  Net_NewMateril="/newmateriel";        //新建物料
+
 const std::string  Net_NewUnit="/newunit";               //新建单位
+const std::string  Net_GlobalUnit="/getallunts";         //获取所有单位
 
 
 struct Ret{

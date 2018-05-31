@@ -107,7 +107,7 @@ int post(const string& host, const string& port, const string& page, const strin
 
 Ret Http::fetch(std::string url, QJsonObject para, bool &success, QString host, QString port)
 {
-    string data = "data=" + QJsonDocument::fromVariant(para).toJson().toStdString();
+    string data = "data=" + QJsonDocument(para).toJson().toStdString();
     string reponse_data;
 
     int ret = post(host.toStdString(), port.toStdString(), url, data, reponse_data);
@@ -137,7 +137,7 @@ Ret Http::fetch(std::string url, QJsonObject para, bool &success, QString host, 
                 QJsonValue value = object.value("Entity");
                 retData.data = value;
             }
-            std::cout <<"fetch success!"<<std::endl;
+            std::cout <<url<<" fetch success!"<<std::endl;
             success = true;
             return retData;
         }

@@ -30,6 +30,7 @@ type Employee struct {
 func NewEmployee(session *JsHttp.Session) {
 	st := &Employee{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -78,6 +79,7 @@ func ModEmployee(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -125,6 +127,7 @@ func DelEmployee(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}

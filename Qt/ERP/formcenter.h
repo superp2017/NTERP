@@ -49,7 +49,7 @@ private slots:
     void on_exit_clicked();
 
     void clearChecked();
-
+    void AppQuit();
 private:
     Ui::FormCenter *ui;
     OrderManager         m_order;    //订单管理

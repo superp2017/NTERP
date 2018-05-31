@@ -3,6 +3,7 @@ package main
 import (
 	"JsGo/JsHttp"
 	"JsGo/JsStore/JsRedis"
+	"JsGo/JsLogger"
 )
 
 type Unit struct {
@@ -16,6 +17,7 @@ func NewUnit(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -37,6 +39,7 @@ func DelUnit(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}

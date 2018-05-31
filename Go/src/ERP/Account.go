@@ -20,14 +20,27 @@ func Login(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if ok := checkAccount(st.Account, st.Code); ok {
-		session.Forward("0", "login success\n", st)
+	JsLogger.Error("Account=%s,code=%s",st.Account,st.Code)
+	if st.Account==""||st.Code==""{
+		session.Forward("1", "login filed,Account or Code is empty\n", nil)
 		return
 	}
-	session.Forward("1", "login check failed\n", nil)
+	 UID,ok := checkAccount(st.Account, st.Code)
+	if!ok {
+		session.Forward("1", "checkAccount failed\n", st)
+		return
+	}
+	data := &Employee{}
+	if err := JsRedis.Redis_hget(Hash_Employee, UID, data); err != nil {
+		JsLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	session.Forward("1", "login success\n", data)
 }
 
 //新建账号
@@ -58,17 +71,17 @@ func modAccount(account, code, uid, name string) error {
 }
 
 ///校验账号
-func checkAccount(account, code string) bool {
+func checkAccount(account, code string)(string,bool) {
 	if account == "" {
-		return false
+		return "",false
 	}
 	c:=&Account{}
 	if err := JsRedis.Redis_hget(Hash_Account, account, c); err != nil {
 		JsLogger.Error(err.Error())
-		return false
+		return "",false
 	}
 	if code == c.Code {
-		return true
+		return c.UID,true
 	}
-	return true
+	return "",false
 }

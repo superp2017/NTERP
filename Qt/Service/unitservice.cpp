@@ -1,5 +1,9 @@
 ﻿#include "unitservice.h"
 #include "http.h"
+#include <QJsonArray>
+#include <QJsonValue>
+#include <QDebug>
+
 UnitService::UnitService()
 {
 
@@ -29,6 +33,27 @@ QString UnitService::newUnit(const QJsonObject para, bool &ok, QString hostname,
     ok = false;
     return unit;
 #endif
+}
+
+QVector<QString> UnitService::getAllUnits(bool &ok, QString hostname, QString hostport)
+{
+    QVector<QString> unit;
+    std::string url = Net_GlobalUnit;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isArray()){
+            for (QJsonValue v:ret.data.toArray()){
+                unit.push_back(v.toString());
+            }
+            ok = true;
+            return  unit;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"newPlan ret is not 0";
+    ok = false;
+    return unit;
 }
 
 QJsonObject UnitService::toJsonObject(QString unit)

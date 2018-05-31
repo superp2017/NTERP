@@ -30,7 +30,7 @@ type Order struct {
 	ProduceID   string     //生产编号
 	SuccessTime string     //出货时间
 	CreatTime   string     //创建时间
-	Current     string     //当前状态
+	Current     OderFlow   //当前状态
 	Flow        []OderFlow //订单流程
 	OrderNum    int        //订单数量
 	Money       int        //价格
@@ -40,6 +40,7 @@ type Order struct {
 func NewOrder(session *JsHttp.Session) {
 	st := &Order{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -80,8 +81,8 @@ func NewOrder(session *JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if st.CustomID != "" {
-		go appendCustomerOrderID(st.OrderID, st.CustomID)
+	if st.CustomID != ""&&st.OrderID!="" {
+		go appendCustomerOrderID(st.CustomID, st.OrderID)
 	}
 	session.Forward("0", "success", st)
 }
@@ -101,6 +102,7 @@ func ModOrder(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -121,8 +123,8 @@ func ModOrder(session *JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if data.Current == Status_Cancle||data.Current==Status_Success{
-		str := fmt.Sprintf("ModOrder faild,Current=%s not support modify\n",data.Current)
+	if data.Current.Status == Status_Cancle||data.Current.Status==Status_Success{
+		str := fmt.Sprintf("ModOrder faild,Current.Status=%s not support modify\n",data.Current.Status)
 		JsLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -136,7 +138,7 @@ func ModOrder(session *JsHttp.Session) {
 	data.CustomBatch = st.CustomBatch
 	data.CustomNote = st.CustomNote
 	////////////////添加状态///////////////////////////////
-	appendStatus(data, data.UserName, CurTime(), "修改订单", data.Current)
+	appendStatus(data, data.UserName, CurTime(), "修改订单", data.Current.Status)
 
 	if err := JsRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -154,6 +156,7 @@ func ModOrderPrice(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -169,8 +172,8 @@ func ModOrderPrice(session *JsHttp.Session) {
 		return
 	}
 
-	if data.Current == Status_Cancle||data.Current==Status_Success{
-		str := fmt.Sprintf("ModOrderPrice faild,Current=%s not support modify price \n",data.Current)
+	if data.Current.Status == Status_Cancle||data.Current.Status==Status_Success{
+		str := fmt.Sprintf("ModOrderPrice faild,Current.Status=%s not support modify price \n",data.Current.Status)
 		JsLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -179,7 +182,7 @@ func ModOrderPrice(session *JsHttp.Session) {
 	data.Money = st.Money
 
 	////////////////添加状态///////////////////////////////
-	appendStatus(data, data.UserName, CurTime(), "修改订单价格", data.Current)
+	appendStatus(data, data.UserName, CurTime(), "修改订单价格", data.Current.Status)
 
 	if err := JsRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -195,6 +198,7 @@ func CancelOrder(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -208,8 +212,8 @@ func CancelOrder(session *JsHttp.Session) {
 		return
 	}
 
-	if data.Current == Status_Cancle||data.Current==Status_Success{
-		str := fmt.Sprintf("CancelOrder faild,Current=%s not support cancle \n",data.Current)
+	if data.Current.Status == Status_Cancle||data.Current.Status==Status_Success{
+		str := fmt.Sprintf("CancelOrder faild,Current.Status=%s not support cancle \n",data.Current.Status)
 		JsLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -224,6 +228,9 @@ func CancelOrder(session *JsHttp.Session) {
 	}
 
 	go cancleMaterial(data.MaterielID)
+	if data.CustomID!=""&&data.OrderID!="" {
+		go removefromCustomerOrderID(data.CustomID, data.OrderID)
+	}
 	session.Forward("0", "success", data)
 }
 
@@ -234,6 +241,7 @@ func DelOrder(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -246,8 +254,8 @@ func DelOrder(session *JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if data.Current == Status_Produce{
-		str := fmt.Sprintf("DelOrder faild,order is on produce  \n",data.Current)
+	if data.Current.Status == Status_Produce{
+		str := fmt.Sprintf("DelOrder faild,order is on produce  \n",data.Current.Status)
 		JsLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -256,9 +264,12 @@ func DelOrder(session *JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-
-	go delMaterial(data.MaterielID)
-
+	if data.MaterielID!="" {
+		go delMaterial(data.MaterielID)
+	}
+	if data.CustomID!=""&&data.OrderID!="" {
+		go removefromCustomerOrderID(data.CustomID, data.OrderID)
+	}
 	session.Forward("0", "success", data)
 }
 
@@ -269,6 +280,7 @@ func PorduceOrder(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -281,8 +293,8 @@ func PorduceOrder(session *JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if data.Current == Status_Cancle||data.Current==Status_Success{
-		str := fmt.Sprintf("PorduceOrder faild,Current=%s not support produce \n",data.Current)
+	if data.Current.Status == Status_Cancle||data.Current.Status==Status_Success{
+		str := fmt.Sprintf("PorduceOrder faild,Current.Status=%s not support produce \n",data.Current.Status)
 		JsLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -305,6 +317,7 @@ func SuccessOrder(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -317,8 +330,8 @@ func SuccessOrder(session *JsHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if data.Current == Status_Cancle||data.Current==Status_Success{
-		str := fmt.Sprintf("SuccessOrder faild,Current=%s not support finish \n",data.Current)
+	if data.Current.Status == Status_Cancle||data.Current.Status==Status_Success{
+		str := fmt.Sprintf("SuccessOrder faild,Current.Status=%s not support finish \n",data.Current.Status)
 		JsLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -346,7 +359,7 @@ func GetGlobalOrders(session *JsHttp.Session) {
 	for _, v := range list {
 		d := &Order{}
 		if err := JsRedis.Redis_hget(Hash_Order, v, d); err == nil {
-				data = append(data, d)
+			data = append(data, d)
 		}
 	}
 	session.Forward("0", "success", data)
@@ -360,6 +373,6 @@ func appendStatus(order *Order, name, time, action, status string) {
 		Action:     action,
 		Status:     status,
 	}
-	order.Current = status
+	order.Current = flow
 	order.Flow = append(order.Flow, flow)
 }

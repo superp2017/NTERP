@@ -47,6 +47,8 @@ FormCenter::~FormCenter()
     delete ui;
 }
 
+
+
 /*! 仓库管理
  * \brief FormCenter::action_store_manage
  */
@@ -123,6 +125,12 @@ void FormCenter::on_set_Btn_clicked()
     ui->stackedWidget->setCurrentWidget(&m_sys);
 }
 
+void FormCenter::AppQuit()
+{
+    QApplication* app;
+    app->quit();
+}
+
 void FormCenter::on_exit_clicked()
 {
     QMessageBox msg;
@@ -134,8 +142,7 @@ void FormCenter::on_exit_clicked()
     int ret = msg.exec();
     switch (ret) {
     case QMessageBox::Ok:
-        QApplication* app;
-        app->quit();
+        AppQuit();
         break;
     case QMessageBox::Cancel:
         break;

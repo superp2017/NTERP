@@ -5,7 +5,7 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QUrl>
-
+#include <QApplication>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -49,6 +49,8 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
 
 void MainWindow::showMessage(QString msg, int delay)
 {

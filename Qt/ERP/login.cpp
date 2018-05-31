@@ -6,9 +6,10 @@
 #include <QVBoxLayout>
 #include <QToolTip>
 #include "datacenter.h"
-
-
-#pragma execution_character_set("utf-8")
+#include <QMessageBox>
+#include "boost/thread.hpp"
+#include <QJsonObject>
+#include <QDebug>
 
 NLogin::NLogin(QWidget *parent) :
     QDialog(parent),
@@ -18,7 +19,7 @@ NLogin::NLogin(QWidget *parent) :
     ui->n_useNameLine->setPlaceholderText("用户名");
     ui->n_usePwdLine->setPlaceholderText("密码");
     ui->n_usePwdLine->setEchoMode(QLineEdit::Password);
-    connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(login()));
+
     QPalette pal(palette());
     pal.setBrush(QPalette::Window, QBrush(QImage(":/icon/login.png")));
     setPalette(pal);
@@ -32,6 +33,10 @@ NLogin::NLogin(QWidget *parent) :
     ui->widget_2->setPalette(palette);                           // 给widget加上背景图
     ui->pushButton->setStyleSheet("QPushButton{border-image: url(:/icon/loginButton-a.png);}"
                                   "QPushButton:pressed{border-image: url(:/icon/loginButton-two.png);}");
+
+
+    connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(login()));
+    connect(dataCenter::instance(),SIGNAL(sig_login(bool)),this,SLOT(loginCb(bool)));
 }
 
 NLogin::~NLogin()
@@ -39,16 +44,39 @@ NLogin::~NLogin()
     delete ui;
 }
 
+void NLogin::do_login(QString acc, QString pwd)
+{
+    QJsonObject para;
+    para.insert("Account",acc);
+    para.insert("Code",pwd);
+    boost::thread t(boost::bind(&dataCenter::login,dataCenter::instance(),para));
+    t.detach();
+    dataCenter::instance()->showMessage("正在登录...",3000);
+}
+
+void NLogin::loginCb(bool ok)
+{
+    dataCenter::instance()->hideLoadding();
+    if(!ok){
+        QMessageBox msgBox;
+        msgBox.setText("登录失败!");
+        msgBox.exec();
+        return;
+    }
+    this->done(123);
+}
+
 void NLogin::login()
 {
     QString useName = ui->n_useNameLine->text();
     QString usePwd = ui->n_usePwdLine->text();
-    if(useName == "admin" && usePwd == "123456"){
-//      dataCenter::instance()->setCurUser(U);
-      this->done(123);
-    }else{
-        QToolTip::showText(ui->n_useNameLine->mapToGlobal(QPoint(100, 0)), "用户名或密码不正确");
-        QToolTip::showText(ui->n_usePwdLine->mapToGlobal(QPoint(100, 0)), "用户名或密码不正确");
+    if(useName == "") {
+        QToolTip::showText(ui->n_useNameLine->mapToGlobal(QPoint(100, 0)), "用户名输入有误");
+        return;
     }
-
+    if(usePwd == ""){
+        QToolTip::showText(ui->n_usePwdLine->mapToGlobal(QPoint(100, 0)), "密码输入有误");
+        return;
+    }
+    do_login(useName,usePwd);
 }

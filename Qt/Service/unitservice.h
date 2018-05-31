@@ -8,6 +8,8 @@ class SERVICESHARED_EXPORT UnitService
 public:
     UnitService();
     static QString newUnit(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static QVector<QString> getAllUnits(bool &ok, QString hostname, QString hostport);
+
     static QJsonObject toJsonObject(QString unit);
     static QString fromJsonObject(QJsonObject obj);
 };

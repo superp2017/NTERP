@@ -29,6 +29,7 @@ type Customer struct {
 func NewCustomer(session *JsHttp.Session) {
 	st := &Customer{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -67,6 +68,7 @@ func ModCustomer(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -108,6 +110,7 @@ func UpDownCustomer(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -135,6 +138,7 @@ func DelCustomer(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
+		JsLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -154,6 +158,35 @@ func DelCustomer(session *JsHttp.Session) {
 
 //添加一个订单到 客户订单列表中
 func appendCustomerOrderID(CID, OrderID string) error {
+	data:=[]string{}
+	JsRedis.Redis_hget(Hash_CustomerOrder,CID,data)
+	exist:=false
+	for _,v:=range data{
+		if v==OrderID{
+			exist = true
+			break
+		}
+	}
+	if !exist{
+		data = append(data,OrderID)
+	}
+	return JsRedis.Redis_hset(Hash_CustomerOrder, CID, OrderID)
+}
+
+//从客户订单中移除一个订单
+func removefromCustomerOrderID(CID, OrderID string)error{
+	data:=[]string{}
+	JsRedis.Redis_hget(Hash_CustomerOrder,CID,data)
+	index:=-1
+	for i,v:=range data{
+		if v==OrderID{
+			index = i
+			break
+		}
+	}
+	if index!=-1{
+		data = append(data[:index],data[index+1:]...)
+	}
 	return JsRedis.Redis_hset(Hash_CustomerOrder, CID, OrderID)
 }
 
@@ -161,3 +194,4 @@ func appendCustomerOrderID(CID, OrderID string) error {
 func delCustomerOrderID(CID string) error {
 	return JsRedis.Redis_hdel(Hash_CustomerOrder, CID)
 }
+

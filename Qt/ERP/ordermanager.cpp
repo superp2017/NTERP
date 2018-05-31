@@ -66,7 +66,7 @@ OrderManager::OrderManager(QWidget *parent) :
     ui->pushButton_success->setEnabled(false);
     ui->pushButton_change_price->setEnabled(false);
 
-    get_AllOrders();
+    updataData();
 }
 
 OrderManager::~OrderManager()
@@ -80,13 +80,6 @@ void OrderManager::updataData()
     m_tab_success->initOrder(dataCenter::instance()->StatusOrders(Status_Success));
     m_tab_all->initOrder(dataCenter::instance()->StatusOrders(Status_All));
 }
-
-void OrderManager::get_AllOrders()
-{
-    boost::thread t(boost::bind(&dataCenter::getglobalOrders,dataCenter::instance()));
-    t.detach();
-}
-
 
 
 void OrderManager::orderClick(QString orderID)
@@ -133,7 +126,6 @@ void OrderManager::orderClick(QString orderID)
 
 }
 
-
 void OrderManager::changeCol()
 {
     if(ui->radioButton_ave->isChecked()){
@@ -164,13 +156,10 @@ void OrderManager::new_order()
     }
 }
 
-
-
 void OrderManager::on_pushButton_new_clicked()
 {
     new_order();
 }
-
 
 void OrderManager::on_pushButton_mod_clicked()
 {
@@ -254,8 +243,20 @@ void OrderManager::on_pushButton_success_clicked()
 void OrderManager::on_pushButton_reflash_clicked()
 {
     clearCurOrder();
+    boost::thread t(boost::bind(&dataCenter::getglobalOrders,dataCenter::instance()));
+    t.detach();
     dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
-    updataData();
+}
+
+void OrderManager::GlobalOrdersCb(bool ok)
+{
+    dataCenter::instance()->hideLoadding();
+    if(ok){
+        dataCenter::instance()->showMessage("刷新订单成功!",4000);
+        updataData();
+    }else{
+        dataCenter::instance()->showMessage("刷新订单失败!",4000);
+    }
 }
 
 void OrderManager::on_pushButton_change_price_clicked()
@@ -273,7 +274,6 @@ void OrderManager::on_pushButton_change_price_clicked()
     }
 }
 
-
 void OrderManager::on_pushButton_print_clicked()
 {
     DialogOrderPrint  print;
@@ -290,8 +290,6 @@ void OrderManager::on_pushButton_print_clicked()
     print.initData(status);
     print.exec();
 }
-
-
 
 void OrderManager::cancleOrderCb(Order order, bool ok)
 {
@@ -318,16 +316,6 @@ void OrderManager::finishOrderCb(Order order, bool ok)
     }
 }
 
-void OrderManager::GlobalOrdersCb(bool ok)
-{
-    dataCenter::instance()->hideLoadding();
-    if(ok){
-        dataCenter::instance()->showMessage("刷新订单成功!",4000);
-        updataData();
-    }else{
-        dataCenter::instance()->showMessage("刷新订单失败!",4000);
-    }
-}
 
 void OrderManager::mousePressEvent(QMouseEvent *e)
 {

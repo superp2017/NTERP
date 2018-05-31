@@ -17,6 +17,8 @@ public:
         static dataCenter*u =new dataCenter();
         return u;
     }
+    void initData();
+    void login(const QJsonObject para);
     ///////////////////////////////////////////////////////
     void newUser(const QJsonObject para);
     void modUser(const QJsonObject para);
@@ -36,6 +38,7 @@ public:
     /////////////////////////////////////////////////////
     void newUnit(const QJsonObject para);
     void delUnit(const QJsonObject para);
+    void getglobalUnits();
     /////////////////////////////////////////////////////
     void newSupplier(const QJsonObject para);
     void modSupplier(const QJsonObject para);
@@ -78,6 +81,8 @@ public:
 signals:
     void showStatusMessage(QString msg,int sec);
     ///////////////////////////////////////////
+    void sig_login(bool);
+    ///////////////////////////////////////////
     void sig_newOrder(Order,bool);
     void sig_modOrder(Order,bool);
     void sig_cancleOrder(Order,bool);
@@ -96,6 +101,7 @@ signals:
     ////////////////////////////////////
     void sig_newUnit(QString,bool);
     void sig_delUnit(QString,bool);
+    void sig_globalUnits(bool);
     ////////////////////////////////////
     void sig_newSupplier(Supplier,bool);
     void sig_modSUpplier(Supplier,bool);
@@ -104,6 +110,7 @@ signals:
 public slots:
 
 private:
+
     void appendEmployee(User user);
     void appendOrder(Order order);
     void appendUnit(QString u);

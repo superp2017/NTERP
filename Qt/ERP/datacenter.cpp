@@ -6,125 +6,146 @@
 #include "customerservice.h"
 #include "unitservice.h"
 #include "supplierservice.h"
+#include "accountservice.h"
+#include "boost/thread.hpp"
+
 
 dataCenter::dataCenter(QObject *parent) : QObject(parent)
 {
-    cur_user.UID="1234";
-    cur_user.Author = "admin";
-    cur_user.Name = "admin";
-    cur_user.CID = "CID001";
-    cur_user.CommpanyName="南通公司";
+//    cur_user.UID="1234";
+//    cur_user.Author = "admin";
+//    cur_user.Name = "admin";
+//    cur_user.CID = "CID001";
+//    cur_user.CommpanyName="南通公司";
 
-    m_units.append("EA");
-    m_units.append("KG");
-    m_batch.append("180410001");
-    m_batch.append("180410002");
-    m_batch.append("180410003");
-    m_batch.append("180410004");
-    m_batch.append("132645004");
-    m_batch.append("52516464");
+//    m_units.append("EA");
+//    m_units.append("KG");
+//    m_batch.append("180410001");
+//    m_batch.append("180410002");
+//    m_batch.append("180410003");
+//    m_batch.append("180410004");
+//    m_batch.append("132645004");
+//    m_batch.append("52516464");
 
-    Materiel m ;
-    m.MaterID = "61013567";
-    m.MaterDes="IMCN/5261097/银白色锌铝涂层";
-    m.CID ="C101";
-    m.CustomName = "上海某某科技公司";
-    m.OrderNum = 1;
-    m.Unit = "吨";
-    m.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
-    m.Status = "0";
-    m_maters.append(m);
+//    Materiel m ;
+//    m.MaterID = "61013567";
+//    m.MaterDes="IMCN/5261097/银白色锌铝涂层";
+//    m.CID ="C101";
+//    m.CustomName = "上海某某科技公司";
+//    m.OrderNum = 1;
+//    m.Unit = "吨";
+//    m.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+//    m.Status = "0";
+//    m_maters.append(m);
 
-    Materiel m1 ;
-    m1.MaterID = "610134207";
-    m1.CID ="C102";
-    m1.MaterDes="C924/项目12法兰焊接/银白色锌铝涂层";
-    m1.CustomName = "昆山某某科技公司";
-    m1.OrderNum = 2;
-    m1.Unit = "KG";
-    m1.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
-    m1.Status = "0";
-    m_maters.append(m1);
+//    Materiel m1 ;
+//    m1.MaterID = "610134207";
+//    m1.CID ="C102";
+//    m1.MaterDes="C924/项目12法兰焊接/银白色锌铝涂层";
+//    m1.CustomName = "昆山某某科技公司";
+//    m1.OrderNum = 2;
+//    m1.Unit = "KG";
+//    m1.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+//    m1.Status = "0";
+//    m_maters.append(m1);
 
-    Materiel m2 ;
-    m2.MaterID = "61013112";
-    m2.CID ="C103";
-    m2.CustomName = "昆山某某科技公司";
-    m2.OrderNum = 2;
-    m2.Unit = "EA";
-    m2.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
-    m2.Status = "1";
-    m2.MaterDes="IMCN/5261097/银白色锌铝涂层";
-    m_maters.append(m2);
+//    Materiel m2 ;
+//    m2.MaterID = "61013112";
+//    m2.CID ="C103";
+//    m2.CustomName = "昆山某某科技公司";
+//    m2.OrderNum = 2;
+//    m2.Unit = "EA";
+//    m2.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+//    m2.Status = "1";
+//    m2.MaterDes="IMCN/5261097/银白色锌铝涂层";
+//    m_maters.append(m2);
 
-    Materiel m3 ;
-    m3.MaterID = "61013204";
-    m3.CID ="C104";
-    m3.CustomName = "张江某某科技公司";
-    m3.CustomName = "昆山某某科技公司";
-    m3.OrderNum = 12;
-    m3.Unit = "EA";
-    m3.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
-    m3.Status = "1";
-    m3.MaterDes="C407/0SEA003061/黑色锌铝涂层";
-    m_maters.append(m3);
+//    Materiel m3 ;
+//    m3.MaterID = "61013204";
+//    m3.CID ="C104";
+//    m3.CustomName = "张江某某科技公司";
+//    m3.CustomName = "昆山某某科技公司";
+//    m3.OrderNum = 12;
+//    m3.Unit = "EA";
+//    m3.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+//    m3.Status = "1";
+//    m3.MaterDes="C407/0SEA003061/黑色锌铝涂层";
+//    m_maters.append(m3);
 
-    Customer c1;
-    c1.CID = "C105";
-    c1.Name="上海某某科技公司";
-    c1.Addr = "祖冲之路2305弄";
-    c1.Bankbranch = "张江支行";
-    c1.BankName = "建设银行";
-    c1.BankNumber="6222100011120320130";
-    c1.ContactCell="138999999999";
-    c1.ContactName="张某某";
-    c1.Note="无";
-    c1.Tel="021-62223123";
-    c1.CertificatesNum="92323232312312312312";
+//    Customer c1;
+//    c1.CID = "C105";
+//    c1.Name="上海某某科技公司";
+//    c1.Addr = "祖冲之路2305弄";
+//    c1.Bankbranch = "张江支行";
+//    c1.BankName = "建设银行";
+//    c1.BankNumber="6222100011120320130";
+//    c1.ContactCell="138999999999";
+//    c1.ContactName="张某某";
+//    c1.Note="无";
+//    c1.Tel="021-62223123";
+//    c1.CertificatesNum="92323232312312312312";
 
-    Customer c2;
-    c2.CID = "C103";
-    c2.Name="昆山某某科技公司";
-    c2.Addr = "祖冲之路2305弄";
-    c2.Bankbranch = "张江支行";
-    c2.BankName = "交通银行";
-    c2.BankNumber="6222100011120320130";
-    c2.ContactCell="1389123123999";
-    c2.ContactName="张某某";
-    c2.Note="无";
-    c2.Tel="021-62223123";
-    c2.CertificatesNum="92322312312312312312";
+//    Customer c2;
+//    c2.CID = "C103";
+//    c2.Name="昆山某某科技公司";
+//    c2.Addr = "祖冲之路2305弄";
+//    c2.Bankbranch = "张江支行";
+//    c2.BankName = "交通银行";
+//    c2.BankNumber="6222100011120320130";
+//    c2.ContactCell="1389123123999";
+//    c2.ContactName="张某某";
+//    c2.Note="无";
+//    c2.Tel="021-62223123";
+//    c2.CertificatesNum="92322312312312312312";
 
-    Customer c3;
-    c3.CID = "C102";
-    c3.Name="南通某某科技公司";
-    c3.Addr = "祖冲之路2305弄";
-    c3.Bankbranch = "张江支行";
-    c3.BankName = "招行银行";
-    c3.BankNumber="623434341120320130";
-    c3.ContactCell="1389131231239999";
-    c3.ContactName="张某某";
-    c3.Note="无";
-    c3.Tel="021-62223123";
-    c3.CertificatesNum="92323232312312312312";
+//    Customer c3;
+//    c3.CID = "C102";
+//    c3.Name="南通某某科技公司";
+//    c3.Addr = "祖冲之路2305弄";
+//    c3.Bankbranch = "张江支行";
+//    c3.BankName = "招行银行";
+//    c3.BankNumber="623434341120320130";
+//    c3.ContactCell="1389131231239999";
+//    c3.ContactName="张某某";
+//    c3.Note="无";
+//    c3.Tel="021-62223123";
+//    c3.CertificatesNum="92323232312312312312";
 
-    m_customers.append(c1);
-    m_customers.append(c2);
-    m_customers.append(c3);
+//    m_customers.append(c1);
+//    m_customers.append(c2);
+//    m_customers.append(c3);
 
 
-    m_authors.push_back("操作员");
-    m_authors.push_back("仓库");
-    m_authors.push_back("财务");
-    m_authors.push_back("管理员");
-    m_authors.push_back("超级管理员");
+//    m_authors.push_back("操作员");
+//    m_authors.push_back("仓库");
+//    m_authors.push_back("财务");
+//    m_authors.push_back("管理员");
+//    m_authors.push_back("超级管理员");
 
-    m_departments.push_back("生产部");
-    m_departments.push_back("仓库部");
-    m_departments.push_back("行政部");
-    m_departments.push_back("财务部");
-    m_departments.push_back("销售部");
+//    m_departments.push_back("生产部");
+//    m_departments.push_back("仓库部");
+//    m_departments.push_back("行政部");
+//    m_departments.push_back("财务部");
+//    m_departments.push_back("销售部");
+}
 
+void dataCenter::initData()
+{
+    //////////////初始化所有订单///////////////////
+    boost::thread (boost::bind(&dataCenter::getglobalOrders,dataCenter::instance())).detach();
+
+    //////////////初始化所有单位///////////////////
+    boost::thread (boost::bind(&dataCenter::getglobalUnits,dataCenter::instance())).detach();
+}
+
+void dataCenter::login(const QJsonObject para)
+{
+   bool ok = false;
+   User u= accountService::login(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+   if(ok){
+       setCurUser(u);
+   }
+   emit sig_login(ok);
 }
 
 void dataCenter::newUser(const QJsonObject para)
@@ -193,7 +214,7 @@ void dataCenter::delUser(const QJsonObject para)
 
 void dataCenter::newOrder(const QJsonObject para)
 {
-#if 0
+#if 1
     bool isOK   = false;
     Order order = OrderService::newOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(isOK){
@@ -203,7 +224,7 @@ void dataCenter::newOrder(const QJsonObject para)
     }
     emit sig_newOrder(order,false);
 #endif
-#if 1
+#if 0
     Order order = OrderService::fromJsonObject(para);
     order.OrderID = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
     order.ProduceID =  QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch()/130);
@@ -417,6 +438,13 @@ void dataCenter::delUnit(const QJsonObject para)
     QString unit = UnitService::fromJsonObject(para);
     m_units.removeOne(unit);
     emit sig_delUnit(unit,true);
+}
+
+void dataCenter::getglobalUnits()
+{
+    bool ok =false;
+    m_units = UnitService::getAllUnits(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_globalUnits(ok);
 }
 
 void dataCenter::newSupplier(const QJsonObject para)

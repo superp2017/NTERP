@@ -24,7 +24,6 @@ public:
 
 public slots:
     void new_order();
-    void get_AllOrders();
 private slots:
     void on_pushButton_new_clicked();
     void on_pushButton_mod_clicked();

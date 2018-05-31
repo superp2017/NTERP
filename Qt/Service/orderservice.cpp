@@ -15,12 +15,12 @@ OrderService::OrderService()
 
 Order OrderService::newOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-#if 1
+#if 0
     Order order = fromJsonObject(para);
     ok = true;
     return order;
 #endif
-#if 0
+#if 1
     Order order;
     std::string url = Net_NewOrder;
     bool r   = false;
