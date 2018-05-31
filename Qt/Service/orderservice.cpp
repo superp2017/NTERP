@@ -33,7 +33,7 @@ Order OrderService::newOrder(const QJsonObject para, bool &ok, QString hostname,
         }
     }
     if(!ret.ret)
-        qDebug()<<"newPlan ret is not 0";
+        qDebug()<<"newOrder ret is not 0";
     ok = false;
     return order;
 #endif
@@ -137,7 +137,7 @@ Order OrderService::modOrderPrice(const QJsonObject para, bool &ok, QString host
         }
     }
     if(!ret.ret)
-        qDebug()<<"modOrder ret is not 0";
+        qDebug()<<"modOrder ret is not 0"<<endl;
     ok = false;
     return order;
 #endif
@@ -161,7 +161,7 @@ QVector<Order> OrderService::getAllOrders(bool &ok,QString hostname, QString hos
         return data;
     }
     if(!ret.ret)
-        qDebug()<<"getAllOrders ret is not 0";
+        qDebug()<<"getAllOrders ret is not 0"<<endl;
     ok = false;
     return data;
 }

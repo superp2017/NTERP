@@ -69,7 +69,7 @@ void DialogOrderPrint::initData(QString status)
 void DialogOrderPrint::updateData(QString status)
 {
     cur_Status = status;
-    m_orders = dataCenter::instance()->StatusOrders(status);
+    m_orders = dataCenter::instance()->pub_StatusOrders(status);
     removeAllRow();
     m_checkboxs.clear();
     for(Order o:m_orders){
@@ -83,7 +83,7 @@ QVector<Order> DialogOrderPrint::getSelectOrders()
 {
     QVector<Order> ls;
     if(m_orders.size()!=m_checkboxs.size()){
-        dataCenter::instance()->showMessage("操作失败!",3000);
+        dataCenter::instance()->pub_showMessage("操作失败!",3000);
         return ls;
     }
 
@@ -107,9 +107,9 @@ void DialogOrderPrint::on_pushButton_export_clicked()
     if(!filepath.isEmpty()){
         boost::thread t(boost::bind(&DialogOrderPrint::doExport,this,ls,filepath));
         t.detach();
-        dataCenter::instance()->showLoadding("正在导出...",10000);
+        dataCenter::instance()->pub_showLoadding("正在导出...",10000);
     }else{
-        dataCenter::instance()->showMessage("保存路径为空!",3000);
+        dataCenter::instance()->pub_showMessage("保存路径为空!",3000);
     }
 }
 
@@ -136,12 +136,12 @@ void DialogOrderPrint::checkBox()
 
 void DialogOrderPrint::exportCb(bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
         done(123);
-        dataCenter::instance()->showMessage("导出成功!",3000);
+        dataCenter::instance()->pub_showMessage("导出成功!",3000);
     }else{
-        dataCenter::instance()->showMessage("导出失败!",3000);
+        dataCenter::instance()->pub_showMessage("导出失败!",3000);
     }
 }
 
@@ -160,9 +160,9 @@ void DialogOrderPrint::on_pushButton_print_clicked()
         return;
     }
     if(OrderService::printOrders(ls)){
-        dataCenter::instance()->showMessage("打印成功!",3000);
+        dataCenter::instance()->pub_showMessage("打印成功!",3000);
     }else{
-        dataCenter::instance()->showMessage("打印失败!",3000);
+        dataCenter::instance()->pub_showMessage("打印失败!",3000);
     }
     done(123);
 }

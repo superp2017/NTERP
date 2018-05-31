@@ -48,13 +48,13 @@ void DialogNewCustom::on_pushButton_ok_clicked()
 
     QJsonObject para = CustomerService::toJsonObject(cus);
     if(m_isNewMod){
-        boost::thread t(boost::bind(&dataCenter::newCustomer,dataCenter::instance(),para));
+        boost::thread t(boost::bind(&dataCenter::net_newCustomer,dataCenter::instance(),para));
         t.detach();
     }else{
-        boost::thread t(boost::bind(&dataCenter::modCustomer,dataCenter::instance(),para));
+        boost::thread t(boost::bind(&dataCenter::net_modCustomer,dataCenter::instance(),para));
         t.detach();
     }
-    dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
 
 void DialogNewCustom::on_pushButton_cancel_clicked()
@@ -78,13 +78,13 @@ void DialogNewCustom::on_pushButton_select_logo_clicked()
 
 void DialogNewCustom::modCustomerCb(Customer c, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("修改成功!",4000);
+        dataCenter::instance()->pub_showMessage("修改成功!",4000);
         curCustom = c;
         done(123);
     }else{
-        dataCenter::instance()->showMessage("修改失败!",4000);
+        dataCenter::instance()->pub_showMessage("修改失败!",4000);
         curCustom = c;
         done(0);
     }
@@ -92,13 +92,13 @@ void DialogNewCustom::modCustomerCb(Customer c, bool ok)
 
 void DialogNewCustom::newCustomerCb(Customer c, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("新增成功!",4000);
+        dataCenter::instance()->pub_showMessage("新增成功!",4000);
         curCustom = c;
         done(123);
     }else{
-        dataCenter::instance()->showMessage("增加失败!",4000);
+        dataCenter::instance()->pub_showMessage("增加失败!",4000);
         curCustom = c;
         done(0);
     }

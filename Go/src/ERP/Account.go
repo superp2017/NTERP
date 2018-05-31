@@ -36,11 +36,11 @@ func Login(session *JsHttp.Session) {
 	}
 	data := &Employee{}
 	if err := JsRedis.Redis_hget(Hash_Employee, UID, data); err != nil {
-		JsLogger.Error(err.Error())
+		JsLogger.ErrorLog("get Employee filed,UID=%s\n",UID)
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	session.Forward("1", "login success\n", data)
+	session.Forward("0", "login success\n", data)
 }
 
 //新建账号

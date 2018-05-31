@@ -19,7 +19,7 @@ DialogNewUser::DialogNewUser(QWidget *parent) :
     ui->dateEdit_in_time->setDisplayFormat("yyyy-MM-dd");
     ui->dateEdit_in_time->setCalendarPopup(true);
 
-    initComBox(dataCenter::instance()->getDepartments(),dataCenter::instance()->getAuthors());
+    initComBox(dataCenter::instance()->pub_getDepartments(),dataCenter::instance()->pub_getAuthors());
 
     connect(dataCenter::instance(),SIGNAL(sig_newEmployee(User,bool)),this,SLOT(creatUserCb(User,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modEmployee(User,bool)),this,SLOT(modUserCb(User,bool)));
@@ -124,13 +124,13 @@ void DialogNewUser::on_pushButton_creat_clicked()
 
     QJsonObject para = UserService::toJsonObject(user);
     if(m_isNewMode){
-        boost::thread t(boost::bind(&dataCenter::newUser,dataCenter::instance(),para));
+        boost::thread t(boost::bind(&dataCenter::net_newUser,dataCenter::instance(),para));
         t.detach();
     }else{
-        boost::thread t(boost::bind(&dataCenter::modUser,dataCenter::instance(),para));
+        boost::thread t(boost::bind(&dataCenter::net_modUser,dataCenter::instance(),para));
         t.detach();
     }
-    dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
 
 void DialogNewUser::on_pushButton_cancle_clicked()
@@ -140,13 +140,13 @@ void DialogNewUser::on_pushButton_cancle_clicked()
 
 void DialogNewUser::creatUserCb(User user, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("创建成功!",4000);
+        dataCenter::instance()->pub_showMessage("创建成功!",4000);
         m_curUser = user;
         done(123);
     }else{
-        dataCenter::instance()->showMessage("创建失败!",4000);
+        dataCenter::instance()->pub_showMessage("创建失败!",4000);
         m_curUser = user;
         done(0);
     }
@@ -154,13 +154,13 @@ void DialogNewUser::creatUserCb(User user, bool ok)
 
 void DialogNewUser::modUserCb(User user, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("修改成功!",4000);
+        dataCenter::instance()->pub_showMessage("修改成功!",4000);
         m_curUser = user;
         done(123);
     }else{
-        dataCenter::instance()->showMessage("修改失败!",4000);
+        dataCenter::instance()->pub_showMessage("修改失败!",4000);
         m_curUser = user;
         done(0);
     }

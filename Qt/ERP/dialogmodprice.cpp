@@ -33,9 +33,9 @@ void DialogModPrice::on_pushButton_ok_clicked()
         return ;
     }
     curOrder.Money = money;
-    boost::thread t(boost::bind(&dataCenter::modOrderPrice,dataCenter::instance(),OrderService::toJsonObject(curOrder)));
+    boost::thread t(boost::bind(&dataCenter::net_modOrderPrice,dataCenter::instance(),OrderService::toJsonObject(curOrder)));
     t.detach();
-    dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 
 }
 
@@ -46,13 +46,13 @@ void DialogModPrice::on_pushButton__cancle_clicked()
 
 void DialogModPrice::modOrderPriceCb(Order order, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("改价成功!",4000);
+        dataCenter::instance()->pub_showMessage("改价成功!",4000);
         curOrder = order;
         done(123);
     }else{
-        dataCenter::instance()->showMessage("改价失败!",4000);
+        dataCenter::instance()->pub_showMessage("改价失败!",4000);
         curOrder = order;
         done(0);
     }

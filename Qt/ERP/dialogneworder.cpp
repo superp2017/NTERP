@@ -16,16 +16,14 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
     m_isNewMode(true)
 {
     ui->setupUi(this);
-    initCombox(dataCenter::instance()->Customers(),\
-               dataCenter::instance()->Batchs(),\
-               dataCenter::instance()->Materiels(),\
-               dataCenter::instance()->Units());
+    initCombox(dataCenter::instance()->pub_Customers(),\
+               dataCenter::instance()->pub_Batchs(),\
+               dataCenter::instance()->pub_Units());
 
     connect(dataCenter::instance(),SIGNAL(sig_newOrder(Order,bool)),this,SLOT(newOrderCb(Order,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modOrder(Order,bool)),this,SLOT(modOrderCb(Order,bool)));
 
     connect(ui->comboBox_customerName,SIGNAL(currentIndexChanged(QString)),this,SLOT(customChange(QString)));
-    connect(ui->comboBox_MaterielID,SIGNAL(currentIndexChanged(QString)),this,SLOT(materielChange(QString)));
     connect(ui->comboBox_unit,SIGNAL(currentIndexChanged(QString)),this,SLOT(unitChange(QString)));
     changeModel();
 }
@@ -36,8 +34,7 @@ DialogNewOrder::~DialogNewOrder()
 }
 
 
-void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch, \
-                                QVector<Materiel > materID, QVector<QString> unit)
+void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch,  QVector<QString> unit)
 
 {
     ui->comboBox_orderType->clear();
@@ -63,16 +60,6 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch
     ui->comboBox_CustomBatch->setEditable(true);
     ui->comboBox_CustomBatch->setCompleter(completerBatch);
 
-    ui->comboBox_MaterielID->clear();
-    ui->comboBox_MaterielID->setEditable(true);
-    QStringList materlist;
-    for(Materiel c:materID){
-        materlist<<c.MaterID;
-        ui->comboBox_MaterielID->addItem(c.MaterID,c.MaterDes);
-    }
-
-    QCompleter *completerMater = new QCompleter(materlist, this);
-    ui->comboBox_MaterielID->setCompleter(completerMater);
 
     QCompleter *completerUnit = new QCompleter(unit.toList(), this);
     ui->comboBox_unit->clear();
@@ -81,11 +68,10 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch
     ui->comboBox_unit->setCompleter(completerUnit);
 
 
-    ui->comboBox_MaterielID->addItem(ItemNewMater);
+
     ui->comboBox_customerName->addItem(ItemNewCustom);
     ui->comboBox_unit->addItem(ItemNewUnit);
     ui->comboBox_customerName->setCurrentIndex(-1);
-    ui->comboBox_MaterielID->setCurrentIndex(-1);
 }
 
 void DialogNewOrder::initOrder(Order order)
@@ -99,7 +85,6 @@ void DialogNewOrder::initOrder(Order order)
     if(order.OrderType=="2"){
         ui->comboBox_orderType->setCurrentIndex(2);
     }
-    ui->comboBox_MaterielID->setCurrentText(order.MaterielID);
     ui->lineEdit_MaterielDes->setText(order.MaterielDes);
     ui->comboBox_unit->setCurrentText(order.Unit);
     ui->spinBox_num->setValue(order.OrderNum);
@@ -113,7 +98,6 @@ void DialogNewOrder::initOrder(Order order)
 void DialogNewOrder::clearUI()
 {
     ui->comboBox_orderType->setCurrentIndex(0);
-    ui->comboBox_MaterielID->setCurrentText("");
     ui->lineEdit_MaterielDes->setText("");
     ui->comboBox_unit->setCurrentIndex(0);
     ui->spinBox_num->setValue(0);
@@ -146,15 +130,14 @@ void DialogNewOrder::on_pushButton_ok_clicked()
 {
     Order  order;
     if(m_isNewMode){
-        order.UID = dataCenter::instance()->CurUser().UID ;
-        order.UserName = dataCenter::instance()->CurUser().Name;
+        order.UID = dataCenter::instance()->pub_CurUser().UID ;
+        order.UserName = dataCenter::instance()->pub_CurUser().Name;
         order.CustomID = ui->comboBox_customerName->currentData().toString();
         order.CustomName = ui->comboBox_customerName->currentText();
     }else{
         order = curorder;
     }
     order.OrderType = ui->comboBox_orderType->currentData().toString();
-    order.MaterielID = ui->comboBox_MaterielID->currentText();
     order.MaterielDes = ui->lineEdit_MaterielDes->toPlainText();
     order.Unit = ui->comboBox_unit->currentText();
     order.CustomBatch = ui->comboBox_CustomBatch->currentText();
@@ -166,24 +149,24 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     }
     QJsonObject para = OrderService::toJsonObject(order);
     if(m_isNewMode){
-        boost::thread t(boost::bind(&dataCenter::newOrder,dataCenter::instance(),para));
+        boost::thread t(boost::bind(&dataCenter::net_newOrder,dataCenter::instance(),para));
         t.detach();
     }else{
-        boost::thread t(boost::bind(&dataCenter::modOrder,dataCenter::instance(),para));
+        boost::thread t(boost::bind(&dataCenter::net_modOrder,dataCenter::instance(),para));
         t.detach();
     }
-    dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
 
 void DialogNewOrder::newOrderCb(Order order,bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("下单成功!",4000);
+        dataCenter::instance()->pub_showMessage("下单成功!",4000);
         curorder = order;
         done(123);
     }else{
-        dataCenter::instance()->showMessage("下单失败!",4000);
+        dataCenter::instance()->pub_showMessage("下单失败!",4000);
         curorder = order;
         done(0);
     }
@@ -191,13 +174,13 @@ void DialogNewOrder::newOrderCb(Order order,bool ok)
 
 void DialogNewOrder::modOrderCb(Order order,bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("修改成功!",4000);
+        dataCenter::instance()->pub_showMessage("修改成功!",4000);
         curorder = order;
         done(123);
     }else{
-        dataCenter::instance()->showMessage("修改失败!",4000);
+        dataCenter::instance()->pub_showMessage("修改失败!",4000);
         curorder = order;
         done(0);
     }
@@ -209,10 +192,6 @@ bool DialogNewOrder::checkOrder(Order order)
 
     if(order.CustomName==""){
         QToolTip::showText(ui->comboBox_customerName->mapToGlobal(QPoint(100, 0)), "客户不能为空!");
-        return false;
-    }
-    if(order.MaterielID==""){
-        QToolTip::showText(ui->comboBox_MaterielID->mapToGlobal(QPoint(100, 0)), "物料编号不能为空!");
         return false;
     }
 
@@ -231,8 +210,7 @@ bool DialogNewOrder::checkOrder(Order order)
         return false;
     }
 
-
-    if(!dataCenter::instance()->checkCustomerExist(order.CustomName)){
+    if(!dataCenter::instance()->pub_checkCustomerExist(order.CustomName)){
         QToolTip::showText(ui->comboBox_customerName->mapToGlobal(QPoint(100, 0)), "该客户不存在!");
         return false;
     }
@@ -248,10 +226,18 @@ Order DialogNewOrder::getCurorder() const
 
 
 
-
 void DialogNewOrder::on_pushButton_cancel_clicked()
 {
     done(-1);
+}
+
+void DialogNewOrder::on_pushButton_edit_des_clicked()
+{
+    DialogNewMateriel mater;
+    if(mater.exec()==123){
+        Materiel ma = mater.getMater();
+        ui->lineEdit_MaterielDes->setText(ma.MaterDes);
+    }
 }
 
 void DialogNewOrder::customChange(QString name)
@@ -271,26 +257,7 @@ void DialogNewOrder::customChange(QString name)
 
 }
 
-void DialogNewOrder::materielChange(QString mater)
-{
 
-    if(mater==ItemNewMater){
-        DialogNewMateriel mater;
-        if(mater.exec()==123){
-            ui->comboBox_MaterielID->blockSignals(true);
-            Materiel ma = mater.getMater();
-            ui->comboBox_MaterielID->insertItem(ui->comboBox_MaterielID->count()-1,ma.MaterID,ma.MaterDes);
-            ui->comboBox_MaterielID->setCurrentIndex(ui->comboBox_MaterielID->count()-2);
-            ui->lineEdit_MaterielDes->setText(ma.MaterDes);
-            ui->comboBox_MaterielID->blockSignals(false);
-        }else{
-            ui->comboBox_MaterielID->setCurrentIndex(-1);
-        }
-    }else{
-        ui->lineEdit_MaterielDes->setText(ui->comboBox_MaterielID->currentData().toString());
-    }
-
-}
 
 void DialogNewOrder::unitChange(QString un)
 {
@@ -307,3 +274,5 @@ void DialogNewOrder::unitChange(QString un)
         }
     }
 }
+
+

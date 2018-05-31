@@ -21,7 +21,7 @@ User accountService::login(const QJsonObject para, bool &ok, QString hostname, Q
         }
     }
     if(!ret.ret)
-        qDebug()<<"login ret is not 0";
+        qDebug()<<"login ret is not 0"<<endl;
     ok = false;
     return u;
 }

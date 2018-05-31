@@ -1,6 +1,8 @@
 ﻿#include "supplierservice.h"
 #include <QJsonArray>
 #include "excelservice.h"
+#include "http.h"
+#include <QDebug>
 
 
 SupplierService::SupplierService()
@@ -20,6 +22,28 @@ Supplier SupplierService::modSupplier(const QJsonObject para, bool &ok, QString 
     Supplier sup;
     ok = true;
     return sup;
+}
+
+QVector<Supplier> SupplierService::getAllSupplierls(bool &ok, QString hostname, QString hostport)
+{
+    QVector<Supplier> data;
+    std::string url = Net_GlobalSuppliers;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isArray()){
+            for(QJsonValue v:ret.data.toArray()){
+                Supplier  c = fromJsonObject(v.toObject());
+                data.push_back(c);
+            }
+            ok = true;
+            return  data;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"getAllSupplierls ret is not 0"<<endl;
+    ok = false;
+    return data;
 }
 
 QJsonObject SupplierService::toJsonObject(Supplier super)

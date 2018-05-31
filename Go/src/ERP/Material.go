@@ -1,6 +1,9 @@
 package main
 
-import "JsGo/JsStore/JsRedis"
+import (
+	"JsGo/JsStore/JsRedis"
+	"JsGo/JsHttp"
+)
 
 type Material struct {
 	MaterID    string //物料编号
@@ -74,4 +77,20 @@ func cancleMaterial(id string) error {
 //删除物料
 func delMaterial(id string) error {
 	return JsRedis.Redis_hdel(Hash_Material, id)
+}
+
+
+//获取所有供应商列表
+func GetAllMaterial(session *JsHttp.Session)  {
+	list,err:=JsRedis.Redis_hkeys(Hash_Material)
+	data := []*Material{}
+	if err==nil{
+		for _,v:=range list{
+			d := &Material{}
+			if e:=JsRedis.Redis_hget(Hash_Material,v,d);e==nil{
+				data = append(data,d)
+			}
+		}
+	}
+	session.Forward("0","success",data)
 }

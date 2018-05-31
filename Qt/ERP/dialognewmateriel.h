@@ -35,8 +35,11 @@ private slots:
 
     void on_pushButton_clear_clicked();
 
+    void comBoxdes_change();
+
+
 private:
-    void initCommbox(QVector<Customer> cus);
+    void initCommbox(QVector<Customer> cus,QVector<Materiel> ma);
 
     Ui::DialogNewMateriel *ui;
     Materiel mater;

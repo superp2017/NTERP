@@ -26,15 +26,15 @@ void DialogNewUnit::on_pushButton__ok_clicked()
         QToolTip::showText(ui->lineEdit->mapToGlobal(QPoint(100, 0)), "单位不能为空!");
         return ;
     }
-    if(dataCenter::instance()->checkUnitExist(cur_unit)){
+    if(dataCenter::instance()->pub_checkUnitExist(cur_unit)){
         QToolTip::showText(ui->lineEdit->mapToGlobal(QPoint(100, 0)), "此单位已经存在!");
         return ;
     }
 
-    boost::thread t(boost::bind(&dataCenter::newUnit,dataCenter::instance(),UnitService::toJsonObject(cur_unit)));
+    boost::thread t(boost::bind(&dataCenter::net_newUnit,dataCenter::instance(),UnitService::toJsonObject(cur_unit)));
     t.detach();
 
-    dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
 
 void DialogNewUnit::on_pushButton_cancle_clicked()
@@ -44,13 +44,13 @@ void DialogNewUnit::on_pushButton_cancle_clicked()
 
 void DialogNewUnit::newUnitCb(QString unit, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("添加成功!",4000);
+        dataCenter::instance()->pub_showMessage("添加成功!",4000);
         cur_unit = unit;
         done(123);
     }else{
-        dataCenter::instance()->showMessage("添加失败!",4000);
+        dataCenter::instance()->pub_showMessage("添加失败!",4000);
         cur_unit = unit;
         done(0);
     }

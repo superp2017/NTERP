@@ -17,7 +17,6 @@ const QString Status_All     = "Status_All";        //所有订单
 
 const QString ItemNewCustom("新增客户...");
 const QString ItemNewUnit("新增单位...");
-const QString ItemNewMater("物料编辑...");
 
 const QString ItemNewDepartment("部门设置...");
 const QString ItemNewAuthor("权限设置...");

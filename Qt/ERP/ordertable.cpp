@@ -213,7 +213,7 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                     if(item==NULL)
                         return;
                     bool exist =false;
-                    Order cur_order = dataCenter::instance()->getOrder(item->text(),exist);
+                    Order cur_order = dataCenter::instance()->pub_getOrder(item->text(),exist);
                     if(!exist){
                         return;
                     }
@@ -266,7 +266,7 @@ void OrderTable::doubleclickRow(int row, int ool)
     if(item==NULL)
         return;
     bool exist =false;
-    Order cur_order = dataCenter::instance()->getOrder(item->text(),exist);
+    Order cur_order = dataCenter::instance()->pub_getOrder(item->text(),exist);
     if(!exist){
         return;
     }

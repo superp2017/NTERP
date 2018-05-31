@@ -31,7 +31,7 @@ void FormUnitManage::itemClicked(QListWidgetItem *item)
 
 void FormUnitManage::initItem()
 {
-    ui->listWidget->addItems(dataCenter::instance()->Units().toList());
+    ui->listWidget->addItems(dataCenter::instance()->pub_Units().toList());
 }
 
 
@@ -44,9 +44,9 @@ void FormUnitManage::on_pushButton_exit_clicked()
 void FormUnitManage::on_pushButton_del_clicked()
 {
     if(ui->listWidget->currentItem()!=NULL){
-        boost::thread t(boost::bind(&dataCenter::delUnit,dataCenter::instance(),UnitService::toJsonObject(ui->listWidget->currentItem()->text())));
+        boost::thread t(boost::bind(&dataCenter::net_delUnit,dataCenter::instance(),UnitService::toJsonObject(ui->listWidget->currentItem()->text())));
         t.detach();
-        dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
     }
 }
 
@@ -62,14 +62,14 @@ void FormUnitManage::on_pushButton_add_clicked()
 
 void FormUnitManage::delUnitCb(QString unit, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
         if(ui->listWidget->currentItem()!=NULL){
 //            ui->listWidget->removeItemWidget(ui->listWidget->currentItem());
             ui->listWidget->takeItem(ui->listWidget->currentRow());
-            dataCenter::instance()->showMessage("删除成功!",4000);
+            dataCenter::instance()->pub_showMessage("删除成功!",4000);
         }
     }else{
-        dataCenter::instance()->showMessage("删除失败!",4000);
+        dataCenter::instance()->pub_showMessage("删除失败!",4000);
     }
 }

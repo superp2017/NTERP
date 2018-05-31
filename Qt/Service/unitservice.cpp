@@ -29,7 +29,7 @@ QString UnitService::newUnit(const QJsonObject para, bool &ok, QString hostname,
         }
     }
     if(!ret.ret)
-        qDebug()<<"newPlan ret is not 0";
+        qDebug()<<"newPlan ret is not 0"<<endl;
     ok = false;
     return unit;
 #endif
@@ -51,7 +51,7 @@ QVector<QString> UnitService::getAllUnits(bool &ok, QString hostname, QString ho
         }
     }
     if(!ret.ret)
-        qDebug()<<"newPlan ret is not 0";
+        qDebug()<<"getAllUnits ret is not 0"<<endl;
     ok = false;
     return unit;
 }

@@ -4,6 +4,9 @@
 #include "excelservice.h"
 #include <QFileDialog>
 #include <QDir>
+#include <QDebug>
+
+#include "http.h"
 
 UserService::UserService()
 {
@@ -63,6 +66,28 @@ User UserService::delUser(const QJsonObject para, bool &ok, QString hostname, QS
     ok = true;
     return user;
 #endif
+}
+
+QVector<User> UserService::getAllUsers(bool &ok, QString hostname, QString hostport)
+{
+    QVector<User> data;
+    std::string url = Net_GlobalEmployee;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isArray()){
+            for(QJsonValue v:ret.data.toArray()){
+                User  c = fromJsonObject(v.toObject());
+                data.push_back(c);
+            }
+            ok = true;
+            return  data;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"getAllUsers ret is not 0"<<endl;
+    ok = false;
+    return data;
 }
 
 

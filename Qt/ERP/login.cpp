@@ -49,14 +49,14 @@ void NLogin::do_login(QString acc, QString pwd)
     QJsonObject para;
     para.insert("Account",acc);
     para.insert("Code",pwd);
-    boost::thread t(boost::bind(&dataCenter::login,dataCenter::instance(),para));
+    boost::thread t(boost::bind(&dataCenter::net_login,dataCenter::instance(),para));
     t.detach();
-    dataCenter::instance()->showMessage("正在登录...",3000);
+    dataCenter::instance()->pub_showMessage("正在登录...",3000);
 }
 
 void NLogin::loginCb(bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(!ok){
         QMessageBox msgBox;
         msgBox.setText("登录失败!");

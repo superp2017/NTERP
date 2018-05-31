@@ -76,16 +76,16 @@ OrderManager::~OrderManager()
 
 void OrderManager::updataData()
 {
-    m_tab_new->initOrder(dataCenter::instance()->StatusOrders(Status_New));
-    m_tab_success->initOrder(dataCenter::instance()->StatusOrders(Status_Success));
-    m_tab_all->initOrder(dataCenter::instance()->StatusOrders(Status_All));
+    m_tab_new->initOrder(dataCenter::instance()->pub_StatusOrders(Status_New));
+    m_tab_success->initOrder(dataCenter::instance()->pub_StatusOrders(Status_Success));
+    m_tab_all->initOrder(dataCenter::instance()->pub_StatusOrders(Status_All));
 }
 
 
 void OrderManager::orderClick(QString orderID)
 {
     bool exist =false;
-    cur_order = dataCenter::instance()->getOrder(orderID,exist);
+    cur_order = dataCenter::instance()->pub_getOrder(orderID,exist);
     if(!exist){
         return;
     }
@@ -196,9 +196,9 @@ void OrderManager::on_pushButton_cancle_clicked()
     case QMessageBox::Ok:
     {
         // Save was clicked
-        boost::thread t(boost::bind(&dataCenter::cancleOrder,dataCenter::instance(),OrderService::toJsonObject(cur_order)));
+        boost::thread t(boost::bind(&dataCenter::net_cancleOrder,dataCenter::instance(),OrderService::toJsonObject(cur_order)));
         t.detach();
-        dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
         break;
     }
     case QMessageBox::Cancel:
@@ -226,9 +226,9 @@ void OrderManager::on_pushButton_success_clicked()
     case QMessageBox::Ok:
     {
         // Save was clicked
-        boost::thread t(boost::bind(&dataCenter::finishOrder,dataCenter::instance(),OrderService::toJsonObject(cur_order)));
+        boost::thread t(boost::bind(&dataCenter::net_finishOrder,dataCenter::instance(),OrderService::toJsonObject(cur_order)));
         t.detach();
-        dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
         break;
     }
     case QMessageBox::Cancel:
@@ -243,19 +243,19 @@ void OrderManager::on_pushButton_success_clicked()
 void OrderManager::on_pushButton_reflash_clicked()
 {
     clearCurOrder();
-    boost::thread t(boost::bind(&dataCenter::getglobalOrders,dataCenter::instance()));
+    boost::thread t(boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance()));
     t.detach();
-    dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
 
 void OrderManager::GlobalOrdersCb(bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("刷新订单成功!",4000);
+        dataCenter::instance()->pub_showMessage("刷新订单成功!",4000);
         updataData();
     }else{
-        dataCenter::instance()->showMessage("刷新订单失败!",4000);
+        dataCenter::instance()->pub_showMessage("刷新订单失败!",4000);
     }
 }
 
@@ -293,26 +293,26 @@ void OrderManager::on_pushButton_print_clicked()
 
 void OrderManager::cancleOrderCb(Order order, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("取消成功!",4000);
+        dataCenter::instance()->pub_showMessage("取消成功!",4000);
         m_tab_new->removeOrder(order);
         m_tab_all->modOrder(order);
     }else{
-        dataCenter::instance()->showMessage("取消失败!",4000);
+        dataCenter::instance()->pub_showMessage("取消失败!",4000);
     }
 }
 
 void OrderManager::finishOrderCb(Order order, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("出库成功!",4000);
+        dataCenter::instance()->pub_showMessage("出库成功!",4000);
         m_tab_new->removeOrder(order);
         m_tab_success->appendOrder(order);
         m_tab_all->modOrder(order);
     }else{
-        dataCenter::instance()->showMessage("出库失败!",4000);
+        dataCenter::instance()->pub_showMessage("出库失败!",4000);
     }
 }
 

@@ -5,6 +5,8 @@
 #include <QString>
 #include <QVector>
 #include <QJsonValue>
+#include <QJsonArray>
+#include <QDebug>
 
 
 #if defined(SERVICE_LIBRARY)
@@ -14,7 +16,7 @@
 #endif
 
 const std::string  Net_Login="/login";                      //用户登录
-const std::string  Net_NewUser="/newuser";                  //新建用户
+
 
 const std::string  Net_NewOrder="/neworder";                //新建订单
 const std::string  Net_ModOrder="/modorder";                //修改订单
@@ -26,17 +28,30 @@ const std::string  Net_ModOrderPrice="/modorderprice";      //修改订单价格
 const std::string  Net_GlobalOrders="/getglobalorders";     //获取所有订单
 
 
+const std::string  Net_NewCustomer="/newcustomer";          //新建客户
+const std::string  Net_ModCustomer="/modcustomer";          //修改客户
+const std::string  Net_DelCustomer="/delcustomer";          //删除客户
+const std::string  Net_GlobalCustomers="/getallcustomers";  //获取所有客户
 
 
+const std::string  Net_NewSupplier="/newsupplier";          //新增一个供应商
+const std::string  Net_ModSupplier="/modsupplier";          //修改供应商
+const std::string  Net_DelSupplier="/delsupplier";          //删除一个供应商
+const std::string  Net_GlobalSuppliers="/getallsuppliers";  //获取所有供应商
 
-const std::string  Net_GetAllOrder="/getglobalorders";   //获取所有订单
+
+const std::string  Net_NewEmployee="/newemployee";          //新建一个员工
+const std::string  Net_ModEmployee="/modemployee" ;         //修改员工信息
+const std::string  Net_DelEmployee="/delemployee" ;         //删除一个员工
+const std::string  Net_GlobalEmployee="/getallemployeess";  //获取所有的员工信息
 
 
-const std::string  Net_NewCustomer="/newcustomer";       //新建客户
-const std::string  Net_NewMateril="/newmateriel";        //新建物料
+const std::string  Net_GetAllMateril="/getallmaterials";    //获取所有材料
 
-const std::string  Net_NewUnit="/newunit";               //新建单位
-const std::string  Net_GlobalUnit="/getallunts";         //获取所有单位
+
+const std::string  Net_NewUnit="/newunit";                  //新建单位
+const std::string  Net_DelUnit="/delunit";                  //删除单位
+const std::string  Net_GlobalUnit="/getallunits";           //获取所有单位
 
 
 struct Ret{

@@ -66,7 +66,7 @@ void FormSupplierManage::on_pushButton_mod_clicked()
     bool ok = false;
     for(QCheckBox *bo:m_boxs){
         if(bo->isChecked()){
-            c = dataCenter::instance()->getSupplier(bo->text(),ok);
+            c = dataCenter::instance()->pub_getSupplier(bo->text(),ok);
             break;
         }
     }
@@ -88,16 +88,16 @@ void FormSupplierManage::on_pushButton_del_clicked()
     bool ok = false;
     for(QCheckBox *bo:m_boxs){
         if(bo->isChecked()){
-            c = dataCenter::instance()->getSupplier(bo->text(),ok);
+            c = dataCenter::instance()->pub_getSupplier(bo->text(),ok);
             break;
         }
     }
     if(!ok){
         return;
     }
-    boost::thread t(boost::bind(&dataCenter::delSupplier,dataCenter::instance(),SupplierService::toJsonObject(c)));
+    boost::thread t(boost::bind(&dataCenter::net_delSupplier,dataCenter::instance(),SupplierService::toJsonObject(c)));
     t.detach();
-    dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 
 }
 
@@ -112,7 +112,7 @@ void FormSupplierManage::on_pushButton_export_clicked()
             QCheckBox *box = reinterpret_cast<QCheckBox *>(w);
             if(box->isChecked()){
                 bool ok=false;
-                Supplier m =  dataCenter::instance()->getSupplier(box->text(),ok);
+                Supplier m =  dataCenter::instance()->pub_getSupplier(box->text(),ok);
                 if(ok){
                     ls.push_back(m);
                 }
@@ -129,9 +129,9 @@ void FormSupplierManage::on_pushButton_export_clicked()
     if(!filepath.isEmpty()){
         boost::thread t(boost::bind(&FormSupplierManage::doExport,this,ls,filepath));
         t.detach();
-        dataCenter::instance()->showLoadding("正在导出...",10000);
+        dataCenter::instance()->pub_showLoadding("正在导出...",10000);
     }else{
-        dataCenter::instance()->showMessage("保存路径为空!",3000);
+        dataCenter::instance()->pub_showMessage("保存路径为空!",3000);
     }
 }
 
@@ -169,11 +169,11 @@ void FormSupplierManage::checkBox()
 
 void FormSupplierManage::exportCb(bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("导出成功!",3000);
+        dataCenter::instance()->pub_showMessage("导出成功!",3000);
     }else{
-        dataCenter::instance()->showMessage("导出失败!",3000);
+        dataCenter::instance()->pub_showMessage("导出失败!",3000);
     }
 }
 
@@ -186,18 +186,18 @@ void FormSupplierManage::checkAll()
 
 void FormSupplierManage::delSupplierCb(Supplier cu, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
         removeOne(cu);
-        dataCenter::instance()->showMessage("删除成功!",4000);
+        dataCenter::instance()->pub_showMessage("删除成功!",4000);
     }else{
-        dataCenter::instance()->showMessage("删除失败!",4000);
+        dataCenter::instance()->pub_showMessage("删除失败!",4000);
     }
 }
 
 void FormSupplierManage::initData()
 {
-    QVector<Supplier>ls = dataCenter::instance()->Suppliers();
+    QVector<Supplier>ls = dataCenter::instance()->pub_Suppliers();
     for(Supplier m:ls){
         appendOne(m);
     }

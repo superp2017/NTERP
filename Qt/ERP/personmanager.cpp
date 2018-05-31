@@ -43,7 +43,7 @@ PersonManager::~PersonManager()
 
 void PersonManager::updateData()
 {
-    ui->tableWidget->initUser(dataCenter::instance()->employees());
+    ui->tableWidget->initUser(dataCenter::instance()->pub_employees());
 }
 
 void PersonManager::clearAllSelect()
@@ -96,7 +96,7 @@ void PersonManager::on_pushButton_mod_clicked()
 void PersonManager::userClick(QString UID)
 {
     bool ok =false;
-    curUser = dataCenter::instance()->getUser(UID,ok);
+    curUser = dataCenter::instance()->pub_getUser(UID,ok);
     if(curUser.Status=="-1"){
         ui->pushButton_mod->setEnabled(false);
         ui->pushButton_out->setEnabled(false);
@@ -131,9 +131,9 @@ void PersonManager::on_pushButton_out_clicked()
     switch (ret) {
     case QMessageBox::Ok:
     {
-        boost::thread t(boost::bind(&dataCenter::outUser,dataCenter::instance(),UserService::toJsonObject(curUser)));
+        boost::thread t(boost::bind(&dataCenter::net_outUser,dataCenter::instance(),UserService::toJsonObject(curUser)));
         t.detach();
-        dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
         break;
     }
     case QMessageBox::Cancel:
@@ -159,9 +159,9 @@ void PersonManager::on_pushButton_del_clicked()
     switch (ret) {
     case QMessageBox::Ok:
     {
-        boost::thread t(boost::bind(&dataCenter::delUser,dataCenter::instance(),UserService::toJsonObject(curUser)));
+        boost::thread t(boost::bind(&dataCenter::net_delUser,dataCenter::instance(),UserService::toJsonObject(curUser)));
         t.detach();
-        dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
         break;
     }
     case QMessageBox::Cancel:
@@ -174,26 +174,26 @@ void PersonManager::on_pushButton_del_clicked()
 
 void PersonManager::outUserCb(User user, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("离职成功!",4000);
+        dataCenter::instance()->pub_showMessage("离职成功!",4000);
         ui->tableWidget->modUser(user);
     }else{
-        dataCenter::instance()->showMessage("离职失败!",4000);
+        dataCenter::instance()->pub_showMessage("离职失败!",4000);
     }
 }
 
 void PersonManager::delUserCb(User user, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("删除成功!",4000);
+        dataCenter::instance()->pub_showMessage("删除成功!",4000);
         ui->tableWidget->removeUser(user);
         ui->pushButton_mod->setEnabled(false);
         ui->pushButton_out->setEnabled(false);
         ui->pushButton_del->setEnabled(false);
     }else{
-        dataCenter::instance()->showMessage("删除失败!",4000);
+        dataCenter::instance()->pub_showMessage("删除失败!",4000);
     }
 }
 
@@ -218,7 +218,7 @@ void PersonManager::changeCol()
 void PersonManager::on_pushButton_export_clicked()
 {
     DialogUserPrint  print;
-    print.initData(dataCenter::instance()->employees());
+    print.initData(dataCenter::instance()->pub_employees());
     print.exec();
 }
 

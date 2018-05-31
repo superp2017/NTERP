@@ -62,12 +62,12 @@ void FormCustommanage::on_pushButton_new_clicked()
 
 void FormCustommanage::delCustomerCb(Customer cu, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
         removeOne(cu);
-        dataCenter::instance()->showMessage("删除成功!",4000);
+        dataCenter::instance()->pub_showMessage("删除成功!",4000);
     }else{
-        dataCenter::instance()->showMessage("删除失败!",4000);
+        dataCenter::instance()->pub_showMessage("删除失败!",4000);
     }
 }
 
@@ -80,16 +80,16 @@ void FormCustommanage::on_pushButton_del_clicked()
     bool ok = false;
     for(QCheckBox *bo:m_boxs){
         if(bo->isChecked()){
-            c = dataCenter::instance()->getCustomer(bo->text(),ok);
+            c = dataCenter::instance()->pub_getCustomer(bo->text(),ok);
             break;
         }
     }
     if(!ok){
         return;
     }
-    boost::thread t(boost::bind(&dataCenter::delCustomer,dataCenter::instance(),CustomerService::toJsonObject(c)));
+    boost::thread t(boost::bind(&dataCenter::net_delCustomer,dataCenter::instance(),CustomerService::toJsonObject(c)));
     t.detach();
-    dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 
 }
 
@@ -99,7 +99,7 @@ void FormCustommanage::on_pushButton_mod_clicked()
     bool ok = false;
     for(QCheckBox *bo:m_boxs){
         if(bo->isChecked()){
-            c = dataCenter::instance()->getCustomer(bo->text(),ok);
+            c = dataCenter::instance()->pub_getCustomer(bo->text(),ok);
             break;
         }
     }
@@ -132,7 +132,7 @@ void FormCustommanage::on_pushButton_export_clicked()
             QCheckBox *box = reinterpret_cast<QCheckBox *>(w);
             if(box->isChecked()){
                 bool ok=false;
-                Customer m =  dataCenter::instance()->getCustomer(box->text(),ok);
+                Customer m =  dataCenter::instance()->pub_getCustomer(box->text(),ok);
                 if(ok){
                     ls.push_back(m);
                 }
@@ -149,9 +149,9 @@ void FormCustommanage::on_pushButton_export_clicked()
     if(!filepath.isEmpty()){
         boost::thread t(boost::bind(&FormCustommanage::doExport,this,ls,filepath));
         t.detach();
-        dataCenter::instance()->showLoadding("正在导出...",10000);
+        dataCenter::instance()->pub_showLoadding("正在导出...",10000);
     }else{
-        dataCenter::instance()->showMessage("保存路径为空!",3000);
+        dataCenter::instance()->pub_showMessage("保存路径为空!",3000);
     }
 }
 
@@ -184,11 +184,11 @@ void FormCustommanage::checkBox()
 
 void FormCustommanage::exportCb(bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("导出成功!",3000);
+        dataCenter::instance()->pub_showMessage("导出成功!",3000);
     }else{
-        dataCenter::instance()->showMessage("导出失败!",3000);
+        dataCenter::instance()->pub_showMessage("导出失败!",3000);
     }
 }
 
@@ -201,7 +201,7 @@ void FormCustommanage::checkAll()
 
 void FormCustommanage::initData()
 {
-    QVector<Customer>ls = dataCenter::instance()->Customers();
+    QVector<Customer>ls = dataCenter::instance()->pub_Customers();
     for(Customer m:ls){
         appendOne(m);
     }

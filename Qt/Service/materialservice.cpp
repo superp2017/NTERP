@@ -1,10 +1,32 @@
 ﻿#include "materialservice.h"
 #include "excelservice.h"
-
+#include "http.h"
 
 MaterialService::MaterialService()
 {
 
+}
+
+QVector<Materiel> MaterialService::getAllMateriels(bool &ok, QString hostname, QString hostport)
+{
+    QVector<Materiel> data;
+    std::string url = Net_GetAllMateril;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isArray()){
+            for(QJsonValue v:ret.data.toArray()){
+                Materiel  c = fromJsonObject(v.toObject());
+                data.push_back(c);
+            }
+            ok = true;
+            return  data;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"getAllMateriels ret is not 0"<<endl;
+    ok = false;
+    return data;
 }
 
 
@@ -68,6 +90,7 @@ Materiel MaterialService::fromJsonObject(QJsonObject obj)
     }
     return ma;
 }
+
 
 
 

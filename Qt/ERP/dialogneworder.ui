@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>280</width>
-    <height>555</height>
+    <width>313</width>
+    <height>598</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -140,35 +140,6 @@
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>35</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>物料编码</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QComboBox" name="comboBox_MaterielID">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="editable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
       <widget class="QLabel" name="label_5">
        <property name="minimumSize">
         <size>
@@ -181,6 +152,31 @@
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QTextEdit" name="lineEdit_MaterielDes"/>
+     </item>
+     <item row="4" column="1">
+      <widget class="QPushButton" name="pushButton_edit_des">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::WheelFocus</enum>
+       </property>
+       <property name="text">
+        <string>编辑物料描述</string>
        </property>
       </widget>
      </item>
@@ -277,9 +273,6 @@
         <string/>
        </property>
       </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QTextEdit" name="lineEdit_MaterielDes"/>
      </item>
     </layout>
    </item>

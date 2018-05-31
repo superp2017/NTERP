@@ -156,6 +156,21 @@ func DelCustomer(session *JsHttp.Session) {
 	session.Forward("0", "success", st.CID)
 }
 
+//获取所有客户列表
+func GetAllCustomer(session *JsHttp.Session)  {
+	list,err:=JsRedis.Redis_hkeys(Hash_Customer)
+	data := []*Customer{}
+	if err==nil{
+		for _,v:=range list{
+			d := &Customer{}
+			if e:=JsRedis.Redis_hget(Hash_Customer,v,d);e==nil{
+				data = append(data,d)
+			}
+		}
+	}
+	session.Forward("0","success",data)
+}
+
 //添加一个订单到 客户订单列表中
 func appendCustomerOrderID(CID, OrderID string) error {
 	data:=[]string{}

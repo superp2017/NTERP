@@ -53,25 +53,25 @@ void DialogNewSupplier::on_pushButton_ok_clicked()
 
     QJsonObject para = SupplierService::toJsonObject(cus);
     if(m_isNewMod){
-        boost::thread t(boost::bind(&dataCenter::newSupplier,dataCenter::instance(),para));
+        boost::thread t(boost::bind(&dataCenter::net_newSupplier,dataCenter::instance(),para));
         t.detach();
     }else{
-        boost::thread t(boost::bind(&dataCenter::modSupplier,dataCenter::instance(),para));
+        boost::thread t(boost::bind(&dataCenter::net_modSupplier,dataCenter::instance(),para));
         t.detach();
     }
-    dataCenter::instance()->showLoadding("正在网络请求...",5000,Qt::black);
+    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 
 }
 
 void DialogNewSupplier::modSupplierCb(Supplier c, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("修改成功!",4000);
+        dataCenter::instance()->pub_showMessage("修改成功!",4000);
         cursupplier = c;
         done(123);
     }else{
-        dataCenter::instance()->showMessage("修改失败!",4000);
+        dataCenter::instance()->pub_showMessage("修改失败!",4000);
         cursupplier = c;
         done(0);
     }
@@ -79,13 +79,13 @@ void DialogNewSupplier::modSupplierCb(Supplier c, bool ok)
 
 void DialogNewSupplier::newSupplierCb(Supplier c, bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("新增成功!",4000);
+        dataCenter::instance()->pub_showMessage("新增成功!",4000);
         cursupplier = c;
         done(123);
     }else{
-        dataCenter::instance()->showMessage("增加失败!",4000);
+        dataCenter::instance()->pub_showMessage("增加失败!",4000);
         cursupplier = c;
         done(0);
     }

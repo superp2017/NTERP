@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setPalette(pal);
 
     setCentralWidget(&m_center);
-    connect(dataCenter::instance(),SIGNAL(showStatusMessage(QString,int)),this,SLOT(showMessage(QString,int)));
+    connect(dataCenter::instance(),SIGNAL(sig_showStatusMessage(QString,int)),this,SLOT(showMessage(QString,int)));
 
     connect(neworder,     SIGNAL(triggered(bool)), &m_center, SIGNAL(action_new_order()));
     connect(storeManage,  SIGNAL(triggered(bool)), &m_center, SLOT(action_store_manage()));

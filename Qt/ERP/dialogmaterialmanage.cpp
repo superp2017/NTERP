@@ -50,7 +50,7 @@ void DialogMaterialManage::on_pushButton_exit_clicked()
 
 void DialogMaterialManage::initData()
 {
-    QVector<Materiel>ls = dataCenter::instance()->Materiels();
+    QVector<Materiel>ls = dataCenter::instance()->pub_Materiels();
     for(Materiel m:ls){
         appendOne(m);
     }
@@ -64,11 +64,11 @@ void DialogMaterialManage::doExport(QVector<Materiel>ls,QString filepath)
 
 void DialogMaterialManage::exportCb(bool ok)
 {
-    dataCenter::instance()->hideLoadding();
+    dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->showMessage("导出成功!",3000);
+        dataCenter::instance()->pub_showMessage("导出成功!",3000);
     }else{
-        dataCenter::instance()->showMessage("导出失败!",3000);
+        dataCenter::instance()->pub_showMessage("导出失败!",3000);
     }
 }
 
@@ -93,7 +93,7 @@ void DialogMaterialManage::on_pushButton_export_clicked()
             QCheckBox *box = reinterpret_cast<QCheckBox *>(w);
             if(box->isChecked()){
                 bool ok=false;
-                Materiel m=  dataCenter::instance()->getMateriel(box->text(),ok);
+                Materiel m=  dataCenter::instance()->pub_getMateriel(box->text(),ok);
                 if(ok){
                     ls.push_back(m);
                 }
@@ -110,9 +110,9 @@ void DialogMaterialManage::on_pushButton_export_clicked()
     if(!filepath.isEmpty()){
         boost::thread t(boost::bind(&DialogMaterialManage::doExport,this,ls,filepath));
         t.detach();
-        dataCenter::instance()->showLoadding("正在导出...",10000);
+        dataCenter::instance()->pub_showLoadding("正在导出...",10000);
     }else{
-        dataCenter::instance()->showMessage("保存路径为空!",3000);
+        dataCenter::instance()->pub_showMessage("保存路径为空!",3000);
     }
 }
 

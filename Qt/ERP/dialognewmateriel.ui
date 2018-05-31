@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>250</width>
-    <height>400</height>
+    <width>305</width>
+    <height>468</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -49,14 +49,7 @@
      <property name="verticalSpacing">
       <number>11</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>客户  </string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
+     <item row="0" column="2">
       <widget class="QComboBox" name="comboBox_custom">
        <property name="minimumSize">
         <size>
@@ -66,7 +59,14 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>客户  </string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
       <widget class="QPushButton" name="pushButton_add_custom">
        <property name="minimumSize">
         <size>
@@ -98,7 +98,7 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item row="1" column="2">
       <widget class="QComboBox" name="comboBox_color">
        <property name="minimumSize">
         <size>
@@ -108,7 +108,7 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
+     <item row="1" column="3">
       <widget class="QPushButton" name="pushButton_Add_color">
        <property name="minimumSize">
         <size>
@@ -133,14 +133,14 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>镀种  </string>
+        <string>描述  </string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="2" column="2">
       <widget class="QComboBox" name="comboBox_type">
        <property name="minimumSize">
         <size>
@@ -150,7 +150,63 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="2">
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>镀种  </string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QTextEdit" name="textEdit">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>100</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="3">
+      <widget class="QPushButton" name="pushButton_clear">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-image: url(:/icon/close.ico);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QComboBox" name="comboBox_same">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>参考</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
       <widget class="QPushButton" name="pushButton_add_type">
        <property name="minimumSize">
         <size>
@@ -172,45 +228,6 @@
        </property>
        <property name="flat">
         <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>描述  </string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QTextEdit" name="textEdit">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>100</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QPushButton" name="pushButton_clear">
-       <property name="minimumSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border-image: url(:/icon/close.ico);</string>
-       </property>
-       <property name="text">
-        <string/>
        </property>
       </widget>
      </item>

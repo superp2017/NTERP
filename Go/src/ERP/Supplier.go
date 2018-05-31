@@ -155,3 +155,19 @@ func DelSupplier(session *JsHttp.Session) {
 	}
 	session.Forward("0", "success", st.SID)
 }
+
+
+//获取所有供应商列表
+func GetAllSupplier(session *JsHttp.Session)  {
+	list,err:=JsRedis.Redis_hkeys(Hash_Supplier)
+	data := []*Supplier{}
+	if err==nil{
+		for _,v:=range list{
+			d := &Supplier{}
+			if e:=JsRedis.Redis_hget(Hash_Supplier,v,d);e==nil{
+				data = append(data,d)
+			}
+		}
+	}
+	session.Forward("0","success",data)
+}

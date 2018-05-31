@@ -18,68 +18,72 @@ public:
         return u;
     }
     void initData();
-    void login(const QJsonObject para);
+    void net_login(const QJsonObject para);
     ///////////////////////////////////////////////////////
-    void newUser(const QJsonObject para);
-    void modUser(const QJsonObject para);
-    void outUser(const QJsonObject para);
-    void delUser(const QJsonObject para);
+    void net_newUser(const QJsonObject para);
+    void net_modUser(const QJsonObject para);
+    void net_outUser(const QJsonObject para);
+    void net_delUser(const QJsonObject para);
+    void net_getGlobalUsers();
     ///////////////////////////////////////////////////////
-    void newOrder(const QJsonObject para);
-    void modOrder(const QJsonObject para);
-    void cancleOrder(const QJsonObject para);
-    void finishOrder(const QJsonObject para);
-    void modOrderPrice(const QJsonObject para);
-    void getglobalOrders();
+    void net_newOrder(const QJsonObject para);
+    void net_modOrder(const QJsonObject para);
+    void net_cancleOrder(const QJsonObject para);
+    void net_finishOrder(const QJsonObject para);
+    void net_modOrderPrice(const QJsonObject para);
+    void net_getglobalOrders();
     /////////////////////////////////////////////////////
-    void newCustomer(const QJsonObject para);
-    void modCustomer(const QJsonObject para);
-    void delCustomer(const QJsonObject para);
+    void net_newCustomer(const QJsonObject para);
+    void net_modCustomer(const QJsonObject para);
+    void net_delCustomer(const QJsonObject para);
+    void net_getGlobalCustomers();
     /////////////////////////////////////////////////////
-    void newUnit(const QJsonObject para);
-    void delUnit(const QJsonObject para);
-    void getglobalUnits();
+    void net_newUnit(const QJsonObject para);
+    void net_delUnit(const QJsonObject para);
+    void net_getglobalUnits();
     /////////////////////////////////////////////////////
-    void newSupplier(const QJsonObject para);
-    void modSupplier(const QJsonObject para);
-    void delSupplier(const QJsonObject para);
+    void net_newSupplier(const QJsonObject para);
+    void net_modSupplier(const QJsonObject para);
+    void net_delSupplier(const QJsonObject para);
+    void net_getglobalSuppliers();
     /////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////
-    void showMessage(QString msg,int sec=0);
+    void net_getglobalMateriels();
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    void pub_showMessage(QString msg,int sec=0);
     ////////////////////////////////////////////////////
-    void showLoadding(QString str="",int sec=4000,QColor c =Qt::black);
-    void hideLoadding();
+    void pub_showLoadding(QString str="",int sec=4000,QColor c =Qt::black);
+    void pub_hideLoadding();
     ////////////////////////////////////////////////////
-    void setCurUser(User u);
-    User CurUser();
+    User pub_CurUser();
     ////////////////////////////////////////////////////
-    QVector<Order> StatusOrders(QString status);
-    Order getOrder(QString OrderID,bool &ok);
+    QVector<Order> pub_StatusOrders(QString status);
+    Order pub_getOrder(QString OrderID,bool &ok);
     ////////////////////////////////////////////////////
-    QVector<QString> Units();
-    bool checkUnitExist(QString unit);
+    QVector<QString> pub_Units();
+    bool pub_checkUnitExist(QString unit);
     ////////////////////////////////////////////////////
-    QVector<Materiel>Materiels();
-    bool checkMaterielID(QString id);
-    Materiel getMateriel(QString MID,bool &ok);
+    QVector<Materiel>pub_Materiels();
+    bool pub_checkMaterielID(QString id);
+    Materiel pub_getMateriel(QString MID,bool &ok);
     ////////////////////////////////////////////////////
-    QVector<QString> Batchs();
+    QVector<QString> pub_Batchs();
     ////////////////////////////////////////////////////
-    QVector<Customer>Customers();
-    bool checkCustomerExist(QString name);
-    Customer getCustomer(QString CID,bool &ok);
+    QVector<Customer>pub_Customers();
+    bool pub_checkCustomerExist(QString name);
+    Customer pub_getCustomer(QString CID,bool &ok);
     ////////////////////////////////////////////////////
-    QVector<QString> getDepartments() const;
-    QVector<QString> getAuthors() const;
+    QVector<QString> pub_getDepartments() const;
+    QVector<QString> pub_getAuthors() const;
     ////////////////////////////////////////////////////
-    QVector<User> employees()const;
-    User getUser(QString UID,bool &ok);
+    QVector<User> pub_employees()const;
+    User pub_getUser(QString UID,bool &ok);
     ///////////////////////////////////////////////////
-    QVector<Supplier>Suppliers();
-    Supplier getSupplier(QString CID,bool &ok);
+    QVector<Supplier>pub_Suppliers();
+    Supplier pub_getSupplier(QString CID,bool &ok);
 signals:
-    void showStatusMessage(QString msg,int sec);
+    void sig_showStatusMessage(QString msg,int sec);
     ///////////////////////////////////////////
     void sig_login(bool);
     ///////////////////////////////////////////
@@ -94,10 +98,12 @@ signals:
     void sig_modEmployee(User,bool);
     void sig_outEmployee(User,bool);
     void sig_delEmployee(User,bool);
+    void sig_globalEmployees(bool);
     ////////////////////////////////////
     void sig_newCustomer(Customer,bool);
     void sig_modCustomer(Customer,bool);
     void sig_delCustomer(Customer,bool);
+    void sig_globalcustomers(bool);
     ////////////////////////////////////
     void sig_newUnit(QString,bool);
     void sig_delUnit(QString,bool);
@@ -106,18 +112,20 @@ signals:
     void sig_newSupplier(Supplier,bool);
     void sig_modSUpplier(Supplier,bool);
     void sig_delSUpplier(Supplier,bool);
-
+    void sig_globalSUppliers(bool);
+    ///////////////////////////////////
+    void sig_globalMateriels(bool);
 public slots:
 
 private:
-
-    void appendEmployee(User user);
-    void appendOrder(Order order);
-    void appendUnit(QString u);
-    void appendMaters(Materiel m);
-    void appendBatch(QString b);
-    void appendCustomer(Customer c);
-    void appendSupplier(Supplier c);
+    void pri_setCurUser(User u);
+    void pri_appendEmployee(User user);
+    void pri_appendOrder(Order order);
+    void pri_appendUnit(QString u);
+    void pri_appendMaters(Materiel m);
+    void pri_appendBatch(QString b);
+    void pri_appendCustomer(Customer c);
+    void pri_appendSupplier(Supplier c);
 private:
     User               cur_user;     //当前登录的账号
     QVector<User>      m_employee;   //所有的员工

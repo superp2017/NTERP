@@ -11,9 +11,11 @@ class SERVICESHARED_EXPORT MaterialService
 {
 public:
     MaterialService();
+
+    static QVector<Materiel> getAllMateriels(bool &ok, QString hostname, QString hostport);
+
     static QJsonObject toJsonObject(Materiel ma);
     static Materiel fromJsonObject(QJsonObject obj);
-
     static bool exportMateriel(QVector<Materiel> list, QString filepath, bool isOpen=false);
 };
 

@@ -44,6 +44,28 @@ Customer CustomerService::modCustomer(const QJsonObject para, bool &ok, QString 
     return cus;
 }
 
+QVector<Customer> CustomerService::getAllCustomer(bool &ok, QString hostname, QString hostport)
+{
+    QVector<Customer> cus;
+    std::string url = Net_GlobalCustomers;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isArray()){
+            for(QJsonValue v:ret.data.toArray()){
+                Customer  c = fromJsonObject(v.toObject());
+                cus.push_back(c);
+            }
+            ok = true;
+            return  cus;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"getAllCustomer ret is not 0"<<endl;
+    ok = false;
+    return cus;
+}
+
 QJsonObject CustomerService::toJsonObject(Customer customer)
 {
     QJsonObject obj;

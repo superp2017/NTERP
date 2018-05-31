@@ -109,7 +109,7 @@ void userTable::mousePressEvent(QMouseEvent *e)
                     if(item==NULL)
                         return;
                     bool exist =false;
-                    User user = dataCenter::instance()->getUser(item->text(),exist);
+                    User user = dataCenter::instance()->pub_getUser(item->text(),exist);
                     if(!exist){
                         return;
                     }
