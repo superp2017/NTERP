@@ -1,7 +1,7 @@
-package JsRedis
+package JRedis
 
 import (
-	. "JsGo/JsLogger"
+	. "JGo/JLogger"
 	"encoding/json"
 	"errors"
 

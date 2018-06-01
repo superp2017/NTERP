@@ -1,8 +1,8 @@
 package main
 
 import (
-	"JsGo/JsStore/JsRedis"
-	"JsGo/JsHttp"
+	"JGo/JStore/JRedis"
+	"JGo/JHttp"
 )
 
 type Material struct {
@@ -28,20 +28,20 @@ func newMaterial(des, unit, cid, customer string, num int) (*Material, error) {
 		Status:     "0",
 		CreatTime:  CurTime(),
 	}
-	err := JsRedis.Redis_hset(Hash_Material, id, st)
+	err := JRedis.Redis_hset(Hash_Material, id, st)
 	return st, err
 }
 
 //修改物料
 func modMaterial(id, des, cid, name string) error {
 	st := &Material{}
-	if err := JsRedis.Redis_hget(Hash_Material, id, st); err != nil {
+	if err := JRedis.Redis_hget(Hash_Material, id, st); err != nil {
 		return err
 	}
 	st.MaterDes = des
 	st.CID = cid
 	st.CustomName = name
-	if err := JsRedis.Redis_hset(Hash_Material, id, st); err != nil {
+	if err := JRedis.Redis_hset(Hash_Material, id, st); err != nil {
 		return err
 	}
 	return nil
@@ -50,11 +50,11 @@ func modMaterial(id, des, cid, name string) error {
 //完成物料
 func successMaterial(id string) error {
 	st := &Material{}
-	if err := JsRedis.Redis_hget(Hash_Material, id, st); err != nil {
+	if err := JRedis.Redis_hget(Hash_Material, id, st); err != nil {
 		return err
 	}
 	st.Status = "1"
-	if err := JsRedis.Redis_hset(Hash_Material, id, st); err != nil {
+	if err := JRedis.Redis_hset(Hash_Material, id, st); err != nil {
 		return err
 	}
 	return nil
@@ -63,11 +63,11 @@ func successMaterial(id string) error {
 //取消物料
 func cancleMaterial(id string) error {
 	st := &Material{}
-	if err := JsRedis.Redis_hget(Hash_Material, id, st); err != nil {
+	if err := JRedis.Redis_hget(Hash_Material, id, st); err != nil {
 		return err
 	}
 	st.Status = "-1"
-	if err := JsRedis.Redis_hset(Hash_Material, id, st); err != nil {
+	if err := JRedis.Redis_hset(Hash_Material, id, st); err != nil {
 		return err
 	}
 	return nil
@@ -76,18 +76,18 @@ func cancleMaterial(id string) error {
 
 //删除物料
 func delMaterial(id string) error {
-	return JsRedis.Redis_hdel(Hash_Material, id)
+	return JRedis.Redis_hdel(Hash_Material, id)
 }
 
 
 //获取所有供应商列表
-func GetAllMaterial(session *JsHttp.Session)  {
-	list,err:=JsRedis.Redis_hkeys(Hash_Material)
+func GetAllMaterial(session *JHttp.Session)  {
+	list,err:=JRedis.Redis_hkeys(Hash_Material)
 	data := []*Material{}
 	if err==nil{
 		for _,v:=range list{
 			d := &Material{}
-			if e:=JsRedis.Redis_hget(Hash_Material,v,d);e==nil{
+			if e:=JRedis.Redis_hget(Hash_Material,v,d);e==nil{
 				data = append(data,d)
 			}
 		}

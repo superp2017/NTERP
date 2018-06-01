@@ -1,4 +1,4 @@
-package JsHttp
+package JHttp
 
 import (
 	"encoding/json"
@@ -10,10 +10,10 @@ import (
 	"time"
 
 	"sync"
-
-	"JsGo/JsCache"
-	"JsGo/JsConfig"
-	. "JsGo/JsLogger"
+	
+	. "JGo/JLogger"
+	"JGo/JCache"
+	"JGo/JConfig"
 )
 
 const (
@@ -31,7 +31,7 @@ type Context struct {
 	Handles      sync.Map
 	WhiteHandles sync.Map
 	ISession     bool
-	Sncache      *JsCache.Cache
+	Sncache      *JCache.Cache
 	TLS          bool
 }
 
@@ -272,12 +272,12 @@ func enableGet() {
 func enableSession() {
 	g_ctx.ISession = true
 	g_ctx_tls.ISession = true
-	g_ctx.Sncache = JsCache.New(eXPIRE, cLEAR)
-	g_ctx_tls.Sncache = JsCache.New(eXPIRE, cLEAR)
+	g_ctx.Sncache = JCache.New(eXPIRE, cLEAR)
+	g_ctx_tls.Sncache = JCache.New(eXPIRE, cLEAR)
 }
 
 func Run() {
-	net, e := JsConfig.GetConfigMap([]string{"Net"})
+	net, e := JConfig.GetConfigMap([]string{"Net"})
 	if e == nil {
 		if net["Session"] == "true" {
 			enableSession()
@@ -292,12 +292,12 @@ func Run() {
 		Error(e.Error())
 	}
 
-	htp, err := JsConfig.GetConfigMap([]string{"Http"})
+	htp, err := JConfig.GetConfigMap([]string{"Http"})
 	if htp != nil && err == nil {
 		go http.ListenAndServe(htp["Ip"]+":"+htp["Listen"], g_ctx)
 	}
 
-	htps, err := JsConfig.GetConfigMap([]string{"Https"})
+	htps, err := JConfig.GetConfigMap([]string{"Https"})
 
 	if htps != nil && err == nil {
 		go http.ListenAndServeTLS(htps["Ip"]+":"+htps["Listen"], htps["Pem"], htps["Key"], g_ctx_tls)

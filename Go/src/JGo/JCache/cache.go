@@ -1,4 +1,4 @@
-package JsCache
+package JCache
 
 import (
 	"encoding/gob"

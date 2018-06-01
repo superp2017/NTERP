@@ -1,9 +1,9 @@
 package main
 
 import (
-	"JsGo/JsHttp"
-	"JsGo/JsLogger"
-	"JsGo/JsStore/JsRedis"
+	"JGo/JLogger"
+	"JGo/JHttp"
+	"JGo/JStore/JRedis"
 )
 
 type Account struct {
@@ -13,18 +13,18 @@ type Account struct {
 	Code    string //密码
 }
 
-func Login(session *JsHttp.Session) {
+func Login(session *JHttp.Session) {
 	type Para struct {
 		Account string
 		Code    string
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	JsLogger.Error("Account=%s,code=%s",st.Account,st.Code)
+	JLogger.Error("Account=%s,code=%s",st.Account,st.Code)
 	if st.Account==""||st.Code==""{
 		session.Forward("1", "login filed,Account or Code is empty\n", nil)
 		return
@@ -35,8 +35,8 @@ func Login(session *JsHttp.Session) {
 		return
 	}
 	data := &Employee{}
-	if err := JsRedis.Redis_hget(Hash_Employee, UID, data); err != nil {
-		JsLogger.ErrorLog("get Employee filed,UID=%s\n",UID)
+	if err := JRedis.Redis_hget(Hash_Employee, UID, data); err != nil {
+		JLogger.ErrorLog("get Employee filed,UID=%s\n",UID)
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -51,12 +51,12 @@ func newAccount(uid, name, account, code string) error {
 		Account: account,
 		Code:    code,
 	}
-	return JsRedis.Redis_hset(Hash_Account, account, st)
+	return JRedis.Redis_hset(Hash_Account, account, st)
 }
 
 //删除一个账号
 func delAccount(account string) error {
-	return JsRedis.Redis_hdel(Hash_Account, account)
+	return JRedis.Redis_hdel(Hash_Account, account)
 }
 
 //修改账号
@@ -67,7 +67,7 @@ func modAccount(account, code, uid, name string) error {
 		Account: account,
 		Code:    code,
 	}
-	return JsRedis.Redis_hset(Hash_Account, account, st)
+	return JRedis.Redis_hset(Hash_Account, account, st)
 }
 
 ///校验账号
@@ -76,8 +76,8 @@ func checkAccount(account, code string)(string,bool) {
 		return "",false
 	}
 	c:=&Account{}
-	if err := JsRedis.Redis_hget(Hash_Account, account, c); err != nil {
-		JsLogger.Error(err.Error())
+	if err := JRedis.Redis_hget(Hash_Account, account, c); err != nil {
+		JLogger.Error(err.Error())
 		return "",false
 	}
 	if code == c.Code {

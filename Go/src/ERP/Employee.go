@@ -1,10 +1,10 @@
 package main
 
 import (
-	"JsGo/JsHttp"
-	"JsGo/JsLogger"
-	"JsGo/JsStore/JsRedis"
 	"fmt"
+	"JGo/JHttp"
+	"JGo/JLogger"
+	"JGo/JStore/JRedis"
 )
 
 type Employee struct {
@@ -27,10 +27,10 @@ type Employee struct {
 }
 
 //新增一个员工
-func NewEmployee(session *JsHttp.Session) {
+func NewEmployee(session *JHttp.Session) {
 	st := &Employee{}
 	if err := session.GetPara(st); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -45,9 +45,9 @@ func NewEmployee(session *JsHttp.Session) {
 	}
 	st.Status = "0"
 	if st.Account != "" && st.Code != "" {
-		if exist,e:=JsRedis.Redis_hexists(Hash_Account,st.Account);e==nil&&exist{
+		if exist,e:=JRedis.Redis_hexists(Hash_Account,st.Account);e==nil&&exist{
 			str := fmt.Sprintf("NewEmployee faild,Account is exist\n")
-			JsLogger.Error(str)
+			JLogger.Error(str)
 			session.Forward("2", str, nil)
 			return
 		}
@@ -56,7 +56,7 @@ func NewEmployee(session *JsHttp.Session) {
 			return
 		}
 	}
-	if err := JsRedis.Redis_hset(Hash_Employee, st.UID, st); err != nil {
+	if err := JRedis.Redis_hset(Hash_Employee, st.UID, st); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -64,7 +64,7 @@ func NewEmployee(session *JsHttp.Session) {
 }
 
 //修改员工信息
-func ModEmployee(session *JsHttp.Session) {
+func ModEmployee(session *JHttp.Session) {
 	type Para struct {
 		UID        string //用户id
 		Name       string //用户姓名
@@ -79,19 +79,19 @@ func ModEmployee(session *JsHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 	if st.UID == "" || st.Account == "" || st.Code == "" || st.Name == "" {
 		str := fmt.Sprintf("ModEmployee faild,UID = %s,Account = %s,Code = %s,Name = %s\n",
 			st.UID, st.Account, st.Code, st.Name)
-		JsLogger.Error(str)
+		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
 	}
 	data := &Employee{}
-	if err := JsRedis.Redis_hget(Hash_Employee, st.UID, data); err != nil {
+	if err := JRedis.Redis_hget(Hash_Employee, st.UID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -113,7 +113,7 @@ func ModEmployee(session *JsHttp.Session) {
 	if data.Author == "" {
 		data.Author = "0"
 	}
-	if err := JsRedis.Redis_hset(Hash_Employee, st.UID, data); err != nil {
+	if err := JRedis.Redis_hset(Hash_Employee, st.UID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -121,13 +121,13 @@ func ModEmployee(session *JsHttp.Session) {
 }
 
 //删除某一个员工
-func DelEmployee(session *JsHttp.Session) {
+func DelEmployee(session *JHttp.Session) {
 	type Para struct {
 		UID string //用户id
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -136,11 +136,11 @@ func DelEmployee(session *JsHttp.Session) {
 		return
 	}
 	data := &Employee{}
-	if err := JsRedis.Redis_hget(Hash_Employee, st.UID, data); err != nil {
+	if err := JRedis.Redis_hget(Hash_Employee, st.UID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if err := JsRedis.Redis_hdel(Hash_Employee, st.UID); err != nil {
+	if err := JRedis.Redis_hdel(Hash_Employee, st.UID); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -149,8 +149,8 @@ func DelEmployee(session *JsHttp.Session) {
 }
 
 // 获取所有的员工信息
-func GetAllEmployeess(session *JsHttp.Session) {
-	ids, err := JsRedis.Redis_hkeys(Hash_Employee)
+func GetAllEmployeess(session *JHttp.Session) {
+	ids, err := JRedis.Redis_hkeys(Hash_Employee)
 	if err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
@@ -158,7 +158,7 @@ func GetAllEmployeess(session *JsHttp.Session) {
 	data := []*Employee{}
 	for _, v := range ids {
 		d := &Employee{}
-		if err := JsRedis.Redis_hget(Hash_Employee, v, d); err == nil {
+		if err := JRedis.Redis_hget(Hash_Employee, v, d); err == nil {
 			data = append(data, d)
 		}
 	}

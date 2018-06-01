@@ -1,9 +1,9 @@
 package main
 
 import (
-	"JsGo/JsHttp"
-	"JsGo/JsStore/JsRedis"
-	"JsGo/JsLogger"
+	"JGo/JHttp"
+	"JGo/JLogger"
+	"JGo/JStore/JRedis"
 )
 
 type Unit struct {
@@ -11,13 +11,13 @@ type Unit struct {
 }
 
 //新增一个单位
-func NewUnit(session *JsHttp.Session) {
+func NewUnit(session *JHttp.Session) {
 	type Para struct {
 		Unit string
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -25,7 +25,7 @@ func NewUnit(session *JsHttp.Session) {
 		session.Forward("1", "NewUnit:Unit is empty\n", nil)
 		return
 	}
-	if err := JsRedis.Redis_Sset(Key_Unit, st.Unit); err != nil {
+	if err := JRedis.Redis_Sset(Key_Unit, st.Unit); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -33,13 +33,13 @@ func NewUnit(session *JsHttp.Session) {
 }
 
 //删除一个单位
-func DelUnit(session *JsHttp.Session) {
+func DelUnit(session *JHttp.Session) {
 	type Para struct {
 		Unit string
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -47,7 +47,7 @@ func DelUnit(session *JsHttp.Session) {
 		session.Forward("1", "DelUnit:Unit is empty\n", nil)
 		return
 	}
-	if err := JsRedis.Redis_Sdel(Key_Unit, st.Unit); err != nil {
+	if err := JRedis.Redis_Sdel(Key_Unit, st.Unit); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -55,9 +55,9 @@ func DelUnit(session *JsHttp.Session) {
 }
 
 //获取所有单位
-func GetAllUnit(session *JsHttp.Session) {
+func GetAllUnit(session *JHttp.Session) {
 	data := []string{}
-	list, err := JsRedis.Redis_Sget(Key_Unit)
+	list, err := JRedis.Redis_Sget(Key_Unit)
 	if err != nil {
 		session.Forward("1", err.Error(), data)
 		return

@@ -1,4 +1,4 @@
-package JsUuid
+package JUuid
 
 // Copyright (C) 2013-2015 by Maxim Bublis <b@codemonkey.ru>
 //

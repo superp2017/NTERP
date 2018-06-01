@@ -1,4 +1,4 @@
-package JsExit
+package JExit
 
 import (
 	"os"

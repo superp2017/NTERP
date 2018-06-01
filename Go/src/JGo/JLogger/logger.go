@@ -3,7 +3,7 @@
 // Create Date : 2015/11/05
 //
 // 功能：　jslogger 日志模块，提供Info,Warn,Error等级别
-package JsLogger
+package JLogger
 
 import (
 	"errors"
@@ -16,7 +16,7 @@ import (
 	"sync"
 	"time"
 
-	"JsGo/JsConfig"
+	"JGo/JConfig"
 )
 
 // 日志常用参数
@@ -224,7 +224,7 @@ func GetComLogger() (*ST_Logger, bool) {
 		return g_ComLogger, true
 	}
 
-	path, err := JsConfig.GetConfigString([]string{"Logger", "Logger"})
+	path, err := JConfig.GetConfigString([]string{"Logger", "Logger"})
 	if err != nil {
 		return nil, false
 	}
@@ -234,7 +234,7 @@ func GetComLogger() (*ST_Logger, bool) {
 		return nil, ok
 	}
 
-	console, e := JsConfig.GetConfigString([]string{"Logger", "Console"})
+	console, e := JConfig.GetConfigString([]string{"Logger", "Console"})
 	if e != nil {
 		console = "false"
 	}
@@ -248,7 +248,7 @@ func GetComLogger() (*ST_Logger, bool) {
 
 // 新见日志句柄
 func New(lout io.Writer, lname string, prefix string, lflag int, llevel int) *ST_Logger {
-	msize, err := JsConfig.GetConfigInteger([]string{"Logger", "MaxSize"})
+	msize, err := JConfig.GetConfigInteger([]string{"Logger", "MaxSize"})
 	if err != nil {
 		return nil
 	}

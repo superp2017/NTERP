@@ -1,8 +1,8 @@
-package JsRedis
+package JRedis
 
 import (
-	"JsGo/JsConfig"
-	. "JsGo/JsLogger"
+	"JGo/JConfig"
+	. "JGo/JLogger"
 	"encoding/json"
 	"errors"
 	"log"
@@ -15,7 +15,7 @@ var g_pool *redis.Pool
 
 func init() {
 
-	redisCfg, e := JsConfig.GetConfigMap([]string{"Redis"})
+	redisCfg, e := JConfig.GetConfigMap([]string{"Redis"})
 	if e != nil {
 		log.Fatalln(e.Error())
 	}
