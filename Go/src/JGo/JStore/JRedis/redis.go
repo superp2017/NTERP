@@ -50,7 +50,7 @@ func Redis_expire(k string, v interface{}, t int) error {
 		return e
 	}
 
-	c.Send("SELECT", 0)
+	c.Send("SELECT", 13)
 	c.Send("SET", k, b)
 	c.Send("EXPIRE", k, t)
 	c.Flush()
@@ -74,7 +74,7 @@ func Redis_get(k string, v interface{}) error {
 		return errors.New("connect is nil")
 	}
 
-	c.Send("SELECT", 0)
+	c.Send("SELECT", 13)
 	c.Send("GET", k)
 	c.Flush()
 	c.Receive()
@@ -107,7 +107,7 @@ func Redis_set(k string, v interface{}) error {
 		return e
 	}
 
-	c.Send("SELECT", 0)
+	c.Send("SELECT", 13)
 	c.Send("SET", k, b)
 	c.Flush()
 	c.Receive()
@@ -126,7 +126,7 @@ func Redis_exists(k string) (bool, error) {
 		return false, errors.New("connect is nil")
 	}
 
-	c.Send("SELECT", 0)
+	c.Send("SELECT", 13)
 	c.Send("EXISTS", k)
 	c.Flush()
 	c.Receive()
@@ -145,7 +145,7 @@ func Redis_del(k string) error {
 		return errors.New("connect is nil")
 	}
 
-	c.Send("SELECT", 0)
+	c.Send("SELECT", 13)
 	c.Send("DEL", k)
 	c.Flush()
 	c.Receive()
@@ -164,7 +164,7 @@ func Redis_hget(t, k string, v interface{}) error {
 		Error("connect is nil")
 		return errors.New("connect is nil")
 	}
-	c.Send("SELECT", 1)
+	c.Send("SELECT", 14)
 	c.Send("HGET", t, k)
 	c.Flush()
 	c.Receive()
@@ -195,7 +195,7 @@ func Redis_hset(t, k string, v interface{}) error {
 		return e
 	}
 
-	c.Send("SELECT", 1)
+	c.Send("SELECT", 14)
 	c.Send("HSET", t, k, b)
 	c.Flush()
 	c.Receive()
@@ -215,7 +215,7 @@ func Redis_hexists(t, k string) (bool, error) {
 		return false, errors.New("connect is nil")
 	}
 
-	c.Send("SELECT", 1)
+	c.Send("SELECT", 14)
 	c.Send("HEXISTS", t, k)
 	c.Flush()
 	c.Receive()
@@ -235,7 +235,7 @@ func Redis_hsize(t string) (int64, error) {
 		return -1, errors.New("connect is nil")
 	}
 
-	c.Send("SELECT", 1)
+	c.Send("SELECT", 14)
 	c.Send("HLEN", t)
 	c.Flush()
 	c.Receive()
@@ -255,7 +255,7 @@ func Redis_hkeys(t string) ([]string, error) {
 		return nil, errors.New("connect is nil")
 	}
 
-	c.Send("SELECT", 1)
+	c.Send("SELECT", 14)
 	c.Send("HKEYS", t)
 	c.Flush()
 	c.Receive()
@@ -275,7 +275,7 @@ func Redis_hdel(t, k string) error {
 		return errors.New("connect is nil")
 	}
 
-	c.Send("SELECT", 1)
+	c.Send("SELECT", 14)
 	c.Send("HDEL", t, k)
 	c.Flush()
 	c.Receive()
@@ -295,7 +295,7 @@ func Redis_hmset(t string, data map[string]interface{}) error {
 		return errors.New("connect is nil")
 	}
 
-	c.Send("SELECT", 1)
+	c.Send("SELECT", 14)
 	for k, v := range data {
 		b, e := json.Marshal(v)
 		if e != nil {
@@ -326,7 +326,7 @@ func Redis_hmget(t string, ret *map[string]interface{}) error {
 		return errors.New("connect is nil")
 	}
 
-	c.Send("SELECT", 1)
+	c.Send("SELECT", 14)
 	keys := make([]string, len(*ret))
 	i := 0
 	for k, _ := range *ret {
@@ -362,7 +362,7 @@ func Redis_Sset(k string, v interface{}) error {
 		Error("connect is nil")
 		return errors.New("connect is nil")
 	}
-	c.Send("SELECT", 2)
+	c.Send("SELECT", 15)
 	c.Send("SADD", k, v)
 	c.Flush()
 	c.Receive()
@@ -380,7 +380,7 @@ func Redis_Sget(k string) ([]interface{}, error) {
 		Error("connect is nil")
 		return nil, errors.New("connect is nil")
 	}
-	c.Send("SELECT", 2)
+	c.Send("SELECT", 15)
 	c.Send("SMEMBERS", k)
 	c.Flush()
 	c.Receive()
@@ -398,7 +398,7 @@ func Redis_Sdel(t string, k interface{}) error {
 		Error("connect is nil")
 		return errors.New("connect is nil")
 	}
-	c.Send("SELECT", 2)
+	c.Send("SELECT", 15)
 	c.Send("SREM", t, k)
 	c.Flush()
 	c.Receive()
@@ -424,7 +424,7 @@ func Redis_SINTER(v interface{}, k interface{}) error {
 		return e1
 	}
 
-	c.Send("SELECT", 2)
+	c.Send("SELECT", 15)
 	c.Send("SINTER", b1)
 	c.Flush()
 	c.Receive()
