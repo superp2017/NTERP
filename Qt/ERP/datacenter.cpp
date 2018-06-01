@@ -417,10 +417,10 @@ void dataCenter::net_getglobalOrders()
 
 void dataCenter::net_newCustomer(const QJsonObject para)
 {
-    Customer cus =CustomerService::fromJsonObject(para);
-    cus.CID = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
+    bool isOK    = false;
+    Customer cus = CustomerService::newCustomer(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     pri_appendCustomer(cus);
-    emit sig_newCustomer(cus,true);
+    emit sig_newCustomer(cus,isOK);
 }
 
 void dataCenter::net_modCustomer(const QJsonObject para)
