@@ -25,6 +25,7 @@ public:
     void  setModel(bool isNew);
     void  clearUI();
     Order getCurorder() const;
+    void  initData();
 private slots:
     void on_pushButton_ok_clicked();
     void on_pushButton_cancel_clicked();

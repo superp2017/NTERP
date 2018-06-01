@@ -11,12 +11,12 @@ UnitService::UnitService()
 
 QString UnitService::newUnit(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-#if 1
+#if 0
     ok= true;
     return fromJsonObject(para);
 #endif
 
-#if 0
+#if 1
     QString unit;
     std::string url = Net_NewUnit;
     bool r   = false;

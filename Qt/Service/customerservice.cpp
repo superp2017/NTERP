@@ -13,12 +13,12 @@ CustomerService::CustomerService()
 
 Customer CustomerService::newCustomer(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-#if 1
+#if 0
     Customer cus;
     ok = true;
     return cus;
 #endif
-#if 0
+#if 1
     Customer cus;
     std::string url = Net_NewCustomer;
     bool r   = false;

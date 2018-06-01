@@ -186,7 +186,7 @@ func appendCustomerOrderID(CID, OrderID string) error {
 	if !exist{
 		data = append(data,OrderID)
 	}
-	return JRedis.Redis_hset(Hash_CustomerOrder, CID, OrderID)
+	return JRedis.Redis_hset(Hash_CustomerOrder, CID, data)
 }
 
 //从客户订单中移除一个订单
@@ -203,7 +203,7 @@ func removefromCustomerOrderID(CID, OrderID string)error{
 	if index!=-1{
 		data = append(data[:index],data[index+1:]...)
 	}
-	return JRedis.Redis_hset(Hash_CustomerOrder, CID, OrderID)
+	return JRedis.Redis_hset(Hash_CustomerOrder, CID, data)
 }
 
 //删除客户订单

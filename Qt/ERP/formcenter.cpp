@@ -63,6 +63,7 @@ void FormCenter::action_store_manage()
  */
 void FormCenter::action_material_manage()
 {
+    Material.initData();
     Material.closeAllStatus();
     Material.exec();
 }

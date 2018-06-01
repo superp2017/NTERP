@@ -164,17 +164,17 @@ void dataCenter::net_login(const QJsonObject para)
 
 void dataCenter::net_newUser(const QJsonObject para)
 {
-#if 0
+#if 1
     bool isOK   = false;
     User user = UserService::newUser(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(isOK){
-        this->appendEmployee(user);
+        this->pri_appendEmployee(user);
         emit sig_newEmployee(user,true);
         return;
     }
     emit sig_newEmployee(user,false);
 #endif
-#if 1
+#if 0
     User user = UserService::fromJsonObject(para);
     user.UID = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
     user.CreatTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
@@ -456,7 +456,8 @@ void dataCenter::net_getGlobalCustomers()
 
 void dataCenter::net_newUnit(const QJsonObject para)
 {
-    QString unit = UnitService::fromJsonObject(para);
+    bool ok = false;
+    QString unit =  UnitService::newUnit(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     pri_appendUnit(unit);
     emit sig_newUnit(unit,true);
 }

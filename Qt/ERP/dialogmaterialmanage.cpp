@@ -28,8 +28,6 @@ DialogMaterialManage::DialogMaterialManage(QWidget *parent) :
 
     connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
     connect(ui->checkBox_check_all,SIGNAL(clicked(bool)),this,SLOT(checkAll()));
-
-    initData();
 }
 
 DialogMaterialManage::~DialogMaterialManage()

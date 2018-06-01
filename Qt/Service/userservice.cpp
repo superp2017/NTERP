@@ -16,15 +16,15 @@ UserService::UserService()
 
 User UserService::newUser(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-#if 1
+#if 0
     User user;
     ok = true;
     return user;
 #endif
 
-#if 0
+#if 1
     User user;
-    std::string url = Net_NewUser;
+    std::string url = Net_NewEmployee;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
