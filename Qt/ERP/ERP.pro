@@ -75,7 +75,8 @@ SOURCES += main.cpp\
     formwarehousemanage.cpp \
     m_tablewidget.cpp \
     dialogmaterialmanage.cpp \
-    dialognewsupplier.cpp
+    dialognewsupplier.cpp \
+    formauthormanage.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -106,7 +107,8 @@ HEADERS  += mainwindow.h \
     formwarehousemanage.h \
     m_tablewidget.h \
     dialogmaterialmanage.h \
-    dialognewsupplier.h
+    dialognewsupplier.h \
+    formauthormanage.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -130,7 +132,8 @@ FORMS    += mainwindow.ui \
     formunitmanage.ui \
     formwarehousemanage.ui \
     dialogmaterialmanage.ui \
-    dialognewsupplier.ui
+    dialognewsupplier.ui \
+    formauthormanage.ui
 
 RESOURCES += \
     res.qrc

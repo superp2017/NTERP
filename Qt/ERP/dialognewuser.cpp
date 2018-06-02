@@ -177,7 +177,6 @@ void DialogNewUser::initComBox(QVector<QString>department,QVector<QString>autor)
     for(QString de:department){
         ui->comboBox_department->addItem(de);
     }
-    ui->comboBox_department->addItem(ItemNewDepartment);
     ui->comboBox_department->setCompleter(completerauthor);
 
 
