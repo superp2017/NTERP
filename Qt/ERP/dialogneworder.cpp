@@ -16,15 +16,16 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
     m_isNewMode(true)
 {
     ui->setupUi(this);
-    initCombox(dataCenter::instance()->pub_Customers(),\
-               dataCenter::instance()->pub_Batchs(),\
-               dataCenter::instance()->pub_Units());
+
+    initData();
 
     connect(dataCenter::instance(),SIGNAL(sig_newOrder(Order,bool)),this,SLOT(newOrderCb(Order,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modOrder(Order,bool)),this,SLOT(modOrderCb(Order,bool)));
 
     connect(ui->comboBox_customerName,SIGNAL(currentIndexChanged(QString)),this,SLOT(customChange(QString)));
     connect(ui->comboBox_unit,SIGNAL(currentIndexChanged(QString)),this,SLOT(unitChange(QString)));
+
+
     changeModel();
 }
 
@@ -32,15 +33,24 @@ DialogNewOrder::~DialogNewOrder()
 {
     delete ui;
 }
-
+void DialogNewOrder::initData()
+{
+    initCombox(dataCenter::instance()->pub_Customers(),\
+               dataCenter::instance()->pub_Batchs(),\
+               dataCenter::instance()->pub_Units());
+}
 
 void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch,  QVector<QString> unit)
 
 {
+    ui->comboBox_customerName->blockSignals(true);
+    ui->comboBox_unit->blockSignals(true);
+
     ui->comboBox_orderType->clear();
     ui->comboBox_orderType->addItem("普通订单","0");
     ui->comboBox_orderType->addItem("批量订单","1");
     ui->comboBox_orderType->addItem("试样订单","2");
+
 
     ui->comboBox_customerName->clear();
     QStringList customlist;
@@ -68,10 +78,13 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch
     ui->comboBox_unit->setCompleter(completerUnit);
 
 
-
     ui->comboBox_customerName->addItem(ItemNewCustom);
     ui->comboBox_unit->addItem(ItemNewUnit);
     ui->comboBox_customerName->setCurrentIndex(-1);
+    ui->comboBox_unit->blockSignals(false);
+    ui->comboBox_customerName->blockSignals(false);
+
+
 }
 
 void DialogNewOrder::initOrder(Order order)
@@ -223,6 +236,8 @@ Order DialogNewOrder::getCurorder() const
 {
     return curorder;
 }
+
+
 
 
 

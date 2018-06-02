@@ -146,7 +146,10 @@ void OrderManager::new_order()
 {
     if(neworer==NULL){
         neworer = new DialogNewOrder();
+    }else{
+        neworer->initData();
     }
+
     neworer->clearUI();
     neworer->setModel(true);
     if(neworer->exec()==123){
@@ -168,6 +171,8 @@ void OrderManager::on_pushButton_mod_clicked()
     }
     if(neworer==NULL){
         neworer = new DialogNewOrder();
+    }else{
+        neworer->initData();
     }
     neworer->setModel(false);
     neworer->clearUI();

@@ -18,6 +18,7 @@ public:
     explicit DialogMaterialManage(QWidget *parent = 0);
     ~DialogMaterialManage();
     void closeAllStatus();
+     void initData();
 private slots:
     void on_pushButton_exit_clicked();
 
@@ -31,7 +32,6 @@ private slots:
 signals:
     void sig_exportCb(bool);
 private:
-    void initData();
     void setRowData(Materiel ma,int row);
     void removeOne(Materiel ma);
     void appendOne(Materiel ma);
