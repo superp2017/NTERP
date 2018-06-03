@@ -5,6 +5,7 @@ import (
 	"JGo/JHttp"
 	"JGo/JLogger"
 	"JGo/JStore/JRedis"
+	"JunSie/util"
 )
 
 type Employee struct {
@@ -120,6 +121,37 @@ func ModEmployee(session *JHttp.Session) {
 	session.Forward("0", "success", data)
 }
 
+
+//员工离职
+func OutEmployee(session *JHttp.Session) {
+	type Para struct {
+		UID string //用户id
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.UID == "" {
+		session.Forward("1", "OutEmployee failed,UID is empty\n", nil)
+		return
+	}
+	data := &Employee{}
+	if err := JRedis.Redis_hget(Hash_Employee, st.UID, data); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	data.OutTime = util.CurTime()
+	data.Status = "1"
+	if err := JRedis.Redis_hset(Hash_Employee, st.UID, data); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	go delAccount(data.Account)
+	session.Forward("0", "success", data)
+}
+
 //删除某一个员工
 func DelEmployee(session *JHttp.Session) {
 	type Para struct {
@@ -145,7 +177,7 @@ func DelEmployee(session *JHttp.Session) {
 		return
 	}
 	go delAccount(data.Account)
-	session.Forward("0", "success", data)
+	session.Forward("0", "success", st.UID)
 }
 
 // 获取所有的员工信息

@@ -16,7 +16,7 @@ FormCustommanage::FormCustommanage(QWidget *parent) :
     ui->tableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
     ui->tableWidget->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
     ui->tableWidget->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
-    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableWidget->horizontalHeader()->setStyleSheet("QHeaderView::section{background:#888888;}"); //设置表头背景色
     QFont font = ui->tableWidget->horizontalHeader()->font();
     font.setBold(true);
@@ -32,7 +32,7 @@ FormCustommanage::FormCustommanage(QWidget *parent) :
 
     connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
     connect(ui->checkBox_check_all,SIGNAL(clicked(bool)),this,SLOT(checkAll()));
-    connect(dataCenter::instance(),SIGNAL(sig_delCustomer(Customer,bool)),this,SLOT(delCustomerCb(Customer,bool)));
+    connect(dataCenter::instance(),SIGNAL(sig_delCustomer(QString,bool)),this,SLOT(delCustomerCb(QString,bool)));
 
     initData();
 
@@ -60,7 +60,7 @@ void FormCustommanage::on_pushButton_new_clicked()
     }
 }
 
-void FormCustommanage::delCustomerCb(Customer cu, bool ok)
+void FormCustommanage::delCustomerCb(QString cu, bool ok)
 {
     dataCenter::instance()->pub_hideLoadding();
     if(ok){
@@ -208,14 +208,14 @@ void FormCustommanage::initData()
 }
 
 
-void FormCustommanage::removeOne(Customer ma)
+void FormCustommanage::removeOne(QString ma)
 {
     int count = ui->tableWidget->rowCount();
     for(int i=0;i<count;++i){
         QWidget *w = ui->tableWidget->cellWidget(i,0);
         if(w!=NULL){
             QCheckBox *box = reinterpret_cast<QCheckBox *>(w);
-            if(box->text()==ma.CID){
+            if(box->text()==ma){
                 ui->tableWidget->removeRow(i);
                 break;
             }

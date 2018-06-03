@@ -17,11 +17,13 @@ OrderManager::OrderManager(QWidget *parent) :
 
     tab_mode = QHeaderView::Stretch;
 
-    m_tab_new = new OrderTable();
+    m_tab_new     = new OrderTable();
     m_tab_success = new OrderTable();
-    m_tab_all = new OrderTable();
+    m_tab_all     = new OrderTable();
+    m_tab_produce = new OrderTable();
     //QIcon(":/icon/all.ico")
     ui->tabWidget->addTab(m_tab_new,"新订单");
+    ui->tabWidget->addTab(m_tab_produce,"生产中");
     ui->tabWidget->addTab(m_tab_success,"已完成");
     ui->tabWidget->addTab(m_tab_all,"全部");
     ui->tabWidget->tabBar()->setMovable(true);
@@ -32,6 +34,7 @@ OrderManager::OrderManager(QWidget *parent) :
 
     connect(m_tab_new,SIGNAL(orderClick(QString)),this,SLOT(orderClick(QString)));
     connect(m_tab_all,SIGNAL(orderClick(QString)),this,SLOT(orderClick(QString)));
+    connect(m_tab_produce,SIGNAL(orderClick(QString)),this,SLOT(orderClick(QString)));
     connect(m_tab_success,SIGNAL(orderClick(QString)),this,SLOT(orderClick(QString)));
 
 
@@ -39,32 +42,32 @@ OrderManager::OrderManager(QWidget *parent) :
 
     connect(dataCenter::instance(),SIGNAL(sig_cancleOrder(Order,bool)),this,SLOT(cancleOrderCb(Order,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_finishOrder(Order,bool)),this,SLOT(finishOrderCb(Order,bool)));
+    connect(dataCenter::instance(),SIGNAL(sig_produceOrder(Order,bool)),this,SLOT(produceOrderCb(Order,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_globalOrders(bool)),this,SLOT(GlobalOrdersCb(bool)));
+
 
     connect(m_tab_new,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_new,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
     connect(m_tab_new,SIGNAL(cancleOrder()),this,SLOT(on_pushButton_cancle_clicked()));
     connect(m_tab_new,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
-    connect(m_tab_new,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
+    connect(m_tab_new,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
+
+
+    connect(m_tab_produce,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
     connect(m_tab_all,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_all,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
     connect(m_tab_all,SIGNAL(cancleOrder()),this,SLOT(on_pushButton_cancle_clicked()));
     connect(m_tab_all,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
+    connect(m_tab_all,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
     connect(m_tab_all,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
-
-    connect(m_tab_success,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
-    connect(m_tab_success,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
-    connect(m_tab_success,SIGNAL(cancleOrder()),this,SLOT(on_pushButton_cancle_clicked()));
-    connect(m_tab_success,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
-    connect(m_tab_success,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
-
 
     ui->radioButton_ave->setChecked(true);
     ui->pushButton_mod->setEnabled(false);
     ui->pushButton_cancle->setEnabled(false);
     ui->pushButton_success->setEnabled(false);
     ui->pushButton_change_price->setEnabled(false);
+    ui->pushButton_produce->setEnabled(false);
 
     updataData();
 }
@@ -78,6 +81,7 @@ void OrderManager::updataData()
 {
     m_tab_new->initOrder(dataCenter::instance()->pub_StatusOrders(Status_New));
     m_tab_success->initOrder(dataCenter::instance()->pub_StatusOrders(Status_Success));
+    m_tab_produce->initOrder(dataCenter::instance()->pub_StatusOrders(Status_Produce));
     m_tab_all->initOrder(dataCenter::instance()->pub_StatusOrders(Status_All));
 }
 
@@ -94,34 +98,53 @@ void OrderManager::orderClick(QString orderID)
         if(cur_order.Current.Status == Status_New){
             ui->pushButton_mod->setEnabled(true);
             ui->pushButton_cancle->setEnabled(true);
-            ui->pushButton_success->setEnabled(true);
+            ui->pushButton_success->setEnabled(false);
+            ui->pushButton_produce->setEnabled(true);
             ui->pushButton_change_price->setEnabled(true);
+        }
+        if(cur_order.Current.Status == Status_Produce){
+            ui->pushButton_mod->setEnabled(false);
+            ui->pushButton_cancle->setEnabled(false);
+            ui->pushButton_success->setEnabled(true);
+            ui->pushButton_produce->setEnabled(false);
+            ui->pushButton_change_price->setEnabled(false);
         }
         if(cur_order.Current.Status == Status_Success){
             ui->pushButton_mod->setEnabled(false);
             ui->pushButton_cancle->setEnabled(false);
             ui->pushButton_success->setEnabled(false);
+            ui->pushButton_produce->setEnabled(false);
             ui->pushButton_change_price->setEnabled(false);
         }
         if(cur_order.Current.Status == Status_Cancle){
             ui->pushButton_mod->setEnabled(false);
             ui->pushButton_cancle->setEnabled(false);
             ui->pushButton_success->setEnabled(false);
+            ui->pushButton_produce->setEnabled(false);
             ui->pushButton_change_price->setEnabled(false);
         }
     }
 
-    if(ui->tabWidget->currentWidget()==m_tab_new){
+    if(ui->tabWidget->currentWidget()== m_tab_new){
         ui->pushButton_mod->setEnabled(true);
         ui->pushButton_cancle->setEnabled(true);
-        ui->pushButton_success->setEnabled(true);
+        ui->pushButton_success->setEnabled(false);
         ui->pushButton_change_price->setEnabled(true);
+        ui->pushButton_produce->setEnabled(true);
+    }
+    if(ui->tabWidget->currentWidget()== m_tab_produce){
+        ui->pushButton_mod->setEnabled(false);
+        ui->pushButton_cancle->setEnabled(false);
+        ui->pushButton_success->setEnabled(true);
+        ui->pushButton_change_price->setEnabled(false);
+        ui->pushButton_produce->setEnabled(false);
     }
     if(ui->tabWidget->currentWidget()==m_tab_success){
         ui->pushButton_mod->setEnabled(false);
         ui->pushButton_cancle->setEnabled(false);
         ui->pushButton_success->setEnabled(false);
         ui->pushButton_change_price->setEnabled(false);
+        ui->pushButton_produce->setEnabled(false);
     }
 
 }
@@ -149,7 +172,6 @@ void OrderManager::new_order()
     }else{
         neworer->initData();
     }
-
     neworer->clearUI();
     neworer->setModel(true);
     if(neworer->exec()==123){
@@ -245,6 +267,39 @@ void OrderManager::on_pushButton_success_clicked()
     }
 }
 
+
+void OrderManager::on_pushButton_produce_clicked()
+{
+    if(cur_order.OrderID==""){
+        return;
+    }
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("提示");
+    msgBox.setText("订单:"+cur_order.OrderID+"即将进入生产,");
+    msgBox.setInformativeText("是否继续操作?");
+    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    int ret = msgBox.exec();
+    switch (ret) {
+    case QMessageBox::Ok:
+    {
+        // Save was clicked
+        boost::thread t(boost::bind(&dataCenter::net_produceOrder,dataCenter::instance(),OrderService::toJsonObject(cur_order)));
+        t.detach();
+        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
+        break;
+    }
+    case QMessageBox::Cancel:
+        // Cancel was clicked
+        break;
+    default:
+        // should never be reached
+        break;
+    }
+}
+
+
+
 void OrderManager::on_pushButton_reflash_clicked()
 {
     clearCurOrder();
@@ -302,6 +357,7 @@ void OrderManager::cancleOrderCb(Order order, bool ok)
     if(ok){
         dataCenter::instance()->pub_showMessage("取消成功!",4000);
         m_tab_new->removeOrder(order);
+        m_tab_success->appendOrder(order);
         m_tab_all->modOrder(order);
     }else{
         dataCenter::instance()->pub_showMessage("取消失败!",4000);
@@ -313,11 +369,24 @@ void OrderManager::finishOrderCb(Order order, bool ok)
     dataCenter::instance()->pub_hideLoadding();
     if(ok){
         dataCenter::instance()->pub_showMessage("出库成功!",4000);
-        m_tab_new->removeOrder(order);
+        m_tab_produce->removeOrder(order);
         m_tab_success->appendOrder(order);
         m_tab_all->modOrder(order);
     }else{
         dataCenter::instance()->pub_showMessage("出库失败!",4000);
+    }
+}
+
+void OrderManager::produceOrderCb(Order order, bool ok)
+{
+    dataCenter::instance()->pub_hideLoadding();
+    if(ok){
+        dataCenter::instance()->pub_showMessage("操作成功!",4000);
+        m_tab_new->removeOrder(order);
+        m_tab_produce->appendOrder(order);
+        m_tab_all->modOrder(order);
+    }else{
+        dataCenter::instance()->pub_showMessage("操作失败!",4000);
     }
 }
 
@@ -337,6 +406,7 @@ void OrderManager::clearAllSelect()
     ui->pushButton_cancle->setEnabled(false);
     ui->pushButton_success->setEnabled(false);
     ui->pushButton_change_price->setEnabled(false);
+    ui->pushButton_produce->setEnabled(false);
     clearCurOrder();
 }
 

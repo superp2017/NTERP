@@ -152,20 +152,6 @@ void DialogOrderPrint::doExport(QVector<Order> ls,QString filepath)
 }
 
 
-void DialogOrderPrint::on_pushButton_print_clicked()
-{
-    QVector<Order> ls= getSelectOrders();
-    if(ls.size()==0){
-        QMessageBox::information(this,"提示","请至少选择一个订单...");
-        return;
-    }
-    if(OrderService::printOrders(ls)){
-        dataCenter::instance()->pub_showMessage("打印成功!",3000);
-    }else{
-        dataCenter::instance()->pub_showMessage("打印失败!",3000);
-    }
-    done(123);
-}
 
 void DialogOrderPrint::on_pushButton_cancle_clicked()
 {

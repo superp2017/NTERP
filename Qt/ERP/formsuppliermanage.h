@@ -35,7 +35,7 @@ private slots:
 
     void checkAll();
 
-    void delSupplierCb(Supplier cu,bool ok);
+    void delSupplierCb(QString cu,bool ok);
 
 
 signals:
@@ -43,7 +43,7 @@ signals:
 private:
     void initData();
     void setRowData(Supplier ma,int row);
-    void removeOne(Supplier ma);
+    void removeOne(QString ma);
     void appendOne(Supplier ma);
     void modOne(Supplier ma);
     void doExport(QVector<Supplier> ls, QString filepath);

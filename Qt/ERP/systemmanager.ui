@@ -95,7 +95,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox">
+  <widget class="QCheckBox" name="checkBox_export_open">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -106,6 +106,19 @@
    </property>
    <property name="text">
     <string>导出后打开</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_update">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>490</y>
+     <width>80</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>更新</string>
    </property>
   </widget>
  </widget>

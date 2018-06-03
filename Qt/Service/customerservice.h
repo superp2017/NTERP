@@ -9,8 +9,9 @@ public:
     CustomerService();
     static Customer newCustomer(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static Customer modCustomer(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static QString  delCustomer(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static Customer upDownCustomer(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QVector<Customer> getAllCustomer(bool &ok, QString hostname, QString hostport);
-
     static QJsonObject toJsonObject(Customer customer);
     static Customer fromJsonObject(QJsonObject obj);
     static bool exportCustomer(QVector<Customer>list, QString filepath, bool isOpen=false);

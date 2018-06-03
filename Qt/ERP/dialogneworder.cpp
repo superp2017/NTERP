@@ -22,9 +22,8 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_newOrder(Order,bool)),this,SLOT(newOrderCb(Order,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modOrder(Order,bool)),this,SLOT(modOrderCb(Order,bool)));
 
-    connect(ui->comboBox_customerName,SIGNAL(currentIndexChanged(QString)),this,SLOT(customChange(QString)));
-    connect(ui->comboBox_unit,SIGNAL(currentIndexChanged(QString)),this,SLOT(unitChange(QString)));
-
+    connect(ui->comboBox_customerName,SIGNAL(currentIndexChanged(int)),this,SLOT(customChange(int)));
+    connect(ui->comboBox_unit,SIGNAL(currentIndexChanged(int)),this,SLOT(unitChange(int)));
 
     changeModel();
 }
@@ -40,19 +39,18 @@ void DialogNewOrder::initData()
                dataCenter::instance()->pub_Units());
 }
 
-void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch,  QVector<QString> unit)
+void DialogNewOrder::initCombox(QVector<Customer> custom, QSet<QString> batch,  QVector<QString> unit)
 
 {
     ui->comboBox_customerName->blockSignals(true);
     ui->comboBox_unit->blockSignals(true);
-
     ui->comboBox_orderType->clear();
     ui->comboBox_orderType->addItem("普通订单","0");
     ui->comboBox_orderType->addItem("批量订单","1");
     ui->comboBox_orderType->addItem("试样订单","2");
 
-
     ui->comboBox_customerName->clear();
+    ui->comboBox_customerName->blockSignals(true);
     QStringList customlist;
     for(Customer c:custom){
         customlist<<c.Name;
@@ -62,29 +60,27 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QVector<QString> batch
 
     ui->comboBox_customerName->setEditable(true);
     ui->comboBox_customerName->setCompleter(completerCustomer);
+    ui->comboBox_customerName->addItem(ItemNewCustom);
+    ui->comboBox_customerName->setCurrentIndex(-1);
 
-
-    QCompleter *completerBatch = new QCompleter(batch.toList(), this);
     ui->comboBox_CustomBatch->clear();
+    QCompleter *completerBatch = new QCompleter(batch.toList(), this);
     ui->comboBox_CustomBatch->addItems(batch.toList());
     ui->comboBox_CustomBatch->setEditable(true);
     ui->comboBox_CustomBatch->setCompleter(completerBatch);
 
-
-    QCompleter *completerUnit = new QCompleter(unit.toList(), this);
     ui->comboBox_unit->clear();
+    QCompleter *completerUnit = new QCompleter(unit.toList(), this);
+
     ui->comboBox_unit->addItems(unit.toList());
     ui->comboBox_unit->setEditable(true);
     ui->comboBox_unit->setCompleter(completerUnit);
 
-
-    ui->comboBox_customerName->addItem(ItemNewCustom);
     ui->comboBox_unit->addItem(ItemNewUnit);
-    ui->comboBox_customerName->setCurrentIndex(-1);
-    ui->comboBox_unit->blockSignals(false);
+    ui->comboBox_unit->setCurrentIndex(-1);
+
     ui->comboBox_customerName->blockSignals(false);
-
-
+    ui->comboBox_unit->blockSignals(false);
 }
 
 void DialogNewOrder::initOrder(Order order)
@@ -112,10 +108,10 @@ void DialogNewOrder::clearUI()
 {
     ui->comboBox_orderType->setCurrentIndex(0);
     ui->lineEdit_MaterielDes->setText("");
-    ui->comboBox_unit->setCurrentIndex(0);
+    ui->comboBox_unit->setCurrentIndex(-1);
     ui->spinBox_num->setValue(0);
-    ui->comboBox_customerName->setCurrentText("");
-    ui->comboBox_CustomBatch->setCurrentText("");
+    ui->comboBox_customerName->setCurrentIndex(-1);
+    ui->comboBox_CustomBatch->setCurrentIndex(-1);
     ui->textEdit_custom_note->setText("");
 }
 
@@ -255,14 +251,16 @@ void DialogNewOrder::on_pushButton_edit_des_clicked()
     }
 }
 
-void DialogNewOrder::customChange(QString name)
+void DialogNewOrder::customChange(int index)
 {
-    if(name==ItemNewCustom){
+    if (index==-1) return;
+    if(ui->comboBox_customerName->currentText()==ItemNewCustom){
         DialogNewCustom cus;
+        cus.setMode(true);
         if(cus.exec()==123){
             ui->comboBox_customerName->blockSignals(true);
             Customer custom = cus.getCurCustom();
-            ui->comboBox_customerName->insertItem(ui->comboBox_customerName->count()-1,custom.Name);
+            ui->comboBox_customerName->insertItem(ui->comboBox_customerName->count()-1,custom.Name,custom.CID);
             ui->comboBox_customerName->setCurrentIndex(ui->comboBox_customerName->count()-2);
             ui->comboBox_customerName->blockSignals(false);
         }else{
@@ -274,9 +272,10 @@ void DialogNewOrder::customChange(QString name)
 
 
 
-void DialogNewOrder::unitChange(QString un)
+void DialogNewOrder::unitChange(int index)
 {
-    if(un==ItemNewUnit){
+    if (index==-1) return;
+    if(ui->comboBox_unit->currentText()==ItemNewUnit){
         DialogNewUnit unit;
         if(unit.exec()==123){
             ui->comboBox_unit->blockSignals(true);

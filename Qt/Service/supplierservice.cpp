@@ -13,14 +13,57 @@ SupplierService::SupplierService()
 Supplier SupplierService::newSupplier(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
     Supplier sup;
-    ok = true;
+    std::string url = Net_NewSupplier;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            sup = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  sup;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"newSupplier ret is not 0"<<endl;
+    ok = false;
     return sup;
 }
 
 Supplier SupplierService::modSupplier(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
     Supplier sup;
-    ok = true;
+    std::string url = Net_ModSupplier;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            sup = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  sup;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"modSupplier ret is not 0"<<endl;
+    ok = false;
+    return sup;
+}
+
+QString SupplierService::delSupplier(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    QString sup;
+    std::string url = Net_DelSupplier;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isString()){
+            sup = ret.data.toString();
+            ok = true;
+            return  sup;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"delSupplier ret is not 0"<<endl;
+    ok = false;
     return sup;
 }
 

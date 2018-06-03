@@ -21,7 +21,7 @@ public:
     void updateUser(QVector<User>list);
     void appendUser(User para);
     void modUser(User para);
-    void removeUser(User para);
+    void removeUser(QString para);
 signals:
     void userClick(QString UID);
     void newUser();

@@ -22,10 +22,12 @@ public:
     void appendOrder(Order para);
     void modOrder(Order para);
     void removeOrder(Order para);
+    void produceOrder(Order para);
 signals:
     void orderClick(QString orderID);
     void newOrder();
     void cancleOrder();
+    void produceOrder();
     void modOrder();
     void outOrder();
     void modPrice();
@@ -42,6 +44,7 @@ private:
     QMenu   *m_menu;
     QAction *m_new;
     QAction *m_mod;
+    QAction *m_produce;
     QAction *m_cancle;
     QAction *m_out;
     QAction *m_mod_price;

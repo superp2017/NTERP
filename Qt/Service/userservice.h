@@ -12,7 +12,7 @@ public:
     static User newUser(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static User modUser(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static User outUser(const QJsonObject para, bool &ok, QString hostname, QString hostport);
-    static User delUser(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static QString delUser(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QVector<User> getAllUsers(bool &ok, QString hostname, QString hostport);
 
 
@@ -20,7 +20,6 @@ public:
     static User fromJsonObject(QJsonObject obj);
 
     static bool exportUser(QVector<User> list, QString filepath, bool isOpen=false);
-    static bool printUser(QVector<User> list);
 
 };
 

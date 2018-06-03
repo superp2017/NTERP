@@ -13,109 +13,6 @@
 
 dataCenter::dataCenter(QObject *parent) : QObject(parent)
 {
-    //    cur_user.UID="1234";
-    //    cur_user.Author = "admin";
-    //    cur_user.Name = "admin";
-    //    cur_user.CID = "CID001";
-    //    cur_user.CommpanyName="南通公司";
-
-    //    m_units.append("EA");
-    //    m_units.append("KG");
-    //    m_batch.append("180410001");
-    //    m_batch.append("180410002");
-    //    m_batch.append("180410003");
-    //    m_batch.append("180410004");
-    //    m_batch.append("132645004");
-    //    m_batch.append("52516464");
-
-    //    Materiel m ;
-    //    m.MaterID = "61013567";
-    //    m.MaterDes="IMCN/5261097/银白色锌铝涂层";
-    //    m.CID ="C101";
-    //    m.CustomName = "上海某某科技公司";
-    //    m.OrderNum = 1;
-    //    m.Unit = "吨";
-    //    m.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
-    //    m.Status = "0";
-    //    m_maters.append(m);
-
-    //    Materiel m1 ;
-    //    m1.MaterID = "610134207";
-    //    m1.CID ="C102";
-    //    m1.MaterDes="C924/项目12法兰焊接/银白色锌铝涂层";
-    //    m1.CustomName = "昆山某某科技公司";
-    //    m1.OrderNum = 2;
-    //    m1.Unit = "KG";
-    //    m1.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
-    //    m1.Status = "0";
-    //    m_maters.append(m1);
-
-    //    Materiel m2 ;
-    //    m2.MaterID = "61013112";
-    //    m2.CID ="C103";
-    //    m2.CustomName = "昆山某某科技公司";
-    //    m2.OrderNum = 2;
-    //    m2.Unit = "EA";
-    //    m2.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
-    //    m2.Status = "1";
-    //    m2.MaterDes="IMCN/5261097/银白色锌铝涂层";
-    //    m_maters.append(m2);
-
-    //    Materiel m3 ;
-    //    m3.MaterID = "61013204";
-    //    m3.CID ="C104";
-    //    m3.CustomName = "张江某某科技公司";
-    //    m3.CustomName = "昆山某某科技公司";
-    //    m3.OrderNum = 12;
-    //    m3.Unit = "EA";
-    //    m3.CreatTime = QString("%1").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
-    //    m3.Status = "1";
-    //    m3.MaterDes="C407/0SEA003061/黑色锌铝涂层";
-    //    m_maters.append(m3);
-
-    //    Customer c1;
-    //    c1.CID = "C105";
-    //    c1.Name="上海某某科技公司";
-    //    c1.Addr = "祖冲之路2305弄";
-    //    c1.Bankbranch = "张江支行";
-    //    c1.BankName = "建设银行";
-    //    c1.BankNumber="6222100011120320130";
-    //    c1.ContactCell="138999999999";
-    //    c1.ContactName="张某某";
-    //    c1.Note="无";
-    //    c1.Tel="021-62223123";
-    //    c1.CertificatesNum="92323232312312312312";
-
-    //    Customer c2;
-    //    c2.CID = "C103";
-    //    c2.Name="昆山某某科技公司";
-    //    c2.Addr = "祖冲之路2305弄";
-    //    c2.Bankbranch = "张江支行";
-    //    c2.BankName = "交通银行";
-    //    c2.BankNumber="6222100011120320130";
-    //    c2.ContactCell="1389123123999";
-    //    c2.ContactName="张某某";
-    //    c2.Note="无";
-    //    c2.Tel="021-62223123";
-    //    c2.CertificatesNum="92322312312312312312";
-
-    //    Customer c3;
-    //    c3.CID = "C102";
-    //    c3.Name="南通某某科技公司";
-    //    c3.Addr = "祖冲之路2305弄";
-    //    c3.Bankbranch = "张江支行";
-    //    c3.BankName = "招行银行";
-    //    c3.BankNumber="623434341120320130";
-    //    c3.ContactCell="1389131231239999";
-    //    c3.ContactName="张某某";
-    //    c3.Note="无";
-    //    c3.Tel="021-62223123";
-    //    c3.CertificatesNum="92323232312312312312";
-
-    //    m_customers.append(c1);
-    //    m_customers.append(c2);
-    //    m_customers.append(c3);
-
 
     m_authors.push_back("操作员");
     m_authors.push_back("仓库");
@@ -157,73 +54,64 @@ void dataCenter::net_login(const QJsonObject para)
     bool ok = false;
     User u= accountService::login(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(ok){
-        pri_setCurUser(u);
+     cur_user = u;
     }
     emit sig_login(ok);
 }
 
 void dataCenter::net_newUser(const QJsonObject para)
 {
-#if 1
     bool isOK   = false;
     User user = UserService::newUser(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(isOK){
-        this->pri_appendEmployee(user);
-        emit sig_newEmployee(user,true);
-        return;
+        m_employee.append(user);
     }
-    emit sig_newEmployee(user,false);
-#endif
-#if 0
-    User user = UserService::fromJsonObject(para);
-    user.UID = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
-    user.CreatTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    user.CID = cur_user.CID;
-    user.CommpanyName = cur_user.CommpanyName;
-    user.Status = "0";
-    this->pri_appendEmployee(user);
-    emit sig_newEmployee(user,true);
-#endif
+    emit sig_newEmployee(user,isOK);
 }
 
 void dataCenter::net_modUser(const QJsonObject para)
 {
-    User user = UserService::fromJsonObject(para);
-    for(int i=0;i<m_employee.size();++i){
-        if(m_employee[i].UID==user.UID){
-            m_employee[i] = user;
-            break;
+    bool isOK   = false;
+    User user = UserService::modUser(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK){
+        for(int i=0;i<m_employee.size();++i){
+            if(m_employee[i].UID==user.UID){
+                m_employee[i] = user;
+                break;
+            }
         }
     }
-    emit sig_modEmployee(user,true);
+    emit sig_modEmployee(user,isOK);
 }
 
 void dataCenter::net_outUser(const QJsonObject para)
 {
-    User user = UserService::fromJsonObject(para);
-    user.Status ="1";
-    user.OutTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    for(int i=0;i<m_employee.size();++i){
-        if(m_employee[i].UID==user.UID){
-            m_employee[i] = user;
-            break;
+    bool isOK   = false;
+    User user = UserService::outUser(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK){
+        for(int i=0;i<m_employee.size();++i){
+            if(m_employee[i].UID==user.UID){
+                m_employee[i] = user;
+                break;
+            }
         }
     }
-    emit sig_outEmployee(user,true);
+    emit sig_outEmployee(user,isOK);
 }
 
 void dataCenter::net_delUser(const QJsonObject para)
 {
-    User user = UserService::fromJsonObject(para);
-    user.Status ="-1";
-    user.OutTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    for(int i=0;i<m_employee.size();++i){
-        if(m_employee[i].UID==user.UID){
-            m_employee.remove(i);
-            break;
+    bool isOK   = false;
+    QString user = UserService::delUser(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK){
+        for(int i=0;i<m_employee.size();++i){
+            if(m_employee[i].UID==user){
+                m_employee.remove(i);
+                break;
+            }
         }
     }
-    emit sig_delEmployee(user,true);
+    emit sig_delEmployee(user,isOK);
 }
 
 void dataCenter::net_getGlobalUsers()
@@ -235,37 +123,17 @@ void dataCenter::net_getGlobalUsers()
 
 void dataCenter::net_newOrder(const QJsonObject para)
 {
-#if 1
     bool isOK   = false;
     Order order = OrderService::newOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(isOK){
-        this->pri_appendOrder(order);
-        emit sig_newOrder(order,true);
-        return;
+        m_orders.append(order);
+        m_batch.insert(order.CustomBatch);
     }
-    emit sig_newOrder(order,false);
-#endif
-#if 0
-    Order order = OrderService::fromJsonObject(para);
-    order.OrderID = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
-    order.ProduceID =  QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch()/130);
-    order.CreatTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    OderFlow flow;
-    flow.UserName =cur_user.Name;
-    flow.Action="新建订单";
-    flow.Status = Status_New;
-    flow.OpreatTime =order.CreatTime;
-    order.Current = flow;
-    order.Flow.push_back(flow);
-
-    this->appendOrder(order);
-    emit sig_newOrder(order,true);
-#endif
+    emit sig_newOrder(order,isOK);
 }
 
 void dataCenter::net_modOrder(const QJsonObject para)
 {
-#if 0
     bool isOK   = false;
     Order order = OrderService::modOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(isOK){
@@ -275,33 +143,12 @@ void dataCenter::net_modOrder(const QJsonObject para)
                 break;
             }
         }
-        emit sig_modOrder(order,true);
-        return;
     }
-    emit sig_modOrder(order,false);
-#endif
-#if 1
-    Order order = OrderService::fromJsonObject(para);
-    OderFlow flow;
-    flow.UserName =cur_user.Name;
-    flow.Action="订单修改";
-    flow.Status = order.Current.Status;
-    flow.OpreatTime =QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    order.Current = flow;
-    order.Flow.push_back(flow);
-    for(int i=0;i<m_orders.size();++i){
-        if(m_orders[i].OrderID==order.OrderID){
-            m_orders[i] = order;
-            break;
-        }
-    }
-    emit sig_modOrder(order,true);
-#endif
+    emit sig_modOrder(order,isOK);
 }
 
 void dataCenter::net_cancleOrder(const QJsonObject para)
 {
-#if 0
     bool isOK   = false;
     Order order = OrderService::cancleOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(isOK){
@@ -311,33 +158,42 @@ void dataCenter::net_cancleOrder(const QJsonObject para)
                 break;
             }
         }
-        emit sig_cancleOrder(order,true);
-        return;
     }
-    emit sig_cancleOrder(order,false);
-#endif
-#if 1
-    Order order = OrderService::fromJsonObject(para);
-    OderFlow flow;
-    flow.UserName =cur_user.Name;
-    flow.Action=" 取消订单";
-    flow.Status = Status_Cancle;
-    flow.OpreatTime =QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    order.Current = flow;
-    order.Flow.push_back(flow);
-    for(int i=0;i<m_orders.size();++i){
-        if(m_orders[i].OrderID==order.OrderID){
-            m_orders[i] = order;
-            break;
+    emit sig_cancleOrder(order,isOK);
+}
+
+void dataCenter::net_delOrder(const QJsonObject para)
+{
+    bool isOK   = false;
+    QString orderID = OrderService::delOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK){
+        for(int i=0;i<m_orders.size();++i){
+            if(m_orders[i].OrderID==orderID){
+                m_orders.remove(i);
+                break;
+            }
         }
     }
-    emit sig_cancleOrder(order,true);
-#endif
+    emit sig_delOrder(orderID,isOK);
+}
+
+void dataCenter::net_produceOrder(const QJsonObject para)
+{
+    bool isOK   = false;
+    Order order = OrderService::produceOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK){
+        for(int i=0;i<m_orders.size();++i){
+            if(m_orders[i].OrderID==order.OrderID){
+                m_orders[i] = order;
+                break;
+            }
+        }
+    }
+    emit sig_produceOrder(order,isOK);
 }
 
 void dataCenter::net_finishOrder(const QJsonObject para)
 {
-#if 0
     bool isOK   = false;
     Order order = OrderService::finishOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(isOK){
@@ -347,34 +203,12 @@ void dataCenter::net_finishOrder(const QJsonObject para)
                 break;
             }
         }
-        emit sig_finishOrder(order,true);
-        return;
     }
-    emit sig_finishOrder(order,false);
-#endif
-#if 1
-    Order order = OrderService::fromJsonObject(para);
-    OderFlow flow;
-    flow.UserName =cur_user.Name;
-    flow.Action="订单出库";
-    flow.Status = Status_Success;
-    flow.OpreatTime =QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    order.Current = flow;
-    order.Flow.push_back(flow);
-    order.SuccessTime =QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    for(int i=0;i<m_orders.size();++i){
-        if(m_orders[i].OrderID==order.OrderID){
-            m_orders[i] = order;
-            break;
-        }
-    }
-    emit sig_finishOrder(order,true);
-#endif
+    emit sig_finishOrder(order,isOK);
 }
 
 void dataCenter::net_modOrderPrice(const QJsonObject para)
 {
-#if 0
     bool isOK   = false;
     Order order = OrderService::modOrderPrice(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(isOK){
@@ -384,34 +218,17 @@ void dataCenter::net_modOrderPrice(const QJsonObject para)
                 break;
             }
         }
-        emit sig_modOrderPrice(order,true);
-        return;
     }
-    emit sig_modOrderPrice(order,false);
-#endif
-#if 1
-    Order order = OrderService::fromJsonObject(para);
-    OderFlow flow;
-    flow.UserName =cur_user.Name;
-    flow.Action="订单定价";
-    flow.Status = order.Current.Status;
-    flow.OpreatTime =QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    order.Current = flow;
-    order.Flow.push_back(flow);
-    for(int i=0;i<m_orders.size();++i){
-        if(m_orders[i].OrderID==order.OrderID){
-            m_orders[i] = order;
-            break;
-        }
-    }
-    emit sig_modOrderPrice(order,true);
-#endif
+    emit sig_modOrderPrice(order,isOK);
 }
 
 void dataCenter::net_getglobalOrders()
 {
     bool ok =false;
     m_orders = OrderService::getAllOrders(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        pri_initBath();
+    }
     emit sig_globalOrders(ok);
 }
 
@@ -419,32 +236,40 @@ void dataCenter::net_newCustomer(const QJsonObject para)
 {
     bool isOK    = false;
     Customer cus = CustomerService::newCustomer(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    pri_appendCustomer(cus);
+    if(isOK){
+        m_customers.append(cus);
+    }
     emit sig_newCustomer(cus,isOK);
 }
 
 void dataCenter::net_modCustomer(const QJsonObject para)
 {
-    Customer cus =CustomerService::fromJsonObject(para);
-    for(int i=0;i<m_customers.size();++i){
-        if(m_customers[i].CID==cus.CID){
-            m_customers[i] = cus;
-            break;
+    bool isOK    = false;
+    Customer cus = CustomerService::modCustomer(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK){
+        for(int i=0;i<m_customers.size();++i){
+            if(m_customers[i].CID==cus.CID){
+                m_customers[i] = cus;
+                break;
+            }
         }
     }
-    emit sig_modCustomer(cus,true);
+    emit sig_modCustomer(cus,isOK);
 }
 
 void dataCenter::net_delCustomer(const QJsonObject para)
 {
-    Customer cus =CustomerService::fromJsonObject(para);
-    for(int i=0;i<m_customers.size();++i){
-        if(m_customers[i].CID==cus.CID){
-            m_customers.remove(i);
-            break;
+    bool isOK    = false;
+    QString cus =CustomerService::delCustomer(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK){
+        for(int i=0;i<m_customers.size();++i){
+            if(m_customers[i].CID==cus){
+                m_customers.remove(i);
+                break;
+            }
         }
     }
-    emit sig_delCustomer(cus,true);
+    emit sig_delCustomer(cus,isOK);
 }
 
 void dataCenter::net_getGlobalCustomers()
@@ -458,15 +283,20 @@ void dataCenter::net_newUnit(const QJsonObject para)
 {
     bool ok = false;
     QString unit =  UnitService::newUnit(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    pri_appendUnit(unit);
-    emit sig_newUnit(unit,true);
+    if(ok){
+        m_units.append(unit);
+    }
+    emit sig_newUnit(unit,ok);
 }
 
 void dataCenter::net_delUnit(const QJsonObject para)
 {
-    QString unit = UnitService::fromJsonObject(para);
-    m_units.removeOne(unit);
-    emit sig_delUnit(unit,true);
+    bool ok = false;
+    QString unit = UnitService::delUnit(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        m_units.removeOne(unit);
+    }
+    emit sig_delUnit(unit,ok);
 }
 
 void dataCenter::net_getglobalUnits()
@@ -478,39 +308,47 @@ void dataCenter::net_getglobalUnits()
 
 void dataCenter::net_newSupplier(const QJsonObject para)
 {
-    Supplier cus =SupplierService::fromJsonObject(para);
-    cus.SID  = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
-    pri_appendSupplier(cus);
-    emit sig_newSupplier(cus,true);
+    bool ok =false;
+    Supplier cus = SupplierService::newSupplier(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        m_suppliers.push_back(cus);
+    }
+    emit sig_newSupplier(cus,ok);
 }
 
 void dataCenter::net_modSupplier(const QJsonObject para)
 {
-    Supplier cus =SupplierService::fromJsonObject(para);
-    for(int i=0;i<m_suppliers.size();++i){
-        if(m_suppliers[i].SID==cus.SID){
-            m_suppliers[i] = cus;
-            break;
+    bool ok = false;
+    Supplier cus =SupplierService::modSupplier(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        for(int i=0;i<m_suppliers.size();++i){
+            if(m_suppliers[i].SID==cus.SID){
+                m_suppliers[i] = cus;
+                break;
+            }
         }
     }
-    emit sig_modSUpplier(cus,true);
+    emit sig_modSUpplier(cus,ok);
 }
 
 void dataCenter::net_delSupplier(const QJsonObject para)
 {
-    Supplier cus =SupplierService::fromJsonObject(para);
-    for(int i=0;i<m_suppliers.size();++i){
-        if(m_suppliers[i].SID==cus.SID){
-            m_suppliers.remove(i);
-            break;
+    bool ok = false;
+    QString cus = SupplierService::delSupplier(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        for(int i=0;i<m_suppliers.size();++i){
+            if(m_suppliers[i].SID==cus){
+                m_suppliers.remove(i);
+                break;
+            }
         }
     }
-    emit sig_delSUpplier(cus,true);
+    emit sig_delSUpplier(cus,ok);
 }
 
 void dataCenter::net_getglobalSuppliers()
 {
-    bool ok =false;
+    bool ok = false;
     m_suppliers = SupplierService::getAllSupplierls(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     emit sig_globalSUppliers(ok);
 }
@@ -540,11 +378,6 @@ void dataCenter::pub_hideLoadding()
     m_load.showOver();
 }
 
-
-void dataCenter::pri_setCurUser(User u)
-{
-    cur_user = u;
-}
 
 User dataCenter::pub_CurUser()
 {
@@ -583,15 +416,6 @@ Order dataCenter::pub_getOrder(QString OrderID, bool &ok)
     return a;
 }
 
-void dataCenter::pri_appendOrder(Order order)
-{
-    m_orders.append(order);
-}
-
-void dataCenter::pri_appendUnit(QString u)
-{
-    m_units.append(u);
-}
 
 QVector<QString> dataCenter::pub_Units()
 {
@@ -608,10 +432,7 @@ bool dataCenter::pub_checkUnitExist(QString unit)
     return false;
 }
 
-void dataCenter::pri_appendMaters(Materiel m)
-{
-    m_maters.append(m);
-}
+
 
 QVector<Materiel> dataCenter::pub_Materiels()
 {
@@ -642,25 +463,10 @@ Materiel dataCenter::pub_getMateriel(QString MID, bool &ok)
     return s;
 }
 
-void dataCenter::pri_appendBatch(QString b)
-{
-    m_batch.append(b);
-}
 
-QVector<QString> dataCenter::pub_Batchs()
+QSet<QString> dataCenter::pub_Batchs()
 {
     return m_batch;
-}
-
-
-void dataCenter::pri_appendCustomer(Customer c)
-{
-    m_customers.append(c);
-}
-
-void dataCenter::pri_appendSupplier(Supplier c)
-{
-    m_suppliers.push_back(c);
 }
 
 
@@ -705,10 +511,24 @@ Supplier dataCenter::pub_getSupplier(QString CID, bool &ok)
     return a;
 }
 
-void dataCenter::pri_appendEmployee(User user)
+SysSetting dataCenter::CurSettings()
 {
-    m_employee.append(user);
+    return m_Config.Setting();
 }
+
+void dataCenter::setCurSettings(SysSetting set)
+{
+    m_Config.setSetting(set);
+}
+
+void dataCenter::pri_initBath()
+{
+    m_batch.clear();
+    for(Order order:m_orders){
+        m_batch.insert(order.CustomBatch);
+    }
+}
+
 
 QVector<QString> dataCenter::pub_getDepartments() const
 {

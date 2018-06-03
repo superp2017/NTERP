@@ -22,8 +22,6 @@ public:
 private slots:
     void on_pushButton_cancle_clicked();
 
-    void on_pushButton_print_clicked();
-
     void on_pushButton_export_clicked();
 
     void checkAll();

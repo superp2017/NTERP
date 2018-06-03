@@ -36,6 +36,7 @@ func initRoute() {
 
 	JHttp.WhiteHttp("/newemployee", NewEmployee)           //新建一个员工
 	JHttp.WhiteHttp("/modemployee", ModEmployee)           //修改员工信息
+	JHttp.WhiteHttp("/outemployee", OutEmployee)           //员工离职
 	JHttp.WhiteHttp("/delemployee", DelEmployee)           //删除一个员工
 	JHttp.WhiteHttp("/getallemployeess", GetAllEmployeess) //获取所有的员工信息
 

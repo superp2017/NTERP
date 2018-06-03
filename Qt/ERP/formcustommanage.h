@@ -34,14 +34,14 @@ private slots:
 
     void on_pushButton_new_clicked();
 
-    void delCustomerCb(Customer cu,bool ok);
+    void delCustomerCb(QString cu,bool ok);
 
 signals:
     void sig_exportCb(bool);
 private:
     void initData();
     void setRowData(Customer ma,int row);
-    void removeOne(Customer ma);
+    void removeOne(QString ma);
     void appendOne(Customer ma);
     void modOne(Customer ma);
     void doExport(QVector<Customer> ls, QString filepath);

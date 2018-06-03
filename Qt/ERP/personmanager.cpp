@@ -20,7 +20,8 @@ PersonManager::PersonManager(QWidget *parent) :
     connect(ui->tableWidget,SIGNAL(userClick(QString)),this,SLOT(userClick(QString)));
 
     connect(dataCenter::instance(),SIGNAL(sig_outEmployee(User,bool)),this,SLOT(outUserCb(User,bool)));
-    connect(dataCenter::instance(),SIGNAL(sig_delEmployee(User,bool)),this,SLOT(delUserCb(User,bool)));
+    connect(dataCenter::instance(),SIGNAL(sig_delEmployee(QString,bool)),this,SLOT(delUserCb(QString,bool)));
+    connect(dataCenter::instance(),SIGNAL(sig_globalEmployees(bool)),this,SLOT(getGlobalUserCb(bool)));
 
     connect(ui->tableWidget,SIGNAL(newUser()),this,SLOT(on_pushButton_newUser_clicked()));
     connect(ui->tableWidget,SIGNAL(modUser()),this,SLOT(on_pushButton_mod_clicked()));
@@ -183,7 +184,7 @@ void PersonManager::outUserCb(User user, bool ok)
     }
 }
 
-void PersonManager::delUserCb(User user, bool ok)
+void PersonManager::delUserCb(QString user, bool ok)
 {
     dataCenter::instance()->pub_hideLoadding();
     if(ok){
@@ -194,6 +195,18 @@ void PersonManager::delUserCb(User user, bool ok)
         ui->pushButton_del->setEnabled(false);
     }else{
         dataCenter::instance()->pub_showMessage("删除失败!",4000);
+    }
+}
+
+void PersonManager::getGlobalUserCb(bool ok)
+{
+    dataCenter::instance()->pub_hideLoadding();
+    if(ok){
+        clearAllSelect();
+        updateData();
+        dataCenter::instance()->pub_showMessage("刷新成功!",4000);
+    }else{
+        dataCenter::instance()->pub_showMessage("刷新失败!",4000);
     }
 }
 
@@ -224,6 +237,9 @@ void PersonManager::on_pushButton_export_clicked()
 
 void PersonManager::on_pushButton_reflash_clicked()
 {
-    updateData();
+    curUser.UID = "";
+    boost::thread t(boost::bind(&dataCenter::net_getGlobalUsers,dataCenter::instance()));
+    t.detach();
+    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
 

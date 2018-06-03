@@ -12,6 +12,7 @@
 
 const QString Status_New     = "Status_New";        //新建订单
 const QString Status_Success = "Status_Success";    //订单完成(出库)
+const QString Status_Produce = "Status_Produce";    //正在生产
 const QString Status_Cancle  = "Status_Cancle";     //订单取消
 const QString Status_All     = "Status_All";        //所有订单
 
@@ -19,6 +20,16 @@ const QString ItemNewCustom("新增客户...");
 const QString ItemNewUnit("新增单位...");
 
 const QString ItemNewAuthor("权限设置...");
+
+
+
+
+struct SysSetting{
+    QString Host_name;
+    QString Host_port;
+    bool isExportOpen;
+};
+
 
 
 #endif // STRUCT_H

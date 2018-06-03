@@ -3,21 +3,20 @@
 
 #include <QString>
 #pragma execution_character_set("utf-8")
+#include "global.h"
 
 
 class nSysConfig
 {
 public:
     nSysConfig();
-    QString HOST_NAME(){
-      return   m_hostName;
-    }
-    QString  HOST_PORT(){
-        return m_hostPort;
-    }
+    QString HOST_NAME();
+    QString  HOST_PORT();
+    void setSetting(SysSetting set);
+    SysSetting Setting() const;
+
 private:
-    QString    m_hostName;
-    QString    m_hostPort;
+    SysSetting m_set;
 
 };
 

@@ -11,7 +11,7 @@ DialogNewCustom::DialogNewCustom(QWidget *parent) :
     ui(new Ui::DialogNewCustom)
 {
     ui->setupUi(this);
-    m_isNewMod = false;
+    m_isNewMod = true;
     connect(dataCenter::instance(),SIGNAL(sig_newCustomer(Customer,bool)),this,SLOT(newCustomerCb(Customer,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modCustomer(Customer,bool)),this,SLOT(modCustomerCb(Customer,bool)));
 

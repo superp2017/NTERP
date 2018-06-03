@@ -175,7 +175,7 @@ func GetAllCustomer(session *JHttp.Session)  {
 //添加一个订单到 客户订单列表中
 func appendCustomerOrderID(CID, OrderID string) error {
 	data:=[]string{}
-	JRedis.Redis_hget(Hash_CustomerOrder,CID,data)
+	JRedis.Redis_hget(Hash_CustomerOrder,CID,&data)
 	exist:=false
 	for _,v:=range data{
 		if v==OrderID{
@@ -186,13 +186,13 @@ func appendCustomerOrderID(CID, OrderID string) error {
 	if !exist{
 		data = append(data,OrderID)
 	}
-	return JRedis.Redis_hset(Hash_CustomerOrder, CID, data)
+	return JRedis.Redis_hset(Hash_CustomerOrder, CID, &data)
 }
 
 //从客户订单中移除一个订单
 func removefromCustomerOrderID(CID, OrderID string)error{
 	data:=[]string{}
-	JRedis.Redis_hget(Hash_CustomerOrder,CID,data)
+	JRedis.Redis_hget(Hash_CustomerOrder,CID,&data)
 	index:=-1
 	for i,v:=range data{
 		if v==OrderID{
@@ -203,7 +203,7 @@ func removefromCustomerOrderID(CID, OrderID string)error{
 	if index!=-1{
 		data = append(data[:index],data[index+1:]...)
 	}
-	return JRedis.Redis_hset(Hash_CustomerOrder, CID, data)
+	return JRedis.Redis_hset(Hash_CustomerOrder, CID, &data)
 }
 
 //删除客户订单

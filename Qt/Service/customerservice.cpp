@@ -31,7 +31,7 @@ Customer CustomerService::newCustomer(const QJsonObject para, bool &ok, QString 
         }
     }
     if(!ret.ret)
-        qDebug()<<"newCustomer ret is not 0";
+        qDebug()<<"newCustomer ret is not 0"<<endl;
     ok = false;
     return cus;
 #endif
@@ -39,8 +39,65 @@ Customer CustomerService::newCustomer(const QJsonObject para, bool &ok, QString 
 
 Customer CustomerService::modCustomer(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
+#if 0
     Customer cus;
     ok = true;
+    return cus;
+#endif
+#if 1
+    Customer cus;
+    std::string url = Net_ModCustomer;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            cus = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  cus;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"modCustomer ret is not 0"<<endl;
+    ok = false;
+    return cus;
+#endif
+}
+
+QString CustomerService::delCustomer(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    QString cus;
+    std::string url = Net_DelCustomer;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r && ret.ret){
+        if(ret.data.isString()){
+            cus = ret.data.toString();
+            ok = true;
+            return  cus;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"delCustomer ret is not 0"<<endl;
+    ok = false;
+    return cus;
+}
+
+Customer CustomerService::upDownCustomer(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    Customer cus;
+    std::string url = Net_upDownCustomer;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            cus = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  cus;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"upDownCustomer ret is not 0"<<endl;
+    ok = false;
     return cus;
 }
 

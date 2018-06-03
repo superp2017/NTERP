@@ -29,12 +29,12 @@ OrderTable::OrderTable(QWidget *w):
     connect(this,SIGNAL(cellPressed(int,int)),this,SLOT(clickRow(int,int)));
 
 
-
     m_menu = new QMenu();
 
     m_new      = m_menu->addAction("新建");
     m_mod      = m_menu->addAction("修改");
     m_cancle   = m_menu->addAction("取消");
+    m_produce  = m_menu->addAction("生产");
     m_out      = m_menu->addAction("出库");
     m_mod_price= m_menu->addAction("定价");
     m_menu->addAction("放弃");
@@ -42,6 +42,7 @@ OrderTable::OrderTable(QWidget *w):
     connect(m_new,SIGNAL(triggered(bool)),this,SIGNAL(newOrder()));
     connect(m_mod,SIGNAL(triggered(bool)),this,SIGNAL(modOrder()));
     connect(m_cancle,SIGNAL(triggered(bool)),this,SIGNAL(cancleOrder()));
+    connect(m_produce,SIGNAL(triggered(bool)),this,SIGNAL(produceOrder()));
     connect(m_out,SIGNAL(triggered(bool)),this,SIGNAL(outOrder()));
     connect(m_mod_price,SIGNAL(triggered(bool)),this,SIGNAL(modPrice()));
 
@@ -174,8 +175,11 @@ void OrderTable::setRowData(Order para,int row)
     if(para.Current.Status==Status_New){
         status="新建";
     }
+    if(para.Current.Status==Status_Produce){
+        status="生产中";
+    }
     if(para.Current.Status==Status_Success){
-        status="已出货";
+        status="已出库";
     }
     if(para.Current.Status==Status_Cancle){
         status="已取消";
@@ -222,14 +226,24 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                         m_new->setEnabled(true);
                         m_mod->setEnabled(true);
                         m_cancle->setEnabled(true);
-                        m_out->setEnabled(true);
+                        m_out->setEnabled(false);
+                        m_produce->setEnabled(true);
                         m_mod_price->setEnabled(true);
+                    }
+                    if(cur_order.Current.Status==Status_Produce){
+                        m_new->setEnabled(false);
+                        m_mod->setEnabled(false);
+                        m_cancle->setEnabled(false);
+                        m_out->setEnabled(true);
+                        m_produce->setEnabled(false);
+                        m_mod_price->setEnabled(false);
                     }
                     if(cur_order.Current.Status==Status_Cancle){
                         m_new->setEnabled(true);
                         m_mod->setEnabled(false);
                         m_cancle->setEnabled(false);
                         m_out->setEnabled(false);
+                        m_produce->setEnabled(false);
                         m_mod_price->setEnabled(false);
                     }
                     if(cur_order.Current.Status==Status_Success){
@@ -237,6 +251,7 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                         m_mod->setEnabled(false);
                         m_cancle->setEnabled(false);
                         m_out->setEnabled(false);
+                        m_produce->setEnabled(false);
                         m_mod_price->setEnabled(false);
                     }
                     m_menu->exec(e->globalPos());
@@ -247,14 +262,6 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
 
 }
 
-
-//void OrderTable::removeAllRow()
-//{
-//    int count = this->rowCount();
-//    for(int i=0;i<count;++i){
-//        this->removeRow(0);
-//    }
-//}
 
 void OrderTable::doubleclickRow(int row, int ool)
 {

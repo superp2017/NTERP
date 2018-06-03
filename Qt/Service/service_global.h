@@ -31,6 +31,7 @@ const std::string  Net_GlobalOrders="/getglobalorders";     //获取所有订单
 const std::string  Net_NewCustomer="/newcustomer";          //新建客户
 const std::string  Net_ModCustomer="/modcustomer";          //修改客户
 const std::string  Net_DelCustomer="/delcustomer";          //删除客户
+const std::string  Net_upDownCustomer="/updowncustomer";       //解约或者合作客户
 const std::string  Net_GlobalCustomers="/getallcustomers";  //获取所有客户
 
 
@@ -43,6 +44,7 @@ const std::string  Net_GlobalSuppliers="/getallsuppliers";  //获取所有供应
 const std::string  Net_NewEmployee="/newemployee";          //新建一个员工
 const std::string  Net_ModEmployee="/modemployee" ;         //修改员工信息
 const std::string  Net_DelEmployee="/delemployee" ;         //删除一个员工
+const std::string  Net_OutEmployee="/outemployee" ;         //员工离职
 const std::string  Net_GlobalEmployee="/getallemployeess";  //获取所有的员工信息
 
 

@@ -29,14 +29,14 @@ public:
 private slots:
     void on_pushButton_ok_clicked();
     void on_pushButton_cancel_clicked();
-    void customChange(QString name);
-    void unitChange(QString un);
+    void customChange(int index);
+    void unitChange(int index);
     void newOrderCb(Order order, bool ok);
     void modOrderCb(Order order,bool ok);
     void on_pushButton_edit_des_clicked();
 
 private:
-    void initCombox(QVector<Customer> custom, QVector<QString> batch, QVector<QString> unit);
+    void initCombox(QVector<Customer> custom, QSet<QString> batch, QVector<QString> unit);
     bool checkOrder(Order curorder);
 
     void changeModel();

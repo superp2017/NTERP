@@ -16,12 +16,6 @@ UserService::UserService()
 
 User UserService::newUser(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-#if 0
-    User user;
-    ok = true;
-    return user;
-#endif
-
 #if 1
     User user;
     std::string url = Net_NewEmployee;
@@ -35,7 +29,7 @@ User UserService::newUser(const QJsonObject para, bool &ok, QString hostname, QS
         }
     }
     if(!ret.ret)
-        qDebug()<<"newUser ret is not 0";
+        qDebug()<<"newUser ret is not 0"<<endl;
     ok = false;
     return user;
 #endif
@@ -45,7 +39,19 @@ User UserService::modUser(const QJsonObject para, bool &ok, QString hostname, QS
 {
 #if 1
     User user;
-    ok = true;
+    std::string url = Net_ModEmployee;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            user = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  user;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"modUser ret is not 0"<<endl;
+    ok = false;
     return user;
 #endif
 }
@@ -54,18 +60,40 @@ User UserService::outUser(const QJsonObject para, bool &ok, QString hostname, QS
 {
 #if 1
     User user;
-    ok = true;
+    std::string url = Net_OutEmployee;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            user = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  user;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"outUser ret is not 0"<<endl;
+    ok = false;
     return user;
 #endif
 }
 
-User UserService::delUser(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+QString UserService::delUser(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-#if 1
-    User user;
-    ok = true;
+    QString user;
+    std::string url = Net_DelEmployee;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isString()){
+            user = ret.data.toString();
+            ok = true;
+            return  user;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"delUser ret is not 0"<<endl;
+    ok = false;
     return user;
-#endif
 }
 
 QVector<User> UserService::getAllUsers(bool &ok, QString hostname, QString hostport)
@@ -223,7 +251,3 @@ bool UserService::exportUser(QVector<User> list,QString filepath,bool isOpen)
     return ExcelService::dataExport(filepath,datalist,data,isOpen);
 }
 
-bool UserService::printUser(QVector<User> list)
-{
-    return true;
-}

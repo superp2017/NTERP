@@ -29,6 +29,8 @@ public:
     void net_newOrder(const QJsonObject para);
     void net_modOrder(const QJsonObject para);
     void net_cancleOrder(const QJsonObject para);
+    void net_delOrder(const QJsonObject para);
+    void net_produceOrder(const QJsonObject para);
     void net_finishOrder(const QJsonObject para);
     void net_modOrderPrice(const QJsonObject para);
     void net_getglobalOrders();
@@ -68,7 +70,7 @@ public:
     bool pub_checkMaterielID(QString id);
     Materiel pub_getMateriel(QString MID,bool &ok);
     ////////////////////////////////////////////////////
-    QVector<QString> pub_Batchs();
+    QSet<QString> pub_Batchs();
     ////////////////////////////////////////////////////
     QVector<Customer>pub_Customers();
     bool pub_checkCustomerExist(QString name);
@@ -82,6 +84,9 @@ public:
     ///////////////////////////////////////////////////
     QVector<Supplier>pub_Suppliers();
     Supplier pub_getSupplier(QString CID,bool &ok);
+    ////////////////////////////////////////////////////
+    SysSetting CurSettings();
+    void setCurSettings(SysSetting set);
 signals:
     void sig_showStatusMessage(QString msg,int sec);
     ///////////////////////////////////////////
@@ -90,19 +95,21 @@ signals:
     void sig_newOrder(Order,bool);
     void sig_modOrder(Order,bool);
     void sig_cancleOrder(Order,bool);
+    void sig_produceOrder(Order,bool);
     void sig_finishOrder(Order,bool);
     void sig_modOrderPrice(Order,bool);
+    void sig_delOrder(QString,bool);
     void sig_globalOrders(bool);
     //////////////////////////////////////
     void sig_newEmployee(User,bool);
     void sig_modEmployee(User,bool);
     void sig_outEmployee(User,bool);
-    void sig_delEmployee(User,bool);
+    void sig_delEmployee(QString,bool);
     void sig_globalEmployees(bool);
     ////////////////////////////////////
     void sig_newCustomer(Customer,bool);
     void sig_modCustomer(Customer,bool);
-    void sig_delCustomer(Customer,bool);
+    void sig_delCustomer(QString,bool);
     void sig_globalcustomers(bool);
     ////////////////////////////////////
     void sig_newUnit(QString,bool);
@@ -111,27 +118,19 @@ signals:
     ////////////////////////////////////
     void sig_newSupplier(Supplier,bool);
     void sig_modSUpplier(Supplier,bool);
-    void sig_delSUpplier(Supplier,bool);
+    void sig_delSUpplier(QString,bool);
     void sig_globalSUppliers(bool);
     ///////////////////////////////////
     void sig_globalMateriels(bool);
-public slots:
-
 private:
-    void pri_setCurUser(User u);
-    void pri_appendEmployee(User user);
-    void pri_appendOrder(Order order);
-    void pri_appendUnit(QString u);
-    void pri_appendMaters(Materiel m);
-    void pri_appendBatch(QString b);
-    void pri_appendCustomer(Customer c);
-    void pri_appendSupplier(Supplier c);
+    void pri_initBath();
+
 private:
     User               cur_user;     //当前登录的账号
     QVector<User>      m_employee;   //所有的员工
     QVector<Order>     m_orders;     //所有订单
     QVector<QString>   m_units;      //所有计量单位
-    QVector<QString>   m_batch;      //所有用户批次
+    QSet<QString>      m_batch;      //所有用户批次
     QVector<Materiel>  m_maters;     //所有物料
     QVector<Customer>  m_customers;  //所有客户
     QVector<Supplier>  m_suppliers;  //所有供应商

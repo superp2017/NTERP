@@ -35,8 +35,8 @@ private slots:
     void changeCol();
     void userClick(QString UID);
     void outUserCb(User user, bool ok);
-    void delUserCb(User user,bool ok);
-
+    void delUserCb(QString user,bool ok);
+    void getGlobalUserCb(bool ok);
 private:
     void updateData();
     void clearAllSelect();

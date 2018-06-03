@@ -4,7 +4,7 @@
 
 userTable::userTable(QWidget *w):M_TableWidget(w)
 {
-    this->setColumnCount(10);
+    this->setColumnCount(11);
     this->setEditTriggers(QTableWidget::NoEditTriggers);
     this->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
     this->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
@@ -17,7 +17,10 @@ userTable::userTable(QWidget *w):M_TableWidget(w)
 
     //设置表头内容
     QStringList header;
-    header<<tr("用户编号")<<tr("姓名")<<tr("性别")<<tr("联系方式")<<tr("部门")<<tr("账号")<<tr("密码")<<tr("入职时间")<<tr("离职时间")<<tr("基本工资");
+    header<<tr("用户编号")<<tr("姓名")<<tr("性别")\
+         <<tr("联系方式")<<tr("部门")<<tr("账号")\
+        <<tr("密码")<<tr("入职时间")<<tr("离职时间")\
+       <<tr("基本工资")<<tr("状态");
     this->setHorizontalHeaderLabels(header);
 
     this->setSortingEnabled(true);//允许列排序
@@ -74,19 +77,17 @@ void userTable::modUser(User para)
     }
 }
 
-void userTable::removeUser(User para)
+void userTable::removeUser(QString para)
 {
     int count = this->rowCount();
     for(int i=0;i<count;++i){
         QTableWidgetItem *item0 =  this->item(i,0);
-        if(item0!=NULL&&item0->text()==para.UID){
+        if(item0!=NULL&&item0->text()==para){
             this->removeRow(i);
             break;
         }
     }
 }
-
-
 
 
 void userTable::mousePressEvent(QMouseEvent *e)
@@ -99,8 +100,6 @@ void userTable::mousePressEvent(QMouseEvent *e)
         if(count>0){
             if(e->pos().y()<=this->rowHeight(0)*count)  {
                 if(this->selectedRanges().size()>0){
-
-
                     int row = this->selectedRanges().at(0).topRow();
                     if(row<0){
                         return;
@@ -166,6 +165,7 @@ void userTable::setRowData(User para, int row)
     QTableWidgetItem *item7 = this->item(row,7);
     QTableWidgetItem *item8 = this->item(row,8);
     QTableWidgetItem *item9 = this->item(row,9);
+    QTableWidgetItem *item10 = this->item(row,10);
     if(item0==NULL){
         item0 = new QTableWidgetItem();
         this->setItem(row,0,item0);
@@ -206,7 +206,10 @@ void userTable::setRowData(User para, int row)
         item9 = new QTableWidgetItem();
         this->setItem(row,9,item9);
     }
-
+    if(item10==NULL){
+        item10 = new QTableWidgetItem();
+        this->setItem(row,10,item10);
+    }
     item0->setText(para.UID);
     item1->setText(para.Name);
     item2->setText(para.Sex);
@@ -217,8 +220,13 @@ void userTable::setRowData(User para, int row)
     item7->setText(para.InTime);
     item8->setText(para.OutTime);
     item9->setText(QString("%1").arg(para.Salary));
-
-
+    QString status;
+    if(para.Status=="0"){
+        status = "在职";
+    }else{
+        status = "已离职";
+    }
+    item10->setText(status);
     item0->setTextAlignment(Qt::AlignCenter);
     item1->setTextAlignment(Qt::AlignCenter);
     item2->setTextAlignment(Qt::AlignCenter);
@@ -229,6 +237,7 @@ void userTable::setRowData(User para, int row)
     item7->setTextAlignment(Qt::AlignCenter);
     item8->setTextAlignment(Qt::AlignCenter);
     item9->setTextAlignment(Qt::AlignCenter);
+    item10->setTextAlignment(Qt::AlignCenter);
 }
 
 

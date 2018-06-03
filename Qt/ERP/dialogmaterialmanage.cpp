@@ -14,7 +14,7 @@ DialogMaterialManage::DialogMaterialManage(QWidget *parent) :
     ui->tableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
     ui->tableWidget->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
     ui->tableWidget->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
-    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableWidget->horizontalHeader()->setStyleSheet("QHeaderView::section{background:#888888;}"); //设置表头背景色
     QFont font = ui->tableWidget->horizontalHeader()->font();
     font.setBold(true);

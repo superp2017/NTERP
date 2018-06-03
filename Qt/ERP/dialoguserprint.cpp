@@ -57,20 +57,6 @@ void DialogUserPrint::on_pushButton_cancle_clicked()
     done(-1);
 }
 
-void DialogUserPrint::on_pushButton_print_clicked()
-{
-    QVector<User> ls= getSelectUsers();
-    if(ls.size()==0){
-        QMessageBox::information(this,"提示","请至少选择一个员工!");
-        return;
-    }
-    if(UserService::printUser(ls)){
-        dataCenter::instance()->pub_showMessage("打印成功!",3000);
-    }else{
-        dataCenter::instance()->pub_showMessage("打印失败!",3000);
-    }
-    done(123);
-}
 
 
 void DialogUserPrint::doExport(QVector<User> ls,QString filepath)

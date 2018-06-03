@@ -35,6 +35,25 @@ QString UnitService::newUnit(const QJsonObject para, bool &ok, QString hostname,
 #endif
 }
 
+QString UnitService::delUnit(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    QString unit;
+    std::string url = Net_DelUnit;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isString()){
+            unit = ret.data.toString();
+            ok = true;
+            return  unit;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"delUnit ret is not 0"<<endl;
+    ok = false;
+    return unit;
+}
+
 QVector<QString> UnitService::getAllUnits(bool &ok, QString hostname, QString hostport)
 {
     QVector<QString> unit;
