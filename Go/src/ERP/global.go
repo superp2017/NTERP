@@ -11,9 +11,8 @@ const (
 	Hash_CustomerOrder = "CustomerOrder"
 	Key_GlobalOrder    = "GlobalOrder"
 	Key_Unit           = "Unit"
-	Hash_Goods		   = "Goods"
+	Hash_Goods         = "Goods"
 	Hash_SupplierGoods = "SupplierGoods"
-
 )
 
 //ider
@@ -23,7 +22,7 @@ const (
 	Ider_Material = "Ider_Material"
 	Ider_Customer = "Ider_Customer"
 	Ider_Supplier = "Ider_Supplier"
-	Ider_Goods 	  = "Ider_Goods"
+	Ider_Goods    = "Ider_Goods"
 )
 
 //order 状态
