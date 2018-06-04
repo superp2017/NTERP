@@ -1,12 +1,11 @@
 package main
 
 import (
-
-	"fmt"
-	"time"
 	"JGo/JHttp"
 	"JGo/JLogger"
 	"JGo/JStore/JRedis"
+	"fmt"
+	"time"
 )
 
 type OderFlow struct {
@@ -82,7 +81,7 @@ func NewOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if st.CustomID != ""&&st.OrderID!="" {
+	if st.CustomID != "" && st.OrderID != "" {
 		go appendCustomerOrderID(st.CustomID, st.OrderID)
 	}
 	session.Forward("0", "success", st)
@@ -118,14 +117,13 @@ func ModOrder(session *JHttp.Session) {
 		return
 	}
 
-
 	data := &Order{}
 	if err := JRedis.Redis_hget(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if data.Current.Status == Status_Cancle||data.Current.Status==Status_Success{
-		str := fmt.Sprintf("ModOrder faild,Current.Status=%s not support modify\n",data.Current.Status)
+	if data.Current.Status == Status_Cancle || data.Current.Status == Status_Success {
+		str := fmt.Sprintf("ModOrder faild,Current.Status=%s not support modify\n", data.Current.Status)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -173,8 +171,8 @@ func ModOrderPrice(session *JHttp.Session) {
 		return
 	}
 
-	if data.Current.Status == Status_Cancle||data.Current.Status==Status_Success{
-		str := fmt.Sprintf("ModOrderPrice faild,Current.Status=%s not support modify price \n",data.Current.Status)
+	if data.Current.Status == Status_Cancle || data.Current.Status == Status_Success {
+		str := fmt.Sprintf("ModOrderPrice faild,Current.Status=%s not support modify price \n", data.Current.Status)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -213,8 +211,8 @@ func CancelOrder(session *JHttp.Session) {
 		return
 	}
 
-	if data.Current.Status == Status_Cancle||data.Current.Status==Status_Success{
-		str := fmt.Sprintf("CancelOrder faild,Current.Status=%s not support cancle \n",data.Current.Status)
+	if data.Current.Status == Status_Cancle || data.Current.Status == Status_Success {
+		str := fmt.Sprintf("CancelOrder faild,Current.Status=%s not support cancle \n", data.Current.Status)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -229,7 +227,7 @@ func CancelOrder(session *JHttp.Session) {
 	}
 
 	go cancleMaterial(data.MaterielID)
-	if data.CustomID!=""&&data.OrderID!="" {
+	if data.CustomID != "" && data.OrderID != "" {
 		go removefromCustomerOrderID(data.CustomID, data.OrderID)
 	}
 	session.Forward("0", "success", data)
@@ -255,8 +253,8 @@ func DelOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if data.Current.Status == Status_Produce{
-		str := fmt.Sprintf("DelOrder faild,order is on produce  \n",data.Current.Status)
+	if data.Current.Status == Status_Produce {
+		str := fmt.Sprintf("DelOrder faild,order is on produce  \n", data.Current.Status)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -265,10 +263,10 @@ func DelOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if data.MaterielID!="" {
+	if data.MaterielID != "" {
 		go delMaterial(data.MaterielID)
 	}
-	if data.CustomID!=""&&data.OrderID!="" {
+	if data.CustomID != "" && data.OrderID != "" {
 		go removefromCustomerOrderID(data.CustomID, data.OrderID)
 	}
 	session.Forward("0", "success", data)
@@ -294,8 +292,8 @@ func PorduceOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if data.Current.Status == Status_Cancle||data.Current.Status==Status_Success{
-		str := fmt.Sprintf("PorduceOrder faild,Current.Status=%s not support produce \n",data.Current.Status)
+	if data.Current.Status == Status_Cancle || data.Current.Status == Status_Success {
+		str := fmt.Sprintf("PorduceOrder faild,Current.Status=%s not support produce \n", data.Current.Status)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -331,8 +329,8 @@ func SuccessOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if data.Current.Status == Status_Cancle||data.Current.Status==Status_Success{
-		str := fmt.Sprintf("SuccessOrder faild,Current.Status=%s not support finish \n",data.Current.Status)
+	if data.Current.Status == Status_Cancle || data.Current.Status == Status_Success {
+		str := fmt.Sprintf("SuccessOrder faild,Current.Status=%s not support finish \n", data.Current.Status)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return

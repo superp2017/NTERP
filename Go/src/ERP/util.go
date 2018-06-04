@@ -1,13 +1,11 @@
 package main
 
 import (
-
-
-	"strconv"
-	"time"
-	"log"
 	"JGo/JStore/JRedis"
 	"JGo/JUuid"
+	"log"
+	"strconv"
+	"time"
 )
 
 var gOderSeed int

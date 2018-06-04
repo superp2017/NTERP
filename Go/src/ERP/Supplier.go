@@ -1,11 +1,10 @@
 package main
 
 import (
-
-	"fmt"
 	"JGo/JHttp"
 	"JGo/JLogger"
 	"JGo/JStore/JRedis"
+	"fmt"
 )
 
 type Supplier struct {
@@ -157,18 +156,17 @@ func DelSupplier(session *JHttp.Session) {
 	session.Forward("0", "success", st.SID)
 }
 
-
 //获取所有供应商列表
-func GetAllSupplier(session *JHttp.Session)  {
-	list,err:=JRedis.Redis_hkeys(Hash_Supplier)
+func GetAllSupplier(session *JHttp.Session) {
+	list, err := JRedis.Redis_hkeys(Hash_Supplier)
 	data := []*Supplier{}
-	if err==nil{
-		for _,v:=range list{
+	if err == nil {
+		for _, v := range list {
 			d := &Supplier{}
-			if e:=JRedis.Redis_hget(Hash_Supplier,v,d);e==nil{
-				data = append(data,d)
+			if e := JRedis.Redis_hget(Hash_Supplier, v, d); e == nil {
+				data = append(data, d)
 			}
 		}
 	}
-	session.Forward("0","success",data)
+	session.Forward("0", "success", data)
 }

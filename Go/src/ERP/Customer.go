@@ -1,11 +1,10 @@
 package main
 
 import (
-
-	"fmt"
 	"JGo/JHttp"
-	"JGo/JStore/JRedis"
 	"JGo/JLogger"
+	"JGo/JStore/JRedis"
+	"fmt"
 )
 
 type Customer struct {
@@ -158,50 +157,50 @@ func DelCustomer(session *JHttp.Session) {
 }
 
 //获取所有客户列表
-func GetAllCustomer(session *JHttp.Session)  {
-	list,err:=JRedis.Redis_hkeys(Hash_Customer)
+func GetAllCustomer(session *JHttp.Session) {
+	list, err := JRedis.Redis_hkeys(Hash_Customer)
 	data := []*Customer{}
-	if err==nil{
-		for _,v:=range list{
+	if err == nil {
+		for _, v := range list {
 			d := &Customer{}
-			if e:=JRedis.Redis_hget(Hash_Customer,v,d);e==nil{
-				data = append(data,d)
+			if e := JRedis.Redis_hget(Hash_Customer, v, d); e == nil {
+				data = append(data, d)
 			}
 		}
 	}
-	session.Forward("0","success",data)
+	session.Forward("0", "success", data)
 }
 
 //添加一个订单到 客户订单列表中
 func appendCustomerOrderID(CID, OrderID string) error {
-	data:=[]string{}
-	JRedis.Redis_hget(Hash_CustomerOrder,CID,&data)
-	exist:=false
-	for _,v:=range data{
-		if v==OrderID{
+	data := []string{}
+	JRedis.Redis_hget(Hash_CustomerOrder, CID, &data)
+	exist := false
+	for _, v := range data {
+		if v == OrderID {
 			exist = true
 			break
 		}
 	}
-	if !exist{
-		data = append(data,OrderID)
+	if !exist {
+		data = append(data, OrderID)
 	}
 	return JRedis.Redis_hset(Hash_CustomerOrder, CID, &data)
 }
 
 //从客户订单中移除一个订单
-func removefromCustomerOrderID(CID, OrderID string)error{
-	data:=[]string{}
-	JRedis.Redis_hget(Hash_CustomerOrder,CID,&data)
-	index:=-1
-	for i,v:=range data{
-		if v==OrderID{
+func removefromCustomerOrderID(CID, OrderID string) error {
+	data := []string{}
+	JRedis.Redis_hget(Hash_CustomerOrder, CID, &data)
+	index := -1
+	for i, v := range data {
+		if v == OrderID {
 			index = i
 			break
 		}
 	}
-	if index!=-1{
-		data = append(data[:index],data[index+1:]...)
+	if index != -1 {
+		data = append(data[:index], data[index+1:]...)
 	}
 	return JRedis.Redis_hset(Hash_CustomerOrder, CID, &data)
 }
@@ -210,4 +209,3 @@ func removefromCustomerOrderID(CID, OrderID string)error{
 func delCustomerOrderID(CID string) error {
 	return JRedis.Redis_hdel(Hash_CustomerOrder, CID)
 }
-

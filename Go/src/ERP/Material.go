@@ -1,8 +1,8 @@
 package main
 
 import (
-	"JGo/JStore/JRedis"
 	"JGo/JHttp"
+	"JGo/JStore/JRedis"
 )
 
 type Material struct {
@@ -73,24 +73,22 @@ func cancleMaterial(id string) error {
 	return nil
 }
 
-
 //删除物料
 func delMaterial(id string) error {
 	return JRedis.Redis_hdel(Hash_Material, id)
 }
 
-
 //获取所有供应商列表
-func GetAllMaterial(session *JHttp.Session)  {
-	list,err:=JRedis.Redis_hkeys(Hash_Material)
+func GetAllMaterial(session *JHttp.Session) {
+	list, err := JRedis.Redis_hkeys(Hash_Material)
 	data := []*Material{}
-	if err==nil{
-		for _,v:=range list{
+	if err == nil {
+		for _, v := range list {
 			d := &Material{}
-			if e:=JRedis.Redis_hget(Hash_Material,v,d);e==nil{
-				data = append(data,d)
+			if e := JRedis.Redis_hget(Hash_Material, v, d); e == nil {
+				data = append(data, d)
 			}
 		}
 	}
-	session.Forward("0","success",data)
+	session.Forward("0", "success", data)
 }

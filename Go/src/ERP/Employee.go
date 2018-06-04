@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"JGo/JHttp"
 	"JGo/JLogger"
 	"JGo/JStore/JRedis"
 	"JunSie/util"
+	"fmt"
 )
 
 type Employee struct {
@@ -46,7 +46,7 @@ func NewEmployee(session *JHttp.Session) {
 	}
 	st.Status = "0"
 	if st.Account != "" && st.Code != "" {
-		if exist,e:=JRedis.Redis_hexists(Hash_Account,st.Account);e==nil&&exist{
+		if exist, e := JRedis.Redis_hexists(Hash_Account, st.Account); e == nil && exist {
 			str := fmt.Sprintf("NewEmployee faild,Account is exist\n")
 			JLogger.Error(str)
 			session.Forward("2", str, nil)
@@ -120,7 +120,6 @@ func ModEmployee(session *JHttp.Session) {
 	}
 	session.Forward("0", "success", data)
 }
-
 
 //员工离职
 func OutEmployee(session *JHttp.Session) {

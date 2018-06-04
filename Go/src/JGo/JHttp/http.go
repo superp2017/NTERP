@@ -10,10 +10,10 @@ import (
 	"time"
 
 	"sync"
-	
-	. "JGo/JLogger"
+
 	"JGo/JCache"
 	"JGo/JConfig"
+	. "JGo/JLogger"
 )
 
 const (

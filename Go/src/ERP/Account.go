@@ -1,8 +1,8 @@
 package main
 
 import (
-	"JGo/JLogger"
 	"JGo/JHttp"
+	"JGo/JLogger"
 	"JGo/JStore/JRedis"
 )
 
@@ -24,19 +24,19 @@ func Login(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	JLogger.Error("Account=%s,code=%s",st.Account,st.Code)
-	if st.Account==""||st.Code==""{
+	JLogger.Error("Account=%s,code=%s", st.Account, st.Code)
+	if st.Account == "" || st.Code == "" {
 		session.Forward("1", "login filed,Account or Code is empty\n", nil)
 		return
 	}
-	 UID,ok := checkAccount(st.Account, st.Code)
-	if!ok {
+	UID, ok := checkAccount(st.Account, st.Code)
+	if !ok {
 		session.Forward("1", "checkAccount failed\n", st)
 		return
 	}
 	data := &Employee{}
 	if err := JRedis.Redis_hget(Hash_Employee, UID, data); err != nil {
-		JLogger.ErrorLog("get Employee filed,UID=%s\n",UID)
+		JLogger.ErrorLog("get Employee filed,UID=%s\n", UID)
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -71,17 +71,17 @@ func modAccount(account, code, uid, name string) error {
 }
 
 ///校验账号
-func checkAccount(account, code string)(string,bool) {
+func checkAccount(account, code string) (string, bool) {
 	if account == "" {
-		return "",false
+		return "", false
 	}
-	c:=&Account{}
+	c := &Account{}
 	if err := JRedis.Redis_hget(Hash_Account, account, c); err != nil {
 		JLogger.Error(err.Error())
-		return "",false
+		return "", false
 	}
 	if code == c.Code {
-		return c.UID,true
+		return c.UID, true
 	}
-	return "",false
+	return "", false
 }

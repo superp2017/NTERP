@@ -6,25 +6,32 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>771</width>
+    <height>639</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="label">
+  <widget class="QTableWidget" name="tableWidget">
    <property name="geometry">
     <rect>
-     <x>190</x>
-     <y>120</y>
-     <width>54</width>
-     <height>12</height>
+     <x>30</x>
+     <y>40</y>
+     <width>611</width>
+     <height>531</height>
     </rect>
    </property>
-   <property name="text">
-    <string>仓库管理</string>
-   </property>
+   <column>
+    <property name="text">
+     <string>新建列</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>222</string>
+    </property>
+   </column>
   </widget>
  </widget>
  <resources/>
