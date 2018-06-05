@@ -2,9 +2,9 @@ package main
 
 import (
 	"JGo/JHttp"
-	"JsGo/JsLogger"
-	"JsGo/JsStore/JsRedis"
 	"fmt"
+	"JGo/JStore/JRedis"
+	"JGo/JLogger"
 )
 
 type StoreGoods struct {
@@ -27,22 +27,22 @@ type StoreGoods struct {
 func NewGoods(session *JHttp.Session) {
 	st := &StoreGoods{}
 	if err := session.GetPara(st); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 	st.ID = IDer(Hash_Goods)
 	if st.Name == "" || st.Num < 0 || st.Type == "" {
 		str := fmt.Sprintf("NewGoods failed,Name=%s,Num=%s,Type=%s\n", st.Name, st.Num, st.Type)
-		JsLogger.Error(str)
+		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
 	}
 	st.TotalPrice = st.Price * st.Num
 	st.CreatTime = CurTime()
 	st.Status = "0"
-	if err := JsRedis.Redis_hset(Hash_Goods, st.ID, st); err != nil {
-		JsLogger.Error(err.Error())
+	if err := JRedis.Redis_hset(Hash_Goods, st.ID, st); err != nil {
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -52,13 +52,43 @@ func NewGoods(session *JHttp.Session) {
 	session.Forward("0", "NewGoods success", st)
 }
 
+//获取供应商的商品列表
+func GetSupplierGoods(session *JHttp.Session)  {
+	type Para struct {
+		SID string
+	}
+	st:=&Para{}
+	if err:=session.GetPara(st);err!=nil{
+		JLogger.Error(err.Error())
+		session.Forward("1",err.Error(),nil)
+		return
+	}
+	if st.SID==""{
+		JLogger.Error("GetSupplierGoods failed SID is empty\n")
+		session.Forward("1","GetSupplierGoods failed SID is empty\n",nil)
+		return
+	}
+	list := []string{}
+	if err := JRedis.Redis_hget(Hash_SupplierGoods, st.SID, &list); err != nil {
+		JLogger.Info(err.Error())
+	}
+	data:=[]*StoreGoods{}
+	for _,v:=range list {
+		d:=&StoreGoods{}
+		if err:=JRedis.Redis_hget(Hash_Goods,v,d);err==nil{
+			data= append(data,d)
+		}
+	}
+	session.Forward("0","success",data)
+}
+
 //获取全部商品
 func GetGlobalGoods(session *JHttp.Session) {
-	keys, _ := JsRedis.Redis_hkeys(Hash_Goods)
+	keys, _ := JRedis.Redis_hkeys(Hash_Goods)
 	data := []*StoreGoods{}
 	for _, v := range keys {
 		d := &StoreGoods{}
-		if err := JsRedis.Redis_hget(Hash_Goods, v, d); err == nil {
+		if err := JRedis.Redis_hget(Hash_Goods, v, d); err == nil {
 			data = append(data, d)
 		}
 	}
@@ -66,10 +96,20 @@ func GetGlobalGoods(session *JHttp.Session) {
 }
 
 func appendSupplierGoods(SID, GoodsID string) error {
-	list := &[]string{}
-	if err := JsRedis.Redis_hget(Hash_SupplierGoods, SID, list); err != nil {
-		JsLogger.Info(err.Error())
+	list := []string{}
+	if err := JRedis.Redis_hget(Hash_SupplierGoods, SID, &list); err != nil {
+		JLogger.Info(err.Error())
 	}
-	list = append(list, GoodsID)
-	return JsRedis.Redis_hset(Hash_SupplierGoods, SID, list)
+	ok:=false
+	for _,v:=range list{
+		if v==GoodsID{
+			ok = true
+			break
+		}
+	}
+	if !ok{
+		list =append(list,GoodsID)
+	}
+
+	return JRedis.Redis_hset(Hash_SupplierGoods, SID, &list)
 }
