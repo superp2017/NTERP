@@ -57,6 +57,8 @@ const std::string  Net_GlobalUnit="/getallunits";           //获取所有单位
 
 
 const std::string Net_NewGoods="/newgoods";                 //新建一个商品
+const std::string Net_ModifyGoods="/modifygoods";           //修改商品
+const std::string Net_DelGoods="/delgoods";                 //删除商品
 const std::string Net_SupplierGoods="/getsuppliergoods";    //获取供应商的供应的商品
 const std::string Net_GlobalGoods="/getglobalgoods";        //获获取所有的商品
 
@@ -187,7 +189,7 @@ struct Goods{
     int     TotalPrice;     //库存总价
     int     Price;          //进价
     int     Num;            //数量
-}
+};
 
 
 

@@ -62,5 +62,13 @@
         <file>icon/plus.ico</file>
         <file>icon/set.ico</file>
         <file>icon/loading.gif</file>
+        <file>icon/OrderManagement.jpg</file>
+        <file>icon/OrderManagementgreen.jpg</file>
+        <file>icon/PersonnelManagement.jpg</file>
+        <file>icon/PersonnelManagementgreen.jpg</file>
+        <file>icon/SystemSetup.jpg</file>
+        <file>icon/SystemSetupgreen.jpg</file>
+        <file>icon/WarehouseManagement.jpg</file>
+        <file>icon/WarehouseManagementgreen.jpg</file>
     </qresource>
 </RCC>

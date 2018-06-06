@@ -1,4 +1,6 @@
 ﻿#include "goodsService.h"
+#include "http.h"
+#include "excelservice.h"
 
 GoodsService::GoodsService()
 {
@@ -7,22 +9,105 @@ GoodsService::GoodsService()
 
 Goods GoodsService::newGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-
+    Goods goods;
+    std::string url = Net_NewGoods;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            goods = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  goods;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"newGoods ret is not 0"<<endl;
+    ok = false;
+    return goods;
 }
 
 Goods GoodsService::modGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-
+    Goods goods;
+    std::string url = Net_ModifyGoods;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            goods = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  goods;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"modGoods ret is not 0"<<endl;
+    ok = false;
+    return goods;
 }
 
-Goods GoodsService::delGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+QString GoodsService::delGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-
+    QString goods;
+    std::string url = Net_ModifyGoods;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isString()){
+            goods = ret.data.toString();
+            ok = true;
+            return  goods;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"delGoods ret is not 0"<<endl;
+    ok = false;
+    return goods;
 }
 
 QVector<Goods> GoodsService::getAllGoods(bool &ok, QString hostname, QString hostport)
 {
+    QVector<Goods> data;
+    std::string url = Net_GlobalGoods;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isArray()){
+            QJsonArray arr = ret.data.toArray();
+            for(QJsonValue v:arr){
+                Goods r = fromJsonObject(v.toObject());
+                data.push_back(r);
+            }
+        }
+        ok = true;
+        return data;
+    }
+    if(!ret.ret)
+        qDebug()<<"getAllGoods ret is not 0"<<endl;
+    ok = false;
+    return data;
+}
 
+QVector<Goods> GoodsService::getSupplierGoods(bool &ok, QString hostname, QString hostport)
+{
+    QVector<Goods> data;
+    std::string url = Net_SupplierGoods;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isArray()){
+            QJsonArray arr = ret.data.toArray();
+            for(QJsonValue v:arr){
+                Goods r = fromJsonObject(v.toObject());
+                data.push_back(r);
+            }
+        }
+        ok = true;
+        return data;
+    }
+    if(!ret.ret)
+        qDebug()<<"getSupplierGoods ret is not 0"<<endl;
+    ok = false;
+    return data;
 }
 
 QJsonObject GoodsService::toJsonObject(Goods goods)
@@ -105,7 +190,7 @@ Goods GoodsService::fromJsonObject(QJsonObject obj)
     if(obj.contains("TotalPrice")){
         QJsonValue value = obj.value("TotalPrice");
         if(value.isDouble())
-            order.TotalPrice = value.toInt();
+            goods.TotalPrice = value.toInt();
     }
     if(obj.contains("Price")){
         QJsonValue value = obj.value("Price");
@@ -133,7 +218,7 @@ bool GoodsService::exportGoods(QVector<Goods> list, QString filepath, bool isOpe
         datalist<<"'"+goods.ID<<"'"+goods.Name<<goods.Type\
                <<"'"+goods.Price<<"'"+goods.Num<<goods.Unit\
              <<"'"+goods.TotalPrice<<goods.Format<<goods.Color\
-            <<goods.SupplierName<<goods.Status<<goods.Goods;
+            <<goods.SupplierName<<goods.Status<<goods.Note;
         data.push_back(datalist);
     }
     return  ExcelService::dataExport(filepath,datalist,data,isOpen);
