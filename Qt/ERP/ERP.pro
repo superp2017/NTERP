@@ -76,7 +76,8 @@ SOURCES += main.cpp\
     m_tablewidget.cpp \
     dialogmaterialmanage.cpp \
     dialognewsupplier.cpp \
-    formauthormanage.cpp
+    formauthormanage.cpp \
+    goodstable.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -108,7 +109,8 @@ HEADERS  += mainwindow.h \
     m_tablewidget.h \
     dialogmaterialmanage.h \
     dialognewsupplier.h \
-    formauthormanage.h
+    formauthormanage.h \
+    goodstable.h
 
 FORMS    += mainwindow.ui \
     login.ui \

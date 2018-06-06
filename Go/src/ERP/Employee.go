@@ -4,7 +4,6 @@ import (
 	"JGo/JHttp"
 	"JGo/JLogger"
 	"JGo/JStore/JRedis"
-	"JunSie/util"
 	"fmt"
 )
 
@@ -141,7 +140,7 @@ func OutEmployee(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	data.OutTime = util.CurTime()
+	data.OutTime = CurTime()
 	data.Status = "1"
 	if err := JRedis.Redis_hset(Hash_Employee, st.UID, data); err != nil {
 		session.Forward("1", err.Error(), nil)

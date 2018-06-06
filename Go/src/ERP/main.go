@@ -46,12 +46,11 @@ func initRoute() {
 
 	JHttp.WhiteHttp("/getallmaterials", GetAllMaterial) //获取所有的物料
 
-	JHttp.WhiteHttp("/getglobalgoods", GetGlobalGoods) //获取仓库商品
-	JHttp.WhiteHttp("/newgoods", NewGoods) //新建一个商品
-
-
-
-
+	JHttp.WhiteHttp("/getglobalgoods", GetGlobalGoods)     //获取仓库商品
+	JHttp.WhiteHttp("/newgoods", NewGoods)                 //新建一个商品
+	JHttp.WhiteHttp("/delgoods", DelGoods)                 //删除一个商品
+	JHttp.WhiteHttp("/modifygoods", ModifyGoods)           //修改商品
+	JHttp.WhiteHttp("/getsuppliergoods", GetSupplierGoods) //获取供应商的物品
 
 }
 

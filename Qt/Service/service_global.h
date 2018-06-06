@@ -56,6 +56,12 @@ const std::string  Net_DelUnit="/delunit";                  //删除单位
 const std::string  Net_GlobalUnit="/getallunits";           //获取所有单位
 
 
+const std::string Net_NewGoods="/newgoods";                 //新建一个商品
+const std::string Net_SupplierGoods="/getsuppliergoods";    //获取供应商的供应的商品
+const std::string Net_GlobalGoods="/getglobalgoods";        //获获取所有的商品
+
+
+
 struct Ret{
     QString     msg;
     bool        ret;
@@ -166,7 +172,22 @@ struct Materiel{
 };
 
 
-
+struct Goods{
+    QString ID;             //商品ID
+    QString Name;           //商品名称
+    QString Type;           //类别
+    QString Unit;           //单位
+    QString Format;         //规格
+    QString	Color;          //颜色
+    QString	SID;            //供应商id
+    QString	SupplierName;   //供应商名称
+    QString	Status;         //状态
+    QString	Note;           //备注
+    QString	CreatTime;      //创建时间
+    int     TotalPrice;     //库存总价
+    int     Price;          //进价
+    int     Num;            //数量
+}
 
 
 
