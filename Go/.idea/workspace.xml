@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="45f2caf8-f161-44fa-998f-aa336f909727" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/ERP/StoreGoods.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/ERP/StoreGoods.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ERP/global.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/ERP/global.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ERP/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/ERP/main.go" afterDir="false" />
-    </list>
+    <list default="true" id="45f2caf8-f161-44fa-998f-aa336f909727" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -129,7 +125,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="19" />
     <option name="y" value="144" />
     <option name="width" value="1926" />
