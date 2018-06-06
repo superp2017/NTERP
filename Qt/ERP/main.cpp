@@ -38,6 +38,7 @@ int main(int argc, char *argv[])
     NLogin login;
     if (login.exec()==123){
         MainWindow w;
+        w.setWindowFlags(Qt::FramelessWindowHint);
         w.setMinimumSize(800,800);
         w.showMaximized();
         return a.exec();

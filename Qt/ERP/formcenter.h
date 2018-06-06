@@ -13,6 +13,8 @@
 #include "formunitmanage.h"
 #include "formwarehousemanage.h"
 
+#include <QTimer>
+
 #pragma execution_character_set("utf-8")
 namespace Ui {
 class FormCenter;
@@ -50,6 +52,8 @@ private slots:
 
     void clearChecked();
     void AppQuit();
+    void timeoutslot();
+    void showMessage(QString msg,int delay);
 private:
     Ui::FormCenter *ui;
     OrderManager         m_order;    //订单管理
@@ -61,6 +65,7 @@ private:
     FormCustommanage     Custom;     //客户管理
     FormUnitManage       Unit;       //单位管理
     FormSupplierManage   Supplier;   //供应商管理
+    QTimer               *m_timer;
 };
 
 #endif // FORMCENTER_H

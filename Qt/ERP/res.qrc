@@ -70,5 +70,27 @@
         <file>icon/SystemSetupgreen.jpg</file>
         <file>icon/WarehouseManagement.jpg</file>
         <file>icon/WarehouseManagementgreen.jpg</file>
+        <file>icon/cancel.png</file>
+        <file>icon/cancel-red.png</file>
+        <file>icon/com.png</file>
+        <file>icon/com-a.png</file>
+        <file>icon/delete.png</file>
+        <file>icon/delete-red.png</file>
+        <file>icon/logo.png</file>
+        <file>icon/modify.png</file>
+        <file>icon/modify-red.png</file>
+        <file>icon/new.png</file>
+        <file>icon/new-red.png</file>
+        <file>icon/out.png</file>
+        <file>icon/out-a.png</file>
+        <file>icon/out-red.png</file>
+        <file>icon/price.png</file>
+        <file>icon/price-red.png</file>
+        <file>icon/production.png</file>
+        <file>icon/production-red.png</file>
+        <file>icon/Q-out.png</file>
+        <file>icon/Q-out-yellow.png</file>
+        <file>icon/quit.png</file>
+        <file>icon/quit-red.png</file>
     </qresource>
 </RCC>

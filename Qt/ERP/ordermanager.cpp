@@ -27,7 +27,8 @@ OrderManager::OrderManager(QWidget *parent) :
     ui->tabWidget->addTab(m_tab_success,"已完成");
     ui->tabWidget->addTab(m_tab_all,"全部");
     ui->tabWidget->tabBar()->setMovable(true);
-    ui->tabWidget->setFont(QFont("Times", 16, QFont::Bold));
+  //  ui->tabWidget->setFont(QFont("Times", 16, QFont::Bold));
+    ui->tabWidget->tabBar()->setFont(QFont("Times", 14, QFont::Bold));
     connect(ui->radioButton_ave,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_content,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_manu,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
@@ -61,6 +62,14 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(m_tab_all,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
     connect(m_tab_all,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
     connect(m_tab_all,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
+
+
+    ui->pushButton_new->setStyleSheet("QPushButton{border-image: url(:/icon/new-red.png);}"
+                                 "QPushButton:hover{border-image: url(:/icon/new.png);}"
+                                 "QPushButton:pressed{border-image: url(:/icon/new.png);}"
+                                 "QPushButton:checked{border-image: url(:/icon/new.png);}");
+
+
 
     ui->radioButton_ave->setChecked(true);
     ui->pushButton_mod->setEnabled(false);
@@ -161,6 +170,7 @@ void OrderManager::changeCol()
         tab_mode = QHeaderView::Interactive;
     }
     m_tab_new->setHeaderColModel(tab_mode);
+    m_tab_produce->setHeaderColModel(tab_mode);
     m_tab_success->setHeaderColModel(tab_mode);
     m_tab_all->setHeaderColModel(tab_mode);
 }

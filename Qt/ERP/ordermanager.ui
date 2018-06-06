@@ -84,10 +84,10 @@
       <bool>false</bool>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(218, 218, 218);</string>
+      <string notr="true"/>
      </property>
      <property name="tabPosition">
-      <enum>QTabWidget::South</enum>
+      <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
       <number>-1</number>
@@ -102,13 +102,13 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>60</height>
+       <height>80</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>60</height>
+       <height>80</height>
       </size>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -116,7 +116,7 @@
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>5</number>
+       <number>0</number>
       </property>
       <item>
        <spacer name="horizontalSpacer_5">
@@ -135,14 +135,14 @@
        <widget class="QPushButton" name="pushButton_new">
         <property name="minimumSize">
          <size>
-          <width>60</width>
-          <height>60</height>
+          <width>80</width>
+          <height>80</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>60</width>
-          <height>60</height>
+          <width>80</width>
+          <height>80</height>
          </size>
         </property>
         <property name="font">
@@ -155,8 +155,7 @@
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>新增
-订单</string>
+         <string/>
         </property>
        </widget>
       </item>

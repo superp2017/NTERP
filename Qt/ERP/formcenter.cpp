@@ -2,7 +2,7 @@
 #include "ui_formcenter.h"
 #include <QMessageBox>
 #include <QDockWidget>
-
+#include "datacenter.h"
 
 
 
@@ -11,26 +11,26 @@ FormCenter::FormCenter(QWidget *parent) :
     ui(new Ui::FormCenter)
 {
     ui->setupUi(this);
-    ui->exit->setStyleSheet("QPushButton{border-image: url(:/icon/SignoutFront.png);}"
-                            "QPushButton:hover{border-image: url(:/icon/SignInoutpng.png);}"
-                            "QPushButton:pressed{border-image: url(:/icon/SignoutAFter.png);}");
+    ui->exit->setStyleSheet("QPushButton{border-image: url(:/icon/Q-out-yellow.png);}"
+                            "QPushButton:hover{border-image: url(:/icon/Q-out.png);}"
+                            "QPushButton:pressed{border-image: url(:/icon/Q-out.png);}");
 
-    ui->order_btn->setStyleSheet("QToolButton{border-image: url(:/icon/monitorFront.png);}"
-                                 "QToolButton:hover{border-image: url(:/icon/monitorIn.png);}"
-                                 "QToolButton:pressed{border-image: url(:/icon/monitorAfter.png);}"
-                                 "QToolButton:checked{border-image: url(:/icon/monitorAfter.png);}");
-    ui->person_btn->setStyleSheet("QToolButton{border-image: url(:/icon/valverFront.png);}"
-                                  "QToolButton:hover{border-image: url(:/icon/valverIn.png);}"
-                                  "QToolButton:pressed{border-image: url(:/icon/valverAfter.png);}"
-                                  "QToolButton:checked{border-image: url(:/icon/valverAfter.png);}");
-    ui->store_btn->setStyleSheet("QToolButton{border-image: url(:/icon/planFront.png);}"
-                                 "QToolButton:hover{border-image: url(:/icon/planIn.png);}"
-                                 "QToolButton:pressed{border-image: url(:/icon/planAfter.png);}"
-                                 "QToolButton:checked{border-image: url(:/icon/planAfter.png);}");
-    ui->set_Btn->setStyleSheet("QToolButton{border-image: url(:/icon/deviceFront.png);}"
-                               "QToolButton:hover{border-image: url(:/icon/deciceIn.png);}"
-                               "QToolButton:pressed{border-image: url(:/icon/deciceAfter.png);}"
-                               "QToolButton:checked{border-image: url(:/icon/deciceAfter.png);}");
+    ui->order_btn->setStyleSheet("QToolButton{border-image: url(:/icon/OrderManagement.jpg);}"
+                                 "QToolButton:hover{border-image: url(:/icon/OrderManagementgreen.jpg);}"
+                                 "QToolButton:pressed{border-image: url(:/icon/OrderManagementgreen.jpg);}"
+                                 "QToolButton:checked{border-image: url(:/icon/OrderManagementgreen.jpg);}");
+    ui->person_btn->setStyleSheet("QToolButton{border-image: url(:/icon/PersonnelManagement.jpg);}"
+                                  "QToolButton:hover{border-image: url(:/icon/PersonnelManagementgreen.jpg);}"
+                                  "QToolButton:pressed{border-image: url(:/icon/PersonnelManagementgreen.jpg);}"
+                                  "QToolButton:checked{border-image: url(:/icon/PersonnelManagementgreen.jpg);}");
+    ui->store_btn->setStyleSheet("QToolButton{border-image: url(:/icon/WarehouseManagement.jpg);}"
+                                 "QToolButton:hover{border-image: url(:/icon/WarehouseManagementgreen.jpg);}"
+                                 "QToolButton:pressed{border-image: url(:/icon/WarehouseManagementgreen.jpg);}"
+                                 "QToolButton:checked{border-image: url(:/icon/WarehouseManagementgreen.jpg);}");
+    ui->set_Btn->setStyleSheet("QToolButton{border-image: url(:/icon/SystemSetup.jpg);}"
+                               "QToolButton:hover{border-image: url(:/icon/SystemSetupgreen.jpg);}"
+                               "QToolButton:pressed{border-image: url(:/icon/SystemSetupgreen.jpg);}"
+                               "QToolButton:checked{border-image: url(:/icon/SystemSetupgreen.jpg);}");
     ui->stackedWidget->addWidget(&m_order);
     ui->stackedWidget->addWidget(&m_store);
     ui->stackedWidget->addWidget(&m_person);
@@ -39,7 +39,14 @@ FormCenter::FormCenter(QWidget *parent) :
     connect(this,SIGNAL(action_new_order()),&m_order,SLOT(new_order()));
     connect(this,SIGNAL(action_new_user()),&m_person,SLOT(new_employee()));
 
+    connect(dataCenter::instance(),SIGNAL(sig_showStatusMessage(QString,int)),this,SLOT(showMessage(QString,int)));
+
+
     ui->order_btn->setChecked(true);
+
+    m_timer = new QTimer(this);
+    connect(m_timer,SIGNAL(timeout()),this,SLOT(timeoutslot()));//timeoutslot()为自定义槽
+
 }
 
 FormCenter::~FormCenter()
@@ -130,6 +137,19 @@ void FormCenter::AppQuit()
 {
     QApplication* app;
     app->quit();
+}
+
+void FormCenter::timeoutslot()
+{
+    ui->label_msg->setText("");
+}
+
+void FormCenter::showMessage(QString msg, int delay)
+{
+    ui->label_msg->setText(msg);
+    if(delay>0){
+        m_timer->start(delay);
+    }
 }
 
 void FormCenter::on_exit_clicked()

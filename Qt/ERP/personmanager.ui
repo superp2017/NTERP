@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>人员管理</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="topMargin">
@@ -78,7 +78,7 @@
    <item row="1" column="0">
     <widget class="userTable" name="tableWidget">
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(218, 218, 218);</string>
+      <string notr="true"/>
      </property>
     </widget>
    </item>
