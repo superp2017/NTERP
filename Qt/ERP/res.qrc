@@ -42,5 +42,23 @@
         <file>icon/mini-a.png</file>
         <file>icon/login.png</file>
         <file>icon/login-a.png</file>
+        <file>icon/commodity.png</file>
+        <file>icon/commodity-red.png</file>
+        <file>icon/company.png</file>
+        <file>icon/company-red.png</file>
+        <file>icon/Customer.png</file>
+        <file>icon/Customer-red.png</file>
+        <file>icon/materiel.png</file>
+        <file>icon/materiel-red.png</file>
+        <file>icon/Order.png</file>
+        <file>icon/Order-red.png</file>
+        <file>icon/people.png</file>
+        <file>icon/people-red.png</file>
+        <file>icon/Supply.png</file>
+        <file>icon/Supply-red.png</file>
+        <file>icon/system.png</file>
+        <file>icon/system-red.png</file>
+        <file>icon/t.png</file>
+        <file>icon/t-red.png</file>
     </qresource>
 </RCC>
