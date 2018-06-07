@@ -33,13 +33,13 @@
     <widget class="QWidget" name="widget" native="true">
      <property name="minimumSize">
       <size>
-       <width>120</width>
+       <width>100</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>120</width>
+       <width>100</width>
        <height>16777215</height>
       </size>
      </property>
@@ -63,13 +63,13 @@
        <widget class="QLabel" name="label">
         <property name="minimumSize">
          <size>
-          <width>120</width>
+          <width>100</width>
           <height>100</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>120</width>
+          <width>100</width>
           <height>100</height>
          </size>
         </property>
@@ -97,8 +97,8 @@
        <widget class="QToolButton" name="order_btn">
         <property name="minimumSize">
          <size>
-          <width>120</width>
-          <height>120</height>
+          <width>100</width>
+          <height>100</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -122,8 +122,8 @@
        <widget class="QToolButton" name="store_btn">
         <property name="minimumSize">
          <size>
-          <width>120</width>
-          <height>120</height>
+          <width>100</width>
+          <height>100</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -147,8 +147,8 @@
        <widget class="QToolButton" name="person_btn">
         <property name="minimumSize">
          <size>
-          <width>120</width>
-          <height>120</height>
+          <width>100</width>
+          <height>100</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -172,8 +172,8 @@
        <widget class="QToolButton" name="set_Btn">
         <property name="minimumSize">
          <size>
-          <width>120</width>
-          <height>120</height>
+          <width>100</width>
+          <height>100</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -250,6 +250,25 @@ background-color: rgb(41, 58, 81);</string>
          </spacer>
         </item>
         <item>
+         <widget class="QPushButton" name="pushButton_mini">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="exit">
           <property name="minimumSize">
            <size>
@@ -286,13 +305,13 @@ background-color: rgb(41, 58, 81);</string>
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="styleSheet">

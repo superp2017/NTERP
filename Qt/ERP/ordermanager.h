@@ -46,6 +46,7 @@ protected:
 
 private:
     void clearCurOrder();
+    void setBtnEnable(bool mod,bool cancel,bool out,bool produce,bool change);
 
 private:
     Ui::OrderManager *ui;

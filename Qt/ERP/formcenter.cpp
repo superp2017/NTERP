@@ -15,6 +15,10 @@ FormCenter::FormCenter(QWidget *parent) :
                             "QPushButton:hover{border-image: url(:/icon/Q-out.png);}"
                             "QPushButton:pressed{border-image: url(:/icon/Q-out.png);}");
 
+    ui->pushButton_mini->setStyleSheet("QPushButton{border-image: url(:/icon/mini-a.png);}"
+                                       "QPushButton:hover{border-image: url(:/icon/mini.png);}"
+                                       "QPushButton:pressed{border-image: url(:/icon/mini.png);}");
+
     ui->order_btn->setStyleSheet("QToolButton{border-image: url(:/icon/OrderManagement.jpg);}"
                                  "QToolButton:hover{border-image: url(:/icon/OrderManagementgreen.jpg);}"
                                  "QToolButton:pressed{border-image: url(:/icon/OrderManagementgreen.jpg);}"
@@ -55,15 +59,6 @@ FormCenter::~FormCenter()
 }
 
 
-
-/*! 仓库管理
- * \brief FormCenter::action_store_manage
- */
-void FormCenter::action_store_manage()
-{
-
-    Warehouse.showNormal();
-}
 
 /*! 物料管理
  * \brief FormCenter::action_material_manage
@@ -133,11 +128,6 @@ void FormCenter::on_set_Btn_clicked()
     ui->stackedWidget->setCurrentWidget(&m_sys);
 }
 
-void FormCenter::AppQuit()
-{
-    QApplication* app;
-    app->quit();
-}
 
 void FormCenter::timeoutslot()
 {
@@ -163,7 +153,7 @@ void FormCenter::on_exit_clicked()
     int ret = msg.exec();
     switch (ret) {
     case QMessageBox::Ok:
-        AppQuit();
+        emit exitApp();
         break;
     case QMessageBox::Cancel:
         break;
@@ -176,4 +166,9 @@ void FormCenter::clearChecked()
     ui->order_btn->setChecked(false);
     ui->store_btn->setChecked(false);
     ui->person_btn->setChecked(false);
+}
+
+void FormCenter::on_pushButton_mini_clicked()
+{
+    emit show_mini();
 }

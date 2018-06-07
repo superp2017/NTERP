@@ -50,6 +50,11 @@ public:
     void net_getglobalSuppliers();
     /////////////////////////////////////////////////////
     void net_getglobalMateriels();
+    //////////////////////////////////////////////////////
+    void net_newGoods(const QJsonObject para);
+    void net_modGoods(const QJsonObject para);
+    void net_delGoods(const QJsonObject para);
+    void net_getglobalGoods();
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,6 +89,9 @@ public:
     ///////////////////////////////////////////////////
     QVector<Supplier>pub_Suppliers();
     Supplier pub_getSupplier(QString CID,bool &ok);
+    ////////////////////////////////////////////////////
+    QVector<Goods> goods() const;
+    Goods pub_getGoods(QString id,bool &ok);
     ////////////////////////////////////////////////////
     SysSetting CurSettings();
     void setCurSettings(SysSetting set);
@@ -122,6 +130,11 @@ signals:
     void sig_globalSUppliers(bool);
     ///////////////////////////////////
     void sig_globalMateriels(bool);
+    //////////////////////////////////
+    void sig_newGoods(Goods,bool);
+    void sig_modGoods(Goods,bool);
+    void sig_delGoods(QString,bool);
+    void sig_globalGoods(bool);
 private:
     void pri_initBath();
 
@@ -136,6 +149,7 @@ private:
     QVector<Supplier>  m_suppliers;  //所有供应商
     QVector<QString>   m_authors;    //所有的权限
     QVector<QString>   m_departments;//所有的部门
+    QVector<Goods>     m_goods;      //所有的商品
     Loadding           m_load;       //加载动画
     nSysConfig         m_Config;     //保存系统配置
 };

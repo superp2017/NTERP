@@ -17,6 +17,7 @@ PersonManager::PersonManager(QWidget *parent) :
     connect(ui->radioButton_ave,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_connent,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_manue,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
+
     connect(ui->tableWidget,SIGNAL(userClick(QString)),this,SLOT(userClick(QString)));
 
     connect(dataCenter::instance(),SIGNAL(sig_outEmployee(User,bool)),this,SLOT(outUserCb(User,bool)));
@@ -29,9 +30,26 @@ PersonManager::PersonManager(QWidget *parent) :
     connect(ui->tableWidget,SIGNAL(delUser()),this,SLOT(on_pushButton_del_clicked()));
 
 
-    ui->pushButton_mod->setEnabled(false);
-    ui->pushButton_out->setEnabled(false);
-    ui->pushButton_del->setEnabled(false);
+    ui->pushButton_newUser->setStyleSheet("QPushButton{border-image: url(:/icon/new-red.png);}"
+                                          "QPushButton:hover{border-image: url(:/icon/new.png);}"
+                                          "QPushButton:pressed{border-image: url(:/icon/new.png);}"
+                                          "QPushButton:checked{border-image: url(:/icon/new.png);}");
+
+
+    ui->pushButton_export->setStyleSheet("QPushButton{border-image: url(:/icon/export.png);}"
+                                         "QPushButton:hover{border-image: url(:/icon/export-a.png);}"
+                                         "QPushButton:pressed{border-image: url(:/icon/export-a.png);}"
+                                         "QPushButton:checked{border-image: url(:/icon/export-a.png);}");
+
+    ui->pushButton_reflash->setStyleSheet("QPushButton{border-image: url(:/icon/reflash.png);}"
+                                          "QPushButton:hover{border-image: url(:/icon/reflash-a.png);}"
+                                          "QPushButton:pressed{border-image: url(:/icon/reflash-a.png);}"
+                                          "QPushButton:checked{border-image: url(:/icon/reflash-a.png);}");
+
+    setBtnEnable(false,false,false);
+
+
+
     updateData();
 }
 
@@ -50,11 +68,10 @@ void PersonManager::updateData()
 void PersonManager::clearAllSelect()
 {
     ui->tableWidget->clearSelection();
-    ui->pushButton_mod->setEnabled(false);
-    ui->pushButton_out->setEnabled(false);
-    ui->pushButton_del->setEnabled(false);
+    setBtnEnable(false,false,false);
     curUser.UID=="";
 }
+
 
 
 void PersonManager::new_employee()
@@ -98,22 +115,17 @@ void PersonManager::userClick(QString UID)
 {
     bool ok =false;
     curUser = dataCenter::instance()->pub_getUser(UID,ok);
-    if(curUser.Status=="-1"){
-        ui->pushButton_mod->setEnabled(false);
-        ui->pushButton_out->setEnabled(false);
-        ui->pushButton_del->setEnabled(false);
+    if(ok){
+        if(curUser.Status=="-1"){
+            setBtnEnable(false,false,false);
+        }
+        if(curUser.Status=="0"){
+            setBtnEnable(true,true,true);
+        }
+        if(curUser.Status=="1"){
+            setBtnEnable(false,false,true);
+        }
     }
-    if(curUser.Status=="0"){
-        ui->pushButton_mod->setEnabled(true);
-        ui->pushButton_out->setEnabled(true);
-        ui->pushButton_del->setEnabled(true);
-    }
-    if(curUser.Status=="1"){
-        ui->pushButton_mod->setEnabled(false);
-        ui->pushButton_out->setEnabled(false);
-        ui->pushButton_del->setEnabled(true);
-    }
-
 }
 
 
@@ -190,9 +202,7 @@ void PersonManager::delUserCb(QString user, bool ok)
     if(ok){
         dataCenter::instance()->pub_showMessage("删除成功!",4000);
         ui->tableWidget->removeUser(user);
-        ui->pushButton_mod->setEnabled(false);
-        ui->pushButton_out->setEnabled(false);
-        ui->pushButton_del->setEnabled(false);
+        setBtnEnable(false,false,false);
     }else{
         dataCenter::instance()->pub_showMessage("删除失败!",4000);
     }
@@ -241,5 +251,41 @@ void PersonManager::on_pushButton_reflash_clicked()
     boost::thread t(boost::bind(&dataCenter::net_getGlobalUsers,dataCenter::instance()));
     t.detach();
     dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
+}
+
+void PersonManager::setBtnEnable(bool m, bool o, bool d)
+{
+    ui->pushButton_mod->setEnabled(m);
+    ui->pushButton_out->setEnabled(o);
+    ui->pushButton_del->setEnabled(d);
+
+    if(m){
+        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify-red.png);}"
+                                          "QPushButton:hover{border-image: url(:/icon/modify.png);}"
+                                          "QPushButton:pressed{border-image: url(:/icon/modify.png);}"
+                                          "QPushButton:checked{border-image: url(:/icon/modify.png);}");
+    }else{
+        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify.png);}");
+    }
+
+    if(o){
+        ui->pushButton_out->setStyleSheet("QPushButton{border-image: url(:/icon/quit-red.png);}"
+                                          "QPushButton:hover{border-image: url(:/icon/quit.png);}"
+                                          "QPushButton:pressed{border-image: url(:/icon/quit.png);}"
+                                          "QPushButton:checked{border-image: url(:/icon/quit.png);}");
+
+    }else{
+        ui->pushButton_out->setStyleSheet("QPushButton{border-image: url(:/icon/quit.png);}");
+    }
+
+    if(d){
+        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete-red.png);}"
+                                          "QPushButton:hover{border-image: url(:/icon/delete.png);}"
+                                          "QPushButton:pressed{border-image: url(:/icon/delete.png);}"
+                                          "QPushButton:checked{border-image: url(:/icon/delete.png);}");
+    }else{
+        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete.png);}");
+    }
+
 }
 

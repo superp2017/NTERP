@@ -1,8 +1,30 @@
 ﻿#include "goodstable.h"
+#include <QDebug>
 
 goodsTable::goodsTable(QWidget *w):M_TableWidget(w)
 {
+    this->setColumnCount(12);
+    this->setEditTriggers(QTableWidget::NoEditTriggers);
+    this->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
+    this->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
+    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
+    this->horizontalHeader()->setStyleSheet("QHeaderView::section{background:#293a51;color:#e5e5e5;}"); //设置表头背景色
+    QFont font = this->horizontalHeader()->font();
+    font.setBold(true);
+    this->horizontalHeader()->setFont(font);
+
+    //设置表头内容
+    QStringList header;
+    header<<tr("商品编号")<<tr("商品名称")<<tr("类别")\
+         <<tr("进价(元)")<<tr("库存数量")<<tr("单位")\
+        <<tr("库存总价(元)")<<tr("规格")<<tr("颜色")\
+       <<tr("供应商")<<tr("状态")<<tr("备注");
+    this->setHorizontalHeaderLabels(header);
+
+    this->setSortingEnabled(true);//允许列排序
+
+    connect(this,SIGNAL(cellPressed(int,int)),this,SLOT(clickRow(int,int)));
 }
 
 
@@ -11,6 +33,14 @@ void goodsTable::initGoods(QVector<Goods> list)
     removeAllRow();
     for(Goods o:list){
         appendGoods(o);
+    }
+}
+
+void goodsTable::updataGoods(QVector<Goods> list)
+{
+    this->setRowCount(list.size());
+    for(int i=0;i<list.size();++i){
+        setRowData(list.at(i),i);
     }
 }
 
@@ -23,12 +53,38 @@ void goodsTable::appendGoods(Goods g)
 
 void goodsTable::modGoods(Goods g)
 {
-
+    int count = this->rowCount();
+    for(int i=0;i<count;++i){
+        QTableWidgetItem *item0 =  this->item(i,0);
+        if(item0!=NULL&&item0->text()==g.ID){
+            setRowData(g,i);
+            break;
+        }
+    }
 }
 
 void goodsTable::removeGoods(QString g)
 {
+    int count = this->rowCount();
+    for(int i=0;i<count;++i){
+        QTableWidgetItem *item0 =  this->item(i,0);
+        if(item0!=NULL&&item0->text()==g){
+            this->removeRow(i);
+            break;
+        }
+    }
+}
 
+void goodsTable::clickRow(int row, int col)
+{
+    if(row<0){
+        return;
+    }
+    col =0;
+    QTableWidgetItem* item = this->item(row,0);
+    if (item!=NULL){
+        emit GoodsClick(item->text());
+    }
 }
 
 void goodsTable::setRowData(Goods para, int row)

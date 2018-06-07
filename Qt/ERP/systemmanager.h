@@ -21,7 +21,8 @@ public:
 
 private slots:
     void on_pushButton_update_clicked();
-
+    void aboutCommany();
+    void abountSystem();
 private:
     void initSetting();
     Ui::SystemManager *ui;

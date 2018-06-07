@@ -31,9 +31,10 @@ public:
 signals:
     void  action_new_order();
     void  action_new_user();
-
+    void  show_mini();
+    void  exitApp();
 public slots:
-    void  action_store_manage();
+
     void  action_material_manage();
     void  action_supplier_manage();
     void  action_customs_manage();
@@ -51,16 +52,17 @@ private slots:
     void on_exit_clicked();
 
     void clearChecked();
-    void AppQuit();
+
     void timeoutslot();
     void showMessage(QString msg,int delay);
+    void on_pushButton_mini_clicked();
+
 private:
     Ui::FormCenter *ui;
     OrderManager         m_order;    //订单管理
     StoreManager         m_store;    //仓库管理
     PersonManager        m_person;   //员工管理
     SystemManager        m_sys;      //系统管理
-    FormWarehouseManage  Warehouse;  //仓库管理
     DialogMaterialManage Material;   //材料管理
     FormCustommanage     Custom;     //客户管理
     FormUnitManage       Unit;       //单位管理

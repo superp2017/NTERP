@@ -8,12 +8,12 @@
 #include "supplierservice.h"
 #include "accountservice.h"
 #include "materialservice.h"
+#include "goodsService.h"
 #include "boost/thread.hpp"
 
 
 dataCenter::dataCenter(QObject *parent) : QObject(parent)
 {
-
     m_authors.push_back("操作员");
     m_authors.push_back("仓库");
     m_authors.push_back("财务");
@@ -47,6 +47,9 @@ void dataCenter::initData()
     //////////////初始化所有物料//////////////////
     boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance())).detach();
 
+    //////////////初始化所有商品//////////////////
+    boost::thread(boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance())).detach();
+
 }
 
 void dataCenter::net_login(const QJsonObject para)
@@ -54,7 +57,7 @@ void dataCenter::net_login(const QJsonObject para)
     bool ok = false;
     User u= accountService::login(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(ok){
-     cur_user = u;
+        cur_user = u;
     }
     emit sig_login(ok);
 }
@@ -361,6 +364,53 @@ void dataCenter::net_getglobalMateriels()
 
 }
 
+void dataCenter::net_newGoods(const QJsonObject para)
+{
+    bool ok = false;
+    Goods goods = GoodsService::newGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if (ok){
+        m_goods.push_back(goods);
+    }
+    emit sig_modGoods(goods,ok);
+}
+
+void dataCenter::net_modGoods(const QJsonObject para)
+{
+    bool ok = false;
+    Goods goods = GoodsService::modGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        for(int i=0;i<m_goods.size();++i){
+            if(m_goods[i].ID==goods.ID){
+                m_goods[i] = goods;
+                break;
+            }
+        }
+    }
+    emit sig_modGoods(goods,ok);
+}
+
+void dataCenter::net_delGoods(const QJsonObject para)
+{
+    bool ok = false;
+    QString id = GoodsService::delGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        for(int i=0;i<m_goods.size();++i){
+            if(m_goods[i].ID==id){
+                m_goods.remove(i);
+                break;
+            }
+        }
+    }
+    emit sig_delGoods(id,ok);
+}
+
+void dataCenter::net_getglobalGoods()
+{
+    bool ok = false;
+    m_goods = GoodsService::getAllGoods(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_globalGoods(ok);
+}
+
 
 void dataCenter::pub_showMessage(QString msg, int sec)
 {
@@ -527,6 +577,23 @@ void dataCenter::pri_initBath()
     for(Order order:m_orders){
         m_batch.insert(order.CustomBatch);
     }
+}
+
+QVector<Goods> dataCenter::goods() const
+{
+    return m_goods;
+}
+
+Goods dataCenter::pub_getGoods(QString id, bool &ok)
+{
+    Goods s;
+    for(Goods g:m_goods){
+        if(g.ID == id){
+            ok = true;
+            return g;
+        }
+    }
+    return  s;
 }
 
 

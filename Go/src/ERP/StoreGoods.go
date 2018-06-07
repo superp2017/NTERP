@@ -34,7 +34,7 @@ func NewGoods(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	st.ID = IDer(Hash_Goods)
+	st.ID =getGoodsID()
 	if st.Name == "" || st.Num < 0 || st.Type == "" {
 		str := fmt.Sprintf("NewGoods failed,Name=%s,Num=%s,Type=%s\n", st.Name, st.Num, st.Type)
 		JLogger.Error(str)

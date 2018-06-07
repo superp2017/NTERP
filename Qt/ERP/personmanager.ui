@@ -15,10 +15,28 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="topMargin">
-    <number>5</number>
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>0</number>
    </property>
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>9</number>
+     </property>
+     <property name="topMargin">
+      <number>5</number>
+     </property>
+     <property name="rightMargin">
+      <number>15</number>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
+     </property>
      <item>
       <widget class="QRadioButton" name="radioButton_manue">
        <property name="text">
@@ -55,21 +73,45 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_export">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(229, 229, 229);</string>
        </property>
        <property name="text">
-        <string>导出</string>
+        <string/>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_reflash">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(229, 229, 229);</string>
        </property>
        <property name="text">
-        <string>刷新</string>
+        <string/>
        </property>
       </widget>
      </item>
@@ -87,13 +129,13 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>60</height>
+       <height>70</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>60</height>
+       <height>70</height>
       </size>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -110,7 +152,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>174</width>
+          <width>40</width>
           <height>20</height>
          </size>
         </property>
@@ -137,7 +179,7 @@
          </font>
         </property>
         <property name="text">
-         <string>新增</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -148,7 +190,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>174</width>
+          <width>40</width>
           <height>20</height>
          </size>
         </property>
@@ -175,7 +217,7 @@
          </font>
         </property>
         <property name="text">
-         <string>修改</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -213,7 +255,7 @@
          </font>
         </property>
         <property name="text">
-         <string>离职</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -251,7 +293,7 @@
          </font>
         </property>
         <property name="text">
-         <string>删除</string>
+         <string/>
         </property>
        </widget>
       </item>

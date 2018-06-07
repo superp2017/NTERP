@@ -13,6 +13,7 @@ var gEmployeeSeed int
 var gMaterialSeed int
 var gCustomerSeed int
 var gSupplierSeed int
+var gGoodsSeed int
 
 func init() {
 	if err := JRedis.Redis_get(Ider_Order, &gOderSeed); err != nil {
@@ -29,6 +30,9 @@ func init() {
 	}
 	if err := JRedis.Redis_get(Ider_Supplier, &gSupplierSeed); err != nil {
 		log.Fatalln("Redis_get gSupplierSeed failed\n")
+	}
+	if err := JRedis.Redis_get(Ider_Goods, &gGoodsSeed); err != nil {
+		log.Fatalln("Redis_get gGoodsSeed failed\n")
 	}
 }
 
@@ -66,6 +70,14 @@ func getSupplierID() string {
 	go JRedis.Redis_set(Ider_Supplier, &gSupplierSeed)
 	return "S" + strconv.Itoa(gSupplierSeed)
 }
+
+//获取商品id
+func getGoodsID() string {
+	gSupplierSeed++
+	go JRedis.Redis_set(Ider_Supplier, &gSupplierSeed)
+	return "G" + strconv.Itoa(gSupplierSeed)
+}
+
 
 //返回当前时间：例如 2017-02-17 16:33
 func CurTime() string {

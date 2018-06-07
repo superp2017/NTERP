@@ -35,7 +35,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-ROOT = "D:/workspace/libs/boost_1_59_0"
+ROOT = "E:/workspace/Qt/SimLib/boost_1_59_0"
+
+
 
 INCLUDEPATH += $${ROOT}/boost
 QMAKE_INCDIR += $${ROOT}/boost
@@ -78,7 +80,9 @@ SOURCES += main.cpp\
     dialogmaterialmanage.cpp \
     dialognewsupplier.cpp \
     formauthormanage.cpp \
-    goodstable.cpp
+    goodstable.cpp \
+    dialognewgoods.cpp \
+    dialoggoodsprint.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -111,7 +115,9 @@ HEADERS  += mainwindow.h \
     dialogmaterialmanage.h \
     dialognewsupplier.h \
     formauthormanage.h \
-    goodstable.h
+    goodstable.h \
+    dialognewgoods.h \
+    dialoggoodsprint.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -136,7 +142,9 @@ FORMS    += mainwindow.ui \
     formwarehousemanage.ui \
     dialogmaterialmanage.ui \
     dialognewsupplier.ui \
-    formauthormanage.ui
+    formauthormanage.ui \
+    dialognewgoods.ui \
+    dialoggoodsprint.ui
 
 RESOURCES += \
     res.qrc

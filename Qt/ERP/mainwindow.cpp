@@ -6,43 +6,48 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QApplication>
+#include <QDateTime>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-//    QMenu * order  = ui->menuBar->addMenu("订单管理");
-//    QMenu * store  = ui->menuBar->addMenu("仓库管理");
-//    QMenu * person = ui->menuBar->addMenu("人事管理");
-//    QMenu * dbs    = ui->menuBar->addMenu("资料库");
-//    QMenu * about  = ui->menuBar->addMenu("关于公司");
-
-//    QAction * neworder      =  order->addAction("新订单");
-//    QAction * storeManage   =  store->addAction("库存管理");
-//    QAction * newemplyee    =  person->addAction("新员工");
-//    QAction * matermanage   =  dbs->addAction("物料管理");
-//    QAction * gys           =  dbs->addAction("供应商管理");
-//    QAction * custommanage  =  dbs->addAction("客户管理");
-//    QAction * unit          =  dbs->addAction("单位管理");
-//    QAction * gsjj          =  about->addAction("公司简介");
-//    QAction *aboutsys   =  about->addAction("关于系统");
-
-//    QPalette pal(palette());
-//    pal.setBrush(QPalette::Window, QBrush(QImage(":/icon/home.png")));
-//    setPalette(pal);
 
     setCentralWidget(&m_center);
-   // connect(dataCenter::instance(),SIGNAL(sig_showStatusMessage(QString,int)),this,SLOT(showMessage(QString,int)));
 
-//    connect(neworder,     SIGNAL(triggered(bool)), &m_center, SIGNAL(action_new_order()));
-//    connect(storeManage,  SIGNAL(triggered(bool)), &m_center, SLOT(action_store_manage()));
-//    connect(newemplyee,   SIGNAL(triggered(bool)), &m_center, SIGNAL(action_new_user()));
-//    connect(matermanage,  SIGNAL(triggered(bool)), &m_center, SLOT(action_material_manage()));
-//    connect(gys,          SIGNAL(triggered(bool)), &m_center, SLOT(action_supplier_manage()));
-//    connect(custommanage, SIGNAL(triggered(bool)), &m_center, SLOT(action_customs_manage()));
-//    connect(unit,         SIGNAL(triggered(bool)), &m_center, SLOT(action_unit_manage()));
-//    connect(gsjj,         SIGNAL(triggered(bool)), this,      SLOT(aboutCommany()));
-//    connect(aboutsys,     SIGNAL(triggered(bool)), this,      SLOT(abountSystem()));
+    setWindowFlags(Qt::Window|\
+                   Qt::FramelessWindowHint |\
+                   Qt::WindowSystemMenuHint|\
+                   Qt::WindowMinimizeButtonHint|\
+                   Qt::WindowMaximizeButtonHint);
+    connect(&m_center,SIGNAL(show_mini()),this,SLOT(showMini()));
+    connect(&m_center,SIGNAL(exitApp()),this,SLOT(on_exitAppAction()));
+
+
+    //新建QSystemTrayIcon对象
+    mSysTrayIcon = new QSystemTrayIcon(this);
+    //新建托盘要显示的icon
+    QIcon icon = QIcon(":/icon/logo.png");
+    //将icon设到QSystemTrayIcon对象中
+    mSysTrayIcon->setIcon(icon);
+    //当鼠标移动到托盘上的图标时，会显示此处设置的内容
+    mSysTrayIcon->setToolTip(QObject::trUtf8("生产管理系统"));
+    //给QSystemTrayIcon添加槽函数
+    connect(mSysTrayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason)));
+
+    //建立托盘操作的菜单
+    mShowMainAction = new QAction(QObject::trUtf8("显示主界面"),this);
+    connect(mShowMainAction,SIGNAL(triggered()),this,SLOT(on_showMainAction()));
+    mExitAppAction = new QAction(QObject::trUtf8("退出"),this);
+    connect(mExitAppAction,SIGNAL(triggered()),this,SLOT(on_exitAppAction()));
+
+    mMenu = new QMenu(this);
+    mMenu->addAction(mShowMainAction);
+    mMenu->addSeparator();
+    mMenu->addAction(mExitAppAction);
+    mSysTrayIcon->setContextMenu(mMenu);
+    mSysTrayIcon->hide();
 }
 
 MainWindow::~MainWindow()
@@ -50,26 +55,61 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-
-void MainWindow::showMessage(QString msg, int delay)
+void MainWindow::closeEvent(QCloseEvent *e)
 {
-//    statusBar()->setStyleSheet("color:white");
-//    ui->statusBar->showMessage(msg,delay);
+    if(mSysTrayIcon->isVisible())
+        mSysTrayIcon->setVisible(false);
+    e->accept();
 }
 
-void MainWindow::aboutCommany()
+
+void MainWindow::showMini()
 {
-    QString qtManulFile="CompanyIntroduction.pdf";
-    QDesktopServices::openUrl(QUrl::fromLocalFile(qtManulFile));
-
-
+    //隐藏主窗口
+    this->hide();
+    //在系统托盘显示此对象
+    mSysTrayIcon->show();
 }
 
-void MainWindow::abountSystem()
+
+
+void MainWindow::on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason reason)
 {
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("关于系统");
-    msgBox.setText("本系统由mp开发\n系统版本 V1.0\n公司网站:www.baidu.com");
-    msgBox.exec();
+    switch(reason){
+    //    case QSystemTrayIcon::Trigger:
+    //        break;
+    case QSystemTrayIcon::DoubleClick:
+        on_showMainAction();
+        break;
+    default:
+        break;
+    }
 }
+
+
+void MainWindow::on_showMainAction()
+{
+    if(this->isHidden()){
+        this->showMaximized();
+        QString title="";
+        if(QDateTime::currentDateTime().time().hour()>=12){
+            title = "下午好!";
+        }else{
+            title = "上午好!";
+        }
+        mSysTrayIcon->showMessage(title,
+                                  QObject::trUtf8("欢迎使用本系统"),
+                                  QSystemTrayIcon::Information,
+                                  1000);
+    }
+}
+
+void MainWindow::on_exitAppAction()
+{
+    exit(0);
+}
+
+
+
+
+

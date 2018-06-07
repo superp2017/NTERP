@@ -40,6 +40,7 @@ private slots:
 private:
     void updateData();
     void clearAllSelect();
+    void setBtnEnable(bool m, bool o, bool d);
 
     Ui::PersonManager *ui;
     DialogNewUser *newuser;

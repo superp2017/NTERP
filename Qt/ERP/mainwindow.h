@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include "formcenter.h"
+#include <QSystemTrayIcon>
+#include <QCloseEvent>
+
 namespace Ui {
 class MainWindow;
 }
@@ -15,16 +18,23 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-public slots:
-    void showMessage(QString msg,int delay);
+protected:
+    void closeEvent(QCloseEvent *e);
 
 private slots:
-    void aboutCommany();
-    void abountSystem();
 
+    void on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason reason);
+     void showMini();
+    void on_showMainAction();
+    void on_exitAppAction();
 private:
     Ui::MainWindow *ui;
     FormCenter  m_center;
+
+    QSystemTrayIcon *mSysTrayIcon;
+    QMenu   *mMenu;
+    QAction *mShowMainAction;
+    QAction *mExitAppAction;
 };
 
 #endif // MAINWINDOW_H
