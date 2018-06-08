@@ -373,6 +373,7 @@ void dataCenter::net_newGoods(const QJsonObject para)
     Goods goods = GoodsService::newGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if (ok){
         m_goods.push_back(goods);
+        pri_checkGoodType(goods.Type);
     }
     emit sig_modGoods(goods,ok);
 }
@@ -388,6 +389,7 @@ void dataCenter::net_modGoods(const QJsonObject para)
                 break;
             }
         }
+        pri_checkGoodType(goods.Type);
     }
     emit sig_modGoods(goods,ok);
 }
@@ -614,6 +616,16 @@ void dataCenter::pri_initBath()
     }
 }
 
+void dataCenter::pri_checkGoodType(QString type)
+{
+    for(QString t:m_goodsType){
+        if(t == type){
+            return;
+        }
+    }
+    m_goodsType.push_back(type);
+}
+
 QVector<QString> dataCenter::pub_goodsType() const
 {
     return m_goodsType;
@@ -624,7 +636,7 @@ QVector<Goods> dataCenter::pub_GetTypeGoods(QString type)
     QVector<Goods>  list;
     for(Goods g:m_goods){
         if(g.Type == type){
-           list.push_back(g);
+            list.push_back(g);
         }
     }
     return list;

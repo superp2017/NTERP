@@ -13,7 +13,7 @@ PersonManager::PersonManager(QWidget *parent) :
     ui->setupUi(this);
     tab_mode = QHeaderView::Stretch;
     newuser =NULL;
-    ui->radioButton_ave->setChecked(true);
+
     connect(ui->radioButton_ave,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_connent,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_manue,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
@@ -48,8 +48,8 @@ PersonManager::PersonManager(QWidget *parent) :
 
     setBtnEnable(false,false,false);
 
-
-
+    ui->radioButton_ave->setChecked(true);
+    changeCol();
     updateData();
 }
 
@@ -70,6 +70,7 @@ void PersonManager::clearAllSelect()
     ui->tableWidget->clearSelection();
     setBtnEnable(false,false,false);
     curUser.UID=="";
+    ui->tableWidget->checkSelect();
 }
 
 

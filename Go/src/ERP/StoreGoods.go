@@ -4,8 +4,6 @@ import (
 	"JGo/JHttp"
 	"JGo/JLogger"
 	"JGo/JStore/JRedis"
-	"JsGo/JsLogger"
-	"JsGo/JsStore/JsRedis"
 	"fmt"
 )
 
@@ -76,18 +74,18 @@ func ModifyGoods(session *JHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 	if st.ID == "" {
-		JsLogger.Error("ModifyGoods failed , GoodsID is empty \n")
+		JLogger.Error("ModifyGoods failed , GoodsID is empty \n")
 		session.Forward("1", "ModifyGoods failed , GoodsID is empty \n", nil)
 		return
 	}
 	data := &StoreGoods{}
-	if err := JsRedis.Redis_hget(Hash_Goods, st.ID, data); err != nil {
-		JsLogger.Error(err.Error())
+	if err := JRedis.Redis_hget(Hash_Goods, st.ID, data); err != nil {
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -95,6 +93,10 @@ func ModifyGoods(session *JHttp.Session) {
 	sid := data.SID
 	if data.SID != st.SID && st.SID != "" && data.SID != "" {
 		remove = true
+	}
+	newType :=false
+	if st.Type!= data.Type{
+		newType = true
 	}
 	data.Name = st.Name
 	data.Type = st.Type
@@ -108,13 +110,19 @@ func ModifyGoods(session *JHttp.Session) {
 	data.Status = st.Status
 	data.Note = st.Note
 	data.TotalPrice = data.Price * data.Num
-	if err := JsRedis.Redis_hset(Hash_Goods, data.ID, data); err != nil {
-		JsLogger.Error(err.Error())
+	if err := JRedis.Redis_hset(Hash_Goods, data.ID, data); err != nil {
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 	if remove {
 		go removeSupplierGoods(sid, data.ID)
+		if data.SID!=""&&data.ID!=""{
+			go appendSupplierGoods(st.SID, st.ID)
+		}
+	}
+	if newType&&data.Type != "" {
+		go appendGoodsType(data.Type)
 	}
 	session.Forward("0", "modify success", data)
 }
@@ -127,19 +135,19 @@ func InOutGoods(session *JHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 	if st.ID == "" || st.Num <= 0 {
 		str := fmt.Sprintf("InOutGoods failed,ID=%s,Num=%d\n", st.ID, st.Num)
-		JsLogger.Error(str)
+		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
 	}
 	data := &StoreGoods{}
-	if err := JsRedis.Redis_hget(Hash_Goods, st.ID, data); err != nil {
-		JsLogger.Error(err.Error())
+	if err := JRedis.Redis_hget(Hash_Goods, st.ID, data); err != nil {
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -148,15 +156,15 @@ func InOutGoods(session *JHttp.Session) {
 	} else {
 		if data.Num < st.Num {
 			str := fmt.Sprintf("InOutGoods failed,cur Num(%d) < param.Num(%d)\n", data.Num, st.Num)
-			JsLogger.Error(str)
+			JLogger.Error(str)
 			session.Forward("1", str, nil)
 			return
 		}
 		data.Num -= st.Num
 	}
 	data.TotalPrice = data.Num * data.Price
-	if err := JsRedis.Redis_hset(Hash_Goods, st.ID, data); err != nil {
-		JsLogger.Error(err.Error())
+	if err := JRedis.Redis_hset(Hash_Goods, st.ID, data); err != nil {
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -170,25 +178,25 @@ func DelGoods(session *JHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 	if st.ID == "" {
-		JsLogger.Error("DelGoods failed , GoodsID is empty \n")
+		JLogger.Error("DelGoods failed , GoodsID is empty \n")
 		session.Forward("1", "DelGoods failed , GoodsID is empty \n", nil)
 		return
 	}
 
 	data := &StoreGoods{}
-	if err := JsRedis.Redis_hget(Hash_Goods, st.ID, data); err != nil {
-		JsLogger.Error(err.Error())
+	if err := JRedis.Redis_hget(Hash_Goods, st.ID, data); err != nil {
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 
-	if err := JsRedis.Redis_hdel(Hash_Goods, st.ID); err != nil {
-		JsLogger.Error(err.Error())
+	if err := JRedis.Redis_hdel(Hash_Goods, st.ID); err != nil {
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -247,12 +255,12 @@ func RemoveGoodsType(session *JHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 	if err := removeGoodsType(st.Type); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -265,12 +273,12 @@ func AddGoodsType(session *JHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 	if err := appendGoodsType(st.Type); err != nil {
-		JsLogger.Error(err.Error())
+		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}

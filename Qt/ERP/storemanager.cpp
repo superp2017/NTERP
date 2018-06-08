@@ -10,6 +10,8 @@ StoreManager::StoreManager(QWidget *parent) :
     ui(new Ui::StoreManager)
 {
     ui->setupUi(this);
+    newGoods = NULL;
+
     ui->pushButton_new->setStyleSheet("QPushButton{border-image: url(:/icon/new-red.png);}"
                                       "QPushButton:hover{border-image: url(:/icon/new.png);}"
                                       "QPushButton:pressed{border-image: url(:/icon/new.png);}"
@@ -35,9 +37,9 @@ StoreManager::StoreManager(QWidget *parent) :
     connect(ui->tableWidget,SIGNAL(GoodsClick(QString)),this,SLOT(GoodsClick(QString)));
 
     ui->radioButton_ave->setChecked(true);
+    changeCol();
     setBtnEnable(false,false,false,false);
     initData();
-    newGoods = NULL;
 }
 
 StoreManager::~StoreManager()

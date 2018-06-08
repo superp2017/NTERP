@@ -8,6 +8,7 @@ public:
     M_TableWidget(QWidget *w=0);
     void removeAllRow();
     void setHeaderColModel( QHeaderView::ResizeMode mode);
+    void checkSelect();
 };
 
 #endif // M_TABLEWIDGET_H

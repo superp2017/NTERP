@@ -11,23 +11,26 @@ DialogMaterialManage::DialogMaterialManage(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->tableWidget->setColumnCount(7);
-    ui->tableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
-    ui->tableWidget->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
-    ui->tableWidget->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
-    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableWidget->horizontalHeader()->setStyleSheet("QHeaderView::section{background:#888888;}"); //设置表头背景色
-    QFont font = ui->tableWidget->horizontalHeader()->font();
-    font.setBold(true);
-    ui->tableWidget->horizontalHeader()->setFont(font);
+//    ui->tableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
+//    ui->tableWidget->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
+//    ui->tableWidget->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
+//    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+//    ui->tableWidget->horizontalHeader()->setStyleSheet("QHeaderView::section{background:#888888;}"); //设置表头背景色
+//    QFont font = ui->tableWidget->horizontalHeader()->font();
+//    font.setBold(true);
+//    ui->tableWidget->horizontalHeader()->setFont(font);
+//  ui->tableWidget->setSortingEnabled(true);//允许列排序
 
     //设置表头内容
     QStringList header;
     header<<tr("物料编号")<<tr("物料描述")<<tr("客户名称")<<tr("数量")<<tr("单位")<<tr("入库时间")<<tr("状态");
     ui->tableWidget->setHorizontalHeaderLabels(header);
-    ui->tableWidget->setSortingEnabled(true);//允许列排序
+
 
     connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
     connect(ui->checkBox_check_all,SIGNAL(clicked(bool)),this,SLOT(checkAll()));
+
+    connect(ui->tableWidget,SIGNAL(cellClicked(int,int)),this,SLOT(onCellClick(int,int)));
 }
 
 DialogMaterialManage::~DialogMaterialManage()
@@ -75,6 +78,11 @@ void DialogMaterialManage::checkAll()
     for(QCheckBox* box:m_boxs){
         box->setChecked(ui->checkBox_check_all->isChecked());
     }
+}
+
+void DialogMaterialManage::onCellClick(int row, int col)
+{
+    this->childrenRect();
 }
 
 

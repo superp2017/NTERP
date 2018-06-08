@@ -13,14 +13,17 @@ FormCustommanage::FormCustommanage(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->tableWidget->setColumnCount(11);
-    ui->tableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
-    ui->tableWidget->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
-    ui->tableWidget->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
-    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableWidget->horizontalHeader()->setStyleSheet("QHeaderView::section{background:#888888;}"); //设置表头背景色
-    QFont font = ui->tableWidget->horizontalHeader()->font();
-    font.setBold(true);
-    ui->tableWidget->horizontalHeader()->setFont(font);
+//    ui->tableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
+//    ui->tableWidget->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
+//    ui->tableWidget->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
+//    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+//    ui->tableWidget->horizontalHeader()->setStyleSheet("QHeaderView::section{background:#888888;}"); //设置表头背景色
+//    QFont font = ui->tableWidget->horizontalHeader()->font();
+//    font.setBold(true);
+//    ui->tableWidget->horizontalHeader()->setFont(font);
+//   ui->tableWidget->setSortingEnabled(true);//允许列排序
+
+//     ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     //设置表头内容
     QStringList header;
@@ -28,7 +31,7 @@ FormCustommanage::FormCustommanage(QWidget *parent) :
          <<tr("联系人")<<tr("联系电话")<<tr("开户行")<<tr("银行卡号")\
         <<tr("支行名称") <<tr("税号")<<tr("备注");
     ui->tableWidget->setHorizontalHeaderLabels(header);
-    ui->tableWidget->setSortingEnabled(true);//允许列排序
+
 
     connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
     connect(ui->checkBox_check_all,SIGNAL(clicked(bool)),this,SLOT(checkAll()));

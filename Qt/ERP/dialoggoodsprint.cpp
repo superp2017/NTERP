@@ -26,7 +26,6 @@ DialogGoodsPrint::DialogGoodsPrint(QWidget *parent) :
     header<<tr("商品编号")<<tr("商品名称");
     ui->tableWidget->setHorizontalHeaderLabels(header);
 
-    connect(ui->comboBox__type,SIGNAL(currentIndexChanged(int)),this,SLOT(TypeChange()));
 
 
     m_checkboxs.clear();
@@ -35,6 +34,10 @@ DialogGoodsPrint::DialogGoodsPrint(QWidget *parent) :
     initComBox();
     ui->comboBox__type->setCurrentIndex(0);
     curType = ItemAllType;
+
+    connect(ui->comboBox__type,SIGNAL(currentIndexChanged(int)),this,SLOT(TypeChange()));
+
+    TypeChange();
 
 }
 
@@ -101,7 +104,11 @@ void DialogGoodsPrint::TypeChange()
         return ;
     }
     curType = type;
-     mData = dataCenter::instance()->pub_GetTypeGoods(curType);
+    if(curType==ItemAllType){
+        mData = dataCenter::instance()->pub_goods();
+    }else{
+        mData = dataCenter::instance()->pub_GetTypeGoods(curType);
+    }
     if(mData.size()>0){
         removeAllRow();
     }

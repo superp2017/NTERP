@@ -29,6 +29,8 @@ private slots:
     void exportCb(bool ok);
 
     void checkAll();
+
+    void onCellClick(int row,int col);
 signals:
     void sig_exportCb(bool);
 private:

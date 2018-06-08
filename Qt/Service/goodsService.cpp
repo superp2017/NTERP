@@ -171,7 +171,7 @@ QString GoodsService::delGoodsType(const QJsonObject para, bool &ok, QString hos
 QVector<QString> GoodsService::getAllGoodsType(bool &ok, QString hostname, QString hostport)
 {
     QVector<QString> list;
-    std::string url = Net_RemoveGoodsType;
+    std::string url = Net_GetAllGoodsType;
     bool r   = false;
     Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
     if(r&&ret.ret){

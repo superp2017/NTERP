@@ -21,7 +21,7 @@ OrderManager::OrderManager(QWidget *parent) :
     m_tab_success = new OrderTable();
     m_tab_all     = new OrderTable();
     m_tab_produce = new OrderTable();
-    //QIcon(":/icon/all.ico")
+
     ui->tabWidget->addTab(m_tab_new,"新订单");
     ui->tabWidget->addTab(m_tab_produce,"生产中");
     ui->tabWidget->addTab(m_tab_success,"已完成");
@@ -79,7 +79,9 @@ OrderManager::OrderManager(QWidget *parent) :
 
 
     setBtnEnable(false,false,false,false,false);
+
     ui->radioButton_ave->setChecked(true);
+    changeCol();
     updataData();
 }
 
@@ -147,6 +149,7 @@ void OrderManager::changeCol()
     m_tab_produce->setHeaderColModel(tab_mode);
     m_tab_success->setHeaderColModel(tab_mode);
     m_tab_all->setHeaderColModel(tab_mode);
+    clearAllSelect();
 }
 
 void OrderManager::new_order()
@@ -385,6 +388,9 @@ void OrderManager::clearAllSelect()
     m_tab_all->clearSelection();
     m_tab_new->clearSelection();
     m_tab_success->clearSelection();
+    m_tab_new->checkSelect();
+    m_tab_new->checkSelect();
+    m_tab_success->checkSelect();
     setBtnEnable(false,false,false,false,false);
     clearCurOrder();
 }

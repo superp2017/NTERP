@@ -60,40 +60,7 @@ FormCenter::~FormCenter()
 
 
 
-/*! 物料管理
- * \brief FormCenter::action_material_manage
- */
-void FormCenter::action_material_manage()
-{
-    Material.initData();
-    Material.closeAllStatus();
-    Material.exec();
-}
 
-/*! 供货商管理
- * \brief FormCenter::action_supplier_manage
- */
-void FormCenter::action_supplier_manage()
-{
-    Supplier.showNormal();
-}
-
-/*! 客户管理
- * \brief FormCenter::action_customs_manage
- */
-void FormCenter::action_customs_manage()
-{
-    Custom.closeAllStatus();
-    Custom.showNormal();
-}
-
-/*! 单位管理
- * \brief FormCenter::action_unit_manage
- */
-void FormCenter::action_unit_manage()
-{
-    Unit.showNormal();
-}
 
 void FormCenter::on_order_btn_clicked()
 {

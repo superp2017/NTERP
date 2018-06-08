@@ -48,3 +48,43 @@ void SystemManager::abountSystem()
     msgBox.exec();
 }
 
+
+void SystemManager::on_pushButton_supplier_manage_clicked()
+{
+     Supplier.showNormal();
+}
+
+/*! 物料管理
+ * \brief FormCenter::action_material_manage
+ */
+void SystemManager::action_material_manage()
+{
+    Material.initData();
+    Material.closeAllStatus();
+    Material.exec();
+}
+
+/*! 供货商管理
+ * \brief FormCenter::action_supplier_manage
+ */
+void SystemManager::action_supplier_manage()
+{
+
+}
+
+/*! 客户管理
+ * \brief FormCenter::action_customs_manage
+ */
+void SystemManager::action_customs_manage()
+{
+    Custom.closeAllStatus();
+    Custom.showNormal();
+}
+
+/*! 单位管理
+ * \brief FormCenter::action_unit_manage
+ */
+void SystemManager::action_unit_manage()
+{
+    Unit.showNormal();
+}

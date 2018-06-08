@@ -84,6 +84,7 @@ void DialogNewGoods::on_pushButton_ok_clicked()
     goods.Note          = ui->textEdit_note->toPlainText();
     goods.SupplierName  = ui->comboBox_supplier->currentText();
     goods.Num           = ui->spinBox_num->value();
+    goods.Unit          = ui->comboBox_unit->currentText();
     if(goods.SupplierName!=""){
         if(!dataCenter::instance()->pub_checkSuppliser(goods.SupplierName)){
             QToolTip::showText(ui->comboBox_supplier->mapToGlobal(QPoint(100, 0)), "供应商不存在!");

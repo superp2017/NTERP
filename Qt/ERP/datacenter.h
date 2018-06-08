@@ -146,7 +146,7 @@ signals:
     void sig_globalGoodsType(bool);
 private:
     void pri_initBath();
-
+    void pri_checkGoodType(QString type);
 private:
     User               cur_user;     //当前登录的账号
     QVector<User>      m_employee;   //所有的员工
