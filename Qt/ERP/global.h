@@ -21,6 +21,8 @@ const QString ItemNewUnit("新增单位...");
 
 const QString ItemNewAuthor("权限设置...");
 
+const QString ItemAllType("全部分类");
+
 
 
 

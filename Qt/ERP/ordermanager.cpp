@@ -101,7 +101,7 @@ void OrderManager::orderClick(QString orderID)
 {
     bool exist =false;
     cur_order = dataCenter::instance()->pub_getOrder(orderID,exist);
-    if(!exist){
+    if(!exist||cur_order.OrderID==""){
         return;
     }
 

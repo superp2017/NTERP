@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "goodsService.h"
+#include "dialognewgoods.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -31,11 +32,14 @@ private slots:
     void delGoodsCb(QString ID,bool ok);
     void getGlobalGoodsCb(bool ok);
     void changeCol();
+    void on_pushButton_mod_clicked();
+
 private:
     void initData();
     void clearSelectSection();
-    void setBtnEnable(bool in,bool out,bool del);
+    void setBtnEnable(bool mod, bool in, bool out, bool del);
     Ui::StoreManager *ui;
+    DialogNewGoods  *newGoods;
     Goods   cur_Goods;
 };
 

@@ -2,120 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c81b25b1-7c9e-415e-b111-1fe2037d5a06" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/dialoggoodsprint.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/dialoggoodsprint.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/dialoggoodsprint.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/dialognewgoods.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/dialognewgoods.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/dialognewgoods.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/icon/export-a.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/icon/export.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/icon/mini-a.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/icon/mini.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/icon/reflash-a.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/icon/reflash.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ERP/StoreGoods.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/ERP/StoreGoods.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ERP/global.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/ERP/global.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ERP/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/ERP/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ERP/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/ERP/util.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/ERP/ERP.pro" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/ERP.pro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/app.ico" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/app.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/datacenter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/datacenter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/datacenter.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/datacenter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formcenter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formcenter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formcenter.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formcenter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/dialognewgoods.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/dialognewgoods.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/ERP/formcenter.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formcenter.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/ERP/goodstable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/goodstable.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/goodstable.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/goodstable.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/CommunicationAfter.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/CommunicationIn.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/SignInoutpng.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/SignoutAFter.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/SignoutFront.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/all.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/app.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/cancel-red.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/cancel-red.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/cancel.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/cancel.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/color.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/colors.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/com-a.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/com.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/communicationFront.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/deciceAfter.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/deciceIn.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/delete-red.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/delete-red.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/delete.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/delete.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/deleteone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/deletetwo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/deviceFront.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/home.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/home.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/implementProhibit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/implementone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/implementtwo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/layouttwo.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/loginvideo.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/modify-red.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/modify-red.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/modify.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/modify.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/modifyone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/modifytwo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/monitorAfter.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/monitorFront.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/monitorIn.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/new-red.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/new-red.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/new.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/new.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/newone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/newtwo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/out-a.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/out-red.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/out-red.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/out.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/out.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/planAfter.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/planFront.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/planIn.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/plcAfter.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/plcFront.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/plcIn.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/price-red.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/price-red.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/price.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/price.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/production-red.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/production-red.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/production.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/production.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/quit-red.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/quit-red.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/quit.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/icon/quit.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/refreshProhibit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/refreshone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/refreshtwo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/startAfter.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/startFront.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/startIn.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/stopProhibit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/stopone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/stoptwo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/upProhibit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/upone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/uptwo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/urgentProhibit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/urgentone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/urgenttwo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/valverAfter.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/valverFront.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/valverIn.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/login.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/login.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/mainwindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/mainwindow.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/mainwindow.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/mainwindow.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/ordermanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/ordermanager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/ordermanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/ordermanager.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/ERP/ordermanager.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/ordermanager.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/ERP/ordertable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/ordertable.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/personmanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/personmanager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/personmanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/personmanager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/personmanager.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/personmanager.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/res.qrc" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/res.qrc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/ERP/storemanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/storemanager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/storemanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/storemanager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/storemanager.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/storemanager.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/systemmanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/systemmanager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/systemmanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/systemmanager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/systemmanager.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/systemmanager.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/ERP/usertable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/usertable.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/Service/Service.pro" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/Service/Service.pro" afterDir="false" />
     </list>
@@ -131,18 +29,27 @@
       <file leaf-file-name="StoreGoods.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="603">
-              <caret line="37" column="17" lean-forward="true" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
+            <state relative-caret-position="650">
+              <caret line="284" column="23" lean-forward="true" selection-start-line="284" selection-start-column="23" selection-end-line="284" selection-end-column="23" />
               <folding>
                 <element signature="e#14#121#0" expanded="true" />
-                <element signature="n#!!block;n#DelGoods#0" />
-                <element signature="n#!!block;n#GetSupplierGoods#0" />
-                <element signature="n#!!block;n#GetGlobalGoods#0" />
-                <element signature="n#!!block;n#appendSupplierGoods#0" />
-                <element signature="n#!!block;n#removeSupplierGoods#0" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.go" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ERP/main.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="328">
+              <caret line="48" column="48" selection-start-line="48" selection-start-column="48" selection-end-line="48" selection-end-column="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Unit.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ERP/Unit.go">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file leaf-file-name="util.go" pinned="false" current-in-tab="false">
@@ -154,11 +61,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="global.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="global.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="520">
-              <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
+            <state relative-caret-position="344">
+              <caret line="15" column="16" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -172,9 +79,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/ERP/main.go" />
         <option value="$PROJECT_DIR$/src/ERP/util.go" />
+        <option value="$PROJECT_DIR$/src/ERP/global.go" />
         <option value="$PROJECT_DIR$/src/ERP/StoreGoods.go" />
+        <option value="$PROJECT_DIR$/src/ERP/main.go" />
       </list>
     </option>
   </component>
@@ -221,7 +129,7 @@
   <component name="PropertiesComponent">
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../go/JSGO" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -239,7 +147,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1444563" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14765458" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Database" order="3" />
@@ -268,15 +176,58 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="37" column="17" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
+          <folding>
+            <element signature="e#14#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/util.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="729">
+          <caret line="33" column="38" selection-start-line="33" selection-start-column="38" selection-end-line="33" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="783">
+          <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="37" column="17" lean-forward="true" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
+          <folding>
+            <element signature="e#14#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/util.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="729">
+          <caret line="33" column="38" selection-start-line="33" selection-start-column="38" selection-end-line="33" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="783">
+          <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2052">
           <caret line="83" column="5" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
           <folding>
             <element signature="e#14#121#0" expanded="true" />
-            <element signature="n#!!block;n#DelGoods#0" />
-            <element signature="n#!!block;n#GetSupplierGoods#0" />
-            <element signature="n#!!block;n#GetGlobalGoods#0" />
-            <element signature="n#!!block;n#appendSupplierGoods#0" />
-            <element signature="n#!!block;n#removeSupplierGoods#0" />
           </folding>
         </state>
       </provider>
@@ -301,11 +252,6 @@
           <caret line="83" column="5" lean-forward="true" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
           <folding>
             <element signature="e#14#121#0" expanded="true" />
-            <element signature="n#!!block;n#DelGoods#0" />
-            <element signature="n#!!block;n#GetSupplierGoods#0" />
-            <element signature="n#!!block;n#GetGlobalGoods#0" />
-            <element signature="n#!!block;n#appendSupplierGoods#0" />
-            <element signature="n#!!block;n#removeSupplierGoods#0" />
           </folding>
         </state>
       </provider>
@@ -334,28 +280,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="49" column="36" selection-start-line="49" selection-start-column="36" selection-end-line="49" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="603">
-          <caret line="37" column="17" lean-forward="true" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
-          <folding>
-            <element signature="e#14#121#0" expanded="true" />
-            <element signature="n#!!block;n#DelGoods#0" />
-            <element signature="n#!!block;n#GetSupplierGoods#0" />
-            <element signature="n#!!block;n#GetGlobalGoods#0" />
-            <element signature="n#!!block;n#appendSupplierGoods#0" />
-            <element signature="n#!!block;n#removeSupplierGoods#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ERP/util.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="729">
@@ -363,10 +287,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/Unit.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
+        <state relative-caret-position="344">
+          <caret line="15" column="16" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="650">
+          <caret line="284" column="23" lean-forward="true" selection-start-line="284" selection-start-column="23" selection-end-line="284" selection-end-column="23" />
+          <folding>
+            <element signature="e#14#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="48" column="48" selection-start-line="48" selection-start-column="48" selection-end-line="48" selection-end-column="48" />
         </state>
       </provider>
     </entry>

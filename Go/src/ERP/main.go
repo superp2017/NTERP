@@ -49,9 +49,12 @@ func initRoute() {
 	JHttp.WhiteHttp("/getglobalgoods", GetGlobalGoods)     //获取仓库商品
 	JHttp.WhiteHttp("/newgoods", NewGoods)                 //新建一个商品
 	JHttp.WhiteHttp("/delgoods", DelGoods)                 //删除一个商品
+	JHttp.WhiteHttp("/inoutgoods", InOutGoods)             //商品出入库
 	JHttp.WhiteHttp("/modifygoods", ModifyGoods)           //修改商品
 	JHttp.WhiteHttp("/getsuppliergoods", GetSupplierGoods) //获取供应商的物品
-
+	JHttp.WhiteHttp("/removegoodstype", RemoveGoodsType)   //删除商品的分类
+	JHttp.WhiteHttp("/newgoodstype", AddGoodsType)         //新建商品的分类
+	JHttp.WhiteHttp("/getallgoodstype", GetAllGoodsType)   //获取所有商品分类
 }
 
 func main() {

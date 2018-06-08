@@ -2,6 +2,7 @@
 #include "http.h"
 #include "excelservice.h"
 
+
 GoodsService::GoodsService()
 {
 
@@ -45,10 +46,29 @@ Goods GoodsService::modGoods(const QJsonObject para, bool &ok, QString hostname,
     return goods;
 }
 
+Goods GoodsService::inOutGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    Goods goods;
+    std::string url = Net_InOutGoods;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            goods = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  goods;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"inOutGoods ret is not 0"<<endl;
+    ok = false;
+    return goods;
+}
+
 QString GoodsService::delGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
     QString goods;
-    std::string url = Net_ModifyGoods;
+    std::string url = Net_DelGoods;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
@@ -110,11 +130,76 @@ QVector<Goods> GoodsService::getSupplierGoods(bool &ok, QString hostname, QStrin
     return data;
 }
 
+QString GoodsService::newGoodsType(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    QString  type;
+    std::string url = Net_NewGoodsType;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isString()){
+            type = ret.data.toString();
+            ok = true;
+            return  type;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"newGoodsType ret is not 0"<<endl;
+    ok = false;
+    return type;
+}
+
+QString GoodsService::delGoodsType(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    QString  type;
+    std::string url = Net_RemoveGoodsType;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isString()){
+            type = ret.data.toString();
+            ok = true;
+            return  type;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"delGoodsType ret is not 0"<<endl;
+    ok = false;
+    return type;
+}
+
+QVector<QString> GoodsService::getAllGoodsType(bool &ok, QString hostname, QString hostport)
+{
+    QVector<QString> list;
+    std::string url = Net_RemoveGoodsType;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isArray()){
+            QJsonArray arr = ret.data.toArray();
+            for(QJsonValue v:arr){
+                if(v.isString()){
+                    QString r = v.toString();
+                    list.push_back(r);
+                }
+            }
+            ok = true;
+            return list;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"getAllGoodsType ret is not 0"<<endl;
+    ok = false;
+    return list;
+}
+
+
 QJsonObject GoodsService::toJsonObject(Goods goods)
 {
     QJsonObject obj;
     obj.insert("ID",goods.ID);
     obj.insert("Name",goods.Name);
+    obj.insert("Type",goods.Type);
     obj.insert("Unit",goods.Unit);
     obj.insert("Format",goods.Format);
     obj.insert("Color",goods.Color);
@@ -146,6 +231,11 @@ Goods GoodsService::fromJsonObject(QJsonObject obj)
         QJsonValue value = obj.value("Unit");
         if(value.isString())
             goods.Unit = value.toString();
+    }
+    if(obj.contains("Type")){
+        QJsonValue value = obj.value("Type");
+        if(value.isString())
+            goods.Type = value.toString();
     }
     if(obj.contains("Format")){
         QJsonValue value = obj.value("Format");
@@ -217,8 +307,8 @@ bool GoodsService::exportGoods(QVector<Goods> list, QString filepath, bool isOpe
         QVector<QVariant> datalist;
         datalist<<"'"+goods.ID<<"'"+goods.Name<<goods.Type\
                <<"'"+goods.Price<<"'"+goods.Num<<goods.Unit\
-             <<"'"+goods.TotalPrice<<goods.Format<<goods.Color\
-            <<goods.SupplierName<<goods.Status<<goods.Note;
+              <<"'"+goods.TotalPrice<<goods.Format<<goods.Color\
+             <<goods.SupplierName<<goods.Status<<goods.Note;
         data.push_back(datalist);
     }
     return  ExcelService::dataExport(filepath,datalist,data,isOpen);

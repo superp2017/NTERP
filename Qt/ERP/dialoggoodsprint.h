@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include "goodsService.h"
+#include <QCheckBox>
+
 namespace Ui {
 class DialogGoodsPrint;
 }
@@ -14,10 +16,27 @@ class DialogGoodsPrint : public QDialog
 public:
     explicit DialogGoodsPrint(QWidget *parent = 0);
     ~DialogGoodsPrint();
-    void initData(QVector<Goods> data);
+
+private slots:
+    void on_pushButton_cancle_clicked();
+    void on_pushButton_export_clicked();
+    void TypeChange();
+    void removeAllRow();
+    void checkBox();
+
+    void on_checkBox_check_all_clicked();
+
+signals:
+    void sig_exportCb(bool);
 
 private:
+    void setRowData(Goods goods, int row);
+    void doExport(QVector<Goods> ls, QString filepath);
+    void initComBox();
     Ui::DialogGoodsPrint *ui;
+    QVector<Goods> mData;
+    QString curType;
+    QVector<QCheckBox*> m_checkboxs;
 };
 
 #endif // DIALOGGOODSPRINT_H

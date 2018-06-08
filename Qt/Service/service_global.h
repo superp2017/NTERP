@@ -58,10 +58,14 @@ const std::string  Net_GlobalUnit="/getallunits";           //获取所有单位
 
 const std::string Net_NewGoods="/newgoods";                 //新建一个商品
 const std::string Net_ModifyGoods="/modifygoods";           //修改商品
+const std::string Net_InOutGoods="/inoutgoods";             //商品出入库
 const std::string Net_DelGoods="/delgoods";                 //删除商品
 const std::string Net_SupplierGoods="/getsuppliergoods";    //获取供应商的供应的商品
 const std::string Net_GlobalGoods="/getglobalgoods";        //获获取所有的商品
 
+const std::string Net_NewGoodsType="/newgoodstype";            //新建一个商品分类
+const std::string Net_RemoveGoodsType="/removegoodstype";         //删除一个商品分类
+const std::string Net_GetAllGoodsType="/getallgoodstype";         //获取所有的商品分类
 
 
 struct Ret{

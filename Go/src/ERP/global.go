@@ -13,6 +13,7 @@ const (
 	Key_Unit           = "Unit"
 	Hash_Goods         = "Goods"
 	Hash_SupplierGoods = "SupplierGoods"
+	Key_GoodType       = "GoodsType"
 )
 
 //ider

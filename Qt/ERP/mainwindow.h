@@ -28,6 +28,10 @@ private slots:
     void on_showMainAction();
     void on_exitAppAction();
 private:
+    void newIcon();
+    void newMenu();
+
+
     Ui::MainWindow *ui;
     FormCenter  m_center;
 

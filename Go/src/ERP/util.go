@@ -78,7 +78,6 @@ func getGoodsID() string {
 	return "G" + strconv.Itoa(gSupplierSeed)
 }
 
-
 //返回当前时间：例如 2017-02-17 16:33
 func CurTime() string {
 	return time.Unix(time.Now().Unix(), 0).Format("2006-01-02 15:04:05")

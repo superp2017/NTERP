@@ -48,9 +48,9 @@ FormCenter::FormCenter(QWidget *parent) :
 
     ui->order_btn->setChecked(true);
 
+
     m_timer = new QTimer(this);
     connect(m_timer,SIGNAL(timeout()),this,SLOT(timeoutslot()));//timeoutslot()为自定义槽
-
 }
 
 FormCenter::~FormCenter()

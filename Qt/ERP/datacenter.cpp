@@ -50,6 +50,9 @@ void dataCenter::initData()
     //////////////初始化所有商品//////////////////
     boost::thread(boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance())).detach();
 
+    //////////////初始化所有商品的分类//////////////////
+    boost::thread(boost::bind(&dataCenter::net_getGlobalGoodsType,dataCenter::instance())).detach();
+
 }
 
 void dataCenter::net_login(const QJsonObject para)
@@ -404,11 +407,33 @@ void dataCenter::net_delGoods(const QJsonObject para)
     emit sig_delGoods(id,ok);
 }
 
+void dataCenter::net_inOutGoods(const QJsonObject para)
+{
+    bool ok = false;
+    Goods goods = GoodsService::inOutGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        for(int i=0;i<m_goods.size();++i){
+            if(m_goods[i].ID==goods.ID){
+                m_goods[i] = goods;
+                break;
+            }
+        }
+    }
+    emit sig_inoutGoods(goods,ok);
+}
+
 void dataCenter::net_getglobalGoods()
 {
     bool ok = false;
     m_goods = GoodsService::getAllGoods(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     emit sig_globalGoods(ok);
+}
+
+void dataCenter::net_getGlobalGoodsType()
+{
+    bool ok = false;
+    m_goodsType = GoodsService::getAllGoodsType(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_globalGoodsType(ok);
 }
 
 
@@ -561,6 +586,16 @@ Supplier dataCenter::pub_getSupplier(QString CID, bool &ok)
     return a;
 }
 
+bool dataCenter::pub_checkSuppliser(QString name)
+{
+    for(Supplier m:m_suppliers){
+        if (m.Name==name){
+            return true;
+        }
+    }
+    return false;
+}
+
 SysSetting dataCenter::CurSettings()
 {
     return m_Config.Setting();
@@ -579,7 +614,23 @@ void dataCenter::pri_initBath()
     }
 }
 
-QVector<Goods> dataCenter::goods() const
+QVector<QString> dataCenter::pub_goodsType() const
+{
+    return m_goodsType;
+}
+
+QVector<Goods> dataCenter::pub_GetTypeGoods(QString type)
+{
+    QVector<Goods>  list;
+    for(Goods g:m_goods){
+        if(g.Type == type){
+           list.push_back(g);
+        }
+    }
+    return list;
+}
+
+QVector<Goods> dataCenter::pub_goods() const
 {
     return m_goods;
 }

@@ -32,8 +32,12 @@ StoreManager::StoreManager(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_globalGoods(bool)),this,SLOT(getGlobalGoodsCb(bool)));
     connect(dataCenter::instance(),SIGNAL(sig_delGoods(QString,bool)),this,SLOT(delGoodsCb(QString,bool)));
 
-    setBtnEnable(true,true,true);
+    connect(ui->tableWidget,SIGNAL(GoodsClick(QString)),this,SLOT(GoodsClick(QString)));
+
+    ui->radioButton_ave->setChecked(true);
+    setBtnEnable(false,false,false,false);
     initData();
+    newGoods = NULL;
 }
 
 StoreManager::~StoreManager()
@@ -43,21 +47,50 @@ StoreManager::~StoreManager()
 
 void StoreManager::initData()
 {
-    ui->tableWidget->initGoods(dataCenter::instance()->goods());
+    ui->tableWidget->initGoods(dataCenter::instance()->pub_goods());
 }
 
 void StoreManager::clearSelectSection()
 {
     ui->tableWidget->clearSelection();
-    setBtnEnable(false,false,false);
+    setBtnEnable(false,false,false,false);
 }
 
 
 
 void StoreManager::on_pushButton_new_clicked()
 {
-
+    if(newGoods==NULL){
+        newGoods = new DialogNewGoods();
+    }else{
+        newGoods->initData();
+    }
+    newGoods->initUI();
+    newGoods->setModule(true);
+    if(newGoods->exec()==123){
+        Goods goods = newGoods->getCurGoods();
+        ui->tableWidget->appendGoods(goods);
+    }
 }
+
+void StoreManager::on_pushButton_mod_clicked()
+{
+    if (cur_Goods.ID==""){
+        return ;
+    }
+    if(newGoods==NULL){
+        newGoods = new DialogNewGoods();
+    }else{
+        newGoods->initData();
+    }
+    newGoods->setModule(false);
+    newGoods->initGoods(cur_Goods);
+    if(newGoods->exec()==123){
+        Goods goods = newGoods->getCurGoods();
+        ui->tableWidget->modGoods(goods);
+    }
+}
+
 
 void StoreManager::on_pushButton_in_store_clicked()
 {
@@ -100,7 +133,6 @@ void StoreManager::on_pushButton_del_clicked()
 void StoreManager::on_pushButton_export_clicked()
 {
     DialogGoodsPrint print;
-    print.initData(dataCenter::instance()->goods());
     print.exec();
 }
 
@@ -116,8 +148,8 @@ void StoreManager::GoodsClick(QString id)
 {
     bool ok =false;
     cur_Goods = dataCenter::instance()->pub_getGoods(id,ok);
-    if(ok){
-        setBtnEnable(false,false,false);
+    if(ok&&cur_Goods.ID!=""){
+        setBtnEnable(true,true,true,true);
     }
 }
 
@@ -161,11 +193,20 @@ void StoreManager::changeCol()
 }
 
 
-void StoreManager::setBtnEnable(bool in, bool out, bool del)
+void StoreManager::setBtnEnable(bool mod,bool in, bool out, bool del)
 {
+    ui->pushButton_mod->setEnabled(mod);
     ui->pushButton_in_store->setEnabled(in);
     ui->pushButton_out_store->setEnabled(out);
     ui->pushButton_del->setEnabled(del);
+    if(mod){
+        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify-red.png);}"
+                                          "QPushButton:hover{border-image: url(:/icon/modify.png);}"
+                                          "QPushButton:pressed{border-image: url(:/icon/modify.png);}"
+                                          "QPushButton:checked{border-image: url(:/icon/modify.png);}");
+    }else{
+        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify.png);}");
+    }
 
     if(in){
         ui->pushButton_in_store->setStyleSheet("QPushButton{border-image: url(:/icon/modify-red.png);}"
@@ -194,3 +235,4 @@ void StoreManager::setBtnEnable(bool in, bool out, bool del)
         ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete.png);}");
     }
 }
+
