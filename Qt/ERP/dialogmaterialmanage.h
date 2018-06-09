@@ -31,6 +31,8 @@ private slots:
     void checkAll();
 
     void onCellClick(int row,int col);
+
+    void changeCol();
 signals:
     void sig_exportCb(bool);
 private:

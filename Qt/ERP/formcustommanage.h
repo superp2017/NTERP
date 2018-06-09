@@ -37,6 +37,8 @@ private slots:
 
     void delCustomerCb(QString cu,bool ok);
 
+    void changeCol();
+
 signals:
     void sig_exportCb(bool);
 private:
