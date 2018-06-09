@@ -22,7 +22,7 @@ void DialogModPrice::initData(Order order)
 {
     curOrder = order;
     ui->lineEdit_orderID->setText(order.OrderID);
-    ui->lineEdit_price->setText(QString("%1").arg( order.Money/100));
+    ui->lineEdit_price->setText(QString("%1").arg( order.Money/100.0));
 }
 
 void DialogModPrice::on_pushButton_ok_clicked()

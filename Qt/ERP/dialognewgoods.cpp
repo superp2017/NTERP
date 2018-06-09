@@ -4,7 +4,8 @@
 #include "boost/thread.hpp"
 #include <QToolTip>
 #include <QCompleter>
-
+#include "dialognewunit.h"
+#include "dialognewgoodstype.h"
 
 DialogNewGoods::DialogNewGoods(QWidget *parent) :
     QDialog(parent),
@@ -15,6 +16,8 @@ DialogNewGoods::DialogNewGoods(QWidget *parent) :
     initData();
     connect(dataCenter::instance(),SIGNAL(sig_newGoods(Goods,bool)),this,SLOT(newGoodsCb(Goods,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modGoods(Goods,bool)),this,SLOT(modGoodsCb(Goods,bool)));
+    connect(ui->comboBox_unit,SIGNAL(currentIndexChanged(int)),this,SLOT(unitChange(int)));
+    connect(ui->comboBox_type,SIGNAL(currentIndexChanged(int)),this,SLOT(TypeChange(int)));
 }
 
 DialogNewGoods::~DialogNewGoods()
@@ -59,6 +62,7 @@ void DialogNewGoods::initGoods(Goods goods)
     ui->comboBox_type->setCurrentText(goods.Type);
     ui->lineEdit_color->setText(goods.Color);
     ui->lineEdit_format->setText(goods.Format);
+    ui->spinBox_num->setValue(goods.Num);
     ui->doubleSpinBox_price->setValue(goods.Price/100.0);
     ui->comboBox_supplier->setCurrentText(goods.SupplierName);
     ui->textEdit_note->setText(goods.Note);
@@ -109,6 +113,7 @@ void DialogNewGoods::on_pushButton_exit_clicked()
 
 void DialogNewGoods::initCombox(QVector<Supplier> sup, QVector<QString> type, QVector<QString> units)
 {
+    ui->comboBox_supplier->blockSignals(true);
     ui->comboBox_supplier->clear();
     QStringList suplist;
     for(Supplier s:sup){
@@ -118,18 +123,27 @@ void DialogNewGoods::initCombox(QVector<Supplier> sup, QVector<QString> type, QV
     QCompleter *supCompleter = new QCompleter(suplist, this);
     ui->comboBox_supplier->setEditable(true);
     ui->comboBox_supplier->setCompleter(supCompleter);
+    ui->comboBox_supplier->blockSignals(false);
 
+    ui->comboBox_type->blockSignals(true);
     ui->comboBox_type->clear();
     ui->comboBox_type->addItems(type.toList());
     ui->comboBox_type->setEditable(true);
     QCompleter *typeCompleter = new QCompleter(type.toList(), this);
     ui->comboBox_type->setCompleter(typeCompleter);
+    ui->comboBox_type->addItem(ItemNewType);
+    ui->comboBox_type->setCurrentIndex(-1);
+    ui->comboBox_type->blockSignals(false);
 
+    ui->comboBox_unit->blockSignals(true);
     ui->comboBox_unit->clear();
     ui->comboBox_unit->addItems(units.toList());
     ui->comboBox_unit->setEditable(true);
     QCompleter *unitCompleter = new QCompleter(units.toList(), this);
     ui->comboBox_unit->setCompleter(unitCompleter);
+    ui->comboBox_unit->addItem(ItemNewUnit);
+    ui->comboBox_unit->setCurrentIndex(-1);
+    ui->comboBox_unit->blockSignals(false);
 }
 
 Goods DialogNewGoods::getCurGoods() const
@@ -159,5 +173,39 @@ void DialogNewGoods::modGoodsCb(Goods goods,bool ok)
     }else{
         dataCenter::instance()->pub_showMessage("创建失败!",3000);
     }
+}
+
+void DialogNewGoods::unitChange(int index)
+{
+    if (index==-1) return;
+    if(ui->comboBox_unit->currentText()==ItemNewUnit){
+        DialogNewUnit unit;
+        if(unit.exec()==123){
+            ui->comboBox_unit->blockSignals(true);
+            QString u = unit.getUnit();
+            ui->comboBox_unit->insertItem(ui->comboBox_unit->count()-1,u);
+            ui->comboBox_unit->setCurrentIndex(ui->comboBox_unit->count()-2);
+            ui->comboBox_unit->blockSignals(false);
+        }else{
+            ui->comboBox_unit->setCurrentIndex(-1);
+        }
+    }
+}
+
+void DialogNewGoods::TypeChange(int index)
+{
+    if (index==-1) return;
+    ui->comboBox_type->blockSignals(true);
+    if(ui->comboBox_type->currentText()==ItemNewType){
+        DialogNewGoodsType type;
+        if(type.exec()==123){
+            QString u = type.getType();
+            ui->comboBox_type->insertItem(ui->comboBox_type->count()-1,u);
+            ui->comboBox_type->setCurrentIndex(ui->comboBox_type->count()-2);
+        }else{
+            ui->comboBox_type->setCurrentIndex(-1);
+        }
+    }
+    ui->comboBox_type->blockSignals(false);
 }
 

@@ -50,12 +50,14 @@ StoreManager::~StoreManager()
 void StoreManager::initData()
 {
     ui->tableWidget->initGoods(dataCenter::instance()->pub_goods());
+    ui->tableWidget->checkSelect();
 }
 
 void StoreManager::clearSelectSection()
 {
     ui->tableWidget->clearSelection();
     setBtnEnable(false,false,false,false);
+    ui->tableWidget->checkSelect();
 }
 
 
@@ -96,12 +98,23 @@ void StoreManager::on_pushButton_mod_clicked()
 
 void StoreManager::on_pushButton_in_store_clicked()
 {
-
+     inout.setModule(true);
+    inout.initGoods(cur_Goods);
+    if(inout.exec()==123){
+      Goods goods=  inout.getCurgoods();
+      cur_Goods = goods;
+      ui->tableWidget->modGoods(goods);
+    }
 }
 
 void StoreManager::on_pushButton_out_store_clicked()
 {
-
+    inout.setModule(false);
+    inout.initGoods(cur_Goods);
+    if(inout.exec()==123){
+      Goods goods=  inout.getCurgoods();
+      ui->tableWidget->modGoods(goods);
+    }
 }
 
 void StoreManager::on_pushButton_del_clicked()

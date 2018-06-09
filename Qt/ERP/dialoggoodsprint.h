@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "goodsService.h"
 #include <QCheckBox>
+#pragma execution_character_set("utf-8")
 
 namespace Ui {
 class DialogGoodsPrint;
@@ -34,8 +35,8 @@ private:
     void doExport(QVector<Goods> ls, QString filepath);
     void initComBox();
     Ui::DialogGoodsPrint *ui;
-    QVector<Goods> mData;
-    QString curType;
+    QVector<Goods>      mData;
+    QString             curType;
     QVector<QCheckBox*> m_checkboxs;
 };
 

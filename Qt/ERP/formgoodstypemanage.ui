@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FormUnitManage</class>
- <widget class="QWidget" name="FormUnitManage">
+ <class>FormGoodsTypeManage</class>
+ <widget class="QWidget" name="FormGoodsTypeManage">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>235</width>
-    <height>346</height>
+    <width>227</width>
+    <height>333</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>单位管理</string>
+   <string>分类管理</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <property name="spacing">
-      <number>9</number>
+      <number>7</number>
      </property>
      <property name="topMargin">
       <number>5</number>

@@ -305,9 +305,11 @@ bool GoodsService::exportGoods(QVector<Goods> list, QString filepath, bool isOpe
     for(int i=0;i<list.size();++i){
         Goods goods  = list.at(i);
         QVector<QVariant> datalist;
+        double price = goods.Price/100.0;
+        double toPrice = goods.TotalPrice/100.0;
         datalist<<"'"+goods.ID<<"'"+goods.Name<<goods.Type\
-               <<"'"+goods.Price<<"'"+goods.Num<<goods.Unit\
-              <<"'"+goods.TotalPrice<<goods.Format<<goods.Color\
+               <<"'"+QString("%1").arg(price)<<"'"+goods.Num<<goods.Unit\
+              <<"'"+QString("%1").arg(toPrice)<<goods.Format<<goods.Color\
              <<goods.SupplierName<<goods.Status<<goods.Note;
         data.push_back(datalist);
     }

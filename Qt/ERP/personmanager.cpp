@@ -63,6 +63,7 @@ PersonManager::~PersonManager()
 void PersonManager::updateData()
 {
     ui->tableWidget->initUser(dataCenter::instance()->pub_employees());
+    ui->tableWidget->checkSelect();
 }
 
 void PersonManager::clearAllSelect()

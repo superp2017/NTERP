@@ -56,6 +56,8 @@ public:
     void net_delGoods(const QJsonObject para);
     void net_inOutGoods(const QJsonObject para);
     void net_getglobalGoods();
+    void net_newGoodsType(const QJsonObject para);
+    void net_delGoodsType(const QJsonObject para);
     void net_getGlobalGoodsType();
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,6 +99,7 @@ public:
     Goods pub_getGoods(QString id,bool &ok);
     QVector<QString> pub_goodsType() const;
     QVector<Goods> pub_GetTypeGoods(QString type);
+    bool pub_checkTypeExist(QString type);
     ////////////////////////////////////////////////////
     SysSetting CurSettings();
     void setCurSettings(SysSetting set);
@@ -143,6 +146,8 @@ signals:
     void sig_delGoods(QString,bool);
     void sig_inoutGoods(Goods,bool);
     void sig_globalGoods(bool);
+    void sig_newGoodsType(QString,bool);
+    void sig_delGoodsType(QString,bool);
     void sig_globalGoodsType(bool);
 private:
     void pri_initBath();

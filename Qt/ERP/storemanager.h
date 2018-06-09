@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "goodsService.h"
 #include "dialognewgoods.h"
+#include "dialoginoutgoods.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -40,6 +41,7 @@ private:
     void setBtnEnable(bool mod, bool in, bool out, bool del);
     Ui::StoreManager *ui;
     DialogNewGoods  *newGoods;
+    DialogInOutGoods inout;
     Goods   cur_Goods;
 };
 

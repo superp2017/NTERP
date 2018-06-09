@@ -16,7 +16,8 @@ class FormCustommanage : public QWidget
 public:
     explicit FormCustommanage(QWidget *parent = 0);
     ~FormCustommanage();
-   void closeAllStatus();
+    void closeAllStatus();
+    void initData();
 private slots:
     void on_pushButton_del_clicked();
 
@@ -39,7 +40,7 @@ private slots:
 signals:
     void sig_exportCb(bool);
 private:
-    void initData();
+
     void setRowData(Customer ma,int row);
     void removeOne(QString ma);
     void appendOne(Customer ma);
@@ -47,7 +48,7 @@ private:
     void doExport(QVector<Customer> ls, QString filepath);
 private:
     Ui::FormCustommanage *ui;
-      QVector<QCheckBox*> m_boxs;
+    QVector<QCheckBox*> m_boxs;
 };
 
 #endif // FORMCUSTOMMANAGE_H

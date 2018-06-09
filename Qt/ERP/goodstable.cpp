@@ -4,17 +4,6 @@
 goodsTable::goodsTable(QWidget *w):M_TableWidget(w)
 {
     this->setColumnCount(12);
-//    this->setEditTriggers(QTableWidget::NoEditTriggers);
-//    this->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
-//    this->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
-//    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-//    this->horizontalHeader()->setStyleSheet("QHeaderView::section{background:#324864;color:#e5e5e5;}"); //设置表头背景色
-//    QFont font = this->horizontalHeader()->font();
-//    font.setBold(true);
-//    this->horizontalHeader()->setFont(font);
-
-//        this->setSortingEnabled(true);//允许列排序
 
     //设置表头内容
     QStringList header;
@@ -81,7 +70,7 @@ void goodsTable::clickRow(int row, int col)
     if(row<0){
         return;
     }
-    this->checkSelect();
+
     col =0;
     QTableWidgetItem* item = this->item(row,0);
     if (item!=NULL){
@@ -154,10 +143,10 @@ void goodsTable::setRowData(Goods para, int row)
     item0->setText(para.ID);
     item1->setText(para.Name);
     item2->setText(para.Type);
-    item3->setText(QString("%1").arg(para.Price/100));
+    item3->setText(QString("%1").arg(para.Price/100.0));
     item4->setText(QString("%1").arg(para.Num));
     item5->setText(para.Unit);
-    item6->setText(QString("%1").arg(para.TotalPrice/100));
+    item6->setText(QString("%1").arg(para.TotalPrice/100.0));
     item7->setText(para.Format);
     item8->setText(para.Color);
     item9->setText(para.SupplierName);

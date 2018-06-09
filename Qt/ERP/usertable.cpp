@@ -6,16 +6,6 @@ userTable::userTable(QWidget *w):M_TableWidget(w)
 {
     this->setColumnCount(11);
 
-//    this->setEditTriggers(QTableWidget::NoEditTriggers);
-//    this->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
-//    this->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
-//    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-//    this->horizontalHeader()->setStyleSheet("QHeaderView::section{background:#324864;color:#e5e5e5;}"); //设置表头背景色
-//    QFont font = this->horizontalHeader()->font();
-//    font.setBold(true);
-//    this->horizontalHeader()->setFont(font);
-
     //设置表头内容
     QStringList header;
     header<<tr("用户编号")<<tr("姓名")<<tr("性别")\
@@ -145,7 +135,6 @@ void userTable::clickRow(int row, int col)
     if(row<0){
         return;
     }
-    this->checkSelect();
     col =0;
     QTableWidgetItem* item = this->item(row,0);
     if (item!=NULL){

@@ -17,9 +17,13 @@ const QString Status_Cancle  = "Status_Cancle";     //订单取消
 const QString Status_All     = "Status_All";        //所有订单
 
 const QString ItemNewCustom("新增客户...");
+
 const QString ItemNewUnit("新增单位...");
 
 const QString ItemNewAuthor("权限设置...");
+
+const QString ItemNewType("新增分类...");
+
 
 const QString ItemAllType("全部分类");
 

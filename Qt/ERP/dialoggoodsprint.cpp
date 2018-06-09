@@ -26,18 +26,16 @@ DialogGoodsPrint::DialogGoodsPrint(QWidget *parent) :
     header<<tr("商品编号")<<tr("商品名称");
     ui->tableWidget->setHorizontalHeaderLabels(header);
 
-
-
     m_checkboxs.clear();
     mData.clear();
 
     initComBox();
     ui->comboBox__type->setCurrentIndex(0);
-    curType = ItemAllType;
 
     connect(ui->comboBox__type,SIGNAL(currentIndexChanged(int)),this,SLOT(TypeChange()));
 
     TypeChange();
+    curType = ItemAllType;
 
 }
 
@@ -68,6 +66,7 @@ void DialogGoodsPrint::doExport(QVector<Goods> ls, QString filepath)
 {
     bool ok = GoodsService::exportGoods(ls,filepath,true);
     emit sig_exportCb(ok);
+    done(123);
 }
 
 void DialogGoodsPrint::on_pushButton_export_clicked()
@@ -104,6 +103,8 @@ void DialogGoodsPrint::TypeChange()
         return ;
     }
     curType = type;
+    m_checkboxs.clear();
+    mData.clear();
     if(curType==ItemAllType){
         mData = dataCenter::instance()->pub_goods();
     }else{

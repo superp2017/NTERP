@@ -11,6 +11,7 @@ M_TableWidget::M_TableWidget(QWidget *w):QTableWidget(w)
     this->horizontalHeader()->setFont(font);
     this->setSortingEnabled(true);//允许列排序
     checkSelect();
+    connect(this,SIGNAL(cellClicked(int,int)),this,SLOT(checkSelect()));
 }
 
 void M_TableWidget::removeAllRow()
@@ -34,3 +35,4 @@ void M_TableWidget::checkSelect()
         this->horizontalHeader()->setStyleSheet("QHeaderView::section{background:#324864;color:#e5e5e5}"); //设置表头背景色
     }
 }
+

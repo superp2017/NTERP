@@ -96,6 +96,7 @@ void OrderManager::updataData()
     m_tab_success->initOrder(dataCenter::instance()->pub_StatusOrders(Status_Success));
     m_tab_produce->initOrder(dataCenter::instance()->pub_StatusOrders(Status_Produce));
     m_tab_all->initOrder(dataCenter::instance()->pub_StatusOrders(Status_All));
+    clearAllSelect();
 }
 
 
@@ -388,9 +389,9 @@ void OrderManager::clearAllSelect()
     m_tab_all->clearSelection();
     m_tab_new->clearSelection();
     m_tab_success->clearSelection();
-    m_tab_new->checkSelect();
-    m_tab_new->checkSelect();
-    m_tab_success->checkSelect();
+    m_tab_produce->clearSelection();
+
+    checkSelect();
     setBtnEnable(false,false,false,false,false);
     clearCurOrder();
 }
@@ -471,6 +472,14 @@ void OrderManager::setBtnEnable(bool mod, bool cancel, bool out, bool produce, b
                                               "QPushButton:checked{border-image: url(:/icon/production.png);}");
     else
         ui->pushButton_produce->setStyleSheet("QPushButton{border-image: url(:/icon/production.png);}");
+}
+
+void OrderManager::checkSelect()
+{
+    m_tab_new->checkSelect();
+    m_tab_produce->checkSelect();
+    m_tab_success->checkSelect();
+    m_tab_all->checkSelect();
 }
 
 

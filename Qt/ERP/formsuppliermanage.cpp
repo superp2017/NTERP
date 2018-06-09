@@ -13,15 +13,6 @@ FormSupplierManage::FormSupplierManage(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->tableWidget->setColumnCount(12);
-//    ui->tableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
-//    ui->tableWidget->setSelectionBehavior ( QAbstractItemView::SelectRows); //设置选择行为，以行为单位
-//    ui->tableWidget->setSelectionMode ( QAbstractItemView::SingleSelection); //设置选择模式，选择单行
-//    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-//    ui->tableWidget->horizontalHeader()->setStyleSheet("QHeaderView::section{background:#888888;}"); //设置表头背景色
-//    QFont font = ui->tableWidget->horizontalHeader()->font();
-//    font.setBold(true);
-//    ui->tableWidget->horizontalHeader()->setFont(font);
-//  ui->tableWidget->setSortingEnabled(true);//允许列排序
 
     //设置表头内容
     QStringList header;
@@ -34,8 +25,6 @@ FormSupplierManage::FormSupplierManage(QWidget *parent) :
     connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
     connect(ui->checkBox_check_all,SIGNAL(clicked(bool)),this,SLOT(checkAll()));
     connect(dataCenter::instance(),SIGNAL(sig_delSUpplier(QString,bool)),this,SLOT(delSupplierCb(QString,bool)));
-
-    initData();
 
     ui->pushButton_del->setEnabled(false);
     ui->pushButton_mod->setEnabled(false);
@@ -198,6 +187,8 @@ void FormSupplierManage::delSupplierCb(QString cu, bool ok)
 
 void FormSupplierManage::initData()
 {
+    ui->tableWidget->removeAllRow();
+    closeAllStatus();
     QVector<Supplier>ls = dataCenter::instance()->pub_Suppliers();
     for(Supplier m:ls){
         appendOne(m);

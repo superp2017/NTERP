@@ -35,8 +35,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+ROOT = "E:/workspace/Qt/SimLib/boost_1_59_0"
 
-ROOT = "D:/workspace/libs/boost_1_59_0"
 
 INCLUDEPATH += $${ROOT}/boost
 QMAKE_INCDIR += $${ROOT}/boost
@@ -52,7 +52,6 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     login.cpp \
     datacenter.cpp \
-    customtabstyle.cpp \
     ordermanager.cpp \
     personmanager.cpp \
     storemanager.cpp \
@@ -81,12 +80,51 @@ SOURCES += main.cpp\
     formauthormanage.cpp \
     goodstable.cpp \
     dialognewgoods.cpp \
-    dialoggoodsprint.cpp
+    dialoggoodsprint.cpp \
+    dialognewgoodstype.cpp \
+    formgoodstypemanage.cpp \
+    dialoginoutgoods.cpp \
+    datacenter.cpp \
+    dialoggoodsprint.cpp \
+    dialoginoutgoods.cpp \
+    dialogmaterialmanage.cpp \
+    dialogmodprice.cpp \
+    dialognewcustom.cpp \
+    dialognewgoods.cpp \
+    dialognewgoodstype.cpp \
+    dialognewmateriel.cpp \
+    dialogneworder.cpp \
+    dialognewsupplier.cpp \
+    dialognewunit.cpp \
+    dialognewuser.cpp \
+    dialogorderdetail.cpp \
+    dialogorderprint.cpp \
+    dialoguserprint.cpp \
+    formauthormanage.cpp \
+    formcenter.cpp \
+    formcustommanage.cpp \
+    formgoodstypemanage.cpp \
+    formsuppliermanage.cpp \
+    formunitmanage.cpp \
+    formwarehousemanage.cpp \
+    goodstable.cpp \
+    loadding.cpp \
+    login.cpp \
+    m_tablewidget.cpp \
+    main.cpp \
+    mainwindow.cpp \
+    networkmanager.cpp \
+    nsysconfig.cpp \
+    ordermanager.cpp \
+    ordertable.cpp \
+    personmanager.cpp \
+    storemanager.cpp \
+    systemmanager.cpp \
+    usertable.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
     datacenter.h \
-    customtabstyle.h \
     ordermanager.h \
     personmanager.h \
     storemanager.h \
@@ -116,7 +154,47 @@ HEADERS  += mainwindow.h \
     formauthormanage.h \
     goodstable.h \
     dialognewgoods.h \
-    dialoggoodsprint.h
+    dialoggoodsprint.h \
+    dialognewgoodstype.h \
+    formgoodstypemanage.h \
+    dialoginoutgoods.h \
+    datacenter.h \
+    dialoggoodsprint.h \
+    dialoginoutgoods.h \
+    dialogmaterialmanage.h \
+    dialogmodprice.h \
+    dialognewcustom.h \
+    dialognewgoods.h \
+    dialognewgoodstype.h \
+    dialognewmateriel.h \
+    dialogneworder.h \
+    dialognewsupplier.h \
+    dialognewunit.h \
+    dialognewuser.h \
+    dialogorderdetail.h \
+    dialogorderprint.h \
+    dialoguserprint.h \
+    formauthormanage.h \
+    formcenter.h \
+    formcustommanage.h \
+    formgoodstypemanage.h \
+    formsuppliermanage.h \
+    formunitmanage.h \
+    formwarehousemanage.h \
+    global.h \
+    goodstable.h \
+    loadding.h \
+    login.h \
+    m_tablewidget.h \
+    mainwindow.h \
+    networkmanager.h \
+    nsysconfig.h \
+    ordermanager.h \
+    ordertable.h \
+    personmanager.h \
+    storemanager.h \
+    systemmanager.h \
+    usertable.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -143,7 +221,39 @@ FORMS    += mainwindow.ui \
     dialognewsupplier.ui \
     formauthormanage.ui \
     dialognewgoods.ui \
-    dialoggoodsprint.ui
+    dialoggoodsprint.ui \
+    dialognewgoodstype.ui \
+    formgoodstypemanage.ui \
+    dialoginoutgoods.ui \
+    dialoggoodsprint.ui \
+    dialoginoutgoods.ui \
+    dialogmaterialmanage.ui \
+    dialogmodprice.ui \
+    dialognewcustom.ui \
+    dialognewgoods.ui \
+    dialognewgoodstype.ui \
+    dialognewmateriel.ui \
+    dialogneworder.ui \
+    dialognewsupplier.ui \
+    dialognewunit.ui \
+    dialognewuser.ui \
+    dialogorderdetail.ui \
+    dialogorderprint.ui \
+    dialoguserprint.ui \
+    formauthormanage.ui \
+    formcenter.ui \
+    formcustommanage.ui \
+    formgoodstypemanage.ui \
+    formsuppliermanage.ui \
+    formunitmanage.ui \
+    formwarehousemanage.ui \
+    loadding.ui \
+    login.ui \
+    mainwindow.ui \
+    ordermanager.ui \
+    personmanager.ui \
+    storemanager.ui \
+    systemmanager.ui
 
 RESOURCES += \
     res.qrc
@@ -157,3 +267,6 @@ DEPENDPATH += $$PWD/../Service
 
 DISTFILES += \
     app.rc
+
+SUBDIRS += \
+    ERP.pro

@@ -26,7 +26,6 @@ DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
     QStringList header;
     header<<tr("生产订单");
     ui->tableWidget->setHorizontalHeaderLabels(header);
-//    ui->tableWidget->setSortingEnabled(true);//允许列排序
 
     ui->comboBox_order_status->addItem("新建订单",Status_New);
     ui->comboBox_order_status->addItem("全部订单",Status_All);

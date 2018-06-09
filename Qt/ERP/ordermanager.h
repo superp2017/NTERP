@@ -47,7 +47,7 @@ protected:
 private:
     void clearCurOrder();
     void setBtnEnable(bool mod,bool cancel,bool out,bool produce,bool change);
-
+    void checkSelect();
 private:
     Ui::OrderManager *ui;
     QHeaderView::ResizeMode tab_mode;

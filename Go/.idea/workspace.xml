@@ -2,20 +2,53 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c81b25b1-7c9e-415e-b111-1fe2037d5a06" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/../Qt/ERP/dialoginoutgoods.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Qt/ERP/dialoginoutgoods.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Qt/ERP/dialoginoutgoods.ui" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Qt/ERP/dialognewgoodstype.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Qt/ERP/dialognewgoodstype.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Qt/ERP/dialognewgoodstype.ui" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Qt/ERP/formgoodstypemanage.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Qt/ERP/formgoodstypemanage.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Qt/ERP/formgoodstypemanage.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ERP/StoreGoods.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/ERP/StoreGoods.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ERP/global.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/ERP/global.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ERP/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/ERP/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ERP/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/ERP/util.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/ERP/ERP.pro" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/ERP.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/customtabstyle.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/customtabstyle.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/datacenter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/datacenter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/datacenter.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/datacenter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/dialoggoodsprint.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/dialoggoodsprint.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/dialoggoodsprint.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/dialoggoodsprint.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/dialogmaterialmanage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/dialogmaterialmanage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/dialognewgoods.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/dialognewgoods.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/dialognewgoods.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/dialognewgoods.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/ERP/dialognewgoods.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/dialognewgoods.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formcenter.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formcenter.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/dialognewunit.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/dialognewunit.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/dialogorderprint.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/dialogorderprint.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formcustommanage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formcustommanage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formcustommanage.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formcustommanage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formsuppliermanage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formsuppliermanage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formsuppliermanage.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formsuppliermanage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formsuppliermanage.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formsuppliermanage.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formunitmanage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formunitmanage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formunitmanage.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formunitmanage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formunitmanage.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formunitmanage.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/global.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/global.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/ERP/goodstable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/goodstable.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/ordermanager.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/ordermanager.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/m_tablewidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/m_tablewidget.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/m_tablewidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/m_tablewidget.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/ordermanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/ordermanager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/ordermanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/ordermanager.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/ERP/ordertable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/ordertable.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/personmanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/personmanager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/ERP/storemanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/storemanager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/systemmanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/systemmanager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/systemmanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/systemmanager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/systemmanager.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/systemmanager.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/ERP/usertable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/usertable.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Qt/Service/Service.pro" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/Service/Service.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/Service/goodsService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/Service/goodsService.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/Service/goodsService.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/Service/goodsService.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,10 +62,10 @@
       <file leaf-file-name="StoreGoods.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2724">
-              <caret line="225" column="50" selection-start-line="225" selection-start-column="32" selection-end-line="225" selection-end-column="50" />
+            <state relative-caret-position="322">
+              <caret line="154" column="24" selection-start-line="154" selection-start-column="24" selection-end-line="154" selection-end-column="24" />
               <folding>
-                <element signature="e#14#121#0" expanded="true" />
+                <element signature="e#14#80#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -52,7 +85,8 @@
       <file leaf-file-name="Unit.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ERP/Unit.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="621">
+              <caret line="31" column="41" selection-start-line="31" selection-start-column="41" selection-end-line="31" selection-end-column="41" />
               <folding>
                 <element signature="e#14#73#0" expanded="true" />
               </folding>
@@ -63,7 +97,7 @@
       <file leaf-file-name="util.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ERP/util.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
+            <state relative-caret-position="837">
               <caret line="37" selection-start-line="37" selection-end-line="37" />
             </state>
           </provider>
@@ -72,7 +106,7 @@
       <file leaf-file-name="Account.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ERP/Account.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
+            <state relative-caret-position="135">
               <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
               <folding>
                 <element signature="e#14#73#0" expanded="true" />
@@ -128,7 +162,7 @@
       <file leaf-file-name="main.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ERP/main.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
+            <state relative-caret-position="1242">
               <caret line="49" column="37" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="37" />
             </state>
           </provider>
@@ -146,7 +180,7 @@
       <replace>JRedis</replace>
     </replaceStrings>
   </component>
-  <component name="GOROOT" path="C:\Go" />
+  <component name="GOROOT" path="D:\Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -221,20 +255,20 @@
     </option>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1494638" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15085287" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32905984" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -253,148 +287,42 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2875">
-          <caret line="115" selection-start-line="115" selection-end-line="115" />
+        <state relative-caret-position="5940">
+          <caret line="225" column="50" selection-start-line="225" selection-start-column="32" selection-end-line="225" selection-end-column="50" />
           <folding>
-            <element signature="e#14#121#0" expanded="true" />
+            <element signature="e#14#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/Supplier.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#14#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/Unit.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#14#73#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ERP/util.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1125">
-          <caret line="48" column="48" selection-start-line="48" selection-start-column="48" selection-end-line="48" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="810">
-          <caret line="37" column="17" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
-          <folding>
-            <element signature="e#14#121#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/util.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="729">
-          <caret line="33" column="38" selection-start-line="33" selection-start-column="38" selection-end-line="33" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="783">
-          <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="810">
-          <caret line="37" column="17" lean-forward="true" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
-          <folding>
-            <element signature="e#14#121#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/util.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="729">
-          <caret line="33" column="38" selection-start-line="33" selection-start-column="38" selection-end-line="33" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="783">
-          <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2052">
-          <caret line="83" column="5" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
-          <folding>
-            <element signature="e#14#121#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="13" column="14" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1188">
-          <caret line="47" lean-forward="true" selection-start-line="47" selection-end-line="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2052">
-          <caret line="83" column="5" lean-forward="true" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
-          <folding>
-            <element signature="e#14#121#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="13" column="14" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1269">
-          <caret line="50" column="30" selection-start-line="50" selection-start-column="22" selection-end-line="50" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="16" column="1" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="49" column="37" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="37" />
+        <state relative-caret-position="837">
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ERP/Account.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
+        <state relative-caret-position="135">
           <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
           <folding>
             <element signature="e#14#73#0" expanded="true" />
@@ -438,6 +366,207 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1242">
+          <caret line="49" column="37" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2875">
+          <caret line="115" selection-start-line="115" selection-end-line="115" />
+          <folding>
+            <element signature="e#14#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/util.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="675">
+          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1125">
+          <caret line="48" column="48" selection-start-line="48" selection-start-column="48" selection-end-line="48" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="37" column="17" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
+          <folding>
+            <element signature="e#14#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/util.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="729">
+          <caret line="33" column="38" selection-start-line="33" selection-start-column="38" selection-end-line="33" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="783">
+          <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="37" column="17" lean-forward="true" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
+          <folding>
+            <element signature="e#14#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/util.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="729">
+          <caret line="33" column="38" selection-start-line="33" selection-start-column="38" selection-end-line="33" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="783">
+          <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2052">
+          <caret line="83" column="5" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
+          <folding>
+            <element signature="e#14#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="13" column="14" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1188">
+          <caret line="47" lean-forward="true" selection-start-line="47" selection-end-line="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2052">
+          <caret line="83" column="5" lean-forward="true" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
+          <folding>
+            <element signature="e#14#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="13" column="14" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1269">
+          <caret line="50" column="30" selection-start-line="50" selection-start-column="22" selection-end-line="50" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/global.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="16" column="1" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1242">
+          <caret line="49" column="37" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/Account.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+          <folding>
+            <element signature="e#14#73#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/Customer.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#14#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/Employee.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#14#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/Material.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#14#58#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/Order.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#14#88#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/util.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="837">
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ERP/Supplier.go">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -449,26 +578,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ERP/Unit.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="621">
+          <caret line="31" column="41" selection-start-line="31" selection-start-column="41" selection-end-line="31" selection-end-column="41" />
           <folding>
             <element signature="e#14#73#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/util.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="37" selection-start-line="37" selection-end-line="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ERP/StoreGoods.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2724">
-          <caret line="225" column="50" selection-start-line="225" selection-start-column="32" selection-end-line="225" selection-end-column="50" />
+        <state relative-caret-position="322">
+          <caret line="154" column="24" selection-start-line="154" selection-start-column="24" selection-end-line="154" selection-end-column="24" />
           <folding>
-            <element signature="e#14#121#0" expanded="true" />
+            <element signature="e#14#80#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -1,5 +1,5 @@
 ﻿#include "datacenter.h"
-#include  "orderservice.h"
+#include "orderservice.h"
 #include <QDebug>
 #include <QDateTime>
 #include "userservice.h"
@@ -431,6 +431,20 @@ void dataCenter::net_getglobalGoods()
     emit sig_globalGoods(ok);
 }
 
+void dataCenter::net_newGoodsType(const QJsonObject para)
+{
+    bool ok = false;
+    QString type = GoodsService::newGoodsType(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_newGoodsType(type,ok);
+}
+
+void dataCenter::net_delGoodsType(const QJsonObject para)
+{
+    bool ok = false;
+    QString type = GoodsService::delGoodsType(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_delGoodsType(type,ok);
+}
+
 void dataCenter::net_getGlobalGoodsType()
 {
     bool ok = false;
@@ -640,6 +654,16 @@ QVector<Goods> dataCenter::pub_GetTypeGoods(QString type)
         }
     }
     return list;
+}
+
+bool dataCenter::pub_checkTypeExist(QString type)
+{
+    for(QString t:m_goodsType){
+        if(t==type){
+            return true;
+        }
+    }
+    return false;
 }
 
 QVector<Goods> dataCenter::pub_goods() const

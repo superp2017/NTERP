@@ -1,6 +1,7 @@
 ﻿#ifndef GOODS_H
 #define GOODS_H
 #include "service_global.h"
+#pragma execution_character_set("utf-8")
 
 
 class SERVICESHARED_EXPORT GoodsService

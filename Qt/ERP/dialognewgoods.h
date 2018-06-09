@@ -26,6 +26,8 @@ private slots:
     void on_pushButton_exit_clicked();
     void newGoodsCb(Goods goods,bool ok);
     void modGoodsCb(Goods goods,bool ok);
+    void unitChange(int index);
+    void TypeChange(int index);
 private:
     void initCombox(QVector<Supplier> sup,QVector<QString> type,QVector<QString>units);
     Ui::DialogNewGoods *ui;

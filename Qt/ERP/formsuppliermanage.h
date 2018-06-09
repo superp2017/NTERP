@@ -17,6 +17,7 @@ public:
     explicit FormSupplierManage(QWidget *parent = 0);
     ~FormSupplierManage();
     void closeAllStatus();
+    void initData();
 private slots:
 
     void on_pushButton_new_clicked();
@@ -41,7 +42,6 @@ private slots:
 signals:
     void sig_exportCb(bool);
 private:
-    void initData();
     void setRowData(Supplier ma,int row);
     void removeOne(QString ma);
     void appendOne(Supplier ma);

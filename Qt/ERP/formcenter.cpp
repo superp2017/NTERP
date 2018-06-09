@@ -51,6 +51,7 @@ FormCenter::FormCenter(QWidget *parent) :
 
     m_timer = new QTimer(this);
     connect(m_timer,SIGNAL(timeout()),this,SLOT(timeoutslot()));//timeoutslot()为自定义槽
+    connect(&m_sys,SIGNAL(newOrder()),&m_order,SLOT(new_order()));
 }
 
 FormCenter::~FormCenter()

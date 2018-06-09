@@ -162,7 +162,7 @@ void OrderTable::setRowData(Order para,int row)
     item5->setText(para.CustomBatch);
     item6->setText(para.CustomNote);
     item7->setText(para.ProduceID);
-    item8->setText(QString("%1").arg(para.Money/100));
+    item8->setText(QString("%1").arg(para.Money/100.0));
     QString status;
     if(para.Current.Status==Status_New){
         status="新建";
@@ -284,7 +284,6 @@ void OrderTable::clickRow(int row, int col)
     if(row<0){
         return;
     }
-    this->checkSelect();
     col =0;
     QTableWidgetItem* item = this->item(row,0);
     if (item!=NULL){

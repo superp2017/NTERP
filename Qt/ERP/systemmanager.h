@@ -8,7 +8,7 @@
 #include "formsuppliermanage.h"
 #include "formunitmanage.h"
 #include "formwarehousemanage.h"
-
+#include "formgoodstypemanage.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -27,24 +27,27 @@ public:
 
 private slots:
     void on_pushButton_update_clicked();
-    void aboutCommany();
-    void abountSystem();
     void on_pushButton_supplier_manage_clicked();
+    void on_pushButton_goodstype_manage_clicked();
+    void on_pushButton_custon_manage_clicked();
+    void on_pushButton_mateial_manage_clicked();
+    void on_pushButton_unit_manage_clicked();
+    void on_pushButton_about_commpany_clicked();
+    void on_pushButton__about_system_clicked();
+    void on_pushButton_newOrder_clicked();
 
-public slots:
+signals:
+    void newOrder();
 
-    void  action_material_manage();
-    void  action_supplier_manage();
-    void  action_customs_manage();
-    void  action_unit_manage();
 private:
     void initSetting();
     Ui::SystemManager *ui;
     SysSetting set;
-    DialogMaterialManage Material;   //材料管理
     FormCustommanage     Custom;     //客户管理
-    FormUnitManage       Unit;       //单位管理
     FormSupplierManage   Supplier;   //供应商管理
+    DialogMaterialManage Material;   //材料管理
+    FormGoodsTypeManage  typeMange;  //分类管理
+    FormUnitManage       Unit;       //单位管理
 };
 
 #endif // SYSTEMMANAGER_H

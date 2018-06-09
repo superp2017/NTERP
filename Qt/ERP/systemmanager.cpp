@@ -5,13 +5,47 @@
 #include <QDesktopServices>
 #include <QUrl>
 
-
 SystemManager::SystemManager(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SystemManager)
 {
     ui->setupUi(this);
     initSetting();
+
+    ui->pushButton_newOrder->setStyleSheet("QPushButton{border-image: url(:/icon/Order-red.png);}"
+                                         "QPushButton:hover{border-image: url(:/icon/Order.png);}"
+                                         "QPushButton:pressed{border-image: url(:/icon/Order.png);}"
+                                         "QPushButton:checked{border-image: url(:/icon/Order.png);}");
+    ui->pushButton_about_commpany->setStyleSheet("QPushButton{border-image: url(:/icon/company-red.png);}"
+                                         "QPushButton:hover{border-image: url(:/icon/company.png);}"
+                                         "QPushButton:pressed{border-image: url(:/icon/company.png);}"
+                                         "QPushButton:checked{border-image: url(:/icon/company.png);}");
+    ui->pushButton_custon_manage->setStyleSheet("QPushButton{border-image: url(:/icon/Customer-red.png);}"
+                                         "QPushButton:hover{border-image: url(:/icon/Customer.png);}"
+                                         "QPushButton:pressed{border-image: url(:/icon/Customer.png);}"
+                                         "QPushButton:checked{border-image: url(:/icon/Customer.png);}");
+    ui->pushButton_goodstype_manage->setStyleSheet("QPushButton{border-image: url(:/icon/export.png);}"
+                                         "QPushButton:hover{border-image: url(:/icon/export-a.png);}"
+                                         "QPushButton:pressed{border-image: url(:/icon/export-a.png);}"
+                                         "QPushButton:checked{border-image: url(:/icon/export-a.png);}");
+    ui->pushButton_mateial_manage->setStyleSheet("QPushButton{border-image: url(:/icon/materiel-red.png);}"
+                                         "QPushButton:hover{border-image: url(:/icon/materiel.png);}"
+                                         "QPushButton:pressed{border-image: url(:/icon/materiel.png);}"
+                                         "QPushButton:checked{border-image: url(:/icon/materiel.png);}");
+    ui->pushButton_supplier_manage->setStyleSheet("QPushButton{border-image: url(:/icon/Supply-red.png);}"
+                                         "QPushButton:hover{border-image: url(:/icon/Supply.png);}"
+                                         "QPushButton:pressed{border-image: url(:/icon/Supply.png);}"
+                                         "QPushButton:checked{border-image: url(:/icon/Supply.png);}");
+    ui->pushButton_unit_manage->setStyleSheet("QPushButton{border-image: url(:/icon/t-red.png);}"
+                                         "QPushButton:hover{border-image: url(:/icon/t.png);}"
+                                         "QPushButton:pressed{border-image: url(:/icon/t.png);}"
+                                         "QPushButton:checked{border-image: url(:/icon/t.png);}");
+    ui->pushButton__about_system->setStyleSheet("QPushButton{border-image: url(:/icon/system-red.png);}"
+                                         "QPushButton:hover{border-image: url(:/icon/system.png);}"
+                                         "QPushButton:pressed{border-image: url(:/icon/system.png);}"
+                                         "QPushButton:checked{border-image: url(:/icon/system.png);}");
+
+
 }
 
 SystemManager::~SystemManager()
@@ -32,59 +66,51 @@ void SystemManager::initSetting()
 }
 
 
-void SystemManager::aboutCommany()
-{
-    QString qtManulFile="CompanyIntroduction.pdf";
-    QDesktopServices::openUrl(QUrl::fromLocalFile(qtManulFile));
-
-
-}
-
-void SystemManager::abountSystem()
-{
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("关于系统");
-    msgBox.setText("本系统由mp开发\n系统版本 V1.0\n公司网站:www.baidu.com");
-    msgBox.exec();
-}
-
-
 void SystemManager::on_pushButton_supplier_manage_clicked()
 {
-     Supplier.showNormal();
+    Supplier.initData();
+    Supplier.showNormal();
 }
 
-/*! 物料管理
- * \brief FormCenter::action_material_manage
- */
-void SystemManager::action_material_manage()
+void SystemManager::on_pushButton_goodstype_manage_clicked()
 {
-    Material.initData();
-    Material.closeAllStatus();
-    Material.exec();
+    typeMange.initData();
+    typeMange.showNormal();
 }
 
-/*! 供货商管理
- * \brief FormCenter::action_supplier_manage
- */
-void SystemManager::action_supplier_manage()
+void SystemManager::on_pushButton_custon_manage_clicked()
 {
-
-}
-
-/*! 客户管理
- * \brief FormCenter::action_customs_manage
- */
-void SystemManager::action_customs_manage()
-{
-    Custom.closeAllStatus();
+    Custom.initData();
     Custom.showNormal();
 }
 
-/*! 单位管理
- * \brief FormCenter::action_unit_manage
- */
-void SystemManager::action_unit_manage()
+void SystemManager::on_pushButton_mateial_manage_clicked()
 {
+    Material.initData();
+    Material.exec();
+}
+
+void SystemManager::on_pushButton_unit_manage_clicked()
+{
+    Unit.initData();
     Unit.showNormal();
+}
+
+void SystemManager::on_pushButton_about_commpany_clicked()
+{
+    QString qtManulFile="CompanyIntroduction.pdf";
+    QDesktopServices::openUrl(QUrl::fromLocalFile(qtManulFile));
+}
+
+void SystemManager::on_pushButton__about_system_clicked()
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("关于系统");
+    msgBox.setText("本系统由mp开发\n系统版本 v0.1\n");
+    msgBox.exec();
+}
+
+void SystemManager::on_pushButton_newOrder_clicked()
+{
+    emit newOrder();
 }

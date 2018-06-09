@@ -15,7 +15,7 @@ class FormUnitManage : public QWidget
 public:
     explicit FormUnitManage(QWidget *parent = 0);
     ~FormUnitManage();
-
+   void initData();
 private slots:
     void itemClicked(QListWidgetItem*item);
 
@@ -27,11 +27,11 @@ private slots:
 
     void delUnitCb(QString unit,bool ok);
 
-private:
-    void initItem();
+    void newUnitCb(QString unit,bool ok);
 
 private:
     Ui::FormUnitManage *ui;
+    QString curunit;
 };
 
 #endif // FORMUNITMANAGE_H
