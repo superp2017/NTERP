@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>SystemManager</class>
  <widget class="QWidget" name="SystemManager">
@@ -42,20 +42,21 @@
       <property name="geometry">
        <rect>
         <x>360</x>
-        <y>30</y>
-        <width>60</width>
-        <height>60</height>
+        <y>36</y>
+        <width>50</width>
+        <height>50</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>50</height>
+       </size>
       </property>
       <property name="text">
        <string/>
       </property>
      </widget>
-     <zorder>checkBox_export_open</zorder>
-     <zorder>pushButton_update</zorder>
-     <zorder>groupBox_2</zorder>
-     <zorder>groupBox_2</zorder>
-     <zorder>groupBox_2</zorder>
     </widget>
    </item>
    <item>

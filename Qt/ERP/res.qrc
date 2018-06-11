@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icon/loginButton-a.png</file>
-        <file>icon/loginButton-two.png</file>
         <file>icon/close.ico</file>
         <file>icon/ooopic_1525502574.ico</file>
         <file>icon/plus.ico</file>
@@ -40,8 +38,6 @@
         <file>icon/reflash-a.png</file>
         <file>icon/mini.png</file>
         <file>icon/mini-a.png</file>
-        <file>icon/login.png</file>
-        <file>icon/login-a.png</file>
         <file>icon/commodity.png</file>
         <file>icon/commodity-red.png</file>
         <file>icon/company.png</file>
@@ -70,5 +66,7 @@
         <file>icon/login-back.png</file>
         <file>icon/login-for.png</file>
         <file>icon/logon-a.png</file>
+        <file>icon/instroe.png</file>
+        <file>icon/instroe-red.png</file>
     </qresource>
 </RCC>

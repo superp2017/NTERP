@@ -19,9 +19,9 @@ DESTDIR = ../../bin
 QMAKE_LIBDIR += ../../bin
 
 QMAKE_CXXFLAGS += -wd4100  -wd4005 -wd4503 -wd4101 -wd4100
-QMAKE_CXXFLAGS += -wd4996  -wd4522 -wd4189 -wd4819
+QMAKE_CXXFLAGS += -wd4996  -wd4522 -wd4189 -wd4819 -wd4042
 UI_DIR = ../../../temp/ui/ERP
-OBJECTS_DIR = ../../../../temp/obj/ERP
+OBJECTS_DIR = ../../../temp/obj/ERP
 MOC_DIR = ../../../temp/moc/ERP
 
 # The following define makes your compiler emit warnings if you use
@@ -48,7 +48,7 @@ RC_FILE = app.rc
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
+	mainwindow.cpp \
     login.cpp \
     datacenter.cpp \
     ordermanager.cpp \

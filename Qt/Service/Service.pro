@@ -30,7 +30,7 @@ QMAKE_LIBDIR += ../../bin
 QMAKE_CXXFLAGS += -wd4100  -wd4005 -wd4503 -wd4101 -wd4100
 QMAKE_CXXFLAGS += -wd4996  -wd4522 -wd4189 -wd4819
 UI_DIR = ../../../temp/ui/ERPService
-OBJECTS_DIR = ../../../../temp/obj/ERPService
+OBJECTS_DIR = ../../../temp/obj/ERPService
 MOC_DIR = ../../../temp/moc/ERPService
 
 ROOT = "E:/workspace/Qt/SimLib/boost_1_59_0"
