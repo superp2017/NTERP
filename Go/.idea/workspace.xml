@@ -2,17 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c81b25b1-7c9e-415e-b111-1fe2037d5a06" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/icon/instroe-red.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Qt/ERP/icon/instroe.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/ERP.pro" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/ERP.pro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/dialognewsupplier.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/dialognewsupplier.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/login-a.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/login.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/loginButton-a.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/icon/loginButton-two.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/ERP/systemmanager.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/systemmanager.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Qt/Service/Service.pro" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/Service/Service.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formauthormanage.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formauthormanage.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formcenter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formcenter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formcenter.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formcenter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/formcenter.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/formcenter.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Qt/ERP/login.ui" beforeDir="false" afterPath="$PROJECT_DIR$/../Qt/ERP/login.ui" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -67,11 +61,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Account.go" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Account.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ERP/Account.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+            <state relative-caret-position="738">
+              <caret line="42" column="45" lean-forward="true" selection-start-line="42" selection-start-column="45" selection-end-line="42" selection-end-column="45" />
               <folding>
                 <element signature="e#14#73#0" expanded="true" />
               </folding>
@@ -90,7 +84,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Employee.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Employee.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ERP/Employee.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-6716">
@@ -616,16 +610,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ERP/Account.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
-          <folding>
-            <element signature="e#14#73#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ERP/Customer.go">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -694,6 +678,16 @@
           <caret line="154" column="24" selection-start-line="154" selection-start-column="24" selection-end-line="154" selection-end-column="24" />
           <folding>
             <element signature="e#14#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ERP/Account.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="738">
+          <caret line="42" column="45" lean-forward="true" selection-start-line="42" selection-start-column="45" selection-end-line="42" selection-end-column="45" />
+          <folding>
+            <element signature="e#14#73#0" expanded="true" />
           </folding>
         </state>
       </provider>

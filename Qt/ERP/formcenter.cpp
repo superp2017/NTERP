@@ -3,7 +3,7 @@
 #include <QMessageBox>
 #include <QDockWidget>
 #include "datacenter.h"
-
+#include <QDebug>
 
 
 FormCenter::FormCenter(QWidget *parent) :
@@ -45,13 +45,13 @@ FormCenter::FormCenter(QWidget *parent) :
 
     connect(dataCenter::instance(),SIGNAL(sig_showStatusMessage(QString,int)),this,SLOT(showMessage(QString,int)));
 
-
     ui->order_btn->setChecked(true);
 
 
     m_timer = new QTimer(this);
     connect(m_timer,SIGNAL(timeout()),this,SLOT(timeoutslot()));//timeoutslot()为自定义槽
     connect(&m_sys,SIGNAL(newOrder()),&m_order,SLOT(new_order()));
+    ui->label__curuser_name->setText("当前用户: "+dataCenter::instance()->pub_CurUser().Name);
 }
 
 FormCenter::~FormCenter()
@@ -140,3 +140,5 @@ void FormCenter::on_pushButton_mini_clicked()
 {
     emit show_mini();
 }
+
+

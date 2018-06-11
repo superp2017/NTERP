@@ -14,6 +14,8 @@ public:
     QString  HOST_PORT();
     void setSetting(SysSetting set);
     SysSetting Setting() const;
+    void setAccount(QString acc);
+    void reSave();
 
 private:
     SysSetting m_set;

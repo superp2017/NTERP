@@ -323,6 +323,9 @@
         <property name="topMargin">
          <number>0</number>
         </property>
+        <property name="rightMargin">
+         <number>15</number>
+        </property>
         <property name="bottomMargin">
          <number>0</number>
         </property>
@@ -357,6 +360,16 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label__curuser_name">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(197, 197, 197);</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

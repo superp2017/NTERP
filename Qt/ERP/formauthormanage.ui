@@ -13,6 +13,27 @@
   <property name="windowTitle">
    <string>权限管理</string>
   </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>90</y>
+     <width>511</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Aharoni</family>
+     <pointsize>48</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>未完待续。。。。。</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

@@ -33,6 +33,7 @@ const QString ItemAllType("全部分类");
 struct SysSetting{
     QString Host_name;
     QString Host_port;
+    QString Account;
     bool isExportOpen;
 };
 

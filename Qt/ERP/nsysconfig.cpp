@@ -7,6 +7,7 @@ nSysConfig::nSysConfig()
     m_settings.beginGroup("Account");
     m_set.Host_name  = m_settings.value("HOST_NAME").toString();
     m_set.Host_port  = m_settings.value("HOST_PORT").toString();
+    m_set.Account = m_settings.value("Account").toString();
     m_settings.endGroup();
 
     m_settings.beginGroup("Setting");
@@ -45,10 +46,21 @@ void nSysConfig::setSetting(SysSetting set)
     m_settings.beginGroup("Account");
     m_settings.setValue("HOST_NAME",set.Host_name);
     m_settings.setValue("HOST_PORT",set.Host_port);
+    m_settings.setValue("Account",set.Account);
     m_settings.endGroup();
 }
 
 SysSetting nSysConfig::Setting() const
 {
     return m_set;
+}
+
+void nSysConfig::setAccount(QString acc)
+{
+    m_set.Account = acc;
+}
+
+void nSysConfig::reSave()
+{
+    setSetting(m_set);
 }

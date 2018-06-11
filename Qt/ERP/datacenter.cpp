@@ -64,6 +64,8 @@ void dataCenter::net_login(const QJsonObject para)
     User u= accountService::login(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(ok){
         cur_user = u;
+        m_Config.setAccount(cur_user.Account);
+        m_Config.reSave();
     }
     emit sig_login(ok);
 }

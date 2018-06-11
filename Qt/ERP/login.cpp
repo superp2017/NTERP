@@ -41,6 +41,7 @@ NLogin::NLogin(QWidget *parent) :
 
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(login()));
     connect(dataCenter::instance(),SIGNAL(sig_login(bool)),this,SLOT(loginCb(bool)));
+    ui->n_useNameLine->setText(dataCenter::instance()->CurSettings().Account);
 }
 
 NLogin::~NLogin()

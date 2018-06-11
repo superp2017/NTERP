@@ -82,7 +82,7 @@
            <string notr="true">font: 75 12pt &quot;微软雅黑&quot;;</string>
           </property>
           <property name="text">
-           <string>Admin</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -126,7 +126,7 @@ color: rgb(55, 55, 55);</string>
            <string notr="true">font: 12pt &quot;AcadEref&quot;;</string>
           </property>
           <property name="text">
-           <string>888888</string>
+           <string/>
           </property>
           <property name="echoMode">
            <enum>QLineEdit::Password</enum>
