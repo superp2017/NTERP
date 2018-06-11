@@ -6,29 +6,64 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1097</width>
-    <height>808</height>
+    <width>1143</width>
+    <height>831</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>供应商管理</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <property name="leftMargin">
-    <number>15</number>
-   </property>
-   <property name="topMargin">
-    <number>15</number>
-   </property>
-   <property name="rightMargin">
-    <number>15</number>
-   </property>
    <item row="0" column="0">
-    <widget class="QCheckBox" name="checkBox_check_all">
-     <property name="text">
-      <string>全选</string>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="rightMargin">
+      <number>15</number>
      </property>
-    </widget>
+     <item>
+      <widget class="QCheckBox" name="checkBox_check_all">
+       <property name="text">
+        <string>全选</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioButton_manu">
+       <property name="text">
+        <string>手动</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioButton_ave">
+       <property name="text">
+        <string>平均</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioButton_content">
+       <property name="text">
+        <string>按内容</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item row="1" column="0">
     <widget class="M_TableWidget" name="tableWidget"/>

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FormUnitManage</class>
- <widget class="QWidget" name="FormUnitManage">
+ <class>FormDepartmentManage</class>
+ <widget class="QWidget" name="FormDepartmentManage">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>313</width>
-    <height>346</height>
+    <width>309</width>
+    <height>356</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>单位管理</string>
+   <string>部门管理</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <property name="spacing">
-      <number>9</number>
+      <number>7</number>
      </property>
      <property name="topMargin">
       <number>5</number>
@@ -55,7 +55,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>80</width>
+         <width>100</width>
          <height>16777215</height>
         </size>
        </property>
@@ -74,7 +74,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>80</width>
+         <width>100</width>
          <height>16777215</height>
         </size>
        </property>
@@ -106,7 +106,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>80</width>
+         <width>100</width>
          <height>16777215</height>
         </size>
        </property>

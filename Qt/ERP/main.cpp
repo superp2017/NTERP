@@ -26,27 +26,15 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     registerMetaType();
 
-    // QPixmap pixmap(":/icon/SignoutFront.png");
-    // QSplashScreen *splash = new QSplashScreen(pixmap);
-    // splash->show();                            //显示启动画面
-    //splash->showMessage("正在加载模块..");
-    /// a.processEvents();                       //加载其他的模块
-
     dataCenter::instance()->initData();
     NLogin login;
+    login.showMaximized();
     if (login.exec()==123){
         MainWindow w;
-        //        w.setWindowFlags(Qt::FramelessWindowHint);
-        //       w.setWindowFlags(Qt::FramelessWindowHint |
-        //                             Qt::WindowSystemMenuHint |
-        //                             Qt::WindowMinMaxButtonsHint);
         w.setMinimumSize(800,800);
         w.showMaximized();
         return a.exec();
     }
-
-    // splash->finish(&w);     //当主窗口启动后，启动画面隐藏
-    // delete splash;
 
     return 0;
 }

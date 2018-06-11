@@ -9,6 +9,9 @@
 #include "formunitmanage.h"
 #include "formwarehousemanage.h"
 #include "formgoodstypemanage.h"
+#include "formdepartmentmanage.h"
+#include "formauthormanage.h"
+
 
 #pragma execution_character_set("utf-8")
 
@@ -36,6 +39,10 @@ private slots:
     void on_pushButton__about_system_clicked();
     void on_pushButton_newOrder_clicked();
 
+    void on_pushButton_department_manage_clicked();
+
+    void on_pushButton_author_manage_clicked();
+
 signals:
     void newOrder();
 
@@ -48,6 +55,8 @@ private:
     DialogMaterialManage Material;   //材料管理
     FormGoodsTypeManage  typeMange;  //分类管理
     FormUnitManage       Unit;       //单位管理
+    FormDepartmentManage department; //部门管理
+    FormAuthorManage     author;     //权限管理
 };
 
 #endif // SYSTEMMANAGER_H

@@ -30,7 +30,12 @@ FormCustommanage::FormCustommanage(QWidget *parent) :
     ui->pushButton_del->setEnabled(false);
     ui->pushButton_mod->setEnabled(false);
 
+    connect(ui->radioButton_ave,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
+    connect(ui->radioButton_content,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
+    connect(ui->radioButton_manu,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
 
+
+    ui->radioButton_ave->setChecked(true);
 }
 
 
@@ -62,6 +67,21 @@ void FormCustommanage::delCustomerCb(QString cu, bool ok)
     }else{
         dataCenter::instance()->pub_showMessage("删除失败!",4000);
     }
+}
+
+void FormCustommanage::changeCol()
+{
+    if(ui->radioButton_ave->isChecked()){
+        ui->tableWidget->setHeaderColModel(QHeaderView::Stretch);
+    }
+    if(ui->radioButton_content->isChecked()){
+        ui->tableWidget->setHeaderColModel(QHeaderView::ResizeToContents);
+
+    }
+    if(ui->radioButton_manu->isChecked()){
+        ui->tableWidget->setHeaderColModel(QHeaderView::Interactive);
+    }
+    closeAllStatus();
 }
 
 

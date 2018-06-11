@@ -37,9 +37,9 @@ FormGoodsTypeManage::~FormGoodsTypeManage()
 
 void FormGoodsTypeManage::on_pushButton_add_clicked()
 {
-     ui->listWidget->clearSelection();
-   ui->pushButton_del->setEnabled(false);
-     curType = ui->lineEdit_new->text().trimmed();
+    ui->listWidget->clearSelection();
+    ui->pushButton_del->setEnabled(false);
+    curType = ui->lineEdit_new->text().trimmed();
     if(curType.isEmpty()){
         QToolTip::showText(ui->lineEdit_new->mapToGlobal(QPoint(100, 0)), "分类不能为空!");
         return ;
@@ -98,5 +98,6 @@ void FormGoodsTypeManage::delTypeCb(QString type, bool ok)
 
 void FormGoodsTypeManage::itemClicked(QListWidgetItem *)
 {
+    curType = ui->listWidget->currentItem()->text();
     ui->pushButton_del->setEnabled(true);
 }

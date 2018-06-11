@@ -37,7 +37,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 ROOT = "E:/workspace/Qt/SimLib/boost_1_59_0"
 
-
 INCLUDEPATH += $${ROOT}/boost
 QMAKE_INCDIR += $${ROOT}/boost
 QMAKE_LIBDIR += $${ROOT}/lib64
@@ -120,7 +119,9 @@ SOURCES += main.cpp\
     personmanager.cpp \
     storemanager.cpp \
     systemmanager.cpp \
-    usertable.cpp
+    usertable.cpp \
+    dialognewdepartment.cpp \
+    formdepartmentmanage.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -194,7 +195,9 @@ HEADERS  += mainwindow.h \
     personmanager.h \
     storemanager.h \
     systemmanager.h \
-    usertable.h
+    usertable.h \
+    dialognewdepartment.h \
+    formdepartmentmanage.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -253,7 +256,9 @@ FORMS    += mainwindow.ui \
     ordermanager.ui \
     personmanager.ui \
     storemanager.ui \
-    systemmanager.ui
+    systemmanager.ui \
+    dialognewdepartment.ui \
+    formdepartmentmanage.ui
 
 RESOURCES += \
     res.qrc

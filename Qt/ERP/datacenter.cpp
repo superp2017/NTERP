@@ -20,11 +20,11 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)
     m_authors.push_back("管理员");
     m_authors.push_back("超级管理员");
 
-    m_departments.push_back("生产部");
-    m_departments.push_back("仓库部");
-    m_departments.push_back("行政部");
-    m_departments.push_back("财务部");
-    m_departments.push_back("销售部");
+//    m_departments.push_back("生产部");
+//    m_departments.push_back("仓库部");
+//    m_departments.push_back("行政部");
+//    m_departments.push_back("财务部");
+//    m_departments.push_back("销售部");
 }
 
 void dataCenter::initData()
@@ -40,6 +40,9 @@ void dataCenter::initData()
 
     //////////////初始化所有客户///////////////////
     boost::thread (boost::bind(&dataCenter::net_getGlobalCustomers,dataCenter::instance())).detach();
+
+    //////////////初始化所有部门///////////////////
+    boost::thread (boost::bind(&dataCenter::net_getGlobalDepartment,dataCenter::instance())).detach();
 
     //////////////初始化所有供应商///////////////////
     boost::thread (boost::bind(&dataCenter::net_getglobalSuppliers,dataCenter::instance())).detach();
@@ -125,6 +128,28 @@ void dataCenter::net_getGlobalUsers()
     bool ok =false;
     m_employee = UserService::getAllUsers(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     emit sig_globalEmployees(ok);
+}
+
+void dataCenter::net_newDepartment(const QJsonObject para)
+{
+    bool ok = false;
+    QString type = UserService::newDepartment(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_newDepartment(type,ok);
+
+}
+
+void dataCenter::net_delDepartment(const QJsonObject para)
+{
+    bool ok = false;
+    QString type = UserService::delDepartment(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_delDepartment(type,ok);
+}
+
+void dataCenter::net_getGlobalDepartment()
+{
+    bool ok = false;
+    m_departments = UserService::getAllDepartment(QJsonObject(),ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_globalDepartment(ok);
 }
 
 void dataCenter::net_newOrder(const QJsonObject para)

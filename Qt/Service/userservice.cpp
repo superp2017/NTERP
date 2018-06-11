@@ -118,6 +118,69 @@ QVector<User> UserService::getAllUsers(bool &ok, QString hostname, QString hostp
     return data;
 }
 
+QString UserService::newDepartment(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    QString user;
+    std::string url = Net_NewDepartment;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isString()){
+            user = ret.data.toString();
+            ok = true;
+            return  user;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"newDepartment ret is not 0"<<endl;
+    ok = false;
+    return user;
+}
+
+QString UserService::delDepartment(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    QString user;
+    std::string url = Net_DelDepartment;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isString()){
+            user = ret.data.toString();
+            ok = true;
+            return  user;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"delDepartment ret is not 0"<<endl;
+    ok = false;
+    return user;
+}
+
+QVector<QString> UserService::getAllDepartment(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    QVector<QString> list;
+    std::string url = Net_GetAllDepartment;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isArray()){
+            QJsonArray arr = ret.data.toArray();
+            for(QJsonValue v:arr){
+                if(v.isString()){
+                    QString r = v.toString();
+                    list.push_back(r);
+                }
+            }
+            ok = true;
+            return list;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"getAllDepartment ret is not 0"<<endl;
+    ok = false;
+    return list;
+}
+
 
 
 QJsonObject UserService::toJsonObject(User user)

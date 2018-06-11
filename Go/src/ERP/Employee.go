@@ -194,3 +194,81 @@ func GetAllEmployeess(session *JHttp.Session) {
 	}
 	session.Forward("0", "success", data)
 }
+
+//添加一个部门
+func NewDepartMent(session *JHttp.Session)  {
+	type Para struct{
+		Department string
+	}
+	st:=&Para{}
+	if err:=session.GetPara(st);err!=nil{
+		JLogger.Error(err.Error())
+		session.Forward("1",err.Error(),nil)
+		return
+	}
+	if st.Department==""{
+		JLogger.Error("Department is empty\n")
+		session.Forward("1","Department is empty\n",nil)
+		return
+	}
+	if err:=appendDepartment(st.Department);err!=nil{
+		JLogger.Error(err.Error())
+		session.Forward("1",err.Error(),nil)
+		return
+	}
+	session.Forward("0","NewDepartMent success\n",st.Department)
+}
+
+func RemoveDepartment(session *JHttp.Session)  {
+	type Para struct {
+		Department string
+	}
+	st:=&Para{}
+	if err:=session.GetPara(st);err!=nil{
+		JLogger.Error(err.Error())
+		session.Forward("1",err.Error(),nil)
+		return
+	}
+	if st.Department==""{
+		JLogger.Error("Department is empty\n")
+		session.Forward("1","Department is empty\n",nil)
+		return
+	}
+	if err:=delDepartment(st.Department);err!=nil{
+		JLogger.Error(err.Error())
+		session.Forward("1",err.Error(),nil)
+		return
+	}
+	session.Forward("0","RemoveDepartment success\n",st.Department)
+}
+
+//获取所有的部门
+func GetAllDepartment(session *JHttp.Session)  {
+	list,err:=getDepartment()
+	if err!=nil{
+		session.Forward("1",err.Error(),nil)
+		return
+	}
+	session.Forward("0","GetAllDepartment success",list)
+}
+
+//追加一个部门
+func appendDepartment(depart string)error  {
+	return JRedis.Redis_Sset(Key_Department, depart)
+}
+
+//删除一个部门
+func delDepartment(depart string)error  {
+	return JRedis.Redis_Sdel(Key_Department, depart)
+}
+
+//获取部门
+func getDepartment()([]string,error)  {
+	data := []string{}
+	d, err := JRedis.Redis_Sget(Key_Department)
+	for _, v := range d {
+		data = append(data, string(v.([]byte)))
+	}
+	return data, err
+}
+

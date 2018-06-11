@@ -26,6 +26,7 @@ FormUnitManage::~FormUnitManage()
 
 void FormUnitManage::itemClicked(QListWidgetItem *item)
 {
+      curunit = ui->listWidget->currentItem()->text();
     ui->pushButton_del->setEnabled(true);
 }
 

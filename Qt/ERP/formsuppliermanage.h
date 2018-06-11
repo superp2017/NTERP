@@ -38,6 +38,7 @@ private slots:
 
     void delSupplierCb(QString cu,bool ok);
 
+    void changeCol();
 
 signals:
     void sig_exportCb(bool);

@@ -40,7 +40,7 @@ void DialogNewSupplier::on_pushButton_ok_clicked()
     cus.Name            = ui->lineEdit_customName->text();
     cus.Tel             = ui->lineEdit_tel->text();
     cus.Note            = ui->textEdit_note->toPlainText();  
-    cus.Goods         = ui->lineEdit_goods->text();
+   //cus.Goods           = ui->lineEdit_goods->text();
 
     if(cus.Name==""){
         QToolTip::showText(ui->lineEdit_customName->mapToGlobal(QPoint(100, 0)), "供应商姓名不能为空!");
@@ -121,6 +121,6 @@ void DialogNewSupplier::initSupplier(Supplier sup)
     ui->lineEdit_customName->setText(sup.Name);
     ui->lineEdit_tel->setText(sup.Tel);
     ui->textEdit_note->setText(sup.Note);
-    ui->lineEdit_goods->setText(sup.Goods);
+   // ui->lineEdit_goods->setText(sup.Goods);
     cursupplier = sup;
 }

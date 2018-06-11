@@ -15,6 +15,10 @@ public:
     static QString delUser(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QVector<User> getAllUsers(bool &ok, QString hostname, QString hostport);
 
+    static QString newDepartment(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static QString delDepartment(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static QVector<QString> getAllDepartment(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+
 
     static QJsonObject toJsonObject(User user);
     static User fromJsonObject(QJsonObject obj);

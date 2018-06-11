@@ -25,6 +25,10 @@ public:
     void net_outUser(const QJsonObject para);
     void net_delUser(const QJsonObject para);
     void net_getGlobalUsers();
+    //////////////////////////////////////////////////////
+    void net_newDepartment(const QJsonObject para);
+    void net_delDepartment(const QJsonObject para);
+    void net_getGlobalDepartment();
     ///////////////////////////////////////////////////////
     void net_newOrder(const QJsonObject para);
     void net_modOrder(const QJsonObject para);
@@ -124,6 +128,10 @@ signals:
     void sig_outEmployee(User,bool);
     void sig_delEmployee(QString,bool);
     void sig_globalEmployees(bool);
+    ////////////////////////////////////
+    void sig_newDepartment(QString,bool);
+    void sig_delDepartment(QString,bool);
+    void sig_globalDepartment(bool);
     ////////////////////////////////////
     void sig_newCustomer(Customer,bool);
     void sig_modCustomer(Customer,bool);

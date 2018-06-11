@@ -1,4 +1,4 @@
-#ifndef FORMAUTHORMANAGE_H
+﻿#ifndef FORMAUTHORMANAGE_H
 #define FORMAUTHORMANAGE_H
 
 #include <QWidget>
@@ -14,6 +14,7 @@ class FormAuthorManage : public QWidget
 public:
     explicit FormAuthorManage(QWidget *parent = 0);
     ~FormAuthorManage();
+    void initData();
 
 private:
     Ui::FormAuthorManage *ui;

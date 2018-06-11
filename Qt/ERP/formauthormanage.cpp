@@ -1,4 +1,4 @@
-#include "formauthormanage.h"
+﻿#include "formauthormanage.h"
 #include "ui_formauthormanage.h"
 
 FormAuthorManage::FormAuthorManage(QWidget *parent) :
@@ -11,4 +11,9 @@ FormAuthorManage::FormAuthorManage(QWidget *parent) :
 FormAuthorManage::~FormAuthorManage()
 {
     delete ui;
+}
+
+void FormAuthorManage::initData()
+{
+
 }

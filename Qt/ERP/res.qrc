@@ -60,5 +60,15 @@
         <file>icon/system-red.png</file>
         <file>icon/t.png</file>
         <file>icon/t-red.png</file>
+        <file>icon/classification.png</file>
+        <file>icon/classification-red.png</file>
+        <file>icon/department.png</file>
+        <file>icon/department-red.png</file>
+        <file>icon/Jurisdiction.png</file>
+        <file>icon/Jurisdiction-red.png</file>
+        <file>icon/login-b.png</file>
+        <file>icon/login-back.png</file>
+        <file>icon/login-for.png</file>
+        <file>icon/logon-a.png</file>
     </qresource>
 </RCC>

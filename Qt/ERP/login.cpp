@@ -20,19 +20,23 @@ NLogin::NLogin(QWidget *parent) :
     ui->n_usePwdLine->setPlaceholderText("密码");
     ui->n_usePwdLine->setEchoMode(QLineEdit::Password);
 
+    ui->pushButton->setStyleSheet("QPushButton{border-image: url(:/icon/logon-a.png);}"
+                                           "QPushButton:hover{border-image: url(:/icon/login-b.png);}"
+                                           "QPushButton:pressed{border-image: url(:/icon/login-b.png);}"
+                                           "QPushButton:checked{border-image: url(:/icon/login-b.png);}");
+
+
     QPalette pal(palette());
-    pal.setBrush(QPalette::Window, QBrush(QImage(":/icon/login.png")));
+    pal.setBrush(QPalette::Window, QBrush(QImage(":/icon/login-back.png")));
     setPalette(pal);
     ////////////////////////////
     ui->widget_2->setAutoFillBackground(true); // 这句要加上, 否则可能显示不出背景图.
     QPalette palette = this->palette();
     palette.setBrush(QPalette::Window,
-                     QBrush(QPixmap(":/icon/login-a.png").scaled(ui->widget_2->size(),
+                     QBrush(QPixmap(":/icon/login-for.png").scaled(ui->widget_2->size(),
                                                                  Qt::IgnoreAspectRatio,
                                                                  Qt::SmoothTransformation)));             // 使用平滑的缩放方式
     ui->widget_2->setPalette(palette);                           // 给widget加上背景图
-    ui->pushButton->setStyleSheet("QPushButton{border-image: url(:/icon/loginButton-a.png);}"
-                                  "QPushButton:pressed{border-image: url(:/icon/loginButton-two.png);}");
 
 
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(login()));

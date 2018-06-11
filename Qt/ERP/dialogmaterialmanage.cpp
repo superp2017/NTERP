@@ -17,11 +17,16 @@ DialogMaterialManage::DialogMaterialManage(QWidget *parent) :
     header<<tr("物料编号")<<tr("物料描述")<<tr("客户名称")<<tr("数量")<<tr("单位")<<tr("入库时间")<<tr("状态");
     ui->tableWidget->setHorizontalHeaderLabels(header);
 
+    ui->radioButton_ave->setChecked(true);
 
     connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
     connect(ui->checkBox_check_all,SIGNAL(clicked(bool)),this,SLOT(checkAll()));
 
     connect(ui->tableWidget,SIGNAL(cellClicked(int,int)),this,SLOT(onCellClick(int,int)));
+
+    connect(ui->radioButton_ave,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
+    connect(ui->radioButton_content,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
+    connect(ui->radioButton_manu,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
 
 }
 
@@ -77,6 +82,21 @@ void DialogMaterialManage::checkAll()
 void DialogMaterialManage::onCellClick(int row, int col)
 {
     this->childrenRect();
+}
+
+void DialogMaterialManage::changeCol()
+{
+    if(ui->radioButton_ave->isChecked()){
+        ui->tableWidget->setHeaderColModel(QHeaderView::Stretch);
+    }
+    if(ui->radioButton_content->isChecked()){
+        ui->tableWidget->setHeaderColModel(QHeaderView::ResizeToContents);
+
+    }
+    if(ui->radioButton_manu->isChecked()){
+        ui->tableWidget->setHeaderColModel(QHeaderView::Interactive);
+    }
+    closeAllStatus();
 }
 
 
