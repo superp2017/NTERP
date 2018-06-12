@@ -5,6 +5,7 @@
 #include "customerservice.h"
 #include "boost/thread.hpp"
 #include <QToolTip>
+#include <QIntValidator>
 
 DialogNewCustom::DialogNewCustom(QWidget *parent) :
     QDialog(parent),
@@ -15,6 +16,12 @@ DialogNewCustom::DialogNewCustom(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_newCustomer(Customer,bool)),this,SLOT(newCustomerCb(Customer,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modCustomer(Customer,bool)),this,SLOT(modCustomerCb(Customer,bool)));
 
+    QRegExp rx("[0-9\.]+$");
+    QRegExpValidator *validator = new QRegExpValidator(rx, this);
+    ui->lineEdit_bank_number->setValidator(validator);
+    ui->lineEdit_cert_num->setValidator(validator);
+    ui->lineEdit_contact_cell->setValidator(validator);
+    ui->lineEdit_tel->setValidator(validator);
 }
 
 DialogNewCustom::~DialogNewCustom()
@@ -24,7 +31,7 @@ DialogNewCustom::~DialogNewCustom()
 
 void DialogNewCustom::on_pushButton_ok_clicked()
 {
-    Customer  cus = curCustom;
+    Customer  cus       = curCustom;
     cus.Addr            = ui->lineEdit_addr->text();
     cus.BankName        = ui->lineEdit_bank->text();
     cus.Bankbranch      = ui->lineEdit_bank_banch->text();

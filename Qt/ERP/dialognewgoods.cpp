@@ -71,17 +71,8 @@ void DialogNewGoods::initGoods(Goods goods)
 
 void DialogNewGoods::on_pushButton_ok_clicked()
 {
-    Goods goods = curGoods;
+    Goods goods         = curGoods;
     goods.Name          = ui->lineEdit_name->text().trimmed();\
-    if(goods.Name==""){
-        QToolTip::showText(ui->lineEdit_name->mapToGlobal(QPoint(100, 0)), "商品名称不能为空!");
-        return;
-    }
-    goods.Type          = ui->comboBox_type->currentText();
-    if(goods.Type==""){
-        QToolTip::showText(ui->comboBox_type->mapToGlobal(QPoint(100, 0)), "商品分类不能为空!");
-        return ;
-    }
     goods.Format        = ui->lineEdit_format->text();
     goods.Color         = ui->lineEdit_color->text();
     goods.Price         = (int)(ui->doubleSpinBox_price->value()*100);
@@ -89,13 +80,34 @@ void DialogNewGoods::on_pushButton_ok_clicked()
     goods.SupplierName  = ui->comboBox_supplier->currentText();
     goods.Num           = ui->spinBox_num->value();
     goods.Unit          = ui->comboBox_unit->currentText();
+
+    if(goods.Name==""){
+        QToolTip::showText(ui->lineEdit_name->mapToGlobal(QPoint(100, 0)), "货品名称不能为空!");
+        return;
+    }
+    goods.Type          = ui->comboBox_type->currentText();
+    if(goods.Type==""){
+        QToolTip::showText(ui->comboBox_type->mapToGlobal(QPoint(100, 0)), "货品分类不能为空!");
+        return ;
+    }
+    if(!goods.Format.isEmpty()&&dataCenter::instance()->pub_checkTypeExist(goods.Format)){
+        QToolTip::showText(ui->lineEdit_format->mapToGlobal(QPoint(100, 0)), "货品分类不存在!");
+        return ;
+    }
+
     if(goods.SupplierName!=""){
         if(!dataCenter::instance()->pub_checkSuppliser(goods.SupplierName)){
             QToolTip::showText(ui->comboBox_supplier->mapToGlobal(QPoint(100, 0)), "供应商不存在!");
             return ;
         }
-        goods.SID       = ui->comboBox_supplier->currentData().toString();
+        goods.SID   = ui->comboBox_supplier->currentData().toString();
     }
+
+    if(!goods.Unit.isEmpty()&&dataCenter::instance()->pub_checkUnitExist(goods.Unit)){
+        QToolTip::showText(ui->comboBox_unit->mapToGlobal(QPoint(100, 0)), "计量单位不存在!");
+        return ;
+    }
+
     QJsonObject para = GoodsService::toJsonObject(goods);
     if(m_module){
         boost::thread(boost::bind(&dataCenter::net_newGoods,dataCenter::instance(),para)).detach();
@@ -120,9 +132,9 @@ void DialogNewGoods::initCombox(QVector<Supplier> sup, QVector<QString> type, QV
         suplist<<s.Name;
         ui->comboBox_supplier->addItem(s.Name,s.SID);
     }
-    QCompleter *supCompleter = new QCompleter(suplist, this);
-    ui->comboBox_supplier->setEditable(true);
-    ui->comboBox_supplier->setCompleter(supCompleter);
+//    QCompleter *supCompleter = new QCompleter(suplist, this);
+//    ui->comboBox_supplier->setEditable(true);
+//    ui->comboBox_supplier->setCompleter(supCompleter);
     ui->comboBox_supplier->blockSignals(false);
 
     ui->comboBox_type->blockSignals(true);

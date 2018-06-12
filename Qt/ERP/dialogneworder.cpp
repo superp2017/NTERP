@@ -9,6 +9,8 @@
 #include "dialognewmateriel.h"
 #include "dialognewunit.h"
 #include "boost/thread.hpp"
+#include <QRegExpValidator>
+
 
 DialogNewOrder::DialogNewOrder(QWidget *parent) :
     QDialog(parent),
@@ -24,6 +26,11 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
 
     connect(ui->comboBox_customerName,SIGNAL(currentIndexChanged(int)),this,SLOT(customChange(int)));
     connect(ui->comboBox_unit,SIGNAL(currentIndexChanged(int)),this,SLOT(unitChange(int)));
+
+
+    QRegExp regx("[a-zA-Z0-9]+$");
+    QValidator *validator = new QRegExpValidator(regx, this );
+    ui->comboBox_CustomBatch->setValidator(validator);
 
     changeModel();
 }
@@ -56,10 +63,10 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QSet<QString> batch,  
         customlist<<c.Name;
         ui->comboBox_customerName->addItem(c.Name,c.CID);
     }
-    QCompleter *completerCustomer = new QCompleter(customlist, this);
+//    QCompleter *completerCustomer = new QCompleter(customlist, this);
 
-    ui->comboBox_customerName->setEditable(true);
-    ui->comboBox_customerName->setCompleter(completerCustomer);
+//    ui->comboBox_customerName->setEditable(true);
+//    ui->comboBox_customerName->setCompleter(completerCustomer);
     ui->comboBox_customerName->addItem(ItemNewCustom);
     ui->comboBox_customerName->setCurrentIndex(-1);
 
@@ -198,9 +205,13 @@ void DialogNewOrder::modOrderCb(Order order,bool ok)
 
 bool DialogNewOrder::checkOrder(Order order)
 {
-
     if(order.CustomName==""){
         QToolTip::showText(ui->comboBox_customerName->mapToGlobal(QPoint(100, 0)), "客户不能为空!");
+        return false;
+    }
+
+    if(!dataCenter::instance()->pub_checkCustomerExist(order.CustomName)){
+        QToolTip::showText(ui->comboBox_customerName->mapToGlobal(QPoint(100, 0)), "该客户不存在!");
         return false;
     }
 
@@ -210,17 +221,17 @@ bool DialogNewOrder::checkOrder(Order order)
     }
 
     if(order.Unit==""){
-        QToolTip::showText(ui->comboBox_unit->mapToGlobal(QPoint(100, 0)), "单位不能为空!");
+        QToolTip::showText(ui->comboBox_unit->mapToGlobal(QPoint(100, 0)), "计量单位不能为空!");
+        return false;
+    }
+
+    if(!dataCenter::instance()->pub_checkUnitExist(order.Unit)){
+        QToolTip::showText(ui->comboBox_unit->mapToGlobal(QPoint(100, 0)), "计量单位不存在!");
         return false;
     }
 
     if(order.OrderNum<=0){
         QToolTip::showText(ui->spinBox_num->mapToGlobal(QPoint(100, 0)), "订单数量填写不正确!");
-        return false;
-    }
-
-    if(!dataCenter::instance()->pub_checkCustomerExist(order.CustomName)){
-        QToolTip::showText(ui->comboBox_customerName->mapToGlobal(QPoint(100, 0)), "该客户不存在!");
         return false;
     }
 

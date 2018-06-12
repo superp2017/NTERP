@@ -22,14 +22,14 @@ void DialogModPrice::initData(Order order)
 {
     curOrder = order;
     ui->lineEdit_orderID->setText(order.OrderID);
-    ui->lineEdit_price->setText(QString("%1").arg( order.Money/100.0));
+    ui->doubleSpinBox->setValue(order.Money/100.0);
 }
 
 void DialogModPrice::on_pushButton_ok_clicked()
 {
-    int money = ui->lineEdit_price->text().toInt()*100;
+    int money = ui->doubleSpinBox->value()*100;
     if(money<=0){
-        QToolTip::showText(ui->lineEdit_price->mapToGlobal(QPoint(100, 0)), "订单价格填写错误!");
+        QToolTip::showText(ui->doubleSpinBox->mapToGlobal(QPoint(100, 0)), "订单价格填写错误!");
         return ;
     }
     curOrder.Money = money;

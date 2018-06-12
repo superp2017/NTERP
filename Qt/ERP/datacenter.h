@@ -90,6 +90,8 @@ public:
     Customer pub_getCustomer(QString CID,bool &ok);
     ////////////////////////////////////////////////////
     QVector<QString> pub_getDepartments() const;
+    bool pub_checkDepartment(QString depart);
+    ////////////////////////////////////////////////////
     QVector<QString> pub_getAuthors() const;
     ////////////////////////////////////////////////////
     QVector<User> pub_employees()const;
@@ -107,7 +109,7 @@ public:
     ////////////////////////////////////////////////////
     SysSetting CurSettings();
     void setCurSettings(SysSetting set);
-
+    //////////////////////////////////////////////////
 
 signals:
     void sig_showStatusMessage(QString msg,int sec);

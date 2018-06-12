@@ -20,11 +20,11 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)
     m_authors.push_back("管理员");
     m_authors.push_back("超级管理员");
 
-//    m_departments.push_back("生产部");
-//    m_departments.push_back("仓库部");
-//    m_departments.push_back("行政部");
-//    m_departments.push_back("财务部");
-//    m_departments.push_back("销售部");
+    //    m_departments.push_back("生产部");
+    //    m_departments.push_back("仓库部");
+    //    m_departments.push_back("行政部");
+    //    m_departments.push_back("财务部");
+    //    m_departments.push_back("销售部");
 }
 
 void dataCenter::initData()
@@ -542,12 +542,7 @@ QVector<QString> dataCenter::pub_Units()
 
 bool dataCenter::pub_checkUnitExist(QString unit)
 {
-    for(QString m:m_units){
-        if (m==unit){
-            return true;
-        }
-    }
-    return false;
+    return m_units.contains(unit);
 }
 
 
@@ -685,12 +680,7 @@ QVector<Goods> dataCenter::pub_GetTypeGoods(QString type)
 
 bool dataCenter::pub_checkTypeExist(QString type)
 {
-    for(QString t:m_goodsType){
-        if(t==type){
-            return true;
-        }
-    }
-    return false;
+    return m_goodsType.contains(type);
 }
 
 QVector<Goods> dataCenter::pub_goods() const
@@ -714,6 +704,11 @@ Goods dataCenter::pub_getGoods(QString id, bool &ok)
 QVector<QString> dataCenter::pub_getDepartments() const
 {
     return m_departments;
+}
+
+bool dataCenter::pub_checkDepartment(QString depart)
+{
+    return  m_departments.contains(depart);
 }
 
 QVector<Customer> dataCenter::pub_Customers()

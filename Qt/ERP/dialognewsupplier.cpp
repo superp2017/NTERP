@@ -6,6 +6,7 @@
 #include "boost/thread.hpp"
 #include <QToolTip>
 #include <QRegExp>
+#include <QRegExpValidator>
 
 DialogNewSupplier::DialogNewSupplier(QWidget *parent) :
     QDialog(parent),
@@ -15,6 +16,12 @@ DialogNewSupplier::DialogNewSupplier(QWidget *parent) :
     m_isNewMod = false;
     connect(dataCenter::instance(),SIGNAL(sig_newSupplier(Supplier,bool)),this,SLOT(newSupplierCb(Supplier,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modSUpplier(Supplier,bool)),this,SLOT(modSupplierCb(Supplier,bool)));
+    QRegExp rx("[0-9\.]+$");
+    QRegExpValidator *validator = new QRegExpValidator(rx, this);
+    ui->lineEdit_bank_number->setValidator(validator);
+    ui->lineEdit_cert_num->setValidator(validator);
+    ui->lineEdit_contact_cell->setValidator(validator);
+    ui->lineEdit_tel->setValidator(validator);
 }
 
 DialogNewSupplier::~DialogNewSupplier()

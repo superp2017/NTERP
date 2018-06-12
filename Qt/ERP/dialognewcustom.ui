@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
+    <width>331</width>
     <height>660</height>
    </rect>
   </property>
@@ -63,6 +63,12 @@
          <width>0</width>
          <height>30</height>
         </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="maxLength">
+        <number>20</number>
        </property>
       </widget>
      </item>
@@ -137,6 +143,9 @@
          <height>30</height>
         </size>
        </property>
+       <property name="maxLength">
+        <number>15</number>
+       </property>
       </widget>
      </item>
      <item row="4" column="0">
@@ -156,6 +165,9 @@
          <width>0</width>
          <height>30</height>
         </size>
+       </property>
+       <property name="maxLength">
+        <number>10</number>
        </property>
       </widget>
      </item>
@@ -177,6 +189,9 @@
          <height>30</height>
         </size>
        </property>
+       <property name="maxLength">
+        <number>11</number>
+       </property>
       </widget>
      </item>
      <item row="6" column="0">
@@ -196,6 +211,9 @@
          <width>0</width>
          <height>30</height>
         </size>
+       </property>
+       <property name="maxLength">
+        <number>20</number>
        </property>
       </widget>
      </item>
@@ -220,6 +238,9 @@
        <property name="text">
         <string/>
        </property>
+       <property name="maxLength">
+        <number>18</number>
+       </property>
       </widget>
      </item>
      <item row="8" column="0">
@@ -240,6 +261,9 @@
          <height>30</height>
         </size>
        </property>
+       <property name="maxLength">
+        <number>32</number>
+       </property>
       </widget>
      </item>
      <item row="9" column="0">
@@ -256,6 +280,9 @@
          <width>0</width>
          <height>30</height>
         </size>
+       </property>
+       <property name="maxLength">
+        <number>18</number>
        </property>
       </widget>
      </item>

@@ -5,6 +5,8 @@
 #include <QToolTip>
 #include "datacenter.h"
 #include "boost/thread.hpp"
+#include <QRegExp>
+#include <QValidator>
 
 DialogNewUser::DialogNewUser(QWidget *parent) :
     QDialog(parent),
@@ -18,6 +20,17 @@ DialogNewUser::DialogNewUser(QWidget *parent) :
     ui->dateEdit_in_time->setMaximumDate(QDate::currentDate().addDays(365*10));
     ui->dateEdit_in_time->setDisplayFormat("yyyy-MM-dd");
     ui->dateEdit_in_time->setCalendarPopup(true);
+
+    QRegExp regx("[a-zA-Z0-9]+$");
+    QValidator *validator = new QRegExpValidator(regx, this );
+    ui->lineEdit_accout->setValidator( validator );
+    ui->lineEdit_code->setValidator(validator);
+
+    QRegExp rx("[0-9\.]+$");
+    QRegExpValidator *vali = new QRegExpValidator(rx, this);
+    ui->lineEdit_cell->setValidator(vali);
+
+
 
     initComBox(dataCenter::instance()->pub_getDepartments(),dataCenter::instance()->pub_getAuthors());
 
@@ -92,7 +105,6 @@ void DialogNewUser::setModel(bool isNew)
 void DialogNewUser::on_pushButton_creat_clicked()
 {
     User user = m_curUser;
-
     user.Name        = ui->lineEdit_name->text().trimmed();
     user.Cell        = ui->lineEdit_cell->text().trimmed();
     user.Department  = ui->comboBox_department->currentText().trimmed();
@@ -103,6 +115,7 @@ void DialogNewUser::on_pushButton_creat_clicked()
     user.Age         = ui->spinBox_age->value();
     user.Account     = ui->lineEdit_accout->text().trimmed();
     user.Code        = ui->lineEdit_code->text().trimmed();
+
     if(user.Name.isEmpty()){
         QToolTip::showText(ui->lineEdit_name->mapToGlobal(QPoint(100, 0)), "姓名不能为空!");
         return ;
@@ -114,6 +127,11 @@ void DialogNewUser::on_pushButton_creat_clicked()
 
     if(user.Account.trimmed().isEmpty()){
         QToolTip::showText(ui->lineEdit_accout->mapToGlobal(QPoint(100, 0)), "账号不能为空!");
+        return ;
+    }
+
+    if(dataCenter::instance()->pub_checkDepartment(user.Department)){
+        QToolTip::showText(ui->comboBox_department->mapToGlobal(QPoint(100, 0)), "部门不存在!");
         return ;
     }
 
@@ -168,25 +186,24 @@ void DialogNewUser::modUserCb(User user, bool ok)
 
 void DialogNewUser::initComBox(QVector<QString>department,QVector<QString>autor)
 {
+    ui->comboBox_department->blockSignals(true);
+    ui->comboBox_author->blockSignals(true);
     ui->comboBox_sex->addItem("男");
     ui->comboBox_sex->addItem("女");
 
     ui->comboBox_department->clear();
-    QCompleter *completerauthor = new QCompleter(department.toList(), this);
-    ui->comboBox_department->setEditable(true);
-    for(QString de:department){
-        ui->comboBox_department->addItem(de);
-    }
-    ui->comboBox_department->setCompleter(completerauthor);
-
+    //    QCompleter *completerauthor = new QCompleter(department.toList(), this);
+    //    ui->comboBox_department->setEditable(true);
+    //    for(QString de:department){
+    //        ui->comboBox_department->addItem(de);
+    //    }
+    //    ui->comboBox_department->setCompleter(completerauthor);
+    ui->comboBox_department->addItems(department.toList());
 
     ui->comboBox_author->clear();
-    QCompleter *completerDe = new QCompleter(autor.toList(), this);
-    ui->comboBox_author->setEditable(true);
-    for(QString au:autor){
-        ui->comboBox_author->addItem(au);
-    }
-    ui->comboBox_author->addItem(ItemNewAuthor);
-    ui->comboBox_author->setCompleter(completerDe);
+    ui->comboBox_author->addItems(autor.toList());
+    //     ui->comboBox_author->addItem(ItemNewAuthor);
 
+    ui->comboBox_department->blockSignals(false);
+    ui->comboBox_author->blockSignals(false);
 }
