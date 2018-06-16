@@ -2,7 +2,6 @@
 #define DATACENTER_H
 
 #include <QObject>
-
 #include "global.h"
 #include "loadding.h"
 #include "nsysconfig.h"
