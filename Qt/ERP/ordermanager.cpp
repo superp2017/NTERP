@@ -20,22 +20,19 @@ OrderManager::OrderManager(QWidget *parent) :
     m_tab_new     = new OrderTable();
     m_tab_success = new OrderTable();
     m_tab_all     = new OrderTable();
-    m_tab_produce = new OrderTable();
 
     ui->tabWidget->addTab(m_tab_new,"新订单");
-    ui->tabWidget->addTab(m_tab_produce,"生产中");
     ui->tabWidget->addTab(m_tab_success,"已完成");
     ui->tabWidget->addTab(m_tab_all,"全部");
     ui->tabWidget->tabBar()->setMovable(true);
-    //  ui->tabWidget->setFont(QFont("Times", 16, QFont::Bold));
     ui->tabWidget->tabBar()->setFont(QFont("Times", 14, QFont::Bold));
+
     connect(ui->radioButton_ave,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_content,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_manu,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
 
     connect(m_tab_new,SIGNAL(orderClick(QString)),this,SLOT(orderClick(QString)));
     connect(m_tab_all,SIGNAL(orderClick(QString)),this,SLOT(orderClick(QString)));
-    connect(m_tab_produce,SIGNAL(orderClick(QString)),this,SLOT(orderClick(QString)));
     connect(m_tab_success,SIGNAL(orderClick(QString)),this,SLOT(orderClick(QString)));
 
 
@@ -43,7 +40,6 @@ OrderManager::OrderManager(QWidget *parent) :
 
     connect(dataCenter::instance(),SIGNAL(sig_cancleOrder(Order,bool)),this,SLOT(cancleOrderCb(Order,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_finishOrder(Order,bool)),this,SLOT(finishOrderCb(Order,bool)));
-    connect(dataCenter::instance(),SIGNAL(sig_produceOrder(Order,bool)),this,SLOT(produceOrderCb(Order,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_globalOrders(bool)),this,SLOT(GlobalOrdersCb(bool)));
 
 
@@ -51,16 +47,12 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(m_tab_new,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
     connect(m_tab_new,SIGNAL(cancleOrder()),this,SLOT(on_pushButton_cancle_clicked()));
     connect(m_tab_new,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
-    connect(m_tab_new,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
 
-
-    connect(m_tab_produce,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
     connect(m_tab_all,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_all,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
     connect(m_tab_all,SIGNAL(cancleOrder()),this,SLOT(on_pushButton_cancle_clicked()));
     connect(m_tab_all,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
-    connect(m_tab_all,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
     connect(m_tab_all,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
     ui->pushButton_new->setStyleSheet("QPushButton{border-image: url(:/icon/new-red.png);}"
@@ -78,7 +70,7 @@ OrderManager::OrderManager(QWidget *parent) :
                                           "QPushButton:checked{border-image: url(:/icon/reflash-a.png);}");
 
 
-    setBtnEnable(false,false,false,false,false);
+    setBtnEnable(false,false,false,false);
 
     ui->radioButton_ave->setChecked(true);
     changeCol();
@@ -94,7 +86,6 @@ void OrderManager::updataData()
 {
     m_tab_new->initOrder(dataCenter::instance()->pub_StatusOrders(Status_New));
     m_tab_success->initOrder(dataCenter::instance()->pub_StatusOrders(Status_Success));
-    m_tab_produce->initOrder(dataCenter::instance()->pub_StatusOrders(Status_Produce));
     m_tab_all->initOrder(dataCenter::instance()->pub_StatusOrders(Status_All));
     clearAllSelect();
 }
@@ -110,27 +101,22 @@ void OrderManager::orderClick(QString orderID)
 
     if(ui->tabWidget->currentWidget()==m_tab_all){
         if(cur_order.Current.Status == Status_New){
-            setBtnEnable(true,true,false,true,true);
-        }
-        if(cur_order.Current.Status == Status_Produce){
-            setBtnEnable(false,false,true,false,false);
+            setBtnEnable(true,true,true,true);
         }
         if(cur_order.Current.Status == Status_Success){
-            setBtnEnable(false,false,false,false,false);
+            setBtnEnable(false,false,false,false);
         }
         if(cur_order.Current.Status == Status_Cancle){
-            setBtnEnable(false,false,false,false,false);
+            setBtnEnable(false,false,false,false);
         }
     }
 
     if(ui->tabWidget->currentWidget()== m_tab_new){
-        setBtnEnable(true,true,false,true,true);
+        setBtnEnable(true,true,true,true);
     }
-    if(ui->tabWidget->currentWidget()== m_tab_produce){
-        setBtnEnable(false,false,true,false,false);
-    }
+
     if(ui->tabWidget->currentWidget()==m_tab_success){
-        setBtnEnable(false,false,false,false,false);
+        setBtnEnable(false,false,false,false);
     }
 
 }
@@ -147,7 +133,6 @@ void OrderManager::changeCol()
         tab_mode = QHeaderView::Interactive;
     }
     m_tab_new->setHeaderColModel(tab_mode);
-    m_tab_produce->setHeaderColModel(tab_mode);
     m_tab_success->setHeaderColModel(tab_mode);
     m_tab_all->setHeaderColModel(tab_mode);
     clearAllSelect();
@@ -255,38 +240,6 @@ void OrderManager::on_pushButton_success_clicked()
 }
 
 
-void OrderManager::on_pushButton_produce_clicked()
-{
-    if(cur_order.OrderID==""){
-        return;
-    }
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("提示");
-    msgBox.setText("订单:"+cur_order.OrderID+"即将进入生产,");
-    msgBox.setInformativeText("是否继续操作?");
-    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Ok);
-    int ret = msgBox.exec();
-    switch (ret) {
-    case QMessageBox::Ok:
-    {
-        // Save was clicked
-        boost::thread t(boost::bind(&dataCenter::net_produceOrder,dataCenter::instance(),OrderService::toJsonObject(cur_order)));
-        t.detach();
-        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
-        break;
-    }
-    case QMessageBox::Cancel:
-        // Cancel was clicked
-        break;
-    default:
-        // should never be reached
-        break;
-    }
-}
-
-
-
 void OrderManager::on_pushButton_reflash_clicked()
 {
     clearCurOrder();
@@ -356,24 +309,11 @@ void OrderManager::finishOrderCb(Order order, bool ok)
     dataCenter::instance()->pub_hideLoadding();
     if(ok){
         dataCenter::instance()->pub_showMessage("出库成功!",4000);
-        m_tab_produce->removeOrder(order);
+        m_tab_new->removeOrder(order);
         m_tab_success->appendOrder(order);
         m_tab_all->modOrder(order);
     }else{
         dataCenter::instance()->pub_showMessage("出库失败!",4000);
-    }
-}
-
-void OrderManager::produceOrderCb(Order order, bool ok)
-{
-    dataCenter::instance()->pub_hideLoadding();
-    if(ok){
-        dataCenter::instance()->pub_showMessage("操作成功!",4000);
-        m_tab_new->removeOrder(order);
-        m_tab_produce->appendOrder(order);
-        m_tab_all->modOrder(order);
-    }else{
-        dataCenter::instance()->pub_showMessage("操作失败!",4000);
     }
 }
 
@@ -389,10 +329,9 @@ void OrderManager::clearAllSelect()
     m_tab_all->clearSelection();
     m_tab_new->clearSelection();
     m_tab_success->clearSelection();
-    m_tab_produce->clearSelection();
 
     checkSelect();
-    setBtnEnable(false,false,false,false,false);
+    setBtnEnable(false,false,false,false);
     clearCurOrder();
 }
 
@@ -424,13 +363,12 @@ void OrderManager::clearCurOrder()
     cur_order.Money=0;
 }
 
-void OrderManager::setBtnEnable(bool mod, bool cancel, bool out, bool produce, bool change)
+void OrderManager::setBtnEnable(bool mod, bool cancel, bool out,  bool change)
 {
     ui->pushButton_mod->setEnabled(mod);
     ui->pushButton_cancle->setEnabled(cancel);
     ui->pushButton_success->setEnabled(out);
     ui->pushButton_change_price->setEnabled(change);
-    ui->pushButton_produce->setEnabled(produce);
 
 
     if(mod)
@@ -465,19 +403,11 @@ void OrderManager::setBtnEnable(bool mod, bool cancel, bool out, bool produce, b
     else
         ui->pushButton_change_price->setStyleSheet("QPushButton{border-image: url(:/icon/price.png);}");
 
-    if(produce)
-        ui->pushButton_produce->setStyleSheet("QPushButton{border-image: url(:/icon/production-red.png);}"
-                                              "QPushButton:hover{border-image: url(:/icon/production.png);}"
-                                              "QPushButton:pressed{border-image: url(:/icon/production.png);}"
-                                              "QPushButton:checked{border-image: url(:/icon/production.png);}");
-    else
-        ui->pushButton_produce->setStyleSheet("QPushButton{border-image: url(:/icon/production.png);}");
 }
 
 void OrderManager::checkSelect()
 {
     m_tab_new->checkSelect();
-    m_tab_produce->checkSelect();
     m_tab_success->checkSelect();
     m_tab_all->checkSelect();
 }

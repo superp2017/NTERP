@@ -38,22 +38,19 @@ private slots:
     void clearAllSelect();
     void cancleOrderCb(Order order,bool ok);
     void finishOrderCb(Order order,bool ok);
-    void produceOrderCb(Order order,bool ok);
-    void on_pushButton_produce_clicked();
     void GlobalOrdersCb(bool ok);
 protected:
     void mousePressEvent(QMouseEvent *e);
 
 private:
     void clearCurOrder();
-    void setBtnEnable(bool mod,bool cancel,bool out,bool produce,bool change);
+    void setBtnEnable(bool mod, bool cancel, bool out, bool change);
     void checkSelect();
 private:
     Ui::OrderManager *ui;
     QHeaderView::ResizeMode tab_mode;
     OrderTable *m_tab_new;
     OrderTable *m_tab_success;
-    OrderTable *m_tab_produce;
     OrderTable *m_tab_all;
     DialogNewOrder *neworer;
     Order cur_order;

@@ -361,7 +361,7 @@ Order OrderService::fromJsonObject(QJsonObject obj)
 bool OrderService::exportOrders(QVector<Order> list, QString filepath, bool isOpen)
 {
     QVector<QVariant> datalist;
-    datalist<<"生产订单"<<"物料编码"<<"物料描述"<<"订单数量"<<"单位"<<"客户名称"<<"客户批次"<<"客户备注"<<"生产批号"<<"价格(元)"<<"状态";
+    datalist<<"生产批号"<<"物料编码"<<"物料描述"<<"订单数量"<<"单位"<<"客户名称"<<"客户备注"<<"价格(元)"<<"状态"<<"创建时间";
     QVector<QVector<QVariant>> data;
     for(int i=0;i<list.size();++i){
         Order order  = list.at(i);
@@ -377,8 +377,7 @@ bool OrderService::exportOrders(QVector<Order> list, QString filepath, bool isOp
         datalist<<"'"+order.OrderID<<"'"+order.MaterielID\
                <<"'"+order.MaterielDes<<order.OrderNum\
               <<order.Unit<<"'"<<order.CustomName+order.CustomBatch\
-             <<"'"+order.CustomNote<<"'"+order.ProduceID\
-            <<order.Money<<status;
+             <<"'"+order.CustomNote<<"'"<<order.Money<<status<<order.CreatTime;
         data.push_back(datalist);
     }
     return  ExcelService::dataExport(filepath,datalist,data,isOpen);

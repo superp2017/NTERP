@@ -9,8 +9,8 @@ OrderTable::OrderTable(QWidget *w):
 
     //设置表头内容
     QStringList header;
-    header<<tr("生产订单")<<tr("物料编码")<<tr("物料描述")\
-         <<tr("订单数量")<<tr("单位")<<tr("客户名称")<<tr("客户批次")<<tr("客户备注")<<tr("生产批号")<<tr("价格(元)")<<tr("状态");
+    header<<tr("生产批号")<<tr("物料编码")<<tr("物料描述")\
+         <<tr("订单数量")<<tr("单位")<<tr("客户名称")<<tr("客户批次")<<tr("客户备注")<<tr("价格(元)")<<tr("状态")<<tr("创建时间");
     this->setHorizontalHeaderLabels(header);
 
     this->setSortingEnabled(true);//允许列排序
@@ -26,7 +26,6 @@ OrderTable::OrderTable(QWidget *w):
     m_new      = m_menu->addAction("新建");
     m_mod      = m_menu->addAction("修改");
     m_cancle   = m_menu->addAction("取消");
-    m_produce  = m_menu->addAction("生产");
     m_out      = m_menu->addAction("出库");
     m_mod_price= m_menu->addAction("定价");
     m_menu->addAction("放弃");
@@ -34,7 +33,6 @@ OrderTable::OrderTable(QWidget *w):
     connect(m_new,SIGNAL(triggered(bool)),this,SIGNAL(newOrder()));
     connect(m_mod,SIGNAL(triggered(bool)),this,SIGNAL(modOrder()));
     connect(m_cancle,SIGNAL(triggered(bool)),this,SIGNAL(cancleOrder()));
-    connect(m_produce,SIGNAL(triggered(bool)),this,SIGNAL(produceOrder()));
     connect(m_out,SIGNAL(triggered(bool)),this,SIGNAL(outOrder()));
     connect(m_mod_price,SIGNAL(triggered(bool)),this,SIGNAL(modPrice()));
 
@@ -167,14 +165,10 @@ void OrderTable::setRowData(Order para,int row)
     item5->setText(para.CustomName);
     item6->setText(para.CustomBatch);
     item7->setText(para.CustomNote);
-    item8->setText(para.ProduceID);
-    item9->setText(QString("%1").arg(para.Money/100.0));
+    item8->setText(QString("%1").arg(para.Money/100.0));
     QString status;
     if(para.Current.Status==Status_New){
         status="新建";
-    }
-    if(para.Current.Status==Status_Produce){
-        status="生产中";
     }
     if(para.Current.Status==Status_Success){
         status="已出库";
@@ -183,7 +177,8 @@ void OrderTable::setRowData(Order para,int row)
         status="已取消";
     }
 
-    item10->setText(QString("%1").arg(status));
+    item9->setText(QString("%1").arg(status));
+    item10->setText(para.CreatTime);
 
     item0->setTextAlignment(Qt::AlignCenter);
     item1->setTextAlignment(Qt::AlignCenter);
@@ -226,7 +221,6 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                         m_mod->setEnabled(true);
                         m_cancle->setEnabled(true);
                         m_out->setEnabled(false);
-                        m_produce->setEnabled(true);
                         m_mod_price->setEnabled(true);
                     }
                     if(cur_order.Current.Status==Status_Produce){
@@ -234,7 +228,6 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                         m_mod->setEnabled(false);
                         m_cancle->setEnabled(false);
                         m_out->setEnabled(true);
-                        m_produce->setEnabled(false);
                         m_mod_price->setEnabled(false);
                     }
                     if(cur_order.Current.Status==Status_Cancle){
@@ -242,7 +235,6 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                         m_mod->setEnabled(false);
                         m_cancle->setEnabled(false);
                         m_out->setEnabled(false);
-                        m_produce->setEnabled(false);
                         m_mod_price->setEnabled(false);
                     }
                     if(cur_order.Current.Status==Status_Success){
@@ -250,7 +242,6 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                         m_mod->setEnabled(false);
                         m_cancle->setEnabled(false);
                         m_out->setEnabled(false);
-                        m_produce->setEnabled(false);
                         m_mod_price->setEnabled(false);
                     }
                     m_menu->exec(e->globalPos());

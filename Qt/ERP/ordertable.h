@@ -43,7 +43,6 @@ private:
     QMenu   *m_menu;
     QAction *m_new;
     QAction *m_mod;
-    QAction *m_produce;
     QAction *m_cancle;
     QAction *m_out;
     QAction *m_mod_price;
