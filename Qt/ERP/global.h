@@ -34,6 +34,8 @@ struct SysSetting{
     QString Host_name;
     QString Host_port;
     QString Account;
+    QStringList MaterielColor;
+    QStringList MaterielType;
     bool isExportOpen;
 };
 

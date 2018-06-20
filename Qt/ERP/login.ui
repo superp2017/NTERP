@@ -126,7 +126,7 @@ color: rgb(55, 55, 55);</string>
            <string notr="true">font: 12pt &quot;AcadEref&quot;;</string>
           </property>
           <property name="text">
-           <string/>
+           <string>888888</string>
           </property>
           <property name="echoMode">
            <enum>QLineEdit::Password</enum>

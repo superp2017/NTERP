@@ -53,8 +53,8 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QSet<QString> batch,  
     ui->comboBox_unit->blockSignals(true);
     ui->comboBox_orderType->clear();
     ui->comboBox_orderType->addItem("普通订单","0");
-    ui->comboBox_orderType->addItem("批量订单","1");
-    ui->comboBox_orderType->addItem("试样订单","2");
+    ui->comboBox_orderType->addItem("试样订单","1");
+    ui->comboBox_orderType->addItem("返工订单","2");
 
     ui->comboBox_customerName->clear();
     ui->comboBox_customerName->blockSignals(true);

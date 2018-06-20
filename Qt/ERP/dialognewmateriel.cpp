@@ -34,7 +34,7 @@ void DialogNewMateriel::on_pushButton_cancle_clicked()
 void DialogNewMateriel::initCommbox(QVector<Customer> cus,QVector<Materiel> ma)
 {
     QStringList col;
-    col<<"黑色"<<"红色"<<"白色"<<"银色"<<"银白色";
+    col<<"银色涂覆"<<"黑色涂覆"<<"绿色涂覆";
     QCompleter *completercol = new QCompleter(col, this);
     ui->comboBox_color->clear();
     ui->comboBox_color->addItems(col);
@@ -42,7 +42,7 @@ void DialogNewMateriel::initCommbox(QVector<Customer> cus,QVector<Materiel> ma)
     ui->comboBox_color->setCompleter(completercol);
 
     QStringList type;
-    type<<"锌涂层"<<"铝涂层"<<"锌铝涂层";
+    type<<"蓝白锌"<<"白锌"<<"封闭"<<"蓝白锌镍"<<"本色锌镍"<<"黑色镀锌"<<"去氢"<<"黑色锌镍";
     QCompleter *completertype = new QCompleter(type, this);
     ui->comboBox_type->clear();
     ui->comboBox_type->addItems(type);
