@@ -177,6 +177,8 @@ QJsonObject OrderService::toJsonObject(Order order)
     obj.insert("UserName",order.UserName);
     obj.insert("OrderID",order.OrderID);
     obj.insert("OrderType",order.OrderType);
+    obj.insert("Factory",order.Factory);
+    obj.insert("FactoryNumber",order.FactoryNumber);
     obj.insert("MaterielID",order.MaterielID);
     obj.insert("MaterielDes",order.MaterielDes);
     obj.insert("Unit",order.Unit);
@@ -226,6 +228,18 @@ Order OrderService::fromJsonObject(QJsonObject obj)
         if(value.isString())
             order.OrderID = value.toString();
     }
+
+    if(obj.contains("Factory")){
+        QJsonValue value = obj.value("Factory");
+        if(value.isString())
+            order.Factory = value.toString();
+    }
+    if(obj.contains("FactoryNumber")){
+        QJsonValue value = obj.value("FactoryNumber");
+        if(value.isString())
+            order.FactoryNumber = value.toString();
+    }
+
     if(obj.contains("OrderType")){
         QJsonValue value = obj.value("OrderType");
         if(value.isString())
@@ -361,7 +375,7 @@ Order OrderService::fromJsonObject(QJsonObject obj)
 bool OrderService::exportOrders(QVector<Order> list, QString filepath, bool isOpen)
 {
     QVector<QVariant> datalist;
-    datalist<<"生产批号"<<"物料编码"<<"物料描述"<<"订单数量"<<"单位"<<"客户名称"<<"客户备注"<<"价格(元)"<<"状态"<<"创建时间";
+    datalist<<"生产批号"<<"分厂名称"<<"物料编码"<<"物料描述"<<"订单数量"<<"单位"<<"客户名称"<<"客户备注"<<"价格(元)"<<"状态"<<"创建时间";
     QVector<QVector<QVariant>> data;
     for(int i=0;i<list.size();++i){
         Order order  = list.at(i);
@@ -374,10 +388,10 @@ bool OrderService::exportOrders(QVector<Order> list, QString filepath, bool isOp
             status="已取消";
 
         QVector<QVariant> datalist;
-        datalist<<"'"+order.OrderID<<"'"+order.MaterielID\
-               <<"'"+order.MaterielDes<<order.OrderNum\
-              <<order.Unit<<"'"<<order.CustomName+order.CustomBatch\
-             <<"'"+order.CustomNote<<"'"<<order.Money<<status<<order.CreatTime;
+        datalist<<"'"+order.OrderID<<order.Factory<<"'"+order.MaterielID\
+               <<"'"+order.MaterielDes<<"'"+order.OrderNum\
+              <<order.Unit<<order.CustomName<<"'"+order.CustomNote\
+              <<"'"+QString("%1").arg(order.Money/100.0)<<status<<"'"+order.CreatTime;
         data.push_back(datalist);
     }
     return  ExcelService::dataExport(filepath,datalist,data,isOpen);

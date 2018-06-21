@@ -34,6 +34,7 @@ private slots:
     void on_pushButton_print_clicked();
 
     void changeCol();
+    void changeColModel( QHeaderView::ResizeMode mode);
     void orderClick(QString orderID);
     void clearAllSelect();
     void cancleOrderCb(Order order,bool ok);

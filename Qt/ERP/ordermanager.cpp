@@ -15,7 +15,7 @@ OrderManager::OrderManager(QWidget *parent) :
     ui->setupUi(this);
     neworer = NULL;
 
-    tab_mode = QHeaderView::Stretch;
+    tab_mode = QHeaderView::Interactive;
 
     m_tab_new     = new OrderTable();
     m_tab_success = new OrderTable();
@@ -72,9 +72,12 @@ OrderManager::OrderManager(QWidget *parent) :
 
     setBtnEnable(false,false,false,false);
 
-    ui->radioButton_ave->setChecked(true);
-    changeCol();
+    //    ui->radioButton_ave->setChecked(true);
+    //    changeCol();
+
     updataData();
+    changeColModel(QHeaderView::ResizeToContents);
+    changeColModel(QHeaderView::Interactive);
 }
 
 OrderManager::~OrderManager()
@@ -135,6 +138,14 @@ void OrderManager::changeCol()
     m_tab_new->setHeaderColModel(tab_mode);
     m_tab_success->setHeaderColModel(tab_mode);
     m_tab_all->setHeaderColModel(tab_mode);
+    clearAllSelect();
+}
+
+void OrderManager::changeColModel(QHeaderView::ResizeMode mode)
+{
+    m_tab_new->setHeaderColModel(mode);
+    m_tab_success->setHeaderColModel(mode);
+    m_tab_all->setHeaderColModel(mode);
     clearAllSelect();
 }
 

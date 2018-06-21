@@ -4,12 +4,12 @@
 OrderTable::OrderTable(QWidget *w):
     M_TableWidget(w)
 {
-    this->setColumnCount(11);
+    this->setColumnCount(12);
     this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     //设置表头内容
     QStringList header;
-    header<<tr("生产批号")<<tr("物料编码")<<tr("物料描述")\
+    header<<tr("生产批号")<<tr("分厂名称")<<tr("物料编码")<<tr("物料描述")\
          <<tr("订单数量")<<tr("单位")<<tr("客户名称")<<tr("客户批次")<<tr("客户备注")<<tr("价格(元)")<<tr("状态")<<tr("创建时间");
     this->setHorizontalHeaderLabels(header);
 
@@ -112,6 +112,7 @@ void OrderTable::setRowData(Order para,int row)
     QTableWidgetItem *item8 = this->item(row,8);
     QTableWidgetItem *item9 = this->item(row,9);
     QTableWidgetItem *item10 = this->item(row,10);
+    QTableWidgetItem *item11 = this->item(row,11);
     if(item0==NULL){
         item0 = new QTableWidgetItem();
         this->setItem(row,0,item0);
@@ -156,16 +157,21 @@ void OrderTable::setRowData(Order para,int row)
         item10 = new QTableWidgetItem();
         this->setItem(row,10,item10);
     }
+    if(item11==NULL){
+        item11 = new QTableWidgetItem();
+        this->setItem(row,11,item11);
+    }
 
     item0->setText(para.OrderID);
-    item1->setText(para.MaterielID);
-    item2->setText(para.MaterielDes);
-    item3->setText(QString("%1").arg(para.OrderNum));
-    item4->setText(para.Unit);
-    item5->setText(para.CustomName);
-    item6->setText(para.CustomBatch);
-    item7->setText(para.CustomNote);
-    item8->setText(QString("%1").arg(para.Money/100.0));
+    item1->setText(para.Factory);
+    item2->setText(para.MaterielID);
+    item3->setText(para.MaterielDes);
+    item4->setText(QString("%1").arg(para.OrderNum));
+    item5->setText(para.Unit);
+    item6->setText(para.CustomName);
+    item7->setText(para.CustomBatch);
+    item8->setText(para.CustomNote);
+    item9->setText(QString("%1").arg(para.Money/100.0));
     QString status;
     if(para.Current.Status==Status_New){
         status="新建";
@@ -177,8 +183,8 @@ void OrderTable::setRowData(Order para,int row)
         status="已取消";
     }
 
-    item9->setText(QString("%1").arg(status));
-    item10->setText(para.CreatTime);
+    item10->setText(QString("%1").arg(status));
+    item11->setText(para.CreatTime);
 
     item0->setTextAlignment(Qt::AlignCenter);
     item1->setTextAlignment(Qt::AlignCenter);
@@ -191,6 +197,7 @@ void OrderTable::setRowData(Order para,int row)
     item8->setTextAlignment(Qt::AlignCenter);
     item9->setTextAlignment(Qt::AlignCenter); 
     item10->setTextAlignment(Qt::AlignCenter);
+    item11->setTextAlignment(Qt::AlignCenter);
 }
 
 

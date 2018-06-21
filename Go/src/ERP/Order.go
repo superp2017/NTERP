@@ -20,7 +20,8 @@ type Order struct {
 	UserName      string     //用户姓名
 	OrderID       string     //订单id
 	OrderType     string     //订单类型（普通订单、试样订单、返工订单）
-	FactoryNumber string     //工厂号
+	Factory       string     //分厂名称
+	FactoryNumber string     //分厂号
 	MaterielID    string     //材料id
 	MaterielDes   string     //材料描述
 	Unit          string     //单位
@@ -46,14 +47,20 @@ func NewOrder(session *JHttp.Session) {
 		return
 	}
 	if st.UserName == "" || st.UID == "" {
-		str := fmt.Sprintf("UserName = %s,UID = %s\n", st.UserName, st.UID)
+		str := fmt.Sprintf("NewOrder failed,UserName = %s,UID = %s\n", st.UserName, st.UID)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
 	}
 	if st.MaterielDes == "" {
-		JLogger.Error("MaterielDes is empty\n!")
-		session.Forward("1", "MaterielDes is empty\n!", nil)
+		JLogger.Error("NewOrder MaterielDes is empty\n!")
+		session.Forward("1", "NewOrder MaterielDes is empty\n!", nil)
+		return
+	}
+	if st.Factory == "" || st.FactoryNumber == "" {
+		str := fmt.Sprintf("NewOrder failed,Factory=%s,FactoryNumber=%s\n", st.Factory, st.FactoryNumber)
+		JLogger.Error(str)
+		session.Forward("1", str, nil)
 		return
 	}
 	/////////////创建物料/////////////////////
@@ -65,6 +72,7 @@ func NewOrder(session *JHttp.Session) {
 	}
 	st.MaterielID = ma.MaterID
 	id := CurDateEx() + getOrderID()
+	id = st.FactoryNumber + id
 	if st.OrderType == "0" {
 		id = "0" + id
 	} else if st.OrderType == "1" {

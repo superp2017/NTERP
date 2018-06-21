@@ -99,6 +99,8 @@ struct Order{
     QString           OrderType;      //订单类型（普通订单、批量订单、试样订单）
     QString           MaterielID;     //材料id
     QString           MaterielDes;    //材料描述
+    QString           Factory;        //分厂名称
+    QString           FactoryNumber;  //分厂号
     QString           Unit;           //单位
     QString           CustomID;       //客户ID
     QString           CustomName;     //客户姓名

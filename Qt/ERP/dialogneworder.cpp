@@ -56,6 +56,11 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QSet<QString> batch,  
     ui->comboBox_orderType->addItem("试样订单","1");
     ui->comboBox_orderType->addItem("返工订单","2");
 
+    ui->comboBox_factory->clear();
+    ui->comboBox_factory->addItem("涂覆分厂","01");
+    ui->comboBox_factory->addItem("滚镀分厂","02");
+    ui->comboBox_factory->addItem("挂镀分厂","03");
+
     ui->comboBox_customerName->clear();
     ui->comboBox_customerName->blockSignals(true);
     QStringList customlist;
@@ -63,10 +68,7 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QSet<QString> batch,  
         customlist<<c.Name;
         ui->comboBox_customerName->addItem(c.Name,c.CID);
     }
-//    QCompleter *completerCustomer = new QCompleter(customlist, this);
 
-//    ui->comboBox_customerName->setEditable(true);
-//    ui->comboBox_customerName->setCompleter(completerCustomer);
     ui->comboBox_customerName->addItem(ItemNewCustom);
     ui->comboBox_customerName->setCurrentIndex(-1);
 
@@ -153,6 +155,8 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     }else{
         order = curorder;
     }
+    order.Factory = ui->comboBox_factory->currentText();
+    order.FactoryNumber = ui->comboBox_factory->currentData().toString();
     order.OrderType = ui->comboBox_orderType->currentData().toString();
     order.MaterielDes = ui->lineEdit_MaterielDes->toPlainText();
     order.Unit = ui->comboBox_unit->currentText();
@@ -243,8 +247,6 @@ Order DialogNewOrder::getCurorder() const
 {
     return curorder;
 }
-
-
 
 
 

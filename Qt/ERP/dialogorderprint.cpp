@@ -24,7 +24,7 @@ DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
 
     //设置表头内容
     QStringList header;
-    header<<tr("生产订单");
+    header<<tr("生产批号");
     ui->tableWidget->setHorizontalHeaderLabels(header);
 
     ui->comboBox_order_status->addItem("新建订单",Status_New);
