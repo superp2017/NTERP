@@ -22,6 +22,7 @@ public:
     void appendOrder(Order para);
     void modOrder(Order para);
     void removeOrder(Order para);
+    void showAllRow();
 signals:
     void orderClick(QString orderID);
     void newOrder();

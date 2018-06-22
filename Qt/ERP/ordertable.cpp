@@ -94,6 +94,14 @@ void OrderTable::removeOrder(Order para)
     }
 }
 
+void OrderTable::showAllRow()
+{
+    int count = this->rowCount();
+    for(int i=0;i<count;++i){
+        this->setRowHidden(i,false);
+    }
+}
+
 
 
 
@@ -195,7 +203,7 @@ void OrderTable::setRowData(Order para,int row)
     item6->setTextAlignment(Qt::AlignCenter);
     item7->setTextAlignment(Qt::AlignCenter);
     item8->setTextAlignment(Qt::AlignCenter);
-    item9->setTextAlignment(Qt::AlignCenter); 
+    item9->setTextAlignment(Qt::AlignCenter);
     item10->setTextAlignment(Qt::AlignCenter);
     item11->setTextAlignment(Qt::AlignCenter);
 }

@@ -188,6 +188,7 @@ QJsonObject OrderService::toJsonObject(Order order)
     obj.insert("CustomNote",order.CustomNote);
     obj.insert("ProduceID",order.ProduceID);
     obj.insert("SuccessTime",order.SuccessTime);
+    obj.insert("CreatStamp",order.CreatStamp);
     obj.insert("CreatTime",order.CreatTime);
     obj.insert("OrderNum",order.OrderNum);
     obj.insert("Money",order.Money);
@@ -294,6 +295,11 @@ Order OrderService::fromJsonObject(QJsonObject obj)
         QJsonValue value = obj.value("CreatTime");
         if(value.isString())
             order.CreatTime = value.toString();
+    }
+    if(obj.contains("CreatStamp")){
+        QJsonValue value = obj.value("CreatStamp");
+        if(value.isDouble())
+            order.CreatStamp = value.toDouble();
     }
     if(obj.contains("OrderNum")){
         QJsonValue value = obj.value("OrderNum");

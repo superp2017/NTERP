@@ -59,7 +59,7 @@
      <item>
       <widget class="QRadioButton" name="radioButton_content">
        <property name="text">
-        <string>按内容</string>
+        <string>内容</string>
        </property>
       </widget>
      </item>

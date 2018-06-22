@@ -34,8 +34,7 @@ FormCustommanage::FormCustommanage(QWidget *parent) :
     connect(ui->radioButton_content,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_manu,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
 
-
-    ui->radioButton_ave->setChecked(true);
+    changeCol();
 }
 
 

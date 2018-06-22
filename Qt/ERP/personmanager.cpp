@@ -48,7 +48,6 @@ PersonManager::PersonManager(QWidget *parent) :
 
     setBtnEnable(false,false,false);
 
-    ui->radioButton_ave->setChecked(true);
     changeCol();
     updateData();
 }

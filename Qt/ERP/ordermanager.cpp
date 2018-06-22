@@ -8,6 +8,7 @@
 #include "dialogmodprice.h"
 #include "dialogorderprint.h"
 
+
 OrderManager::OrderManager(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OrderManager)
@@ -55,6 +56,12 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(m_tab_all,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
     connect(m_tab_all,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
+
+    connect(&m_search,SIGNAL(searchOther(QString,QString)),this,SLOT(searchOther(QString,QString)));
+    connect(&m_search,SIGNAL(searchPrice(int,int)),this,SLOT(searchPrice(int,int)));
+    connect(&m_search,SIGNAL(searchTime(qint64,qint64)),this,SLOT(searchTime(qint64,qint64)));
+    connect(&m_search,SIGNAL(showAll()),this,SLOT(showAll()));
+
     ui->pushButton_new->setStyleSheet("QPushButton{border-image: url(:/icon/new-red.png);}"
                                       "QPushButton:hover{border-image: url(:/icon/new.png);}"
                                       "QPushButton:pressed{border-image: url(:/icon/new.png);}"
@@ -69,15 +76,9 @@ OrderManager::OrderManager(QWidget *parent) :
                                           "QPushButton:pressed{border-image: url(:/icon/reflash-a.png);}"
                                           "QPushButton:checked{border-image: url(:/icon/reflash-a.png);}");
 
-
     setBtnEnable(false,false,false,false);
-
-    //    ui->radioButton_ave->setChecked(true);
-    //    changeCol();
-
+    changeCol();
     updataData();
-    changeColModel(QHeaderView::ResizeToContents);
-    changeColModel(QHeaderView::Interactive);
 }
 
 OrderManager::~OrderManager()
@@ -138,16 +139,11 @@ void OrderManager::changeCol()
     m_tab_new->setHeaderColModel(tab_mode);
     m_tab_success->setHeaderColModel(tab_mode);
     m_tab_all->setHeaderColModel(tab_mode);
+
     clearAllSelect();
 }
 
-void OrderManager::changeColModel(QHeaderView::ResizeMode mode)
-{
-    m_tab_new->setHeaderColModel(mode);
-    m_tab_success->setHeaderColModel(mode);
-    m_tab_all->setHeaderColModel(mode);
-    clearAllSelect();
-}
+
 
 void OrderManager::new_order()
 {
@@ -424,4 +420,43 @@ void OrderManager::checkSelect()
 }
 
 
+
+
+void OrderManager::on_pushButton_search_clicked()
+{
+
+//    m_search.initSearchContent();
+    m_search.exec();
+}
+#include<QDateTime>
+void OrderManager::searchPrice(int min, int max)
+{
+    QDateTime t;
+//    t.fromMSecsSinceEpoch()
+}
+
+void OrderManager::searchTime(qint64 min, qint64 max)
+{
+
+}
+
+void OrderManager::searchOther(QString type, QString content)
+{
+
+}
+
+void OrderManager::showAll()
+{
+    if(ui->tabWidget->currentWidget()==m_tab_all){
+        m_tab_all->showAllRow();
+    }
+
+    if(ui->tabWidget->currentWidget()== m_tab_new){
+        m_tab_new->showAllRow();
+    }
+
+    if(ui->tabWidget->currentWidget()==m_tab_success){
+        m_tab_success->showAllRow();
+    }
+}
 

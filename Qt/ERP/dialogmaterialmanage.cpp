@@ -17,8 +17,6 @@ DialogMaterialManage::DialogMaterialManage(QWidget *parent) :
     header<<tr("物料编号")<<tr("物料描述")<<tr("客户名称")<<tr("数量")<<tr("单位")<<tr("入库时间")<<tr("状态");
     ui->tableWidget->setHorizontalHeaderLabels(header);
 
-    ui->radioButton_ave->setChecked(true);
-
     connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
     connect(ui->checkBox_check_all,SIGNAL(clicked(bool)),this,SLOT(checkAll()));
 
@@ -54,6 +52,7 @@ void DialogMaterialManage::initData()
     for(Materiel m:ls){
         appendOne(m);
     }
+      ui->tableWidget->checkSelect();
 }
 
 void DialogMaterialManage::doExport(QVector<Materiel>ls,QString filepath)
@@ -81,7 +80,7 @@ void DialogMaterialManage::checkAll()
 
 void DialogMaterialManage::onCellClick(int row, int col)
 {
-    this->childrenRect();
+    ui->tableWidget->checkSelect();
 }
 
 void DialogMaterialManage::changeCol()

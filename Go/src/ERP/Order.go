@@ -32,6 +32,7 @@ type Order struct {
 	ProduceID     string     //生产编号
 	SuccessTime   string     //出货时间
 	CreatTime     string     //创建时间
+	CreatStamp    int64      //创建时间戳
 	Current       OderFlow   //当前状态
 	Flow          []OderFlow //订单流程
 	OrderNum      int        //订单数量

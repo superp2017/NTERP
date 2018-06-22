@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1084</width>
+    <width>1069</width>
     <height>759</height>
    </rect>
   </property>
@@ -50,6 +50,9 @@
       <widget class="QRadioButton" name="radioButton_ave">
        <property name="text">
         <string>平均</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

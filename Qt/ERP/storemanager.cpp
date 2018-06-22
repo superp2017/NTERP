@@ -36,7 +36,6 @@ StoreManager::StoreManager(QWidget *parent) :
 
     connect(ui->tableWidget,SIGNAL(GoodsClick(QString)),this,SLOT(GoodsClick(QString)));
 
-    ui->radioButton_ave->setChecked(true);
     changeCol();
     setBtnEnable(false,false,false,false);
     initData();
@@ -199,7 +198,6 @@ void StoreManager::changeCol()
     }
     if(ui->radioButton_content->isChecked()){
         ui->tableWidget->setHeaderColModel(QHeaderView::ResizeToContents);
-
     }
     if(ui->radioButton_manu->isChecked()){
         ui->tableWidget->setHeaderColModel(QHeaderView::Interactive);

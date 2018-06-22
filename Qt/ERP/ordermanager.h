@@ -5,6 +5,7 @@
 #include <QHeaderView>
 #include "ordertable.h"
 #include <QMouseEvent>
+#include "dialogordersearch.h"
 
 #include "dialogneworder.h"
 #pragma execution_character_set("utf-8")
@@ -34,12 +35,17 @@ private slots:
     void on_pushButton_print_clicked();
 
     void changeCol();
-    void changeColModel( QHeaderView::ResizeMode mode);
     void orderClick(QString orderID);
     void clearAllSelect();
     void cancleOrderCb(Order order,bool ok);
     void finishOrderCb(Order order,bool ok);
     void GlobalOrdersCb(bool ok);
+    void on_pushButton_search_clicked();
+
+    void searchPrice(int min,int max);
+    void searchTime(qint64 min,qint64 max);
+    void searchOther(QString type,QString content);
+    void showAll();
 protected:
     void mousePressEvent(QMouseEvent *e);
 
@@ -55,6 +61,7 @@ private:
     OrderTable *m_tab_all;
     DialogNewOrder *neworer;
     Order cur_order;
+    DialogOrderSearch m_search;
 };
 
 #endif // ORDERMANAGER_H
