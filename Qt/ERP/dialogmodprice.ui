@@ -117,7 +117,7 @@
        </size>
       </property>
       <property name="text">
-       <string>订单价格</string>
+       <string>订单单价</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

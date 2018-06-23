@@ -43,6 +43,13 @@ func getOrderID() string {
 	return strconv.Itoa(gOderSeed)
 }
 
+//重置订单id
+func resetOrderID() string {
+	gOderSeed = 1001
+	go JRedis.Redis_set(Ider_Order, &gOderSeed)
+	return strconv.Itoa(gOderSeed)
+}
+
 //获取员工id
 func getEmployeeID() string {
 	gEmployeeSeed++
@@ -86,6 +93,11 @@ func CurTime() string {
 //返回当前日期：例如：20170217
 func CurDateEx() string {
 	return time.Unix(time.Now().Unix(), 0).Format("20060102")
+}
+
+//返回当前月份
+func CurMonth() string {
+	return time.Unix(time.Now().Unix(), 0).Format("200601")
 }
 
 //返回当前日期：例如：2017-02-17

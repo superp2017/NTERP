@@ -215,8 +215,8 @@ void DialogMaterialManage::setRowData(Materiel ma, int row)
     item5->setText(ma.CreatTime);
     item6->setText(status);
 
-    item1->setTextAlignment(Qt::AlignCenter);
-    item2->setTextAlignment(Qt::AlignCenter);
+    item1->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+    item2->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
     item3->setTextAlignment(Qt::AlignCenter);
     item4->setTextAlignment(Qt::AlignCenter);
     item5->setTextAlignment(Qt::AlignCenter);

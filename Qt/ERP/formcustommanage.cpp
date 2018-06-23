@@ -345,9 +345,9 @@ void FormCustommanage::setRowData(Customer ma, int row)
     item9->setText(ma.CertificatesNum);
     item10->setText(ma.Note);
 
-    item1->setTextAlignment(Qt::AlignCenter);
+    item1->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
     item2->setTextAlignment(Qt::AlignCenter);
-    item3->setTextAlignment(Qt::AlignCenter);
+    item3->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
     item4->setTextAlignment(Qt::AlignCenter);
     item5->setTextAlignment(Qt::AlignCenter);
     item6->setTextAlignment(Qt::AlignCenter);

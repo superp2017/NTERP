@@ -65,11 +65,10 @@ void StoreManager::on_pushButton_new_clicked()
 {
     if(newGoods==NULL){
         newGoods = new DialogNewGoods();
-    }else{
-        newGoods->initData();
     }
     newGoods->initUI();
     newGoods->setModule(true);
+    newGoods->initData();
     if(newGoods->exec()==123){
         Goods goods = newGoods->getCurGoods();
         ui->tableWidget->appendGoods(goods);
@@ -83,10 +82,9 @@ void StoreManager::on_pushButton_mod_clicked()
     }
     if(newGoods==NULL){
         newGoods = new DialogNewGoods();
-    }else{
-        newGoods->initData();
     }
     newGoods->setModule(false);
+    newGoods->initData();
     newGoods->initGoods(cur_Goods);
     if(newGoods->exec()==123){
         Goods goods = newGoods->getCurGoods();
@@ -97,12 +95,12 @@ void StoreManager::on_pushButton_mod_clicked()
 
 void StoreManager::on_pushButton_in_store_clicked()
 {
-     inout.setModule(true);
+    inout.setModule(true);
     inout.initGoods(cur_Goods);
     if(inout.exec()==123){
-      Goods goods=  inout.getCurgoods();
-      cur_Goods = goods;
-      ui->tableWidget->modGoods(goods);
+        Goods goods=  inout.getCurgoods();
+        cur_Goods = goods;
+        ui->tableWidget->modGoods(goods);
     }
 }
 
@@ -111,8 +109,8 @@ void StoreManager::on_pushButton_out_store_clicked()
     inout.setModule(false);
     inout.initGoods(cur_Goods);
     if(inout.exec()==123){
-      Goods goods=  inout.getCurgoods();
-      ui->tableWidget->modGoods(goods);
+        Goods goods=  inout.getCurgoods();
+        ui->tableWidget->modGoods(goods);
     }
 }
 

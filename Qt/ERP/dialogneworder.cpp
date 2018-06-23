@@ -27,10 +27,9 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
     connect(ui->comboBox_customerName,SIGNAL(currentIndexChanged(int)),this,SLOT(customChange(int)));
     connect(ui->comboBox_unit,SIGNAL(currentIndexChanged(int)),this,SLOT(unitChange(int)));
 
-
     QRegExp regx("[a-zA-Z0-9]+$");
     QValidator *validator = new QRegExpValidator(regx, this );
-    ui->comboBox_CustomBatch->setValidator(validator);
+    ui->lineEdit_custombatch->setValidator(validator);
 
     changeModel();
 }
@@ -46,7 +45,7 @@ void DialogNewOrder::initData()
                dataCenter::instance()->pub_Units());
 }
 
-void DialogNewOrder::initCombox(QVector<Customer> custom, QSet<QString> batch,  QVector<QString> unit)
+void DialogNewOrder::initCombox(QVector<Customer> custom, QSet<QString> batch, QVector<QString> unit)
 
 {
     ui->comboBox_customerName->blockSignals(true);
@@ -72,11 +71,8 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QSet<QString> batch,  
     ui->comboBox_customerName->addItem(ItemNewCustom);
     ui->comboBox_customerName->setCurrentIndex(-1);
 
-    ui->comboBox_CustomBatch->clear();
     QCompleter *completerBatch = new QCompleter(batch.toList(), this);
-    ui->comboBox_CustomBatch->addItems(batch.toList());
-    ui->comboBox_CustomBatch->setEditable(true);
-    ui->comboBox_CustomBatch->setCompleter(completerBatch);
+    ui->lineEdit_custombatch->setCompleter(completerBatch);
 
     ui->comboBox_unit->clear();
     QCompleter *completerUnit = new QCompleter(unit.toList(), this);
@@ -107,7 +103,7 @@ void DialogNewOrder::initOrder(Order order)
     ui->comboBox_unit->setCurrentText(order.Unit);
     ui->spinBox_num->setValue(order.OrderNum);
     ui->comboBox_customerName->setCurrentText(order.CustomName);
-    ui->comboBox_CustomBatch->setCurrentText(order.CustomBatch);
+    ui->lineEdit_custombatch->setText(order.CustomBatch);
     ui->textEdit_custom_note->setText(order.CustomNote);
     curorder = order;
 }
@@ -120,7 +116,7 @@ void DialogNewOrder::clearUI()
     ui->comboBox_unit->setCurrentIndex(-1);
     ui->spinBox_num->setValue(0);
     ui->comboBox_customerName->setCurrentIndex(-1);
-    ui->comboBox_CustomBatch->setCurrentIndex(-1);
+    ui->lineEdit_custombatch->setText("");
     ui->textEdit_custom_note->setText("");
 }
 
@@ -160,7 +156,7 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     order.OrderType = ui->comboBox_orderType->currentData().toString();
     order.MaterielDes = ui->lineEdit_MaterielDes->toPlainText();
     order.Unit = ui->comboBox_unit->currentText();
-    order.CustomBatch = ui->comboBox_CustomBatch->currentText();
+    order.CustomBatch = ui->lineEdit_custombatch->text();
     order.CustomNote = ui->textEdit_custom_note->toPlainText();
     order.OrderNum =ui->spinBox_num->value();
 

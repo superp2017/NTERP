@@ -50,15 +50,20 @@ void DialogOrderDetail::init(Order order)
     }
     ui->lineEdit_orderType->setText(orderType);
     ui->lineEdit_outTime->setText(order.SuccessTime);
-    ui->lineEdit_produceID->setText(order.ProduceID);
+    ui->lineEdit_produceID->setText(order.ProduceTime);
 
     QString status;
     if(order.Current.Status==Status_New){
         status="新建";
+       // ui->pushButton_out_table->setVisible(false);
+    }
+    if(order.Current.Status==Status_Produce){
+        status="已生产";
+       // ui->pushButton_out_table->setVisible(false);
     }
     if(order.Current.Status==Status_Success){
         status="已出货";
-        ui->pushButton_out_table->setVisible(true);
+       // ui->pushButton_out_table->setVisible(true);
     }
     if(order.Current.Status==Status_Cancle){
         status="已取消";
@@ -69,7 +74,6 @@ void DialogOrderDetail::init(Order order)
     ui->textEdit_materDes->setText(order.MaterielDes);
 
     removeAllRow();
-
 
     for(OderFlow flow:order.Flow){
         int row =ui->tableWidget->rowCount();

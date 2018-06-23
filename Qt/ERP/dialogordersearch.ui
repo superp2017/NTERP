@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>355</width>
-    <height>368</height>
+    <height>310</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>355</width>
-    <height>368</height>
+    <height>310</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>355</width>
-    <height>368</height>
+    <height>310</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -29,8 +29,8 @@
    <property name="geometry">
     <rect>
      <x>260</x>
-     <y>332</y>
-     <width>80</width>
+     <y>270</y>
+     <width>71</width>
      <height>25</height>
     </rect>
    </property>
@@ -48,8 +48,8 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>332</y>
-     <width>80</width>
+     <y>270</y>
+     <width>71</width>
      <height>25</height>
     </rect>
    </property>
@@ -69,7 +69,7 @@
      <x>20</x>
      <y>10</y>
      <width>71</width>
-     <height>301</height>
+     <height>241</height>
     </rect>
    </property>
    <property name="title">
@@ -105,19 +105,6 @@
      </widget>
     </item>
     <item>
-     <widget class="QRadioButton" name="radioButton_price">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>价格</string>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QRadioButton" name="radioButton_other">
       <property name="minimumSize">
        <size>
@@ -140,8 +127,8 @@
     <rect>
      <x>100</x>
      <y>10</y>
-     <width>241</width>
-     <height>301</height>
+     <width>231</width>
+     <height>241</height>
     </rect>
    </property>
    <property name="title">
@@ -156,9 +143,12 @@
    <property name="checkable">
     <bool>false</bool>
    </property>
-   <layout class="QGridLayout" name="gridLayout" columnminimumwidth="3,5">
+   <layout class="QGridLayout" name="gridLayout" columnstretch="1,3">
     <property name="topMargin">
      <number>0</number>
+    </property>
+    <property name="horizontalSpacing">
+     <number>9</number>
     </property>
     <item row="0" column="0">
      <widget class="QLabel" name="label">
@@ -213,67 +203,6 @@
      </widget>
     </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="label_3">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>最小金额</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QDoubleSpinBox" name="doubleSpinBox_min">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="maximum">
-       <double>99999999.989999994635582</double>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="label_4">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>最大金额</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QDoubleSpinBox" name="doubleSpinBox_max">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="maximum">
-       <double>99999999999.990005493164063</double>
-      </property>
-      <property name="value">
-       <double>100.000000000000000</double>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0">
      <widget class="QLabel" name="label_5">
       <property name="minimumSize">
        <size>
@@ -289,7 +218,7 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
+    <item row="2" column="1">
      <widget class="QComboBox" name="comboBox_type">
       <property name="minimumSize">
        <size>
@@ -299,7 +228,7 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="0">
+    <item row="3" column="0">
      <widget class="QLabel" name="label_6">
       <property name="minimumSize">
        <size>
@@ -315,7 +244,7 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
+    <item row="3" column="1">
      <widget class="QComboBox" name="comboBox_content">
       <property name="minimumSize">
        <size>
@@ -330,9 +259,9 @@
   <widget class="QPushButton" name="pushButton_showall">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>332</y>
-     <width>80</width>
+     <x>180</x>
+     <y>270</y>
+     <width>71</width>
      <height>25</height>
     </rect>
    </property>

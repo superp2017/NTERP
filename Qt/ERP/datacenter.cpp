@@ -462,6 +462,9 @@ void dataCenter::net_newGoodsType(const QJsonObject para)
 {
     bool ok = false;
     QString type = GoodsService::newGoodsType(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        m_goodsType.push_back(type);
+    }
     emit sig_newGoodsType(type,ok);
 }
 

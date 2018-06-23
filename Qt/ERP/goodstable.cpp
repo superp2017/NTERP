@@ -166,7 +166,7 @@ void goodsTable::setRowData(Goods para, int row)
     item6->setTextAlignment(Qt::AlignCenter);
     item7->setTextAlignment(Qt::AlignCenter);
     item8->setTextAlignment(Qt::AlignCenter);
-    item9->setTextAlignment(Qt::AlignCenter);
+    item9->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
     item10->setTextAlignment(Qt::AlignCenter);
-    item11->setTextAlignment(Qt::AlignCenter);
+    item11->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 }

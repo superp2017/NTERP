@@ -355,7 +355,7 @@ void FormSupplierManage::setRowData(Supplier ma, int row)
     item8->setTextAlignment(Qt::AlignCenter);
     item9->setTextAlignment(Qt::AlignCenter);
     item10->setTextAlignment(Qt::AlignCenter);
-    item11->setTextAlignment(Qt::AlignCenter);
+    item11->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 }
 
 

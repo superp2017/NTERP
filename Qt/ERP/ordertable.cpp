@@ -4,13 +4,13 @@
 OrderTable::OrderTable(QWidget *w):
     M_TableWidget(w)
 {
-    this->setColumnCount(12);
+    this->setColumnCount(11);
     this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     //设置表头内容
     QStringList header;
-    header<<tr("生产批号")<<tr("分厂名称")<<tr("物料编码")<<tr("物料描述")\
-         <<tr("订单数量")<<tr("单位")<<tr("客户名称")<<tr("客户批次")<<tr("客户备注")<<tr("价格(元)")<<tr("状态")<<tr("创建时间");
+    header<<tr("分厂名称")<<tr("生产批号")<<tr("客户名称")<<tr("物料描述")\
+         <<tr("订单数量")<<tr("单位")<<tr("客户批次")<<tr("客户备注")<<tr("单价(元)")<<tr("总价(元)")<<tr("状态")<<tr("创建时间");
     this->setHorizontalHeaderLabels(header);
 
     this->setSortingEnabled(true);//允许列排序
@@ -26,6 +26,7 @@ OrderTable::OrderTable(QWidget *w):
     m_new      = m_menu->addAction("新建");
     m_mod      = m_menu->addAction("修改");
     m_cancle   = m_menu->addAction("取消");
+    m_produce  = m_menu->addAction("完成");
     m_out      = m_menu->addAction("出库");
     m_mod_price= m_menu->addAction("定价");
     m_menu->addAction("放弃");
@@ -33,6 +34,7 @@ OrderTable::OrderTable(QWidget *w):
     connect(m_new,SIGNAL(triggered(bool)),this,SIGNAL(newOrder()));
     connect(m_mod,SIGNAL(triggered(bool)),this,SIGNAL(modOrder()));
     connect(m_cancle,SIGNAL(triggered(bool)),this,SIGNAL(cancleOrder()));
+    connect(m_produce,SIGNAL(triggered(bool)),this,SIGNAL(produceOrder()));
     connect(m_out,SIGNAL(triggered(bool)),this,SIGNAL(outOrder()));
     connect(m_mod_price,SIGNAL(triggered(bool)),this,SIGNAL(modPrice()));
 
@@ -73,7 +75,7 @@ void OrderTable::modOrder(Order para)
 {
     int count = this->rowCount();
     for(int i=0;i<count;++i){
-        QTableWidgetItem *item0 =  this->item(i,0);
+        QTableWidgetItem *item0 =  this->item(i,1);
         if(item0!=NULL&&item0->text()==para.OrderID){
             setRowData(para,i);
             break;
@@ -86,7 +88,7 @@ void OrderTable::removeOrder(Order para)
 {
     int count = this->rowCount();
     for(int i=0;i<count;++i){
-        QTableWidgetItem *item0 =  this->item(i,0);
+        QTableWidgetItem *item0 =  this->item(i,1);
         if(item0!=NULL&&item0->text()==para.OrderID){
             this->removeRow(i);
             break;
@@ -170,19 +172,27 @@ void OrderTable::setRowData(Order para,int row)
         this->setItem(row,11,item11);
     }
 
-    item0->setText(para.OrderID);
-    item1->setText(para.Factory);
-    item2->setText(para.MaterielID);
+
+    //    header<<tr("分厂名称")<<tr("生产批号")<<tr("客户名称")<<tr("物料描述")\
+    //         <<tr("订单数量")<<tr("单位")<<tr("客户批次")<<tr("客户备注")<<tr("单价(元)")<<tr("总价(元)")<<tr("状态")<<tr("创建时间");
+
+    item0->setText(para.Factory);
+    item1->setText(para.OrderID);
+    item2->setText(para.CustomName);
     item3->setText(para.MaterielDes);
     item4->setText(QString("%1").arg(para.OrderNum));
     item5->setText(para.Unit);
-    item6->setText(para.CustomName);
-    item7->setText(para.CustomBatch);
-    item8->setText(para.CustomNote);
-    item9->setText(QString("%1").arg(para.Money/100.0));
+    item6->setText(para.CustomBatch);
+    item7->setText(para.CustomNote);
+    item8->setText(QString("%1").arg(para.Money/100.0));
+    item9->setText(QString("%1").arg(para.TotleMoney/100.0));
+
     QString status;
     if(para.Current.Status==Status_New){
         status="新建";
+    }
+    if(para.Current.Status==Status_Produce){
+        status="已生产";
     }
     if(para.Current.Status==Status_Success){
         status="已出库";
@@ -196,16 +206,15 @@ void OrderTable::setRowData(Order para,int row)
 
     item0->setTextAlignment(Qt::AlignCenter);
     item1->setTextAlignment(Qt::AlignCenter);
-    item2->setTextAlignment(Qt::AlignCenter);
-    item3->setTextAlignment(Qt::AlignCenter);
+    item2->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+    item3->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
     item4->setTextAlignment(Qt::AlignCenter);
     item5->setTextAlignment(Qt::AlignCenter);
     item6->setTextAlignment(Qt::AlignCenter);
-    item7->setTextAlignment(Qt::AlignCenter);
+    item7->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
     item8->setTextAlignment(Qt::AlignCenter);
     item9->setTextAlignment(Qt::AlignCenter);
     item10->setTextAlignment(Qt::AlignCenter);
-    item11->setTextAlignment(Qt::AlignCenter);
 }
 
 
@@ -222,7 +231,7 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                     if(row<0){
                         return;
                     }
-                    QTableWidgetItem* item = this->item(row,0);
+                    QTableWidgetItem* item = this->item(row,1);
                     if(item==NULL)
                         return;
                     bool exist =false;
@@ -235,6 +244,7 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                         m_new->setEnabled(true);
                         m_mod->setEnabled(true);
                         m_cancle->setEnabled(true);
+                        m_produce->setEnabled(true);
                         m_out->setEnabled(false);
                         m_mod_price->setEnabled(true);
                     }
@@ -242,6 +252,7 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                         m_new->setEnabled(false);
                         m_mod->setEnabled(false);
                         m_cancle->setEnabled(false);
+                        m_produce->setEnabled(false);
                         m_out->setEnabled(true);
                         m_mod_price->setEnabled(false);
                     }
@@ -249,6 +260,7 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                         m_new->setEnabled(true);
                         m_mod->setEnabled(false);
                         m_cancle->setEnabled(false);
+                        m_produce->setEnabled(false);
                         m_out->setEnabled(false);
                         m_mod_price->setEnabled(false);
                     }
@@ -256,6 +268,7 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                         m_new->setEnabled(true);
                         m_mod->setEnabled(false);
                         m_cancle->setEnabled(false);
+                        m_produce->setEnabled(false);
                         m_out->setEnabled(false);
                         m_mod_price->setEnabled(false);
                     }
@@ -275,7 +288,7 @@ void OrderTable::doubleclickRow(int row, int ool)
     }
     this->checkSelect();
     ool = 0;
-    QTableWidgetItem* item = this->item(row,0);
+    QTableWidgetItem* item = this->item(row,1);
     if(item==NULL)
         return;
     bool exist =false;
@@ -298,7 +311,7 @@ void OrderTable::clickRow(int row, int col)
         return;
     }
     col =0;
-    QTableWidgetItem* item = this->item(row,0);
+    QTableWidgetItem* item = this->item(row,1);
     if (item!=NULL){
         emit orderClick(item->text());
     }

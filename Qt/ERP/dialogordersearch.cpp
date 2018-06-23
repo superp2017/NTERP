@@ -9,12 +9,12 @@ DialogOrderSearch::DialogOrderSearch(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->radioButton_other,SIGNAL(clicked(bool)),this,SLOT(changeUIEnable()));
     connect(ui->radioButton_time,SIGNAL(clicked(bool)),this,SLOT(changeUIEnable()));
-    connect(ui->radioButton_price,SIGNAL(clicked(bool)),this,SLOT(changeUIEnable()));
     connect(ui->comboBox_type,SIGNAL(currentIndexChanged(QString)),this,SLOT(changeContent(QString)));
 
     ui->dateTimeEdit_start->setDateTime(QDateTime::currentDateTime().addDays(-1));
     ui->dateTimeEdit_end->setDateTime(QDateTime::currentDateTime());
     changeUIEnable();
+
 }
 
 DialogOrderSearch::~DialogOrderSearch()
@@ -26,11 +26,10 @@ void DialogOrderSearch::initSearchContent(QMap<QString, QVector<QString> > data)
 {
     m_search = data;
     QList<QString> list=  data.keys();
-    ui->comboBox_type->blockSignals(true);
     for(QString s:list){
         ui->comboBox_type->addItem(s);
     }
-    ui->comboBox_type->blockSignals(false);
+    ui->comboBox_type->setCurrentIndex(0);
 }
 
 void DialogOrderSearch::on_pushButton_ok_clicked()
@@ -44,15 +43,7 @@ void DialogOrderSearch::on_pushButton_ok_clicked()
         }
         emit searchOther(type,content);
     }
-    if(ui->radioButton_price->isChecked()){
-        double min = ui->doubleSpinBox_min->value();
-        double max = ui->doubleSpinBox_max->value();
-        if(min>max){
-            QToolTip::showText(ui->doubleSpinBox_max->mapToGlobal(QPoint(100, 0)), "最大金额不能小于最小金额!");
-            return;
-        }
-        emit searchPrice(min,max);
-    }
+
     if(ui->radioButton_time->isChecked()){
         qint64 start = ui->dateTimeEdit_start->dateTime().toMSecsSinceEpoch();
         qint64 end = ui->dateTimeEdit_end->dateTime().toMSecsSinceEpoch();
@@ -74,13 +65,10 @@ void DialogOrderSearch::on_pushButton_exit_clicked()
 void DialogOrderSearch::changeUIEnable()
 {
     if(ui->radioButton_time->isChecked()){
-        setenable(true,false,false);
+        setenable(true,false);
     }
     if(ui->radioButton_other->isChecked()){
-        setenable(false,false,true);
-    }
-    if(ui->radioButton_price->isChecked()){
-        setenable(false,true,false);
+        setenable(false,true);
     }
 }
 
@@ -93,14 +81,12 @@ void DialogOrderSearch::changeContent(QString type)
     }
 }
 
-void DialogOrderSearch::setenable(bool time, bool price, bool other)
+void DialogOrderSearch::setenable(bool time,  bool other)
 {
     ui->comboBox_content->setEnabled(other);
     ui->comboBox_type->setEnabled(other);
     ui->dateTimeEdit_start->setEnabled(time);
     ui->dateTimeEdit_end->setEnabled(time);
-    ui->doubleSpinBox_min->setEnabled(price);
-    ui->doubleSpinBox_max->setEnabled(price);
 }
 
 

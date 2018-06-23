@@ -108,12 +108,13 @@ struct Order{
     QString           CustomNote;     //客户备注
     QString           ProduceID;      //生产编号
     QString           SuccessTime;    //出货时间
+    QString           ProduceTime;    //生产完成时间
     QString           CreatTime;      //创建时间
-    qint64            CreatStamp;     //创建时间戳
     OderFlow          Current;        //当前状态
     QVector<OderFlow> Flow;           //订单流程
     int               OrderNum;       //订单数量
     int               Money;          //价格
+    int               TotleMoney;     //总价
 };
 
 struct User {

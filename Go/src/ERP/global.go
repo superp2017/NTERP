@@ -15,6 +15,7 @@ const (
 	Hash_SupplierGoods = "SupplierGoods"
 	Key_GoodType       = "GoodsType"
 	Key_Department     = "Department"
+	Key_LastOrderDate  = "LastOrderDate"
 )
 
 //ider

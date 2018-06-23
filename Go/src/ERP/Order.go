@@ -5,7 +5,6 @@ import (
 	"JGo/JLogger"
 	"JGo/JStore/JRedis"
 	"fmt"
-	"time"
 )
 
 type OderFlow struct {
@@ -30,13 +29,14 @@ type Order struct {
 	CustomBatch   string     //客户批次
 	CustomNote    string     //客户备注
 	ProduceID     string     //生产编号
-	SuccessTime   string     //出货时间
 	CreatTime     string     //创建时间
-	CreatStamp    int64      //创建时间戳
+	ProduceTime   string     //出货时间
+	SuccessTime   string     //出货时间
 	Current       OderFlow   //当前状态
 	Flow          []OderFlow //订单流程
 	OrderNum      int        //订单数量
-	Money         int        //价格
+	TotleMoney    int        //总价
+	Money         int        //单价
 }
 
 //新建订单
@@ -83,8 +83,16 @@ func NewOrder(session *JHttp.Session) {
 	} else {
 		id = "0" + id
 	}
-	st.OrderID = id
+	curMon := CurMonth()
+	date := getLastOrderDate()
+	if date != "" && curMon != date {
+		st.OrderID = resetOrderID()
+	} else {
+		st.OrderID = id
+	}
 	st.CreatTime = CurTime()
+	st.TotleMoney = st.OrderNum * st.Money
+	go setLastOrderDate(curMon)
 	////////////////添加状态///////////////////////////////
 	appendStatus(st, st.UserName, st.CreatTime, "创建订单", Status_New)
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, st); err != nil {
@@ -146,6 +154,9 @@ func ModOrder(session *JHttp.Session) {
 	data.CustomName = st.CustomName
 	data.CustomBatch = st.CustomBatch
 	data.CustomNote = st.CustomNote
+
+	data.TotleMoney = data.OrderNum * data.Money
+
 	////////////////添加状态///////////////////////////////
 	appendStatus(data, data.UserName, CurTime(), "修改订单", data.Current.Status)
 
@@ -189,7 +200,7 @@ func ModOrderPrice(session *JHttp.Session) {
 	}
 
 	data.Money = st.Money
-
+	data.TotleMoney = data.OrderNum * st.Money
 	////////////////添加状态///////////////////////////////
 	appendStatus(data, data.UserName, CurTime(), "修改订单价格", data.Current.Status)
 
@@ -282,7 +293,7 @@ func DelOrder(session *JHttp.Session) {
 	session.Forward("0", "success", data)
 }
 
-//订单进入生产
+//订单生产完成
 func PorduceOrder(session *JHttp.Session) {
 	type Para struct {
 		OrderID string //订单id
@@ -308,9 +319,10 @@ func PorduceOrder(session *JHttp.Session) {
 		session.Forward("1", str, nil)
 		return
 	}
-	data.ProduceID = time.Unix(time.Now().Unix(), 0).Format("20060102150405")
+	//data.ProduceID = time.Unix(time.Now().Unix(), 0).Format("20060102150405")
+	data.ProduceTime = CurTime()
 	////////////////添加状态///////////////////////////////
-	appendStatus(data, data.UserName, CurTime(), "订单进入生产", Status_Produce)
+	appendStatus(data, data.UserName, CurTime(), "订单生产完成", Status_Produce)
 
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -348,8 +360,8 @@ func SuccessOrder(session *JHttp.Session) {
 
 	go successMaterial(data.MaterielID)
 	////////////////添加状态///////////////////////////////
-	appendStatus(data, data.UserName, CurTime(), "订单完成", Status_Success)
-
+	appendStatus(data, data.UserName, CurTime(), "订单出库", Status_Success)
+	data.SuccessTime = CurTime()
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
@@ -384,4 +396,16 @@ func appendStatus(order *Order, name, time, action, status string) {
 	}
 	order.Current = flow
 	order.Flow = append(order.Flow, flow)
+}
+
+//获取订单最后时间
+func getLastOrderDate() string {
+	var date string
+	JRedis.Redis_hget(Hash_Order, Key_LastOrderDate, &date)
+	return date
+}
+
+//设置订单最后时间
+func setLastOrderDate(date string) error {
+	return JRedis.Redis_hset(Hash_Order, Key_LastOrderDate, &date)
 }

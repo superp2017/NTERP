@@ -68,5 +68,7 @@
         <file>icon/logon-a.png</file>
         <file>icon/instroe.png</file>
         <file>icon/instroe-red.png</file>
+        <file>icon/search.png</file>
+        <file>icon/search-a.png</file>
     </qresource>
 </RCC>

@@ -22,6 +22,7 @@ public:
 
     Materiel getMater() const;
 
+
 private slots:
     void on_pushButton_ok_clicked();
 

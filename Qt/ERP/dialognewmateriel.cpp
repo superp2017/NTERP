@@ -31,6 +31,8 @@ void DialogNewMateriel::on_pushButton_cancle_clicked()
     done(-1);
 }
 
+
+
 void DialogNewMateriel::initCommbox(QVector<Customer> cus,QVector<Materiel> ma)
 {
     QStringList col;
@@ -67,6 +69,9 @@ Materiel DialogNewMateriel::getMater() const
 {
     return mater;
 }
+
+
+
 
 void DialogNewMateriel::on_pushButton_add_custom_clicked()
 {

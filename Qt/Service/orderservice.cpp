@@ -188,10 +188,12 @@ QJsonObject OrderService::toJsonObject(Order order)
     obj.insert("CustomNote",order.CustomNote);
     obj.insert("ProduceID",order.ProduceID);
     obj.insert("SuccessTime",order.SuccessTime);
-    obj.insert("CreatStamp",order.CreatStamp);
+    obj.insert("ProduceTime",order.ProduceTime);
     obj.insert("CreatTime",order.CreatTime);
     obj.insert("OrderNum",order.OrderNum);
     obj.insert("Money",order.Money);
+    obj.insert("TotleMoney",order.TotleMoney);
+
     QJsonArray flow;
     for (OderFlow s: order.Flow) {
         QJsonObject m;
@@ -296,11 +298,12 @@ Order OrderService::fromJsonObject(QJsonObject obj)
         if(value.isString())
             order.CreatTime = value.toString();
     }
-    if(obj.contains("CreatStamp")){
-        QJsonValue value = obj.value("CreatStamp");
-        if(value.isDouble())
-            order.CreatStamp = value.toDouble();
+    if(obj.contains("ProduceTime")){
+        QJsonValue value = obj.value("ProduceTime");
+        if(value.isString())
+            order.ProduceTime = value.toString();
     }
+
     if(obj.contains("OrderNum")){
         QJsonValue value = obj.value("OrderNum");
         if(value.isDouble())
@@ -310,6 +313,12 @@ Order OrderService::fromJsonObject(QJsonObject obj)
         QJsonValue value = obj.value("Money");
         if(value.isDouble())
             order.Money = value.toInt();
+    }
+
+    if(obj.contains("TotleMoney")){
+        QJsonValue value = obj.value("TotleMoney");
+        if(value.isDouble())
+            order.TotleMoney = value.toInt();
     }
 
     if(obj.contains("Flow")){
@@ -381,7 +390,7 @@ Order OrderService::fromJsonObject(QJsonObject obj)
 bool OrderService::exportOrders(QVector<Order> list, QString filepath, bool isOpen)
 {
     QVector<QVariant> datalist;
-    datalist<<"生产批号"<<"分厂名称"<<"物料编码"<<"物料描述"<<"订单数量"<<"单位"<<"客户名称"<<"客户备注"<<"价格(元)"<<"状态"<<"创建时间";
+    datalist<<"生产批号"<<"分厂名称"<<"物料描述"<<"订单数量"<<"单位"<<"客户名称"<<"客户备注"<<"价格(元)"<<"状态"<<"创建时间";
     QVector<QVector<QVariant>> data;
     for(int i=0;i<list.size();++i){
         Order order  = list.at(i);
@@ -394,7 +403,7 @@ bool OrderService::exportOrders(QVector<Order> list, QString filepath, bool isOp
             status="已取消";
 
         QVector<QVariant> datalist;
-        datalist<<"'"+order.OrderID<<order.Factory<<"'"+order.MaterielID\
+        datalist<<"'"+order.OrderID<<order.Factory\
                <<"'"+order.MaterielDes<<"'"+order.OrderNum\
               <<order.Unit<<order.CustomName<<"'"+order.CustomNote\
               <<"'"+QString("%1").arg(order.Money/100.0)<<status<<"'"+order.CreatTime;

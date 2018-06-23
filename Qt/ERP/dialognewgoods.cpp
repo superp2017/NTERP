@@ -73,6 +73,7 @@ void DialogNewGoods::on_pushButton_ok_clicked()
 {
     Goods goods         = curGoods;
     goods.Name          = ui->lineEdit_name->text().trimmed();\
+    goods.Type          = ui->comboBox_type->currentText();
     goods.Format        = ui->lineEdit_format->text();
     goods.Color         = ui->lineEdit_color->text();
     goods.Price         = (int)(ui->doubleSpinBox_price->value()*100);
@@ -86,12 +87,8 @@ void DialogNewGoods::on_pushButton_ok_clicked()
         return;
     }
     goods.Type          = ui->comboBox_type->currentText();
-    if(goods.Type==""){
+    if(goods.Type==""&&!dataCenter::instance()->pub_checkTypeExist(goods.Type)){
         QToolTip::showText(ui->comboBox_type->mapToGlobal(QPoint(100, 0)), "货品分类不能为空!");
-        return ;
-    }
-    if(!goods.Format.isEmpty()&&dataCenter::instance()->pub_checkTypeExist(goods.Format)){
-        QToolTip::showText(ui->lineEdit_format->mapToGlobal(QPoint(100, 0)), "货品分类不存在!");
         return ;
     }
 
@@ -103,7 +100,7 @@ void DialogNewGoods::on_pushButton_ok_clicked()
         goods.SID   = ui->comboBox_supplier->currentData().toString();
     }
 
-    if(!goods.Unit.isEmpty()&&dataCenter::instance()->pub_checkUnitExist(goods.Unit)){
+    if(!goods.Unit.isEmpty()&&!dataCenter::instance()->pub_checkUnitExist(goods.Unit)){
         QToolTip::showText(ui->comboBox_unit->mapToGlobal(QPoint(100, 0)), "计量单位不存在!");
         return ;
     }
