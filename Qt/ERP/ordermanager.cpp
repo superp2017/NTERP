@@ -68,7 +68,6 @@ OrderManager::OrderManager(QWidget *parent) :
 
 
     connect(&m_search,SIGNAL(searchOther(QString,QString)),this,SLOT(searchOther(QString,QString)));
-    connect(&m_search,SIGNAL(searchPrice(int,int)),this,SLOT(searchPrice(int,int)));
     connect(&m_search,SIGNAL(searchTime(qint64,qint64)),this,SLOT(searchTime(qint64,qint64)));
     connect(&m_search,SIGNAL(showAll()),this,SLOT(showAll()));
 
@@ -361,7 +360,7 @@ void OrderManager::on_pushButton_print_clicked()
     if(ui->tabWidget->currentWidget()==m_tab_all){
         status =Status_All;
     }
-    print.initData(status);
+    print.initData(status,"全部分厂");
     print.exec();
 }
 

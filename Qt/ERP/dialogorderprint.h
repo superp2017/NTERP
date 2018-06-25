@@ -20,7 +20,7 @@ public:
     explicit DialogOrderPrint(QWidget *parent = 0);
     ~DialogOrderPrint();
 
-    void initData(QString status);
+    void initData(QString status, QString factory);
 
 private slots:
     void on_pushButton_export_clicked();
@@ -28,6 +28,8 @@ private slots:
     void on_pushButton_cancle_clicked();
 
     void orderStatusChange(int index);
+
+    void factoryChange(int index);
 
     void selectAll(bool checked);
 
@@ -43,7 +45,7 @@ private:
     void doExport(QVector<Order> ls, QString filepath);
     void removeAllRow();
     void setRowData(Order order, int row);
-    void updateData(QString status);
+    void updateData(QString status,QString factory);
     QVector<Order> getSelectOrders();
 
 
@@ -52,6 +54,7 @@ private:
     QVector<Order>    m_orders;
     QVector<QCheckBox*> m_checkboxs;
     QString cur_Status;
+    QString cur_factory;
 };
 
 #endif // DIALOGORDERPRINT_H

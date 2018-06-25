@@ -26,7 +26,7 @@ OrderTable::OrderTable(QWidget *w):
     m_new      = m_menu->addAction("新建");
     m_mod      = m_menu->addAction("修改");
     m_cancle   = m_menu->addAction("取消");
-    m_produce  = m_menu->addAction("完成");
+    m_produce  = m_menu->addAction("完成生产");
     m_out      = m_menu->addAction("出库");
     m_mod_price= m_menu->addAction("定价");
     m_menu->addAction("放弃");

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>295</width>
-    <height>468</height>
+    <width>290</width>
+    <height>404</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -39,109 +39,51 @@
     <number>9</number>
    </property>
    <property name="verticalSpacing">
-    <number>11</number>
+    <number>15</number>
    </property>
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
      <property name="horizontalSpacing">
-      <number>5</number>
+      <number>9</number>
      </property>
      <property name="verticalSpacing">
       <number>11</number>
      </property>
-     <item row="0" column="2">
-      <widget class="QComboBox" name="comboBox_custom">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>镀种</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="comboBox_type">
        <property name="minimumSize">
         <size>
          <width>0</width>
          <height>30</height>
         </size>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>客户  </string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="pushButton_add_custom">
-       <property name="minimumSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border-image: url(:/icon/plus.ico);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="flat">
+       <property name="duplicatesEnabled">
         <bool>false</bool>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>颜色  </string>
+        <string>厚度</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
-      <widget class="QComboBox" name="comboBox_color">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="pushButton_Add_color">
-       <property name="minimumSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border-image: url(:/icon/plus.ico);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="flat">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>描述  </string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QComboBox" name="comboBox_type">
+     <item row="1" column="1">
+      <widget class="QComboBox" name="comboBox_thickness">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -151,46 +93,17 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
+      <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>镀种  </string>
+        <string>盐雾</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-     <item row="4" column="2">
-      <widget class="QTextEdit" name="textEdit">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>100</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="3">
-      <widget class="QPushButton" name="pushButton_clear">
-       <property name="minimumSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border-image: url(:/icon/close.ico);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QComboBox" name="comboBox_same">
+     <item row="2" column="1">
+      <widget class="QComboBox" name="comboBox_Salt">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -202,32 +115,62 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>参考</string>
+        <string>摩擦系数</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-     <item row="2" column="3">
-      <widget class="QPushButton" name="pushButton_add_type">
+     <item row="3" column="1">
+      <widget class="QComboBox" name="comboBox_friction">
        <property name="minimumSize">
         <size>
-         <width>20</width>
-         <height>20</height>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>物料描述</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QTextEdit" name="textEdit">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>100</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QPushButton" name="pushButton_clear">
+       <property name="minimumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>20</width>
-         <height>20</height>
+         <width>15</width>
+         <height>15</height>
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-image: url(:/icon/plus.ico);</string>
+        <string notr="true">border-image: url(:/icon/close.ico);</string>
        </property>
        <property name="text">
         <string/>
-       </property>
-       <property name="flat">
-        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -236,27 +179,14 @@
    <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
-      <number>15</number>
+      <number>0</number>
      </property>
      <property name="leftMargin">
-      <number>20</number>
+      <number>0</number>
      </property>
      <property name="rightMargin">
-      <number>15</number>
+      <number>9</number>
      </property>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
      <item>
       <widget class="QPushButton" name="pushButton_cancle">
        <property name="minimumSize">
@@ -269,6 +199,19 @@
         <string>取消</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_ok">

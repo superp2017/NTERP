@@ -27,18 +27,27 @@ DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
     header<<tr("生产批号");
     ui->tableWidget->setHorizontalHeaderLabels(header);
 
+    ui->comboBox_order_factory->addItem("全部分厂","00");
+    ui->comboBox_order_factory->addItem("涂覆分厂","01");
+    ui->comboBox_order_factory->addItem("滚镀分厂","02");
+    ui->comboBox_order_factory->addItem("挂镀分厂","03");
+
     ui->comboBox_order_status->addItem("新建订单",Status_New);
     ui->comboBox_order_status->addItem("全部订单",Status_All);
     ui->comboBox_order_status->addItem("完成订单",Status_Success);
     ui->comboBox_order_status->addItem("取消订单",Status_Cancle);
 
+    cur_Status="";
+    cur_factory="";
+
     connect(ui->checkBox_check_all,SIGNAL(clicked(bool)),this,SLOT(selectAll(bool)));
     connect(ui->comboBox_order_status,SIGNAL(currentIndexChanged(int)),this,SLOT(orderStatusChange(int)));
+    connect(ui->comboBox_order_factory,SIGNAL(currentIndexChanged(int)),this,SLOT(factoryChange(int)));
     connect(ui->tableWidget,SIGNAL(cellClicked(int,int)),this,SLOT(cellChecked(int,int)));
 
     connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
 
-    cur_Status="";
+
     m_checkboxs.clear();
     m_orders.clear();
 }
@@ -47,8 +56,7 @@ DialogOrderPrint::~DialogOrderPrint()
 {
     delete ui;
 }
-
-void DialogOrderPrint::initData(QString status)
+void DialogOrderPrint::initData(QString status,QString factory)
 {
     if(status==Status_New){
         ui->comboBox_order_status->setCurrentIndex(0);
@@ -61,20 +69,34 @@ void DialogOrderPrint::initData(QString status)
     }else{
         return;
     }
+    if(factory=="全部分厂"){
+        ui->comboBox_order_factory->setCurrentIndex(0);
+    }else if(factory=="涂覆分厂"){
+        ui->comboBox_order_factory->setCurrentIndex(1);
+    }else if(factory=="滚镀分厂"){
+        ui->comboBox_order_factory->setCurrentIndex(2);
+    }else if(factory=="挂镀分厂"){
+        ui->comboBox_order_factory->setCurrentIndex(3);
+    }else{
+        return;
+    }
 
-    updateData(status);
+    updateData(status, factory);
 }
 
-void DialogOrderPrint::updateData(QString status)
+void DialogOrderPrint::updateData(QString status, QString factory)
 {
     cur_Status = status;
+    cur_factory = factory;
     m_orders = dataCenter::instance()->pub_StatusOrders(status);
     removeAllRow();
     m_checkboxs.clear();
     for(Order o:m_orders){
-        ui->tableWidget->setRowCount(ui->tableWidget->rowCount()+1);
-        int row=ui->tableWidget->rowCount()-1;
-        setRowData(o,row);
+        if(o.Factory==factory||factory=="全部分厂"){
+            ui->tableWidget->setRowCount(ui->tableWidget->rowCount()+1);
+            int row=ui->tableWidget->rowCount()-1;
+            setRowData(o,row);
+        }
     }
 }
 
@@ -162,7 +184,15 @@ void DialogOrderPrint::orderStatusChange(int index)
     index =0;
     QString status = ui->comboBox_order_status->currentData().toString();
     if(status==cur_Status) return;
-    initData(status);
+    initData(status,ui->comboBox_order_factory->currentText());
+}
+
+void DialogOrderPrint::factoryChange(int index)
+{
+    index =0;
+    QString fac =ui->comboBox_order_factory->currentText();
+    if(cur_factory==fac) return;
+    initData(ui->comboBox_order_status->currentData().toString(),fac);
 }
 
 void DialogOrderPrint::selectAll(bool checked)
@@ -172,7 +202,6 @@ void DialogOrderPrint::selectAll(bool checked)
             box->setChecked(checked);
         }
     }
-
 }
 
 void DialogOrderPrint::cellChecked(int row, int col)

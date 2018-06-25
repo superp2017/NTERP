@@ -2,7 +2,6 @@
 #include "ui_dialognewmateriel.h"
 #include <QDateTime>
 #include <QCompleter>
-#include "datacenter.h"
 
 
 DialogNewMateriel::DialogNewMateriel(QWidget *parent) :
@@ -10,8 +9,14 @@ DialogNewMateriel::DialogNewMateriel(QWidget *parent) :
     ui(new Ui::DialogNewMateriel)
 {
     ui->setupUi(this);
-    connect(ui->comboBox_same,SIGNAL(currentTextChanged(QString)),this,SLOT(comBoxdes_change()));
-    initCommbox(dataCenter::instance()->pub_Customers(),dataCenter::instance()->pub_Materiels());
+    initCommbox();
+    connect(ui->comboBox_friction,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
+    connect(ui->comboBox_thickness,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
+    connect(ui->comboBox_Salt,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
+    connect(ui->comboBox_type,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
+
+
+
 }
 
 DialogNewMateriel::~DialogNewMateriel()
@@ -33,35 +38,39 @@ void DialogNewMateriel::on_pushButton_cancle_clicked()
 
 
 
-void DialogNewMateriel::initCommbox(QVector<Customer> cus,QVector<Materiel> ma)
+void DialogNewMateriel::initCommbox()
 {
-    QStringList col;
-    col<<"银色涂覆"<<"黑色涂覆"<<"绿色涂覆";
-    QCompleter *completercol = new QCompleter(col, this);
-    ui->comboBox_color->clear();
-    ui->comboBox_color->addItems(col);
-    ui->comboBox_color->setEditable(true);
-    ui->comboBox_color->setCompleter(completercol);
-
     QStringList type;
-    type<<"蓝白锌"<<"白锌"<<"封闭"<<"蓝白锌镍"<<"本色锌镍"<<"黑色镀锌"<<"去氢"<<"黑色锌镍";
+    type<<"银色涂覆"<<"黑色涂覆"<<"绿色涂覆"<<"蓝白锌"<<"白锌"<<"封闭"<<"蓝白锌镍"<<"本色锌镍"<<"黑色镀锌"<<"去氢"<<"黑色锌镍";
     QCompleter *completertype = new QCompleter(type, this);
     ui->comboBox_type->clear();
     ui->comboBox_type->addItems(type);
     ui->comboBox_type->setEditable(true);
     ui->comboBox_type->setCompleter(completertype);
 
-    QCompleter *completerCus = new QCompleter(type, this);
-    ui->comboBox_custom->clear();
-    ui->comboBox_custom->setEditable(true);
-    for(Customer c:cus){
-        ui->comboBox_custom->addItem(c.Name+"("+c.CID+")",c.CID);
-    }
-    ui->comboBox_custom->setCompleter(completerCus);
+    QStringList friction;
+    friction<<"0.06~0.09"<<"0.09~0.15"<<"0.08~0.14"<<"0.10~0.16"<<"0.12~0.18"<<"0.18以上";
+    QCompleter *completerCus = new QCompleter(friction, this);
+    ui->comboBox_friction->clear();
+    ui->comboBox_friction->setEditable(true);
+    ui->comboBox_friction->addItems(friction);
+    ui->comboBox_friction->setCompleter(completerCus);
 
-    for(Materiel m:ma){
-        ui->comboBox_same->addItem(m.MaterDes);
-    }
+    QStringList salt;
+    salt<<"120h(120/240h)"<<"480h(240/720h)"<<"500h(840h)"<<"1000h(240/1000h)";
+    QCompleter *completersalt = new QCompleter(salt, this);
+    ui->comboBox_Salt->clear();
+    ui->comboBox_Salt->setEditable(true);
+    ui->comboBox_Salt->addItems(salt);
+    ui->comboBox_Salt->setCompleter(completersalt);
+
+    QStringList thick;
+    thick<<"5um以上(8~20um)"<<"8um以上(10~25um)"<<"10um以上(12~25um)"<<"12um以上(10~20um)"<<"13um以上(6~20um)";
+    QCompleter *completerThickness= new QCompleter(thick, this);
+    ui->comboBox_thickness->clear();
+    ui->comboBox_thickness->setEditable(true);
+    ui->comboBox_thickness->addItems(thick);
+    ui->comboBox_thickness->setCompleter(completerThickness);
 
 }
 
@@ -71,35 +80,25 @@ Materiel DialogNewMateriel::getMater() const
 }
 
 
-
-
-void DialogNewMateriel::on_pushButton_add_custom_clicked()
-{
-    ui->textEdit->setText(ui->textEdit->toPlainText()+"/"+ui->comboBox_custom->currentData().toString());
-
-}
-
-void DialogNewMateriel::on_pushButton_Add_color_clicked()
-{
-    ui->textEdit->setText(ui->textEdit->toPlainText()+"/"+ui->comboBox_color->currentText());
-}
-
-void DialogNewMateriel::on_pushButton_add_type_clicked()
-{
-    ui->textEdit->setText(ui->textEdit->toPlainText()+"/"+ui->comboBox_type->currentText());
-}
-
 void DialogNewMateriel::on_pushButton_clear_clicked()
 {
     ui->textEdit->clear();
 }
 
-void DialogNewMateriel::comBoxdes_change()
+void DialogNewMateriel::DesChange()
 {
-    QString str = ui->comboBox_same->currentText();
-    if(!str.isEmpty()){
-        ui->textEdit->setText(str);
-    }
+    QString str ;
+    if(!ui->comboBox_type->currentText().isEmpty())
+        str+= "/"+ui->comboBox_type->currentText();
+    if(!ui->comboBox_thickness->currentText().isEmpty())
+        str+= "/"+ui->comboBox_thickness->currentText();
+    if(!ui->comboBox_Salt->currentText().isEmpty())
+        str+= "/"+ui->comboBox_Salt->currentText();
+    if(!ui->comboBox_friction->currentText().isEmpty())
+        str+= "/"+ui->comboBox_friction->currentText();
+
+
+    ui->textEdit->setText(str);
 }
 
 

@@ -7,7 +7,6 @@
 #pragma execution_character_set("utf-8")
 
 
-
 namespace Ui {
 class DialogNewMateriel;
 }
@@ -28,19 +27,12 @@ private slots:
 
     void on_pushButton_cancle_clicked();
 
-    void on_pushButton_add_custom_clicked();
-
-    void on_pushButton_Add_color_clicked();
-
-    void on_pushButton_add_type_clicked();
-
     void on_pushButton_clear_clicked();
 
-    void comBoxdes_change();
-
+    void DesChange();
 
 private:
-    void initCommbox(QVector<Customer> cus,QVector<Materiel> ma);
+    void initCommbox();
 
     Ui::DialogNewMateriel *ui;
     Materiel mater;
