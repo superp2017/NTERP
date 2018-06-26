@@ -57,7 +57,7 @@ void DialogNewMateriel::initCommbox()
     ui->comboBox_friction->setCompleter(completerCus);
 
     QStringList salt;
-    salt<<"120h(120/240h)"<<"480h(240/720h)"<<"500h(840h)"<<"1000h(240/1000h)";
+    salt<<"120h"<<"480h"<<"500h"<<"1000h"<<"120/240h"<<"240/720h"<<"840h"<<"240/1000h";
     QCompleter *completersalt = new QCompleter(salt, this);
     ui->comboBox_Salt->clear();
     ui->comboBox_Salt->setEditable(true);
@@ -65,7 +65,7 @@ void DialogNewMateriel::initCommbox()
     ui->comboBox_Salt->setCompleter(completersalt);
 
     QStringList thick;
-    thick<<"5um以上(8~20um)"<<"8um以上(10~25um)"<<"10um以上(12~25um)"<<"12um以上(10~20um)"<<"13um以上(6~20um)";
+    thick<<"5um以上"<<"8um以上"<<"10um以上"<<"12um以上"<<"13um以上"<<"8~20um"<<"10~25um"<<"12~25um"<<"10~20um"<<"6~20um";
     QCompleter *completerThickness= new QCompleter(thick, this);
     ui->comboBox_thickness->clear();
     ui->comboBox_thickness->setEditable(true);
