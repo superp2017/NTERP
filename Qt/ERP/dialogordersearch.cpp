@@ -2,17 +2,19 @@
 #include "ui_dialogordersearch.h"
 #include <QDateTime>
 #include <QToolTip>
+#include <QMessageBox>
+
 DialogOrderSearch::DialogOrderSearch(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogOrderSearch)
 {
     ui->setupUi(this);
-    connect(ui->radioButton_other,SIGNAL(clicked(bool)),this,SLOT(changeUIEnable()));
-    connect(ui->radioButton_time,SIGNAL(clicked(bool)),this,SLOT(changeUIEnable()));
+    connect(ui->checkBox_other,SIGNAL(clicked(bool)),this,SLOT(changeUIEnable()));
+    connect(ui->checkBox_time,SIGNAL(clicked(bool)),this,SLOT(changeUIEnable()));
     connect(ui->comboBox_type,SIGNAL(currentIndexChanged(QString)),this,SLOT(changeContent(QString)));
 
-    ui->dateTimeEdit_start->setDateTime(QDateTime::currentDateTime().addDays(-1));
-    ui->dateTimeEdit_end->setDateTime(QDateTime::currentDateTime());
+    ui->dateEdit_start->setDate(QDate::currentDate().addDays(-1));
+    ui->dateEdit_end->setDate(QDate::currentDate());
     changeUIEnable();
 
 }
@@ -34,25 +36,33 @@ void DialogOrderSearch::initSearchContent(QMap<QString, QVector<QString> > data)
 
 void DialogOrderSearch::on_pushButton_ok_clicked()
 {
-    if(ui->radioButton_other->isChecked()){
-        QString  type = ui->comboBox_type->currentText();
-        QString  content = ui->comboBox_content->currentText();
+    if(!ui->checkBox_other->isChecked()&&!ui->checkBox_time->isChecked()){
+        QMessageBox::information(this,"提示","请至少选择一种搜索方式!");
+        return;
+    }
+    QString  type,content;
+    if(ui->checkBox_other->isChecked()){
+          type = ui->comboBox_type->currentText();
+          content = ui->comboBox_content->currentText();
         if(type==""||content==""){
             QToolTip::showText(ui->comboBox_content->mapToGlobal(QPoint(100, 0)), "搜索内容不能为空!");
             return;
         }
-        emit searchOther(type,content);
     }
 
-    if(ui->radioButton_time->isChecked()){
-        qint64 start = ui->dateTimeEdit_start->dateTime().toMSecsSinceEpoch();
-        qint64 end = ui->dateTimeEdit_end->dateTime().toMSecsSinceEpoch();
+     qint64 start,end;
+    if(ui->checkBox_time->isChecked()){
+         start = ui->dateEdit_start->dateTime().toMSecsSinceEpoch();
+         end = ui->dateEdit_end->dateTime().toMSecsSinceEpoch();
         if(end<start){
-            QToolTip::showText(ui->dateTimeEdit_end->mapToGlobal(QPoint(100, 0)), "结束时间不能小于开始时间!");
+            QToolTip::showText(ui->dateEdit_end->mapToGlobal(QPoint(100, 0)), "结束时间不能小于开始时间!");
             return;
         }
-        emit searchTime(start,end);
     }
+
+    emit searchOrder(ui->checkBox_time->isChecked(),\
+                     ui->checkBox_other->isChecked(),\
+                     start,end,type,content);
 
     done(123);
 }
@@ -64,12 +74,7 @@ void DialogOrderSearch::on_pushButton_exit_clicked()
 
 void DialogOrderSearch::changeUIEnable()
 {
-    if(ui->radioButton_time->isChecked()){
-        setenable(true,false);
-    }
-    if(ui->radioButton_other->isChecked()){
-        setenable(false,true);
-    }
+    setenable(ui->checkBox_time->isChecked(),ui->checkBox_other->isChecked());
 }
 
 void DialogOrderSearch::changeContent(QString type)
@@ -85,8 +90,8 @@ void DialogOrderSearch::setenable(bool time,  bool other)
 {
     ui->comboBox_content->setEnabled(other);
     ui->comboBox_type->setEnabled(other);
-    ui->dateTimeEdit_start->setEnabled(time);
-    ui->dateTimeEdit_end->setEnabled(time);
+    ui->dateEdit_start->setEnabled(time);
+    ui->dateEdit_end->setEnabled(time);
 }
 
 

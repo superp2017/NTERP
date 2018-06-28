@@ -43,8 +43,7 @@ private slots:
     void GlobalOrdersCb(bool ok);
     void on_pushButton_search_clicked();
 
-    void searchTime(qint64 min,qint64 max);
-    void searchOther(QString type,QString content);
+    void searchOrder(bool isTime,bool isOther,qint64 min,qint64 max,QString type,QString content);
     void showAll();
     void on_pushButton_produce_clicked();
 

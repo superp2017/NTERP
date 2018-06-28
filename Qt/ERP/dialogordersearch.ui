@@ -92,7 +92,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QRadioButton" name="radioButton_time">
+     <widget class="QCheckBox" name="checkBox_time">
       <property name="minimumSize">
        <size>
         <width>0</width>
@@ -105,7 +105,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QRadioButton" name="radioButton_other">
+     <widget class="QCheckBox" name="checkBox_other">
       <property name="minimumSize">
        <size>
         <width>0</width>
@@ -166,16 +166,6 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QDateTimeEdit" name="dateTimeEdit_start">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_2">
       <property name="minimumSize">
@@ -189,16 +179,6 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QDateTimeEdit" name="dateTimeEdit_end">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
       </property>
      </widget>
     </item>
@@ -246,6 +226,26 @@
     </item>
     <item row="3" column="1">
      <widget class="QComboBox" name="comboBox_content">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>25</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDateEdit" name="dateEdit_start">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>25</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QDateEdit" name="dateEdit_end">
       <property name="minimumSize">
        <size>
         <width>0</width>

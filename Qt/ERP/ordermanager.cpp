@@ -69,6 +69,10 @@ OrderManager::OrderManager(QWidget *parent) :
 
     connect(&m_search,SIGNAL(searchOther(QString,QString)),this,SLOT(searchOther(QString,QString)));
     connect(&m_search,SIGNAL(searchTime(qint64,qint64)),this,SLOT(searchTime(qint64,qint64)));
+
+    connect(&m_search,SIGNAL(searchOrder(bool,bool,qint64,qint64,QString,QString)),\
+            this,SLOT(searchOrder(bool,bool,qint64,qint64,QString,QString)));
+
     connect(&m_search,SIGNAL(showAll()),this,SLOT(showAll()));
 
     ui->pushButton_new->setStyleSheet("QPushButton{border-image: url(:/icon/new-red.png);}"
@@ -525,32 +529,7 @@ void OrderManager::on_pushButton_search_clicked()
 }
 
 
-void OrderManager::searchTime(qint64 min, qint64 max)
-{
-    OrderTable *table = NULL;
-    if(ui->tabWidget->currentWidget()==m_tab_all){
-        table = m_tab_all;
-    }
-    if(ui->tabWidget->currentWidget()== m_tab_new){
-        table = m_tab_new;
-    }
-    if(ui->tabWidget->currentWidget()==m_tab_success){
-        table = m_tab_success;
-    }
-    if(table==NULL) return;
-    int count = table->rowCount();
-    for(int i =0;i<count;++i){
-        QString time = table->item(i,11)->text();
-        qint64 t=   QDateTime::fromString(time,"yyyy-MM-dd HH:mm:ss").toMSecsSinceEpoch();
-        if(t<min||t>max){
-            table->setRowHidden(i,true);
-        }else{
-            table->setRowHidden(i,false);
-        }
-    }
-}
-
-void OrderManager::searchOther(QString type, QString content)
+void OrderManager::searchOrder(bool isTime, bool isOther, qint64 min, qint64 max, QString type, QString content)
 {
     OrderTable *table = NULL;
     if(ui->tabWidget->currentWidget()==m_tab_all){
@@ -567,15 +546,24 @@ void OrderManager::searchOther(QString type, QString content)
     if(type=="分厂名称")
         col =0;
     if(type=="客户名称")
-        col = 2;
+        col = 3;
     int count = table->rowCount();
     for(int i =0;i<count;++i){
-        QString c = table->item(i,col)->text();
-        if(c!=content){
-            table->setRowHidden(i,true);
-        }else{
-            table->setRowHidden(i,false);
+        bool show = true;
+        if(isOther){
+            QString c = table->item(i,col)->text();
+            if(c!=content){
+                show&=false;
+            }
         }
+        if(show&&isTime){
+            QString time = table->item(i,12)->text();
+            qint64 t=   QDateTime::fromString(time,"yyyy-MM-dd").toMSecsSinceEpoch();
+            if(t<min||t>max){
+                show&=false;
+            }
+        }
+         table->setRowHidden(i,!show);
     }
 }
 

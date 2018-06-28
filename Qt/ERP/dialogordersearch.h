@@ -19,8 +19,7 @@ public:
     ~DialogOrderSearch();
     void initSearchContent(QMap<QString,QVector<QString>> data);
 signals:
-    void searchTime(qint64 min,qint64 max);
-    void searchOther(QString type,QString content);
+    void searchOrder(bool isTime,bool isOther,qint64 min,qint64 max,QString type,QString content);
     void showAll();
 private slots:
     void on_pushButton_ok_clicked();
