@@ -189,10 +189,10 @@ void OrderTable::setRowData(Order para,int row)
     if(para.OrderType=="1"){
         type="普通订单";
     }
-    if(para.OrderType=="1"){
+    if(para.OrderType=="2"){
         type="试样订单";
     }
-    if(para.OrderType=="1"){
+    if(para.OrderType=="3"){
         type="返工订单";
     }
     item2->setText(type);
