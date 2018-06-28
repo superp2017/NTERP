@@ -43,6 +43,8 @@ private slots:
 
     void on_pushButton_author_manage_clicked();
 
+    void on_pushButton_plating_clicked();
+
 signals:
     void newOrder();
 

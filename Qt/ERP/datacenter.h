@@ -62,6 +62,10 @@ public:
     void net_newGoodsType(const QJsonObject para);
     void net_delGoodsType(const QJsonObject para);
     void net_getGlobalGoodsType();
+    /////////////////////////////////////////////////////
+    void net_newPlating(const QJsonObject para);
+    void net_delPlating(const QJsonObject para);
+    void net_getglobalPlating();
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +81,9 @@ public:
     ////////////////////////////////////////////////////
     QVector<QString> pub_Units();
     bool pub_checkUnitExist(QString unit);
+    ////////////////////////////////////////////////////
+    QVector<QString> pub_Platings();
+    bool pub_checkPlatingExist(QString unit);
     ////////////////////////////////////////////////////
     QVector<Materiel>pub_Materiels();
     bool pub_checkMaterielID(QString id);
@@ -149,6 +156,10 @@ signals:
     void sig_globalSUppliers(bool);
     ///////////////////////////////////
     void sig_globalMateriels(bool);
+    ////////////////////////////////////
+    void sig_newPlating(QString,bool);
+    void sig_delPlating(QString,bool);
+    void sig_globalPlating(bool);
     //////////////////////////////////
     void sig_newGoods(Goods,bool);
     void sig_modGoods(Goods,bool);
@@ -166,6 +177,7 @@ private:
     QVector<User>      m_employee;   //所有的员工
     QVector<Order>     m_orders;     //所有订单
     QVector<QString>   m_units;      //所有计量单位
+    QVector<QString>   m_Platings;      //所有镀种
     QSet<QString>      m_batch;      //所有用户批次
     QVector<Materiel>  m_maters;     //所有物料
     QVector<Customer>  m_customers;  //所有客户

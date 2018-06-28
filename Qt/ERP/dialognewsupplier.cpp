@@ -21,7 +21,6 @@ DialogNewSupplier::DialogNewSupplier(QWidget *parent) :
     ui->lineEdit_bank_number->setValidator(validator);
     ui->lineEdit_cert_num->setValidator(validator);
     ui->lineEdit_contact_cell->setValidator(validator);
-    ui->lineEdit_tel->setValidator(validator);
 }
 
 DialogNewSupplier::~DialogNewSupplier()
@@ -45,16 +44,11 @@ void DialogNewSupplier::on_pushButton_ok_clicked()
     cus.ContactName     = ui->lineEdit_contact->text();
     cus.ContactCell     = ui->lineEdit_contact_cell->text();
     cus.Name            = ui->lineEdit_customName->text();
-    cus.Tel             = ui->lineEdit_tel->text();
     cus.Note            = ui->textEdit_note->toPlainText();  
    //cus.Goods           = ui->lineEdit_goods->text();
 
     if(cus.Name==""){
         QToolTip::showText(ui->lineEdit_customName->mapToGlobal(QPoint(100, 0)), "供应商姓名不能为空!");
-        return;
-    }
-    if(cus.Tel==""){
-        QToolTip::showText(ui->lineEdit_tel->mapToGlobal(QPoint(100, 0)), "供应商联系方式不能为空!");
         return;
     }
 
@@ -126,7 +120,6 @@ void DialogNewSupplier::initSupplier(Supplier sup)
     ui->lineEdit_contact->setText(sup.ContactName);
     ui->lineEdit_contact_cell->setText(sup.ContactCell);
     ui->lineEdit_customName->setText(sup.Name);
-    ui->lineEdit_tel->setText(sup.Tel);
     ui->textEdit_note->setText(sup.Note);
    // ui->lineEdit_goods->setText(sup.Goods);
     cursupplier = sup;

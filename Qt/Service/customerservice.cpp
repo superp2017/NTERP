@@ -228,7 +228,7 @@ Customer CustomerService::fromJsonObject(QJsonObject obj)
 bool CustomerService::exportCustomer(QVector<Customer> list, QString filepath,bool isOpen)
 {
     QVector<QVariant> datalist;
-    datalist<<"客户编号"<<"客户姓名"<<"公司电话"<<"公司地址"\
+    datalist<<"客户编号"<<"客户姓名"<<"公司地址"\
            <<"联系人"<<"联系电话"<<"开户行"<<"银行卡号"\
           <<"支行名称" <<"税号"<<"备注";
     QVector<QVector<QVariant>> data;
@@ -236,8 +236,7 @@ bool CustomerService::exportCustomer(QVector<Customer> list, QString filepath,bo
     for(int i=0;i<list.size();++i){
         Customer ma  = list.at(i);
         QVector<QVariant> datalist;
-        datalist<<"'"+ma.CID<<ma.Name\
-               <<"'"+ma.Tel<<ma.Addr\
+        datalist<<"'"+ma.CID<<ma.Name<<ma.Addr\
               <<ma.ContactName<<"'"+ma.ContactCell\
              <<ma.BankName<<"'"+ma.BankNumber\
             <<ma.Bankbranch<<"'"+ma.CertificatesNum\

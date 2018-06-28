@@ -21,7 +21,6 @@ DialogNewCustom::DialogNewCustom(QWidget *parent) :
     ui->lineEdit_bank_number->setValidator(validator);
     ui->lineEdit_cert_num->setValidator(validator);
     ui->lineEdit_contact_cell->setValidator(validator);
-    ui->lineEdit_tel->setValidator(validator);
 }
 
 DialogNewCustom::~DialogNewCustom()
@@ -41,15 +40,9 @@ void DialogNewCustom::on_pushButton_ok_clicked()
     cus.ContactName     = ui->lineEdit_contact->text();
     cus.ContactCell     = ui->lineEdit_contact_cell->text();
     cus.Name            = ui->lineEdit_customName->text();
-    cus.Icon            = ui->lineEdit_logo->text();
-    cus.Tel             = ui->lineEdit_tel->text();
     cus.Note            = ui->textEdit->toPlainText();
     if(cus.Name==""){
         QToolTip::showText(ui->lineEdit_customName->mapToGlobal(QPoint(100, 0)), "客户姓名不能为空!");
-        return;
-    }
-    if(cus.Tel==""){
-        QToolTip::showText(ui->lineEdit_tel->mapToGlobal(QPoint(100, 0)), "客户联系方式不能为空!");
         return;
     }
 
@@ -76,12 +69,6 @@ void DialogNewCustom::on_pushButton_select_cert_clicked()
     ui->lineEdit_cart->setText(fileName);
 }
 
-void DialogNewCustom::on_pushButton_select_logo_clicked()
-{
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                                    tr("上传公司logo"), ".", tr("Image Files (*.png *.jpg *.bmp)"));
-    ui->lineEdit_logo->setText(fileName);
-}
 
 void DialogNewCustom::modCustomerCb(Customer c, bool ok)
 {
@@ -129,8 +116,6 @@ void DialogNewCustom::initCustomer(Customer cus)
     ui->lineEdit_contact->setText(cus.ContactName);
     ui->lineEdit_contact_cell->setText(cus.ContactCell);
     ui->lineEdit_customName->setText(cus.Name);
-    ui->lineEdit_logo->setText(cus.Icon);
-    ui->lineEdit_tel->setText(cus.Tel);
     ui->textEdit->setText(cus.Note);
     curCustom = cus;
 }

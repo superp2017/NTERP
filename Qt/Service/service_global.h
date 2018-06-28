@@ -8,6 +8,7 @@
 #include <QJsonArray>
 #include <QDebug>
 
+#pragma execution_character_set("utf-8")
 
 #if defined(SERVICE_LIBRARY)
 #  define SERVICESHARED_EXPORT Q_DECL_EXPORT
@@ -54,6 +55,11 @@ const std::string  Net_GetAllMateril="/getallmaterials";    //获取所有材料
 const std::string  Net_NewUnit="/newunit";                  //新建单位
 const std::string  Net_DelUnit="/delunit";                  //删除单位
 const std::string  Net_GlobalUnit="/getallunits";           //获取所有单位
+
+
+const std::string  Net_NewPlating="/newplating";                  //新建镀种
+const std::string  Net_DelPlating="/delplating";                  //删除镀种
+const std::string  Net_GlobalPlating="/getallplating";           //获取所有镀种
 
 
 const std::string Net_NewGoods="/newgoods";                 //新建一个商品

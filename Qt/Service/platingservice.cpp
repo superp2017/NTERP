@@ -1,18 +1,17 @@
-﻿#include "unitservice.h"
+﻿#include "platingservice.h"
 #include "http.h"
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QDebug>
-
-UnitService::UnitService()
+PlatingService::PlatingService()
 {
 
 }
 
-QString UnitService::newUnit(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+QString PlatingService::newPlating(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
     QString unit;
-    std::string url = Net_NewUnit;
+    std::string url = Net_NewPlating;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
@@ -23,15 +22,15 @@ QString UnitService::newUnit(const QJsonObject para, bool &ok, QString hostname,
         }
     }
     if(!ret.ret)
-        qDebug()<<"newPlan ret is not 0"<<endl;
+        qDebug()<<"newPlating ret is not 0"<<endl;
     ok = false;
     return unit;
 }
 
-QString UnitService::delUnit(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+QString PlatingService::delPlating(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
     QString unit;
-    std::string url = Net_DelUnit;
+    std::string url = Net_DelPlating;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
@@ -42,15 +41,15 @@ QString UnitService::delUnit(const QJsonObject para, bool &ok, QString hostname,
         }
     }
     if(!ret.ret)
-        qDebug()<<"delUnit ret is not 0"<<endl;
+        qDebug()<<"delPlating ret is not 0"<<endl;
     ok = false;
     return unit;
 }
 
-QVector<QString> UnitService::getAllUnits(bool &ok, QString hostname, QString hostport)
+QVector<QString> PlatingService::getAllPlating(bool &ok, QString hostname, QString hostport)
 {
     QVector<QString> unit;
-    std::string url = Net_GlobalUnit;
+    std::string url = Net_GlobalPlating;
     bool r   = false;
     Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
     if(r&&ret.ret){
@@ -63,26 +62,25 @@ QVector<QString> UnitService::getAllUnits(bool &ok, QString hostname, QString ho
         }
     }
     if(!ret.ret)
-        qDebug()<<"getAllUnits ret is not 0"<<endl;
+        qDebug()<<"getAllPlating ret is not 0"<<endl;
     ok = false;
     return unit;
 }
 
-QJsonObject UnitService::toJsonObject(QString unit)
+QJsonObject PlatingService::toJsonObject(QString unit)
 {
     QJsonObject obj;
-    obj.insert("Unit",unit);
+    obj.insert("Plating",unit);
     return obj;
 }
 
-QString UnitService::fromJsonObject(QJsonObject obj)
+QString PlatingService::fromJsonObject(QJsonObject obj)
 {
     QString un;
-    if(obj.contains("Unit")){
-        QJsonValue value = obj.value("Unit");
+    if(obj.contains("Plating")){
+        QJsonValue value = obj.value("Plating");
         if(value.isString())
            un = value.toString();
     }
     return un;
 }
-

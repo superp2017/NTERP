@@ -9,6 +9,7 @@
 #include "accountservice.h"
 #include "materialservice.h"
 #include "goodsService.h"
+#include "platingservice.h"
 #include "boost/thread.hpp"
 
 
@@ -55,6 +56,9 @@ void dataCenter::initData()
 
     //////////////初始化所有商品的分类//////////////////
     boost::thread(boost::bind(&dataCenter::net_getGlobalGoodsType,dataCenter::instance())).detach();
+
+    //////////////初始化所有商品的分类//////////////////
+    boost::thread(boost::bind(&dataCenter::net_getglobalPlating,dataCenter::instance())).detach();
 
 }
 
@@ -482,6 +486,33 @@ void dataCenter::net_getGlobalGoodsType()
     emit sig_globalGoodsType(ok);
 }
 
+void dataCenter::net_newPlating(const QJsonObject para)
+{
+    bool ok = false;
+    QString unit =  PlatingService::newPlating(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        m_Platings.append(unit);
+    }
+    emit sig_newPlating(unit,ok);
+}
+
+void dataCenter::net_delPlating(const QJsonObject para)
+{
+    bool ok = false;
+    QString unit = PlatingService::delPlating(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        m_Platings.removeOne(unit);
+    }
+    emit sig_delPlating(unit,ok);
+}
+
+void dataCenter::net_getglobalPlating()
+{
+    bool ok =false;
+    m_Platings = PlatingService::getAllPlating(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_globalPlating(ok);
+}
+
 
 void dataCenter::pub_showMessage(QString msg, int sec)
 {
@@ -548,6 +579,15 @@ bool dataCenter::pub_checkUnitExist(QString unit)
     return m_units.contains(unit);
 }
 
+QVector<QString> dataCenter::pub_Platings()
+{
+    return m_Platings;
+}
+
+bool dataCenter::pub_checkPlatingExist(QString unit)
+{
+    return m_Platings.contains(unit);
+}
 
 
 QVector<Materiel> dataCenter::pub_Materiels()

@@ -12,11 +12,11 @@ FormCustommanage::FormCustommanage(QWidget *parent) :
     ui(new Ui::FormCustommanage)
 {
     ui->setupUi(this);
-    ui->tableWidget->setColumnCount(11);
+    ui->tableWidget->setColumnCount(10);
 
     //设置表头内容
     QStringList header;
-    header<<tr("客户编号")<<tr("客户姓名")<<tr("公司电话")<<tr("公司地址")\
+    header<<tr("客户编号")<<tr("客户姓名")<<tr("公司地址")\
          <<tr("联系人")<<tr("联系电话")<<tr("开户行")<<tr("银行卡号")\
         <<tr("支行名称") <<tr("税号")<<tr("备注");
     ui->tableWidget->setHorizontalHeaderLabels(header);
@@ -291,7 +291,6 @@ void FormCustommanage::setRowData(Customer ma, int row)
     QTableWidgetItem *item7 = ui->tableWidget->item(row,7);
     QTableWidgetItem *item8 = ui->tableWidget->item(row,8);
     QTableWidgetItem *item9 = ui->tableWidget->item(row,9);
-    QTableWidgetItem *item10 = ui->tableWidget->item(row,10);
 
     if(item1==NULL){
         item1 = new QTableWidgetItem();
@@ -329,32 +328,27 @@ void FormCustommanage::setRowData(Customer ma, int row)
         item9 = new QTableWidgetItem();
         ui->tableWidget->setItem(row,9,item9);
     }
-    if(item10==NULL){
-        item10 = new QTableWidgetItem();
-        ui->tableWidget->setItem(row,10,item10);
-    }
 
     item1->setText(ma.Name);
-    item2->setText(ma.Tel);
-    item3->setText(ma.Addr);
-    item4->setText(ma.ContactName);
-    item5->setText(ma.ContactCell);
-    item6->setText(ma.BankName);
-    item7->setText(ma.BankNumber);
-    item8->setText(ma.Bankbranch);
-    item9->setText(ma.CertificatesNum);
-    item10->setText(ma.Note);
+    item2->setText(ma.Addr);
+    item3->setText(ma.ContactName);
+    item4->setText(ma.ContactCell);
+    item5->setText(ma.BankName);
+    item6->setText(ma.BankNumber);
+    item7->setText(ma.Bankbranch);
+    item8->setText(ma.CertificatesNum);
+    item9->setText(ma.Note);
 
     item1->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-    item2->setTextAlignment(Qt::AlignCenter);
-    item3->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+    item2->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+    item3->setTextAlignment(Qt::AlignCenter);
     item4->setTextAlignment(Qt::AlignCenter);
     item5->setTextAlignment(Qt::AlignCenter);
     item6->setTextAlignment(Qt::AlignCenter);
     item7->setTextAlignment(Qt::AlignCenter);
     item8->setTextAlignment(Qt::AlignCenter);
     item9->setTextAlignment(Qt::AlignCenter);
-    item10->setTextAlignment(Qt::AlignCenter);
+
 }
 
 

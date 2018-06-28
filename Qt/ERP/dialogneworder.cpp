@@ -51,9 +51,9 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QSet<QString> batch, Q
     ui->comboBox_customerName->blockSignals(true);
     ui->comboBox_unit->blockSignals(true);
     ui->comboBox_orderType->clear();
-    ui->comboBox_orderType->addItem("普通订单","0");
-    ui->comboBox_orderType->addItem("试样订单","1");
-    ui->comboBox_orderType->addItem("返工订单","2");
+    ui->comboBox_orderType->addItem("普通订单","1");
+    ui->comboBox_orderType->addItem("试样订单","2");
+    ui->comboBox_orderType->addItem("返工订单","3");
 
     ui->comboBox_factory->clear();
     ui->comboBox_factory->addItem("涂覆分厂","01");
@@ -254,6 +254,7 @@ void DialogNewOrder::on_pushButton_cancel_clicked()
 void DialogNewOrder::on_pushButton_edit_des_clicked()
 {
     DialogNewMateriel mater;
+    mater.initCommbox();
     if(mater.exec()==123){
         Materiel ma = mater.getMater();
         ui->lineEdit_MaterielDes->setText(ma.MaterDes);

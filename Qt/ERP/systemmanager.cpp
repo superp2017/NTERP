@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QUrl>
+#include "dialogplatingmanage.h"
 
 SystemManager::SystemManager(QWidget *parent) :
     QWidget(parent),
@@ -138,4 +139,10 @@ void SystemManager::on_pushButton_author_manage_clicked()
 {
     author.initData();
     author.showNormal();
+}
+
+void SystemManager::on_pushButton_plating_clicked()
+{
+    DialogPlatingManage e;
+    e.exec();
 }

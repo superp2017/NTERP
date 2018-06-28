@@ -202,20 +202,19 @@ Supplier SupplierService::fromJsonObject(QJsonObject obj)
 bool SupplierService::exportSupplier(QVector<Supplier> list, QString filepath, bool isOpen)
 {
     QVector<QVariant> datalist;
-    datalist<<"供应商编号"<<"供应商姓名"<<"公司电话"<<"公司地址"\
+    datalist<<"供应商编号"<<"供应商姓名"<<"公司地址"\
            <<"联系人"<<"联系电话"<<"开户行"<<"银行卡号"\
-          <<"支行名称" <<"税号"<<"供应物"<<"备注";
+          <<"支行名称" <<"税号"<<"备注";
     QVector<QVector<QVariant>> data;
 
     for(int i=0;i<list.size();++i){
         Supplier ma  = list.at(i);
         QVector<QVariant> datalist;
-        datalist<<"'"+ma.SID<<ma.Name\
-               <<"'"+ma.Tel<<ma.Addr\
+        datalist<<"'"+ma.SID<<ma.Name<<ma.Addr\
               <<ma.ContactName<<"'"+ma.ContactCell\
              <<ma.BankName<<"'"+ma.BankNumber\
             <<ma.Bankbranch<<"'"+ma.CertificatesNum\
-           <<ma.Goods<<ma.Note;
+           <<ma.Note;
         data.push_back(datalist);
     }
     return  ExcelService::dataExport(filepath,datalist,data,isOpen);

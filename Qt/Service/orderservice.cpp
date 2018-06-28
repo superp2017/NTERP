@@ -7,6 +7,8 @@
 #include <QFileDialog>
 #include "excelservice.h"
 #include "boost/thread.hpp"
+#include <QDateTime>
+
 
 OrderService::OrderService()
 {
@@ -390,7 +392,9 @@ Order OrderService::fromJsonObject(QJsonObject obj)
 bool OrderService::exportOrders(QVector<Order> list, QString filepath, bool isOpen)
 {
     QVector<QVariant> datalist;
-    datalist<<"生产批号"<<"分厂名称"<<"物料描述"<<"订单数量"<<"单位"<<"客户名称"<<"客户备注"<<"价格(元)"<<"状态"<<"创建时间";
+    datalist<<"分厂名称"<<"生产批号"<<"订单类型"<<"客户名称"<<"物料描述"\
+                     <<"订单数量"<<"单位"<<"客户批次"<<"客户备注"\
+                     <<"未税单价(元)"<<"未税总价(元)"<<"状态"<<"创建时间";
     QVector<QVector<QVariant>> data;
     for(int i=0;i<list.size();++i){
         Order order  = list.at(i);
@@ -402,14 +406,26 @@ bool OrderService::exportOrders(QVector<Order> list, QString filepath, bool isOp
         if(order.Current.Status=="Status_Cancle")
             status="已取消";
 
+        QString type;
+        if(order.OrderType=="1"){
+            type="普通订单";
+        }
+        if(order.OrderType=="2"){
+            type="试样订单";
+        }
+        if(order.OrderType=="3"){
+            type="返工订单";
+        }
+
         QVector<QVariant> datalist;
-        datalist<<"'"+order.OrderID<<order.Factory\
-               <<"'"+order.MaterielDes<<"'"+order.OrderNum\
-              <<order.Unit<<order.CustomName<<"'"+order.CustomNote\
-              <<"'"+QString("%1").arg(order.Money/100.0)<<status<<"'"+order.CreatTime;
+        datalist<<order.Factory<<"'"+order.OrderID<<type<<order.CustomName\
+               <<"'"+order.MaterielDes<<QString("%1").arg(order.OrderNum)\
+              <<order.Unit<<"'"+order.CustomBatch<<"'"+order.CustomNote\
+              <<"'"+QString("%1").arg(order.Money/100.0)\
+             <<"'"+QString("%1").arg(order.TotleMoney/100.0)<<status\
+            <<"'"+QDateTime::fromString(order.CreatTime,"yyyy-MM-dd HH:mm:ss").toString("yyyy-MM-dd");
         data.push_back(datalist);
     }
     return  ExcelService::dataExport(filepath,datalist,data,isOpen);
 }
-
 

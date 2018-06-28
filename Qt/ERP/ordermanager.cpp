@@ -22,7 +22,7 @@ OrderManager::OrderManager(QWidget *parent) :
     m_tab_all     = new OrderTable();
 
     ui->tabWidget->addTab(m_tab_new,"新订单");
-    ui->tabWidget->addTab(m_tab_produce,"已生产");
+    ui->tabWidget->addTab(m_tab_produce,"已成品");
     ui->tabWidget->addTab(m_tab_success,"已出库");
     ui->tabWidget->addTab(m_tab_all,"全部");
     ui->tabWidget->tabBar()->setMovable(true);
@@ -171,6 +171,7 @@ void OrderManager::changeCol()
         tab_mode = QHeaderView::Interactive;
     }
     m_tab_new->setHeaderColModel(tab_mode);
+    m_tab_produce->setHeaderColModel(tab_mode);
     m_tab_success->setHeaderColModel(tab_mode);
     m_tab_all->setHeaderColModel(tab_mode);
 
@@ -356,6 +357,9 @@ void OrderManager::on_pushButton_print_clicked()
     }
     if(ui->tabWidget->currentWidget()==m_tab_success){
         status =Status_Success;
+    }
+    if(ui->tabWidget->currentWidget()==m_tab_produce){
+        status =Status_Produce;
     }
     if(ui->tabWidget->currentWidget()==m_tab_all){
         status =Status_All;

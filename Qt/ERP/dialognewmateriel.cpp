@@ -2,21 +2,17 @@
 #include "ui_dialognewmateriel.h"
 #include <QDateTime>
 #include <QCompleter>
-
+#include "datacenter.h"
 
 DialogNewMateriel::DialogNewMateriel(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogNewMateriel)
 {
     ui->setupUi(this);
-    initCommbox();
     connect(ui->comboBox_friction,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
     connect(ui->comboBox_thickness,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
     connect(ui->comboBox_Salt,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
     connect(ui->comboBox_type,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
-
-
-
 }
 
 DialogNewMateriel::~DialogNewMateriel()
@@ -40,8 +36,11 @@ void DialogNewMateriel::on_pushButton_cancle_clicked()
 
 void DialogNewMateriel::initCommbox()
 {
-    QStringList type;
-    type<<"银色涂覆"<<"黑色涂覆"<<"绿色涂覆"<<"蓝白锌"<<"白锌"<<"封闭"<<"蓝白锌镍"<<"本色锌镍"<<"黑色镀锌"<<"去氢"<<"黑色锌镍";
+  QVector<QString> platings =  dataCenter::instance()->pub_Platings();
+      QStringList type;
+    for(QString p:platings){
+        type <<p;
+    }
     QCompleter *completertype = new QCompleter(type, this);
     ui->comboBox_type->clear();
     ui->comboBox_type->addItems(type);

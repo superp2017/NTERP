@@ -56,10 +56,13 @@ func initRoute() {
 	JHttp.WhiteHttp("/newgoodstype", AddGoodsType)         //新建商品的分类
 	JHttp.WhiteHttp("/getallgoodstype", GetAllGoodsType)   //获取所有商品分类
 
-	JHttp.WhiteHttp("/newdepartment", NewDepartMent)   		//新建一个部门
+	JHttp.WhiteHttp("/newdepartment", NewDepartMent)       //新建一个部门
 	JHttp.WhiteHttp("/removedepartment", RemoveDepartment) //删除一个部门
 	JHttp.WhiteHttp("/getalldepartment", GetAllDepartment) //获取所有的部门
 
+	JHttp.WhiteHttp("/newplating", NewPlating)       //新建一个镀种
+	JHttp.WhiteHttp("/delplating", DelPlating)       //删除一个镀种
+	JHttp.WhiteHttp("/getallplating", GetAllPlating) //获取所有的镀种
 
 }
 

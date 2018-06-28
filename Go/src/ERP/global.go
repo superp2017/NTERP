@@ -11,6 +11,7 @@ const (
 	Hash_CustomerOrder = "CustomerOrder"
 	Key_GlobalOrder    = "GlobalOrder"
 	Key_Unit           = "Unit"
+	Key_Plating        = "Plating"
 	Hash_Goods         = "Goods"
 	Hash_SupplierGoods = "SupplierGoods"
 	Key_GoodType       = "GoodsType"

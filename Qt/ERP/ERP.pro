@@ -122,7 +122,8 @@ SOURCES += main.cpp\
     usertable.cpp \
     dialognewdepartment.cpp \
     formdepartmentmanage.cpp \
-    dialogordersearch.cpp
+    dialogordersearch.cpp \
+    dialogplatingmanage.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -199,7 +200,8 @@ HEADERS  += mainwindow.h \
     usertable.h \
     dialognewdepartment.h \
     formdepartmentmanage.h \
-    dialogordersearch.h
+    dialogordersearch.h \
+    dialogplatingmanage.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -261,7 +263,8 @@ FORMS    += mainwindow.ui \
     systemmanager.ui \
     dialognewdepartment.ui \
     formdepartmentmanage.ui \
-    dialogordersearch.ui
+    dialogordersearch.ui \
+    dialogplatingmanage.ui
 
 RESOURCES += \
     res.qrc

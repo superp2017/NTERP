@@ -20,7 +20,7 @@ public:
     ~DialogNewMateriel();
 
     Materiel getMater() const;
-
+    void initCommbox();
 
 private slots:
     void on_pushButton_ok_clicked();
@@ -32,7 +32,7 @@ private slots:
     void DesChange();
 
 private:
-    void initCommbox();
+
 
     Ui::DialogNewMateriel *ui;
     Materiel mater;

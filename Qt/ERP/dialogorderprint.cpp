@@ -32,10 +32,11 @@ DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
     ui->comboBox_order_factory->addItem("滚镀分厂","02");
     ui->comboBox_order_factory->addItem("挂镀分厂","03");
 
-    ui->comboBox_order_status->addItem("新建订单",Status_New);
-    ui->comboBox_order_status->addItem("全部订单",Status_All);
-    ui->comboBox_order_status->addItem("完成订单",Status_Success);
-    ui->comboBox_order_status->addItem("取消订单",Status_Cancle);
+    ui->comboBox_order_status->addItem("全部",Status_All);
+    ui->comboBox_order_status->addItem("新订单",Status_New);
+    ui->comboBox_order_status->addItem("已成品",Status_Produce);
+    ui->comboBox_order_status->addItem("已出库",Status_Success);
+    ui->comboBox_order_status->addItem("已取消",Status_Cancle);
 
     cur_Status="";
     cur_factory="";
@@ -58,14 +59,16 @@ DialogOrderPrint::~DialogOrderPrint()
 }
 void DialogOrderPrint::initData(QString status,QString factory)
 {
-    if(status==Status_New){
+    if(status== Status_All){
         ui->comboBox_order_status->setCurrentIndex(0);
-    }else if(status==Status_All){
+    }else if(status==Status_New){
         ui->comboBox_order_status->setCurrentIndex(1);
-    }else if(status==Status_Success){
+    }else if(status==Status_Produce){
         ui->comboBox_order_status->setCurrentIndex(2);
-    }else if(status==Status_Cancle){
+    }else if(status==Status_Success){
         ui->comboBox_order_status->setCurrentIndex(3);
+    }else if(status==Status_Cancle){
+        ui->comboBox_order_status->setCurrentIndex(4);
     }else{
         return;
     }
