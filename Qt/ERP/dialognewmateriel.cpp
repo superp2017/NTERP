@@ -4,11 +4,13 @@
 #include <QCompleter>
 #include "datacenter.h"
 
+#include<QDebug>
 DialogNewMateriel::DialogNewMateriel(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogNewMateriel)
 {
     ui->setupUi(this);
+
     connect(ui->comboBox_friction,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
     connect(ui->comboBox_thickness,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
     connect(ui->comboBox_Salt,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
@@ -36,8 +38,41 @@ void DialogNewMateriel::on_pushButton_cancle_clicked()
 
 void DialogNewMateriel::initCommbox()
 {
-  QVector<QString> platings =  dataCenter::instance()->pub_Platings();
-      QStringList type;
+    ui->comboBox_solid->blockSignals(true);
+    ui->comboBox_friction->blockSignals(true);
+    ui->comboBox_format->blockSignals(true);
+    ui->comboBox_Salt->blockSignals(true);
+    ui->comboBox_thickness->blockSignals(true);
+    ui->comboBox_type->blockSignals(true);
+
+    QStringList solid;
+    QStringList format;
+    mater_list=   dataCenter::instance()->pub_Materiels();
+    for(Materiel ma:mater_list){
+        if(!ma.ComponentSolid.trimmed().isEmpty())
+            solid<<ma.ComponentSolid;
+        if(!ma.ComponentFormat.trimmed().isEmpty())
+            format<<ma.ComponentFormat;
+    }
+    solid<<"120h"<<"480h"<<"500h"<<"1000h"<<"120/240h"<<"240/720h"<<"840h"<<"240/1000h";
+    format<<"120h"<<"480h"<<"500h"<<"1000h"<<"120/240h"<<"240/720h"<<"840h"<<"240/1000h";
+    if(solid.size()>0){
+        QCompleter *completersolid= new QCompleter(solid, this);
+        ui->comboBox_solid->clear();
+        ui->comboBox_solid->setEditable(true);
+        ui->comboBox_solid->addItems(solid);
+        ui->comboBox_solid->setCompleter(completersolid);
+    }
+    if(format.size()>0){
+        QCompleter *completerformat = new QCompleter(format, this);
+        ui->comboBox_format->clear();
+        ui->comboBox_format->setEditable(true);
+        ui->comboBox_format->addItems(format);
+        ui->comboBox_format->setCompleter(completerformat);
+    }
+
+    QVector<QString> platings =  dataCenter::instance()->pub_Platings();
+    QStringList type;
     for(QString p:platings){
         type <<p;
     }
@@ -71,6 +106,14 @@ void DialogNewMateriel::initCommbox()
     ui->comboBox_thickness->addItems(thick);
     ui->comboBox_thickness->setCompleter(completerThickness);
 
+    ui->comboBox_solid->blockSignals(false);
+    ui->comboBox_friction->blockSignals(false);
+    ui->comboBox_format->blockSignals(false);
+    ui->comboBox_Salt->blockSignals(false);
+    ui->comboBox_thickness->blockSignals(false);
+    ui->comboBox_type->blockSignals(false);
+
+    DesChange();
 }
 
 Materiel DialogNewMateriel::getMater() const
@@ -87,6 +130,10 @@ void DialogNewMateriel::on_pushButton_clear_clicked()
 void DialogNewMateriel::DesChange()
 {
     QString str ;
+    if(!ui->comboBox_solid->currentText().isEmpty())
+        str+="/"+ui->comboBox_solid->currentText();
+    if(!ui->comboBox_format->currentText().isEmpty())
+        str+="/"+ui->comboBox_format->currentText();
     if(!ui->comboBox_type->currentText().isEmpty())
         str+= "/"+ui->comboBox_type->currentText();
     if(!ui->comboBox_thickness->currentText().isEmpty())
@@ -96,8 +143,61 @@ void DialogNewMateriel::DesChange()
     if(!ui->comboBox_friction->currentText().isEmpty())
         str+= "/"+ui->comboBox_friction->currentText();
 
-
     ui->textEdit->setText(str);
 }
 
+
+void DialogNewMateriel::on_comboBox_solid_currentTextChanged(const QString &arg1)
+{
+    if (!arg1.isEmpty()){
+        ui->comboBox_friction->blockSignals(true);
+        ui->comboBox_format->blockSignals(true);
+        ui->comboBox_Salt->blockSignals(true);
+        ui->comboBox_thickness->blockSignals(true);
+        ui->comboBox_type->blockSignals(true);
+        for(Materiel ma:mater_list){
+            if(ma.ComponentSolid == arg1){
+                ui->comboBox_friction->setCurrentText(ma.Friction);
+                ui->comboBox_format->setCurrentText(ma.ComponentFormat);
+                ui->comboBox_Salt->setCurrentText(ma.Salt);
+                ui->comboBox_thickness->setCurrentText(ma.Thickness);
+                ui->comboBox_type->setCurrentText(ma.Plating);
+                break;
+            }
+        }
+        ui->comboBox_friction->blockSignals(false);
+        ui->comboBox_format->blockSignals(false);
+        ui->comboBox_Salt->blockSignals(false);
+        ui->comboBox_thickness->blockSignals(false);
+        ui->comboBox_type->blockSignals(false);
+    }
+    DesChange();
+}
+
+void DialogNewMateriel::on_comboBox_format_currentTextChanged(const QString &arg1)
+{
+    if (!arg1.isEmpty()){
+        ui->comboBox_friction->blockSignals(true);
+        ui->comboBox_solid->blockSignals(true);
+        ui->comboBox_Salt->blockSignals(true);
+        ui->comboBox_thickness->blockSignals(true);
+        ui->comboBox_type->blockSignals(true);
+        for(Materiel ma:mater_list){
+            if(ma.ComponentSolid == arg1){
+                ui->comboBox_friction->setCurrentText(ma.Friction);
+                ui->comboBox_solid->setCurrentText(ma.ComponentSolid);
+                ui->comboBox_Salt->setCurrentText(ma.Salt);
+                ui->comboBox_thickness->setCurrentText(ma.Thickness);
+                ui->comboBox_type->setCurrentText(ma.Plating);
+                break;
+            }
+        }
+        ui->comboBox_friction->blockSignals(false);
+        ui->comboBox_solid->blockSignals(false);
+        ui->comboBox_Salt->blockSignals(false);
+        ui->comboBox_thickness->blockSignals(false);
+        ui->comboBox_type->blockSignals(false);
+    }
+    DesChange();
+}
 

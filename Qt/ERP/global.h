@@ -4,17 +4,21 @@
 #include <QString>
 #include <QVector>
 #include "service_global.h"
+#include <QDebug>
 
 #pragma execution_character_set("utf-8")
 
 
 
+const QString Status_New     = "Status_New";                //新建订单
+const QString Status_PartProduce = "Status_PartProduce";    //订单部分出库
+const QString Status_Success = "Status_Success";            //订单完成(出库)
+const QString Status_Produce = "Status_Produce";            //全部生产完成
+const QString Status_PartProduce = "Status_PartProduce";    //部分完成声场
+const QString Status_Cancle  = "Status_Cancle";             //订单取消
+const QString Status_All     = "Status_All";                //所有订单
 
-const QString Status_New     = "Status_New";        //新建订单
-const QString Status_Success = "Status_Success";    //订单完成(出库)
-const QString Status_Produce = "Status_Produce";    //正在生产
-const QString Status_Cancle  = "Status_Cancle";     //订单取消
-const QString Status_All     = "Status_All";        //所有订单
+
 
 const QString ItemNewCustom("新增客户...");
 

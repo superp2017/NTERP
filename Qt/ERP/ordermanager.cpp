@@ -66,10 +66,6 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(m_tab_all,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
     connect(m_tab_all,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
-
-    connect(&m_search,SIGNAL(searchOther(QString,QString)),this,SLOT(searchOther(QString,QString)));
-    connect(&m_search,SIGNAL(searchTime(qint64,qint64)),this,SLOT(searchTime(qint64,qint64)));
-
     connect(&m_search,SIGNAL(searchOrder(bool,bool,qint64,qint64,QString,QString)),\
             this,SLOT(searchOrder(bool,bool,qint64,qint64,QString,QString)));
 

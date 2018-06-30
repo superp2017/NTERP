@@ -119,6 +119,8 @@ struct Order{
     OderFlow          Current;        //当前状态
     QVector<OderFlow> Flow;           //订单流程
     int               OrderNum;       //订单数量
+    int               ProduceNum;     //生产完成数量
+    int               SuccessNum;     //出库数量
     int               Money;          //价格
     int               TotleMoney;     //总价
 };
@@ -187,6 +189,12 @@ struct Supplier{
 struct Materiel{
     QString MaterID;            //物料编号
     QString MaterDes;           //物料描述
+    QString Plating;            //镀种
+    QString Friction;           //摩擦系数
+    QString Thickness;          //厚度
+    QString Salt;               //盐度
+    QString ComponentSolid;     //组件固号
+    QString ComponentFormat;    //组件规格
     QString Unit;               //单位
     int     OrderNum;           //订单数量
     QString CID;                //客户ID

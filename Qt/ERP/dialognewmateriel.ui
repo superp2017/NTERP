@@ -41,7 +41,7 @@
    <property name="verticalSpacing">
     <number>15</number>
    </property>
-   <item row="0" column="0">
+   <item row="1" column="0">
     <layout class="QGridLayout" name="gridLayout">
      <property name="horizontalSpacing">
       <number>9</number>
@@ -49,7 +49,7 @@
      <property name="verticalSpacing">
       <number>11</number>
      </property>
-     <item row="0" column="0">
+     <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>镀种</string>
@@ -59,80 +59,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="comboBox_type">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="duplicatesEnabled">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>厚度</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="comboBox_thickness">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>盐雾</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QComboBox" name="comboBox_Salt">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>摩擦系数</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QComboBox" name="comboBox_friction">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
+     <item row="7" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>物料描述</string>
@@ -142,17 +69,7 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
-      <widget class="QTextEdit" name="textEdit">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>100</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2">
+     <item row="7" column="2">
       <widget class="QPushButton" name="pushButton_clear">
        <property name="minimumSize">
         <size>
@@ -174,9 +91,138 @@
        </property>
       </widget>
      </item>
+     <item row="7" column="1">
+      <widget class="QTextEdit" name="textEdit">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>80</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QComboBox" name="comboBox_friction">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>摩擦系数</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QComboBox" name="comboBox_Salt">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>盐雾</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>零件固号</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>零件规格</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>厚度</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QComboBox" name="comboBox_thickness">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="comboBox_type">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="duplicatesEnabled">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="comboBox_solid">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="duplicatesEnabled">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="comboBox_format">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="duplicatesEnabled">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
       <number>0</number>

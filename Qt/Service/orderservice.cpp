@@ -193,6 +193,8 @@ QJsonObject OrderService::toJsonObject(Order order)
     obj.insert("ProduceTime",order.ProduceTime);
     obj.insert("CreatTime",order.CreatTime);
     obj.insert("OrderNum",order.OrderNum);
+    obj.insert("ProduceNum",order.ProduceNum);
+    obj.insert("SuccessNum",order.SuccessNum);
     obj.insert("Money",order.Money);
     obj.insert("TotleMoney",order.TotleMoney);
 
@@ -311,6 +313,19 @@ Order OrderService::fromJsonObject(QJsonObject obj)
         if(value.isDouble())
             order.OrderNum = value.toInt();
     }
+
+    if(obj.contains("ProduceNum")){
+        QJsonValue value = obj.value("ProduceNum");
+        if(value.isDouble())
+            order.ProduceNum = value.toInt();
+    }
+
+    if(obj.contains("SuccessNum")){
+        QJsonValue value = obj.value("SuccessNum");
+        if(value.isDouble())
+            order.SuccessNum = value.toInt();
+    }
+
     if(obj.contains("Money")){
         QJsonValue value = obj.value("Money");
         if(value.isDouble())

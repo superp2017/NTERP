@@ -31,11 +31,15 @@ private slots:
 
     void DesChange();
 
+    void on_comboBox_solid_currentTextChanged(const QString &arg1);
+
+    void on_comboBox_format_currentTextChanged(const QString &arg1);
+
 private:
-
-
     Ui::DialogNewMateriel *ui;
     Materiel mater;
+     QVector<Materiel> mater_list;
+
 };
 
 #endif // DIALOGNEWMATERIEL_H

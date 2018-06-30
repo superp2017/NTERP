@@ -36,6 +36,12 @@ QJsonObject MaterialService::toJsonObject(Materiel ma)
     QJsonObject obj;
     obj.insert("MaterID",ma.MaterID);
     obj.insert("MaterDes",ma.MaterDes);
+    obj.insert("Plating",ma.Plating);
+    obj.insert("Friction",ma.Friction);
+    obj.insert("Thickness",ma.Thickness);
+    obj.insert("Salt",ma.Salt);
+    obj.insert("ComponentSolid",ma.ComponentSolid);
+    obj.insert("ComponentFormat",ma.ComponentFormat);
     obj.insert("CID",ma.CID);
     obj.insert("CustomName",ma.CustomName);
     obj.insert("OrderNum",ma.OrderNum);
@@ -55,6 +61,36 @@ Materiel MaterialService::fromJsonObject(QJsonObject obj)
     }
     if(obj.contains("MaterDes")){
         QJsonValue value = obj.value("MaterDes");
+        if(value.isString())
+            ma.MaterDes = value.toString();
+    }
+    if(obj.contains("Plating")){
+        QJsonValue value = obj.value("Plating");
+        if(value.isString())
+            ma.Plating = value.toString();
+    }
+    if(obj.contains("Friction")){
+        QJsonValue value = obj.value("Friction");
+        if(value.isString())
+            ma.Friction = value.toString();
+    }
+    if(obj.contains("Thickness")){
+        QJsonValue value = obj.value("Thickness");
+        if(value.isString())
+            ma.Thickness = value.toString();
+    }
+    if(obj.contains("Salt")){
+        QJsonValue value = obj.value("Salt");
+        if(value.isString())
+            ma.Salt = value.toString();
+    }
+    if(obj.contains("ComponentSolid")){
+        QJsonValue value = obj.value("ComponentSolid");
+        if(value.isString())
+            ma.ComponentSolid = value.toString();
+    }
+    if(obj.contains("ComponentFormat")){
+        QJsonValue value = obj.value("ComponentFormat");
         if(value.isString())
             ma.MaterDes = value.toString();
     }

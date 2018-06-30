@@ -31,9 +31,11 @@ const (
 
 //order 状态
 const (
-	Status_New     string = "Status_New"     //新建订单
-	Status_Produce string = "Status_Produce" //新建订单
-	Status_Success string = "Status_Success" //订单完成(出库)
-	Status_Cancle  string = "Status_Cancle"  //订单取消
-	Status_All     string = "Status_All"     //所有订单
+	Status_New          string = "Status_New"         //新建订单
+	Status_Part_Produce string = "Status_PartProduce" //部分生产完成
+	Status_Produce      string = "Status_Produce"     //全部生产完成
+	Status_Part_Success string = "Status_PartProduce" //部分出库
+	Status_Success      string = "Status_Success"     //订单完成(出库)
+	Status_Cancle       string = "Status_Cancle"      //订单取消
+	Status_All          string = "Status_All"         //所有订单
 )
