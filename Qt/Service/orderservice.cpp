@@ -436,8 +436,8 @@ bool OrderService::exportOrders(QVector<Order> list, QString filepath, bool isOp
         datalist<<order.Factory<<"'"+order.OrderID<<type<<order.CustomName\
                <<"'"+order.MaterielDes<<QString("%1").arg(order.OrderNum)\
               <<order.Unit<<"'"+order.CustomBatch<<"'"+order.CustomNote\
-              <<"'"+QString("%1").arg(order.Money/100.0)\
-             <<"'"+QString("%1").arg(order.TotleMoney/100.0)<<status\
+              <<"'"+QString("%1").arg(order.Money)\
+             <<"'"+QString("%1").arg(order.TotleMoney)<<status\
             <<"'"+QDateTime::fromString(order.CreatTime,"yyyy-MM-dd HH:mm:ss").toString("yyyy-MM-dd");
         data.push_back(datalist);
     }

@@ -22,18 +22,21 @@ void DialogModPrice::initData(Order order)
 {
     curOrder = order;
     ui->lineEdit_orderID->setText(order.OrderID);
-    ui->doubleSpinBox->setValue(order.Money/100.0);
+    ui->doubleSpinBox->setValue(order.Money);
 }
 
 void DialogModPrice::on_pushButton_ok_clicked()
 {
-    int money = ui->doubleSpinBox->value()*100;
+    int money = ui->doubleSpinBox->value();
     if(money<=0){
         QToolTip::showText(ui->doubleSpinBox->mapToGlobal(QPoint(100, 0)), "订单价格填写错误!");
         return ;
     }
     curOrder.Money = money;
-    boost::thread t(boost::bind(&dataCenter::net_modOrderPrice,dataCenter::instance(),OrderService::toJsonObject(curOrder)));
+    QJsonObject obj;
+    obj.insert("OrderID",curOrder.OrderID);
+    obj.insert("Money",money);
+    boost::thread t(boost::bind(&dataCenter::net_modOrderPrice,dataCenter::instance(),obj));
     t.detach();
     dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 

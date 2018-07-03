@@ -14,15 +14,16 @@
 class OrderTable : public M_TableWidget
 {
     Q_OBJECT
-public:
-    OrderTable(QWidget*w=0);
 
+public:
+    OrderTable(QString status,QWidget*w=0);
     void initOrder(QVector<Order>list);
     void updateOrder(QVector<Order>list);
     void appendOrder(Order para);
     void modOrder(Order para);
     void removeOrder(Order para);
     void showAllRow();
+    int getTimeColNum();
 signals:
     void orderClick(QString orderID);
     void newOrder();
@@ -48,6 +49,8 @@ private:
     QAction *m_produce;
     QAction *m_out;
     QAction *m_mod_price;
+    QString cutStatus;
+    int timecol;
 };
 
 #endif // ORDERTABLE_H

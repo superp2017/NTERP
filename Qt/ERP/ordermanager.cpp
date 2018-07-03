@@ -8,6 +8,7 @@
 #include "dialogmodprice.h"
 #include "dialogorderprint.h"
 #include<QDateTime>
+#include "dialogorderproduceorout.h"
 
 OrderManager::OrderManager(QWidget *parent) :
     QWidget(parent),
@@ -16,10 +17,10 @@ OrderManager::OrderManager(QWidget *parent) :
     ui->setupUi(this);
     neworer = NULL;
 
-    m_tab_new     = new OrderTable();
-    m_tab_success = new OrderTable();
-    m_tab_produce = new OrderTable();
-    m_tab_all     = new OrderTable();
+    m_tab_new     = new OrderTable(Status_New);
+    m_tab_success = new OrderTable(Status_Success);
+    m_tab_produce = new OrderTable(Status_Produce);
+    m_tab_all     = new OrderTable(Status_All);
 
     ui->tabWidget->addTab(m_tab_new,"新订单");
     ui->tabWidget->addTab(m_tab_produce,"已成品");
@@ -238,7 +239,9 @@ void OrderManager::on_pushButton_cancle_clicked()
     case QMessageBox::Ok:
     {
         // Save was clicked
-        boost::thread t(boost::bind(&dataCenter::net_cancleOrder,dataCenter::instance(),OrderService::toJsonObject(cur_order)));
+        QJsonObject obj;
+        obj.insert("OrderID",cur_order.OrderID);
+        boost::thread t(boost::bind(&dataCenter::net_cancleOrder,dataCenter::instance(),obj));
         t.detach();
         dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
         break;
@@ -257,29 +260,35 @@ void OrderManager::on_pushButton_produce_clicked()
     if(cur_order.OrderID==""){
         return;
     }
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("提示");
-    msgBox.setText("订单"+cur_order.OrderID+"已经生产完成？");
-    msgBox.setInformativeText("是否确认?");
-    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Ok);
-    int ret = msgBox.exec();
-    switch (ret) {
-    case QMessageBox::Ok:
-    {
-        // Save was clicked
-        boost::thread t(boost::bind(&dataCenter::net_produceOrder,dataCenter::instance(),OrderService::toJsonObject(cur_order)));
-        t.detach();
-        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
-        break;
-    }
-    case QMessageBox::Cancel:
-        // Cancel was clicked
-        break;
-    default:
-        // should never be reached
-        break;
-    }
+    DialogOrderProduceOrOut produce;
+    produce.initData(false,cur_order.OrderID,cur_order.OrderNum-cur_order.ProduceNum,cur_order.Unit);
+    produce.exec();
+//    QMessageBox msgBox;
+//    msgBox.setWindowTitle("提示");
+//    msgBox.setText("订单"+cur_order.OrderID+"已经生产完成？");
+//    msgBox.setInformativeText("是否确认?");
+//    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+//    msgBox.setDefaultButton(QMessageBox::Ok);
+//    int ret = msgBox.exec();
+//    switch (ret) {
+//    case QMessageBox::Ok:
+//    {
+//        // Save was clicked
+//        QJsonObject obj;
+//        obj.insert("OrderID",cur_order.OrderID);
+//        obj.insert("Num",1.5);
+//        boost::thread t(boost::bind(&dataCenter::net_produceOrder,dataCenter::instance(),obj));
+//        t.detach();
+//        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
+//        break;
+//    }
+//    case QMessageBox::Cancel:
+//        // Cancel was clicked
+//        break;
+//    default:
+//        // should never be reached
+//        break;
+//    }
 }
 
 
@@ -288,29 +297,35 @@ void OrderManager::on_pushButton_success_clicked()
     if(cur_order.OrderID==""){
         return;
     }
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("提示");
-    msgBox.setText("订单"+cur_order.OrderID+"准备出库?");
-    msgBox.setInformativeText("是否确认?");
-    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Ok);
-    int ret = msgBox.exec();
-    switch (ret) {
-    case QMessageBox::Ok:
-    {
-        // Save was clicked
-        boost::thread t(boost::bind(&dataCenter::net_finishOrder,dataCenter::instance(),OrderService::toJsonObject(cur_order)));
-        t.detach();
-        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
-        break;
-    }
-    case QMessageBox::Cancel:
-        // Cancel was clicked
-        break;
-    default:
-        // should never be reached
-        break;
-    }
+    DialogOrderProduceOrOut produce;
+    produce.initData(false,cur_order.OrderID,cur_order.OrderNum-cur_order.SuccessNum,cur_order.Unit);
+    produce.exec();
+//    QMessageBox msgBox;
+//    msgBox.setWindowTitle("提示");
+//    msgBox.setText("订单"+cur_order.OrderID+"准备出库?");
+//    msgBox.setInformativeText("是否确认?");
+//    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+//    msgBox.setDefaultButton(QMessageBox::Ok);
+//    int ret = msgBox.exec();
+//    switch (ret) {
+//    case QMessageBox::Ok:
+//    {
+//        // Save was clicked
+//        QJsonObject obj;
+//        obj.insert("OrderID",cur_order.OrderID);
+//        obj.insert("Num",1.5);
+//        boost::thread t(boost::bind(&dataCenter::net_finishOrder,dataCenter::instance(),obj));
+//        t.detach();
+//        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
+//        break;
+//    }
+//    case QMessageBox::Cancel:
+//        // Cancel was clicked
+//        break;
+//    default:
+//        // should never be reached
+//        break;
+//    }
 }
 
 
@@ -553,7 +568,7 @@ void OrderManager::searchOrder(bool isTime, bool isOther, qint64 min, qint64 max
             }
         }
         if(show&&isTime){
-            QString time = table->item(i,12)->text();
+            QString time = table->item(i,table->getTimeColNum())->text();
             qint64 t=   QDateTime::fromString(time,"yyyy-MM-dd").toMSecsSinceEpoch();
             if(t<min||t>max){
                 show&=false;

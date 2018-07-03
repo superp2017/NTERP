@@ -40,11 +40,11 @@ type Order struct {
 	SuccessTime     string     //完成时间
 	Current         OderFlow   //当前状态
 	Flow            []OderFlow //订单流程
-	OrderNum        int        //订单数量
-	ProduceNum      int        //生产完成数量
-	SuccessNum      int        //出库数量
-	TotleMoney      int        //总价
-	Money           int        //单价
+	OrderNum        float64    //订单数量
+	ProduceNum      float64    //生产完成数量
+	SuccessNum      float64    //出库数量
+	TotleMoney      float64    //总价
+	Money           float64    //单价
 }
 
 //新建订单
@@ -119,21 +119,21 @@ func NewOrder(session *JHttp.Session) {
 //修改订单
 func ModOrder(session *JHttp.Session) {
 	type Para struct {
-		OrderID         string //订单id
-		MaterielID      string //材料id
-		MaterielDes     string //材料描述
-		Plating         string //镀种
-		Friction        string //摩擦系数
-		Thickness       string //厚度
-		Salt            string //盐度
-		ComponentSolid  string //组件固号
-		ComponentFormat string //组件规格
-		OrderNum        int    //订单数量
-		Unit            string //单位
-		CustomID        string //客户ID
-		CustomName      string //客户姓名
-		CustomBatch     string //客户批次
-		CustomNote      string //客户备注
+		OrderID         string  //订单id
+		MaterielID      string  //材料id
+		MaterielDes     string  //材料描述
+		Plating         string  //镀种
+		Friction        string  //摩擦系数
+		Thickness       string  //厚度
+		Salt            string  //盐度
+		ComponentSolid  string  //组件固号
+		ComponentFormat string  //组件规格
+		OrderNum        float64 //订单数量
+		Unit            string  //单位
+		CustomID        string  //客户ID
+		CustomName      string  //客户姓名
+		CustomBatch     string  //客户批次
+		CustomNote      string  //客户备注
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
@@ -194,8 +194,8 @@ func ModOrder(session *JHttp.Session) {
 //修改订单价格
 func ModOrderPrice(session *JHttp.Session) {
 	type Para struct {
-		OrderID string //订单id
-		Money   int    //价格
+		OrderID string  //订单id
+		Money   float64 //价格
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
@@ -319,8 +319,8 @@ func DelOrder(session *JHttp.Session) {
 //订单生产完成
 func PorduceOrder(session *JHttp.Session) {
 	type Para struct {
-		OrderID string //订单id
-		Num     int    //数量
+		OrderID string  //订单id
+		Num     float64 //数量
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
@@ -329,7 +329,7 @@ func PorduceOrder(session *JHttp.Session) {
 		return
 	}
 	if st.OrderID == "" || st.Num <= 0 {
-		str := fmt.Sprintf("PorduceOrder failed,OrderID =%s,Num=%d\n", st.OrderID, st.Num)
+		str := fmt.Sprintf("PorduceOrder failed,OrderID =%s,Num=%f\n", st.OrderID, st.Num)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -371,8 +371,8 @@ func PorduceOrder(session *JHttp.Session) {
 //订单完成
 func SuccessOrder(session *JHttp.Session) {
 	type Para struct {
-		OrderID string //订单id
-		Num     int    //数量
+		OrderID string  //订单id
+		Num     float64 //数量
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
@@ -381,7 +381,7 @@ func SuccessOrder(session *JHttp.Session) {
 		return
 	}
 	if st.OrderID == "" || st.Num <= 0 {
-		str := fmt.Sprintf("SuccessOrder failed,OrderID =%s,Num=%d\n", st.OrderID, st.Num)
+		str := fmt.Sprintf("SuccessOrder failed,OrderID =%s,Num=%f\n", st.OrderID, st.Num)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return

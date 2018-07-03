@@ -34,7 +34,7 @@ void DialogOrderDetail::init(Order order)
     ui->lineEdit_customerName->setText(order.CustomName);
     ui->lineEdit_customer_batch->setText(order.CustomBatch);
     ui->lineEdit_materID->setText(order.MaterielID);
-    ui->lineEdit_money->setText(QString("%1").arg(order.Money/100.0));
+    ui->lineEdit_money->setText(QString("%1").arg(order.Money));
     ui->lineEdit_orderID->setText(order.OrderID);
     ui->lineEdit_orderNum->setText(order.OrderNum+order.Unit);
 

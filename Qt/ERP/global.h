@@ -11,7 +11,7 @@
 
 
 const QString Status_New     = "Status_New";                //新建订单
-const QString Status_PartProduce = "Status_PartProduce";    //订单部分出库
+const QString Status_PartSuccess = "Status_PartSuccess";    //订单部分出库
 const QString Status_Success = "Status_Success";            //订单完成(出库)
 const QString Status_Produce = "Status_Produce";            //全部生产完成
 const QString Status_PartProduce = "Status_PartProduce";    //部分完成声场
