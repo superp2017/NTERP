@@ -13,7 +13,7 @@ OrderTable::OrderTable(QString status, QWidget *w):
     //设置表头内容
     QStringList header;
     header<<tr("分厂名称")<<tr("生产批号")<<tr("订单类型")<<tr("客户名称")<<tr("物料描述")\
-         <<tr("订单总量")<<tr("单位")<<tr("已成品")<<tr("已出库")<<tr("客户批次")<<tr("客户备注")<<tr("未税单价(元)")<<tr("未税总价(元)")<<tr("状态")<<tr("创建时间");
+         <<tr("订单总量")<<tr("单位")<<tr("未成品")<<tr("未出库")<<tr("客户批次")<<tr("客户备注")<<tr("未税单价(元)")<<tr("未税总价(元)")<<tr("状态")<<tr("创建时间");
 
     timecol = 14;
 
@@ -44,13 +44,13 @@ OrderTable::OrderTable(QString status, QWidget *w):
     connect(m_mod_price,SIGNAL(triggered(bool)),this,SIGNAL(modPrice()));
 
     if(cutStatus==Status_New){
-        this->hideColumn(7);
         this->hideColumn(8);
     }
     if(cutStatus==Status_Produce){
         this->hideColumn(7);
     }
     if(cutStatus==Status_Success){
+        this->hideColumn(7);
         this->hideColumn(8);
     }
     if(cutStatus==Status_All){
@@ -233,8 +233,8 @@ void OrderTable::setRowData(Order para,int row)
     item4->setText(para.MaterielDes);
     item5->setText(QString("%1").arg(para.OrderNum));
     item6->setText(para.Unit);
-    item7->setText(QString("%1").arg(para.ProduceNum));
-    item8->setText(QString("%1").arg(para.SuccessNum));
+    item7->setText(QString("%1").arg(para.OrderNum-para.ProduceNum));
+    item8->setText(QString("%1").arg(para.ProduceNum-para.SuccessNum));
     item9->setText(para.CustomBatch);
     item10->setText(para.CustomNote);
     item11->setText(QString("%1").arg(para.Money));

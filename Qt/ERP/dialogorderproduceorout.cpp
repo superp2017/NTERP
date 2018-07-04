@@ -18,6 +18,7 @@ void DialogOrderProduceOrOut::initData(bool isSuccess,QString OrderID, double un
 {
     m_isSuccess = isSuccess;
     ui->lineEdit_orderID->setText(OrderID);
+    curOrderID = OrderID;
     ui->lineEdit_un->setText(QString("%1").arg(un));
     ui->doubleSpinBox->setRange(1.0,un);
     ui->doubleSpinBox->setValue(un);

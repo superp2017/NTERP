@@ -547,8 +547,23 @@ QVector<Order> dataCenter::pub_StatusOrders(QString status)
     }
 
     for(Order o: m_orders) {
-        if (o.Current.Status.compare(status)==0){
-            ls.append(o);
+        if(status==Status_New){
+            if(o.ProduceNum<o.OrderNum){
+                ls.append(o);
+                continue;
+            }
+        }
+        if(status==Status_Produce){
+            if(o.ProduceNum>0&&o.SuccessNum<o.OrderNum){
+                ls.append(o);
+                continue;
+            }
+        }
+        if(status==Status_Success){
+            if(o.SuccessNum>0){
+                ls.append(o);
+                continue;
+            }
         }
     }
     return ls;

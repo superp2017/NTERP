@@ -235,6 +235,11 @@ bool DialogNewOrder::checkOrder(Order order)
         return false;
     }
 
+    if(order.OrderNum<order.ProduceNum||order.OrderNum<order.SuccessNum){
+        QToolTip::showText(ui->spinBox_num->mapToGlobal(QPoint(100, 0)), "订单数量不能少于已经成品或者已经出库的数量!");
+        return false;
+    }
+
     return true;
 }
 

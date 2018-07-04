@@ -54,8 +54,10 @@ void DialogNewMateriel::initCommbox()
         if(!ma.ComponentFormat.trimmed().isEmpty())
             format<<ma.ComponentFormat;
     }
-    solid<<"120h"<<"480h"<<"500h"<<"1000h"<<"120/240h"<<"240/720h"<<"840h"<<"240/1000h";
-    format<<"120h"<<"480h"<<"500h"<<"1000h"<<"120/240h"<<"240/720h"<<"840h"<<"240/1000h";
+    if(solid.size()==0)
+        solid<<"";
+    if(format.size()==0)
+        format<<"";
     if(solid.size()>0){
         QCompleter *completersolid= new QCompleter(solid, this);
         ui->comboBox_solid->clear();
@@ -130,17 +132,17 @@ void DialogNewMateriel::on_pushButton_clear_clicked()
 void DialogNewMateriel::DesChange()
 {
     QString str ;
-    if(!ui->comboBox_solid->currentText().isEmpty())
+    if(!ui->comboBox_solid->currentText().trimmed().isEmpty())
         str+="/"+ui->comboBox_solid->currentText();
-    if(!ui->comboBox_format->currentText().isEmpty())
+    if(!ui->comboBox_format->currentText().trimmed().isEmpty())
         str+="/"+ui->comboBox_format->currentText();
-    if(!ui->comboBox_type->currentText().isEmpty())
+    if(!ui->comboBox_type->currentText().trimmed().isEmpty())
         str+= "/"+ui->comboBox_type->currentText();
-    if(!ui->comboBox_thickness->currentText().isEmpty())
+    if(!ui->comboBox_thickness->currentText().trimmed().isEmpty())
         str+= "/"+ui->comboBox_thickness->currentText();
-    if(!ui->comboBox_Salt->currentText().isEmpty())
+    if(!ui->comboBox_Salt->currentText().trimmed().isEmpty())
         str+= "/"+ui->comboBox_Salt->currentText();
-    if(!ui->comboBox_friction->currentText().isEmpty())
+    if(!ui->comboBox_friction->currentText().trimmed().isEmpty())
         str+= "/"+ui->comboBox_friction->currentText();
 
     ui->textEdit->setText(str);

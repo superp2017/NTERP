@@ -118,11 +118,11 @@ struct Order{
     QString           CreatTime;      //创建时间
     OderFlow          Current;        //当前状态
     QVector<OderFlow> Flow;           //订单流程
-    int               OrderNum;       //订单数量
-    int               ProduceNum;     //生产完成数量
-    int               SuccessNum;     //出库数量
-    int               Money;          //价格
-    int               TotleMoney;     //总价
+    double            OrderNum;       //订单数量
+    double            ProduceNum;     //生产完成数量
+    double            SuccessNum;     //出库数量
+    double            Money;          //价格
+    double            TotleMoney;     //总价
 };
 
 struct User {

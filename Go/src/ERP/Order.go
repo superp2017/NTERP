@@ -180,8 +180,16 @@ func ModOrder(session *JHttp.Session) {
 
 	data.TotleMoney = data.OrderNum * data.Money
 
+	status := data.Current.Status
+	if data.OrderNum == data.ProduceNum {
+		status = Status_Produce
+	}
+
+	if data.OrderNum == data.SuccessNum {
+		status = Status_Success
+	}
 	////////////////添加状态///////////////////////////////
-	appendStatus(data, data.UserName, CurTime(), "修改订单", data.Current.Status)
+	appendStatus(data, data.UserName, CurTime(), "修改订单", status)
 
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
