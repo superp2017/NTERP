@@ -42,6 +42,7 @@ private:
     Ui::DialogNewOrder *ui;
     Order  curorder;
     bool   m_isNewMode;
+     Materiel curMater;
 };
 
 #endif // DIALOGNEWORDER_H

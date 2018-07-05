@@ -151,14 +151,20 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     }else{
         order = curorder;
     }
-    order.Factory = ui->comboBox_factory->currentText();
-    order.FactoryNumber = ui->comboBox_factory->currentData().toString();
-    order.OrderType = ui->comboBox_orderType->currentData().toString();
-    order.MaterielDes = ui->lineEdit_MaterielDes->toPlainText();
-    order.Unit = ui->comboBox_unit->currentText();
-    order.CustomBatch = ui->lineEdit_custombatch->text();
-    order.CustomNote = ui->textEdit_custom_note->toPlainText();
-    order.OrderNum =ui->spinBox_num->value();
+    order.Factory           = ui->comboBox_factory->currentText();
+    order.FactoryNumber     = ui->comboBox_factory->currentData().toString();
+    order.OrderType         = ui->comboBox_orderType->currentData().toString();
+    order.MaterielDes       = ui->lineEdit_MaterielDes->toPlainText();
+    order.Plating           = curMater.Plating;
+    order.Friction          = curMater.Friction;
+    order.Thickness         = curMater.Thickness;
+    order.Salt              = curMater.Salt;
+    order.ComponentSolid    = curMater.ComponentSolid;
+    order.ComponentFormat   = curMater.ComponentFormat;
+    order.Unit              = ui->comboBox_unit->currentText();
+    order.CustomBatch       = ui->lineEdit_custombatch->text();
+    order.CustomNote        = ui->textEdit_custom_note->toPlainText();
+    order.OrderNum          = ui->spinBox_num->value()*100;
 
     if(!checkOrder(order)){
         return;
@@ -261,8 +267,8 @@ void DialogNewOrder::on_pushButton_edit_des_clicked()
     DialogNewMateriel mater;
     mater.initCommbox();
     if(mater.exec()==123){
-        Materiel ma = mater.getMater();
-        ui->lineEdit_MaterielDes->setText(ma.MaterDes);
+        curMater = mater.getMater();
+        ui->lineEdit_MaterielDes->setText(curMater.MaterDes);
     }
 }
 

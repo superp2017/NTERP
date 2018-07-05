@@ -36,8 +36,9 @@ void DialogOrderDetail::init(Order order)
     ui->lineEdit_materID->setText(order.MaterielID);
     ui->lineEdit_money->setText(QString("%1").arg(order.Money));
     ui->lineEdit_orderID->setText(order.OrderID);
-    ui->lineEdit_orderNum->setText(order.OrderNum+order.Unit);
-
+    ui->lineEdit_orderNum->setText(QString("%1").arg(order.OrderNum/100)+order.Unit);
+    ui->lineEdit_produceNum->setText(QString("%1").arg(order.ProduceNum/100)+order.Unit);
+    ui->lineEdit_successNum->setText(QString("%1").arg(order.SuccessNum/100)+order.Unit);
     QString orderType;
     if(order.OrderType=="0"){
         orderType = "普通订单";

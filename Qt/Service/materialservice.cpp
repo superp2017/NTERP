@@ -92,7 +92,7 @@ Materiel MaterialService::fromJsonObject(QJsonObject obj)
     if(obj.contains("ComponentFormat")){
         QJsonValue value = obj.value("ComponentFormat");
         if(value.isString())
-            ma.MaterDes = value.toString();
+            ma.ComponentFormat = value.toString();
     }
     if(obj.contains("CID")){
         QJsonValue value = obj.value("CID");

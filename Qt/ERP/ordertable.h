@@ -37,7 +37,7 @@ private slots:
     void clickRow(int row,int col);
 private:
     void setRowData(Order para, int row);
-
+    void setEnable(bool New, bool produce, bool cancel, bool mod, bool out, bool modPrice);
 protected:
     void mousePressEvent(QMouseEvent *e);
 private:

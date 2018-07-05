@@ -210,7 +210,7 @@ void DialogMaterialManage::setRowData(Materiel ma, int row)
         status = "已取消";
     item1->setText(ma.MaterDes);
     item2->setText(ma.CustomName);
-    item3->setText(QString("%1").arg(ma.OrderNum));
+    item3->setText(QString("%1").arg(ma.OrderNum/100.0));
     item4->setText(ma.Unit);
     item5->setText(ma.CreatTime);
     item6->setText(status);

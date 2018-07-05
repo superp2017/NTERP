@@ -21,11 +21,6 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)
     m_authors.push_back("管理员");
     m_authors.push_back("超级管理员");
 
-    //    m_departments.push_back("生产部");
-    //    m_departments.push_back("仓库部");
-    //    m_departments.push_back("行政部");
-    //    m_departments.push_back("财务部");
-    //    m_departments.push_back("销售部");
 }
 
 void dataCenter::initData()
@@ -165,6 +160,10 @@ void dataCenter::net_newOrder(const QJsonObject para)
     if(isOK){
         m_orders.append(order);
         m_batch.insert(order.CustomBatch);
+
+        //////////////初始化所有物料//////////////////
+        boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance())).detach();
+
     }
     emit sig_newOrder(order,isOK);
 }
@@ -548,19 +547,31 @@ QVector<Order> dataCenter::pub_StatusOrders(QString status)
 
     for(Order o: m_orders) {
         if(status==Status_New){
-            if(o.ProduceNum<o.OrderNum){
+            if(o.Current.Status==Status_New||o.Current.Status==Status_PartProduce||o.Current.Status==Status_Part_Part){
                 ls.append(o);
                 continue;
             }
+//            if(o.ProduceNum<o.OrderNum){
+//                ls.append(o);
+//                continue;
+//            }
         }
         if(status==Status_Produce){
-            if(o.ProduceNum>0&&o.SuccessNum<o.OrderNum){
+            if(o.Current.Status==Status_PartProduce||o.Current.Status==Status_Part_Part||o.Current.Status==Status_Produce){
                 ls.append(o);
                 continue;
             }
+//            if(o.ProduceNum>0&&o.SuccessNum<o.OrderNum){
+//                ls.append(o);
+//                continue;
+//            }
         }
         if(status==Status_Success){
-            if(o.SuccessNum>0){
+//            if(o.SuccessNum>0){
+//                ls.append(o);
+//                continue;
+//            }
+            if(o.Current.Status==Status_PartSuccess||o.Current.Status==Status_Part_Part||o.Current.Status==Status_Success){
                 ls.append(o);
                 continue;
             }

@@ -183,6 +183,12 @@ QJsonObject OrderService::toJsonObject(Order order)
     obj.insert("FactoryNumber",order.FactoryNumber);
     obj.insert("MaterielID",order.MaterielID);
     obj.insert("MaterielDes",order.MaterielDes);
+    obj.insert("Plating",order.Plating);
+    obj.insert("Friction",order.Friction);
+    obj.insert("Thickness",order.Thickness);
+    obj.insert("Salt",order.Salt);
+    obj.insert("ComponentSolid",order.ComponentSolid);
+    obj.insert("ComponentFormat",order.ComponentFormat);
     obj.insert("Unit",order.Unit);
     obj.insert("CustomID",order.CustomID);
     obj.insert("CustomName",order.CustomName);
@@ -262,6 +268,38 @@ Order OrderService::fromJsonObject(QJsonObject obj)
         if(value.isString())
             order.MaterielDes = value.toString();
     }
+
+    if(obj.contains("Plating")){
+        QJsonValue value = obj.value("Plating");
+        if(value.isString())
+            order.Plating = value.toString();
+    }
+    if(obj.contains("Friction")){
+        QJsonValue value = obj.value("Friction");
+        if(value.isString())
+            order.Friction = value.toString();
+    }
+    if(obj.contains("Thickness")){
+        QJsonValue value = obj.value("Thickness");
+        if(value.isString())
+            order.Thickness = value.toString();
+    }
+    if(obj.contains("Salt")){
+        QJsonValue value = obj.value("Salt");
+        if(value.isString())
+            order.Salt = value.toString();
+    }
+    if(obj.contains("ComponentSolid")){
+        QJsonValue value = obj.value("ComponentSolid");
+        if(value.isString())
+            order.ComponentSolid = value.toString();
+    }
+    if(obj.contains("ComponentFormat")){
+        QJsonValue value = obj.value("ComponentFormat");
+        if(value.isString())
+            order.ComponentFormat = value.toString();
+    }
+
     if(obj.contains("Unit")){
         QJsonValue value = obj.value("Unit");
         if(value.isString())

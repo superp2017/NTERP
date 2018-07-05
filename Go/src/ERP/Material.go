@@ -6,23 +6,23 @@ import (
 )
 
 type Material struct {
-	MaterID         string  //物料编号
-	MaterDes        string  //物料描述
-	Plating         string  //镀种
-	Friction        string  //摩擦系数
-	Thickness       string  //厚度
-	Salt            string  //盐度
-	ComponentSolid  string  //零件固号
-	ComponentFormat string  //零件规格
-	Unit            string  //单位
-	OrderNum        float64 //订单数量
-	CID             string  //客户ID
-	CustomName      string  //客户姓名
-	Status          string  //状态
-	CreatTime       string  //创建时间
+	MaterID         string //物料编号
+	MaterDes        string //物料描述
+	Plating         string //镀种
+	Friction        string //摩擦系数
+	Thickness       string //厚度
+	Salt            string //盐度
+	ComponentSolid  string //零件固号
+	ComponentFormat string //零件规格
+	Unit            string //单位
+	OrderNum        int    //订单数量
+	CID             string //客户ID
+	CustomName      string //客户姓名
+	Status          string //状态
+	CreatTime       string //创建时间
 }
 
-func newMaterial(des, plating, friction, thickness, salt, solid, format, unit, cid, customer string, num float64) (*Material, error) {
+func newMaterial(des, plating, friction, thickness, salt, solid, format, unit, cid, customer string, num int) (*Material, error) {
 	id := getMaterialID()
 	st := &Material{
 		MaterID:         id,

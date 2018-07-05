@@ -133,17 +133,16 @@ void OrderManager::orderClick(QString orderID)
     }
 
     if(ui->tabWidget->currentWidget()==m_tab_all){
-        if(cur_order.Current.Status == Status_New){
-            setBtnEnable(true,true,true,false,true);
-        }
-        if(cur_order.Current.Status == Status_Produce||cur_order.Current.Status ==Status_PartProduce){
-            setBtnEnable(false,false,false,true,false);
-        }
-        if(cur_order.Current.Status == Status_Success||cur_order.Current.Status ==Status_PartSuccess){
-            setBtnEnable(false,false,false,false,false);
-        }
         if(cur_order.Current.Status == Status_Cancle){
-            setBtnEnable(false,false,false,false,false);
+            setBtnEnable(true,false,false,false,false);
+        }else{
+            bool produce = cur_order.Current.Status==Status_New||\
+                    cur_order.Current.Status==Status_PartProduce||\
+                    cur_order.Current.Status==Status_Part_Part;
+            bool out = cur_order.Current.Status==Status_Produce||\
+                    cur_order.Current.Status==Status_PartSuccess||\
+                    cur_order.Current.Status==Status_Part_Part;
+            setBtnEnable(true,false,produce,out,false);
         }
     }
 
@@ -263,32 +262,6 @@ void OrderManager::on_pushButton_produce_clicked()
     DialogOrderProduceOrOut produce;
     produce.initData(false,cur_order.OrderID,cur_order.OrderNum-cur_order.ProduceNum,cur_order.Unit);
     produce.exec();
-    //    QMessageBox msgBox;
-    //    msgBox.setWindowTitle("提示");
-    //    msgBox.setText("订单"+cur_order.OrderID+"已经生产完成？");
-    //    msgBox.setInformativeText("是否确认?");
-    //    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-    //    msgBox.setDefaultButton(QMessageBox::Ok);
-    //    int ret = msgBox.exec();
-    //    switch (ret) {
-    //    case QMessageBox::Ok:
-    //    {
-    //        // Save was clicked
-    //        QJsonObject obj;
-    //        obj.insert("OrderID",cur_order.OrderID);
-    //        obj.insert("Num",1.5);
-    //        boost::thread t(boost::bind(&dataCenter::net_produceOrder,dataCenter::instance(),obj));
-    //        t.detach();
-    //        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
-    //        break;
-    //    }
-    //    case QMessageBox::Cancel:
-    //        // Cancel was clicked
-    //        break;
-    //    default:
-    //        // should never be reached
-    //        break;
-    //    }
 }
 
 
@@ -298,34 +271,8 @@ void OrderManager::on_pushButton_success_clicked()
         return;
     }
     DialogOrderProduceOrOut produce;
-    produce.initData(false,cur_order.OrderID,cur_order.ProduceNum-cur_order.SuccessNum,cur_order.Unit);
+    produce.initData(true,cur_order.OrderID,cur_order.ProduceNum-cur_order.SuccessNum,cur_order.Unit);
     produce.exec();
-    //    QMessageBox msgBox;
-    //    msgBox.setWindowTitle("提示");
-    //    msgBox.setText("订单"+cur_order.OrderID+"准备出库?");
-    //    msgBox.setInformativeText("是否确认?");
-    //    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-    //    msgBox.setDefaultButton(QMessageBox::Ok);
-    //    int ret = msgBox.exec();
-    //    switch (ret) {
-    //    case QMessageBox::Ok:
-    //    {
-    //        // Save was clicked
-    //        QJsonObject obj;
-    //        obj.insert("OrderID",cur_order.OrderID);
-    //        obj.insert("Num",1.5);
-    //        boost::thread t(boost::bind(&dataCenter::net_finishOrder,dataCenter::instance(),obj));
-    //        t.detach();
-    //        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
-    //        break;
-    //    }
-    //    case QMessageBox::Cancel:
-    //        // Cancel was clicked
-    //        break;
-    //    default:
-    //        // should never be reached
-    //        break;
-    //    }
 }
 
 
@@ -405,7 +352,7 @@ void OrderManager::produceOrderCb(Order order, bool ok)
             m_tab_new->removeOrder(order);
         else
             m_tab_new->modOrder(order);
-        m_tab_produce->appendOrder(order);
+        m_tab_produce->modOrder(order);
         m_tab_all->modOrder(order);
     }else{
         dataCenter::instance()->pub_showMessage("操作失败!",4000);
@@ -423,7 +370,7 @@ void OrderManager::finishOrderCb(Order order, bool ok)
             m_tab_produce->removeOrder(order);
         else
             m_tab_produce->modOrder(order);
-        m_tab_success->appendOrder(order);
+        m_tab_success->modOrder(order);
         m_tab_all->modOrder(order);
     }else{
         dataCenter::instance()->pub_showMessage("出库失败!",4000);

@@ -105,6 +105,12 @@ struct Order{
     QString           OrderType;      //订单类型（普通订单、批量订单、试样订单）
     QString           MaterielID;     //材料id
     QString           MaterielDes;    //材料描述
+    QString           Plating;        //镀种
+    QString           Friction;       //摩擦系数
+    QString           Thickness;      //厚度
+    QString           Salt;           //盐度
+    QString           ComponentSolid; //组件固号
+    QString           ComponentFormat;//组件规格
     QString           Factory;        //分厂名称
     QString           FactoryNumber;  //分厂号
     QString           Unit;           //单位
@@ -118,11 +124,11 @@ struct Order{
     QString           CreatTime;      //创建时间
     OderFlow          Current;        //当前状态
     QVector<OderFlow> Flow;           //订单流程
-    double            OrderNum;       //订单数量
-    double            ProduceNum;     //生产完成数量
-    double            SuccessNum;     //出库数量
-    double            Money;          //价格
-    double            TotleMoney;     //总价
+    int               OrderNum;       //订单数量
+    int               ProduceNum;     //生产完成数量
+    int               SuccessNum;     //出库数量
+    int               Money;          //价格
+    int               TotleMoney;     //总价
 };
 
 struct User {
@@ -141,7 +147,7 @@ struct User {
     QString Account;        //账号
     QString Code;           //密码
     int     Age;            //年龄
-    int    Salary;          //薪水
+    int     Salary;          //薪水
 
 };
 

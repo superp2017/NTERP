@@ -27,7 +27,7 @@ void DialogModPrice::initData(Order order)
 
 void DialogModPrice::on_pushButton_ok_clicked()
 {
-    int money = ui->doubleSpinBox->value();
+    int money = ui->doubleSpinBox->value()*100;
     if(money<=0){
         QToolTip::showText(ui->doubleSpinBox->mapToGlobal(QPoint(100, 0)), "订单价格填写错误!");
         return ;

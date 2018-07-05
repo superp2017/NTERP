@@ -40,11 +40,11 @@ type Order struct {
 	SuccessTime     string     //完成时间
 	Current         OderFlow   //当前状态
 	Flow            []OderFlow //订单流程
-	OrderNum        float64    //订单数量
-	ProduceNum      float64    //生产完成数量
-	SuccessNum      float64    //出库数量
-	TotleMoney      float64    //总价
-	Money           float64    //单价
+	OrderNum        int        //订单数量
+	ProduceNum      int        //生产完成数量
+	SuccessNum      int        //出库数量
+	TotleMoney      int        //总价
+	Money           int        //单价
 }
 
 //新建订单
@@ -102,7 +102,7 @@ func NewOrder(session *JHttp.Session) {
 		st.OrderID = id
 	}
 	st.CreatTime = CurTime()
-	st.TotleMoney = st.OrderNum * st.Money
+	st.TotleMoney = st.OrderNum * st.Money / 100
 	go setLastOrderDate(curMon)
 	////////////////添加状态///////////////////////////////
 	appendStatus(st, st.UserName, st.CreatTime, "创建订单", Status_New)
@@ -116,24 +116,46 @@ func NewOrder(session *JHttp.Session) {
 	session.Forward("0", "success", st)
 }
 
+func getStatus(num, produce, success int) string {
+	if produce == 0 && success == 0 {
+		return Status_New
+	}
+	if produce == num && success == 0 {
+		return Status_Produce
+	}
+	if produce == num && success == num {
+		return Status_Success
+	}
+	if produce > 0 && produce < num && success == 0 {
+		return Status_Part_Produce
+	}
+	if success > 0 && success < num && produce == num {
+		return Status_Part_Success
+	}
+	if produce > 0 && produce < num && success > 0 && success < num {
+		return Status_Part_Part
+	}
+	return Status_New
+}
+
 //修改订单
 func ModOrder(session *JHttp.Session) {
 	type Para struct {
-		OrderID         string  //订单id
-		MaterielID      string  //材料id
-		MaterielDes     string  //材料描述
-		Plating         string  //镀种
-		Friction        string  //摩擦系数
-		Thickness       string  //厚度
-		Salt            string  //盐度
-		ComponentSolid  string  //组件固号
-		ComponentFormat string  //组件规格
-		OrderNum        float64 //订单数量
-		Unit            string  //单位
-		CustomID        string  //客户ID
-		CustomName      string  //客户姓名
-		CustomBatch     string  //客户批次
-		CustomNote      string  //客户备注
+		OrderID         string //订单id
+		MaterielID      string //材料id
+		MaterielDes     string //材料描述
+		Plating         string //镀种
+		Friction        string //摩擦系数
+		Thickness       string //厚度
+		Salt            string //盐度
+		ComponentSolid  string //组件固号
+		ComponentFormat string //组件规格
+		OrderNum        int    //订单数量
+		Unit            string //单位
+		CustomID        string //客户ID
+		CustomName      string //客户姓名
+		CustomBatch     string //客户批次
+		CustomNote      string //客户备注
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
@@ -178,18 +200,10 @@ func ModOrder(session *JHttp.Session) {
 	data.CustomBatch = st.CustomBatch
 	data.CustomNote = st.CustomNote
 
-	data.TotleMoney = data.OrderNum * data.Money
+	data.TotleMoney = data.OrderNum * data.Money / 100
 
-	status := data.Current.Status
-	if data.OrderNum == data.ProduceNum {
-		status = Status_Produce
-	}
-
-	if data.OrderNum == data.SuccessNum {
-		status = Status_Success
-	}
 	////////////////添加状态///////////////////////////////
-	appendStatus(data, data.UserName, CurTime(), "修改订单", status)
+	appendStatus(data, data.UserName, CurTime(), "修改订单", getStatus(data.OrderNum, data.ProduceNum, data.SuccessNum))
 
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -202,8 +216,8 @@ func ModOrder(session *JHttp.Session) {
 //修改订单价格
 func ModOrderPrice(session *JHttp.Session) {
 	type Para struct {
-		OrderID string  //订单id
-		Money   float64 //价格
+		OrderID string //订单id
+		Money   int    //价格
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
@@ -231,9 +245,9 @@ func ModOrderPrice(session *JHttp.Session) {
 	}
 
 	data.Money = st.Money
-	data.TotleMoney = data.OrderNum * st.Money
+	data.TotleMoney = data.OrderNum * st.Money / 100
 	////////////////添加状态///////////////////////////////
-	appendStatus(data, data.UserName, CurTime(), "修改订单价格", data.Current.Status)
+	appendStatus(data, data.UserName, CurTime(), "修改订单价格", getStatus(data.OrderNum, data.ProduceNum, data.SuccessNum))
 
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -327,8 +341,8 @@ func DelOrder(session *JHttp.Session) {
 //订单生产完成
 func PorduceOrder(session *JHttp.Session) {
 	type Para struct {
-		OrderID string  //订单id
-		Num     float64 //数量
+		OrderID string //订单id
+		Num     int    //数量
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
@@ -347,7 +361,7 @@ func PorduceOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if data.Current.Status == Status_Cancle || data.Current.Status == Status_Success || data.Current.Status == Status_Produce {
+	if data.Current.Status == Status_Cancle || data.Current.Status == Status_Success {
 		str := fmt.Sprintf("PorduceOrder faild,Current.Status=%s not support produce \n", data.Current.Status)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
@@ -355,18 +369,18 @@ func PorduceOrder(session *JHttp.Session) {
 	}
 	//data.ProduceID = time.Unix(time.Now().Unix(), 0).Format("20060102150405")
 
-	data.ProduceNum = st.Num
+	data.ProduceNum += st.Num
 	if data.ProduceNum >= data.OrderNum {
 		data.ProduceNum = data.OrderNum
 	}
 
 	if data.ProduceNum == data.OrderNum {
 		////////////////添加状态///////////////////////////////
-		appendStatus(data, data.UserName, CurTime(), "订单全部生产完成", Status_Produce)
+		appendStatus(data, data.UserName, CurTime(), "订单全部生产完成", getStatus(data.OrderNum, data.ProduceNum, data.SuccessNum))
 		data.ProduceTime = CurTime()
 	} else {
 		////////////////添加状态///////////////////////////////
-		appendStatus(data, data.UserName, CurTime(), "订单完成部分生产", Status_Part_Produce)
+		appendStatus(data, data.UserName, CurTime(), "订单完成部分生产", getStatus(data.OrderNum, data.ProduceNum, data.SuccessNum))
 	}
 
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
@@ -379,8 +393,8 @@ func PorduceOrder(session *JHttp.Session) {
 //订单完成
 func SuccessOrder(session *JHttp.Session) {
 	type Para struct {
-		OrderID string  //订单id
-		Num     float64 //数量
+		OrderID string //订单id
+		Num     int    //数量
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
@@ -408,7 +422,7 @@ func SuccessOrder(session *JHttp.Session) {
 
 	go successMaterial(data.MaterielID)
 	////////////////添加状态///////////////////////////////
-	data.SuccessNum = st.Num
+	data.SuccessNum += st.Num
 	if data.SuccessNum >= data.OrderNum {
 		data.SuccessNum = data.OrderNum
 	}
@@ -418,7 +432,7 @@ func SuccessOrder(session *JHttp.Session) {
 		data.SuccessTime = CurTime()
 	} else {
 		////////////////添加状态///////////////////////////////
-		appendStatus(data, data.UserName, CurTime(), "订单部分出库", Status_Part_Success)
+		appendStatus(data, data.UserName, CurTime(), "订单部分出库", getStatus(data.OrderNum, data.ProduceNum, data.SuccessNum))
 	}
 
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {

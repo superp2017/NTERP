@@ -26,6 +26,13 @@ void DialogNewMateriel::on_pushButton_ok_clicked()
 {
     mater.MaterID = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
     mater.MaterDes = ui->textEdit->toPlainText();
+    mater.ComponentFormat = ui->comboBox_format->currentText();
+    mater.ComponentSolid = ui->comboBox_solid->currentText();
+    mater.Friction = ui->comboBox_friction->currentText();
+    mater.Plating = ui->comboBox_type->currentText();
+    mater.Salt = ui->comboBox_Salt->currentText();
+    mater.Thickness = ui->comboBox_thickness->currentText();
+
     done(123);
 }
 
