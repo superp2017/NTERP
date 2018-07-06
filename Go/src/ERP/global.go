@@ -34,7 +34,7 @@ const (
 	Status_New          string = "Status_New"         //新建订单
 	Status_Part_Produce string = "Status_PartProduce" //部分生产完成
 	Status_Produce      string = "Status_Produce"     //全部生产完成
-	Status_Part_Success string = "Status_PartProduce" //部分出库
+	Status_Part_Success string = "Status_PartSuccess" //部分出库
 	Status_Success      string = "Status_Success"     //订单完成(出库)
 	Status_Part_Part    string = "Status_Part_Part"   // 订单部分生产部分出库
 	Status_Cancle       string = "Status_Cancle"      //订单取消

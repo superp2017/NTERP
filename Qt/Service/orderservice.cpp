@@ -442,22 +442,62 @@ Order OrderService::fromJsonObject(QJsonObject obj)
 
 
 
-bool OrderService::exportOrders(QVector<Order> list, QString filepath, bool isOpen)
+bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString filepath, bool isOpen)
 {
     QVector<QVariant> datalist;
-    datalist<<"分厂名称"<<"生产批号"<<"订单类型"<<"客户名称"<<"物料描述"\
-                     <<"订单数量"<<"单位"<<"客户批次"<<"客户备注"\
-                     <<"未税单价(元)"<<"未税总价(元)"<<"状态"<<"创建时间";
+    datalist<<"分厂名称"<<"生产批号"<<"订单类型"<<"客户名称"<<"物料描述"<<"订单数量"<<"单位";
+    if(curstatus=="Status_New") {
+        datalist<<"未成品";
+    }
+    if(curstatus=="Status_Success") {
+        datalist<<"已出库";
+    }
+    if(curstatus=="Status_Produce") {
+        datalist<<"已成品"<<"未出库";
+    }
+    if(curstatus=="Status_All") {
+        datalist<<"未成品"<<"已成品"<<"未出库"<<"已出库";
+    }
+
+    datalist<<"客户批次"<<"客户备注"<<"未税单价(元)"<<"未税总价(元)"<<"状态"<<"创建时间";
+
     QVector<QVector<QVariant>> data;
     for(int i=0;i<list.size();++i){
         Order order  = list.at(i);
         QString status;
-        if(order.Current.Status=="Status_New")
+        if(curstatus=="Status_New")
             status="新建";
-        if(order.Current.Status=="Status_Success")
+        if(curstatus=="Status_Produce")
+            status="已成品";
+        if(curstatus=="Status_Success")
             status="已出货";
-        if(order.Current.Status=="Status_Cancle")
+
+        if(curstatus=="Status_Cancle")
             status="已取消";
+        if(curstatus=="Status_All")
+        {
+            if(order.Current.Status=="Status_Cancle"){
+                status="已取消";
+            }
+            if(order.Current.Status=="Status_PartSuccess"){
+                status="部分出库";
+            }
+            if(order.Current.Status=="Status_PartProduce"){
+                status="部分成品";
+            }
+            if(order.Current.Status=="Status_New"){
+                status="新建";
+            }
+            if(order.Current.Status=="Status_Produce"){
+                status="全部成品";
+            }
+            if(order.Current.Status=="Status_Success"){
+                status="全部出库";
+            }
+            if(order.Current.Status=="Status_Part_Part"){
+                status="部分成品部分出库";
+            }
+        }
 
         QString type;
         if(order.OrderType=="1"){
@@ -472,11 +512,27 @@ bool OrderService::exportOrders(QVector<Order> list, QString filepath, bool isOp
 
         QVector<QVariant> datalist;
         datalist<<order.Factory<<"'"+order.OrderID<<type<<order.CustomName\
-               <<"'"+order.MaterielDes<<QString("%1").arg(order.OrderNum)\
-              <<order.Unit<<"'"+order.CustomBatch<<"'"+order.CustomNote\
-              <<"'"+QString("%1").arg(order.Money)\
-             <<"'"+QString("%1").arg(order.TotleMoney)<<status\
-            <<"'"+QDateTime::fromString(order.CreatTime,"yyyy-MM-dd HH:mm:ss").toString("yyyy-MM-dd");
+               <<"'"+order.MaterielDes<<QString("%1").arg(order.OrderNum)<<order.Unit;
+        if(curstatus=="Status_New")
+            datalist<<"'"+QString("%1").arg((order.OrderNum-order.ProduceNum)/100.0);
+        if(curstatus=="Status_Produce"){
+            datalist<<"'"+QString("%1").arg(order.ProduceNum/100.0);
+            datalist<<"'"+QString("%1").arg((order.ProduceNum-order.SuccessNum)/100.0);
+        }
+        if(curstatus=="Status_Success"){
+            datalist<<"'"+QString("%1").arg(order.SuccessNum/100.0);
+        }
+        if(curstatus=="Status_All"){
+            datalist<<"'"+QString("%1").arg((order.OrderNum-order.ProduceNum)/100.0);
+            datalist<<"'"+QString("%1").arg(order.ProduceNum/100.0);
+            datalist<<"'"+QString("%1").arg((order.ProduceNum-order.SuccessNum)/100.0);
+            datalist<<"'"+QString("%1").arg(order.SuccessNum/100.0);
+        }
+
+        datalist<<"'"+order.CustomBatch<<"'"+order.CustomNote\
+               <<"'"+QString("%1").arg(order.Money/100.0)\
+              <<"'"+QString("%1").arg(order.TotleMoney/100.0)<<status\
+             <<"'"+QDateTime::fromString(order.CreatTime,"yyyy-MM-dd HH:mm:ss").toString("yyyy-MM-dd");
         data.push_back(datalist);
     }
     return  ExcelService::dataExport(filepath,datalist,data,isOpen);

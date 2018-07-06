@@ -171,7 +171,7 @@ void DialogOrderPrint::exportCb(bool ok)
 
 void DialogOrderPrint::doExport(QVector<Order> ls,QString filepath)
 {
-    bool ok = OrderService::exportOrders(ls,filepath,true);
+    bool ok = OrderService::exportOrders(cur_Status,ls,filepath,true);
     emit sig_exportCb(ok);
 }
 

@@ -116,28 +116,6 @@ func NewOrder(session *JHttp.Session) {
 	session.Forward("0", "success", st)
 }
 
-func getStatus(num, produce, success int) string {
-	if produce == 0 && success == 0 {
-		return Status_New
-	}
-	if produce == num && success == 0 {
-		return Status_Produce
-	}
-	if produce == num && success == num {
-		return Status_Success
-	}
-	if produce > 0 && produce < num && success == 0 {
-		return Status_Part_Produce
-	}
-	if success > 0 && success < num && produce == num {
-		return Status_Part_Success
-	}
-	if produce > 0 && produce < num && success > 0 && success < num {
-		return Status_Part_Part
-	}
-	return Status_New
-}
-
 //修改订单
 func ModOrder(session *JHttp.Session) {
 	type Para struct {
@@ -451,6 +429,9 @@ func GetGlobalOrders(session *JHttp.Session) {
 	}
 	data := []*Order{}
 	for _, v := range list {
+		if v == Key_LastOrderDate {
+			continue
+		}
 		d := &Order{}
 		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
 			data = append(data, d)
@@ -481,4 +462,27 @@ func getLastOrderDate() string {
 //设置订单最后时间
 func setLastOrderDate(date string) error {
 	return JRedis.Redis_hset(Hash_Order, Key_LastOrderDate, &date)
+}
+
+func getStatus(num, produce, success int) string {
+
+	if produce == 0 && success == 0 {
+		return Status_New
+	}
+	if produce == num && success == 0 {
+		return Status_Produce
+	}
+	if produce == num && success == num {
+		return Status_Success
+	}
+	if produce > 0 && produce < num && success == 0 {
+		return Status_Part_Produce
+	}
+	if success > 0 && success < num && produce == num {
+		return Status_Part_Success
+	}
+	if produce > 0 && produce < num && success > 0 && success < num {
+		return Status_Part_Part
+	}
+	return Status_New
 }

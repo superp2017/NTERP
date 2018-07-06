@@ -57,9 +57,6 @@ OrderTable::OrderTable(QString status, QWidget *w):
         this->hideColumn(8);
         this->hideColumn(9);
     }
-    if(cutStatus==Status_All){
-        this->hideColumn(15);
-    }
 }
 
 
@@ -275,10 +272,10 @@ void OrderTable::setRowData(Order para,int row)
             status="已取消";
         }
         if(para.Current.Status==Status_PartSuccess){
-            status="出库中";
+            status="部分出库";
         }
         if(para.Current.Status==Status_PartProduce){
-            status="生产中";
+            status="部分成品";
         }
         if(para.Current.Status==Status_New){
             status="新建";
@@ -290,7 +287,7 @@ void OrderTable::setRowData(Order para,int row)
             status="全部出库";
         }
         if(para.Current.Status==Status_Part_Part){
-            status="加工出库";
+            status="部分成品部分出库";
         }
     }
 
@@ -348,34 +345,14 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                     if(!exist){
                         return;
                     }
-
                     if(cutStatus==Status_New){
-                        //                        m_new->setEnabled(true);
-                        //                        m_mod->setEnabled(true);
-                        //                        m_cancle->setEnabled(true);
-                        //                        m_produce->setEnabled(true);
-                        //                        m_out->setEnabled(false);
-                        //                        m_mod_price->setEnabled(true);
                         setEnable(true,true,true,true,false,true);
                     }
                     if(cutStatus==Status_Produce){
-                        //                        m_new->setEnabled(false);
-                        //                        m_mod->setEnabled(false);
-                        //                        m_cancle->setEnabled(false);
-                        //                        m_produce->setEnabled(false);
-                        //                        m_out->setEnabled(true);
-                        //                        m_mod_price->setEnabled(false);
-
                         setEnable(true,false,false,false,true,false);
                     }
                     if(cur_order.Current.Status==Status_Success){
-                        //                        m_new->setEnabled(true);
-                        //                        m_mod->setEnabled(false);
-                        //                        m_cancle->setEnabled(false);
-                        //                        m_produce->setEnabled(false);
-                        //                        m_out->setEnabled(false);
-                        //                        m_mod_price->setEnabled(false);
-                        setEnable(true,false,false,false,true,false);
+                        setEnable(true,false,false,false,false,false);
                     }
 
                     if(cutStatus==Status_All){
@@ -386,16 +363,11 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                                     cur_order.Current.Status==Status_PartProduce||\
                                     cur_order.Current.Status==Status_Part_Part;
                             bool out = cur_order.Current.Status==Status_Produce||\
+                                    cur_order.Current.Status==Status_PartProduce||\
                                     cur_order.Current.Status==Status_PartSuccess||\
                                     cur_order.Current.Status==Status_Part_Part;
                             setEnable(true,false,false,produce,out,false);
                         }
-                        //                        m_new->setEnabled(true);
-                        //                        m_mod->setEnabled(false);
-                        //                        m_cancle->setEnabled(false);
-                        //                        m_produce->setEnabled(false);
-                        //                        m_out->setEnabled(false);
-                        //                        m_mod_price->setEnabled(false);
                     }
 
                     m_menu->exec(e->globalPos());

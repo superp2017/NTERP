@@ -141,6 +141,7 @@ void OrderManager::orderClick(QString orderID)
                     cur_order.Current.Status==Status_Part_Part;
             bool out = cur_order.Current.Status==Status_Produce||\
                     cur_order.Current.Status==Status_PartSuccess||\
+                    cur_order.Current.Status==Status_PartProduce||\
                     cur_order.Current.Status==Status_Part_Part;
             setBtnEnable(true,false,produce,out,false);
         }
