@@ -258,7 +258,7 @@
          </size>
         </property>
         <property name="text">
-         <string>镀种管理</string>
+         <string/>
         </property>
        </widget>
       </item>

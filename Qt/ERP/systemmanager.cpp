@@ -47,6 +47,12 @@ SystemManager::SystemManager(QWidget *parent) :
                                          "QPushButton:hover{border-image: url(:/icon/t.png);}"
                                          "QPushButton:pressed{border-image: url(:/icon/t.png);}"
                                          "QPushButton:checked{border-image: url(:/icon/t.png);}");
+
+    ui->pushButton_plating->setStyleSheet("QPushButton{border-image: url(:/icon/duzhong-red.png);}"
+                                         "QPushButton:hover{border-image: url(:/icon/duzhong.png);}"
+                                         "QPushButton:pressed{border-image: url(:/icon/duzhong.png);}"
+                                         "QPushButton:checked{border-image: url(:/icon/duzhong.png);}");
+
     ui->pushButton__about_system->setStyleSheet("QPushButton{border-image: url(:/icon/system-red.png);}"
                                          "QPushButton:hover{border-image: url(:/icon/system.png);}"
                                          "QPushButton:pressed{border-image: url(:/icon/system.png);}"

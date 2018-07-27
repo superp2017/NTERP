@@ -70,5 +70,7 @@
         <file>icon/instroe-red.png</file>
         <file>icon/search.png</file>
         <file>icon/search-a.png</file>
+        <file>icon/duzhong.png</file>
+        <file>icon/duzhong-red.png</file>
     </qresource>
 </RCC>
