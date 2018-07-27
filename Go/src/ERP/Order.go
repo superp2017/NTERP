@@ -21,6 +21,7 @@ type Order struct {
 	OrderType       string     //订单类型（普通订单、试样订单、返工订单）
 	Factory         string     //分厂名称
 	FactoryNumber   string     //分厂号
+	ProductionLine  string     //产线名称
 	MaterielID      string     //材料id
 	MaterielDes     string     //材料描述
 	Plating         string     //镀种
