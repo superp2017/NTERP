@@ -28,11 +28,12 @@ DialogOrderDetail::~DialogOrderDetail()
 
 void DialogOrderDetail::init(Order order)
 {
-
     ui->lineEdit_createName->setText(order.UserName);
     ui->lineEdit_creatTime->setText(order.CreatTime);
     ui->lineEdit_customerName->setText(order.CustomName);
     ui->lineEdit_customer_batch->setText(order.CustomBatch);
+    ui->lineEdit_Factory->setText(order.Factory);
+    ui->lineEdit_production_line->setText(order.ProductionLine);
     ui->lineEdit_materID->setText(order.MaterielID);
     ui->lineEdit_money->setText(QString("%1").arg(order.Money));
     ui->lineEdit_orderID->setText(order.OrderID);
@@ -56,15 +57,15 @@ void DialogOrderDetail::init(Order order)
     QString status;
     if(order.Current.Status==Status_New){
         status="新建";
-       // ui->pushButton_out_table->setVisible(false);
+        // ui->pushButton_out_table->setVisible(false);
     }
     if(order.Current.Status==Status_Produce){
         status="已生产";
-       // ui->pushButton_out_table->setVisible(false);
+        // ui->pushButton_out_table->setVisible(false);
     }
     if(order.Current.Status==Status_Success){
         status="已出货";
-       // ui->pushButton_out_table->setVisible(true);
+        // ui->pushButton_out_table->setVisible(true);
     }
     if(order.Current.Status==Status_Cancle){
         status="已取消";

@@ -32,7 +32,7 @@ private slots:
     void newOrderCb(Order order, bool ok);
     void modOrderCb(Order order,bool ok);
     void on_pushButton_edit_des_clicked();
-
+    void factoryChange(int index);
 private:
     void initCombox(QVector<Customer> custom, QSet<QString> batch, QVector<QString> unit);
     bool checkOrder(Order curorder);

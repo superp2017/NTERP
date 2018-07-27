@@ -5,17 +5,17 @@
 OrderTable::OrderTable(QString status, QWidget *w):
     M_TableWidget(w)
 {
-    this->setColumnCount(17);
+    this->setColumnCount(18);
     this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     cutStatus = status;
 
     //设置表头内容
     QStringList header;
-    header<<tr("分厂名称")<<tr("生产批号")<<tr("订单类型")<<tr("客户名称")<<tr("物料描述")\
+    header<<tr("分厂名称")<<tr("产线名称")<<tr("生产批号")<<tr("订单类型")<<tr("客户名称")<<tr("物料描述")\
          <<tr("订单总量")<<tr("单位")<<tr("未成品")<<tr("已成品")<<tr("未出库")<<tr("已出库")<<tr("客户批次")<<tr("客户备注")<<tr("未税单价(元)")<<tr("未税总价(元)")<<tr("状态")<<tr("创建时间");
 
-    timecol = 16;
+    timecol = 17;
 
     this->setHorizontalHeaderLabels(header);
     this->setSortingEnabled(true);//允许列排序
@@ -159,6 +159,7 @@ void OrderTable::setRowData(Order para,int row)
     QTableWidgetItem *item14 = this->item(row,14);
     QTableWidgetItem *item15 = this->item(row,15);
     QTableWidgetItem *item16 = this->item(row,16);
+     QTableWidgetItem *item17 = this->item(row,17);
     if(item0==NULL){
         item0 = new QTableWidgetItem();
         this->setItem(row,0,item0);
@@ -231,8 +232,15 @@ void OrderTable::setRowData(Order para,int row)
         item16 = new QTableWidgetItem();
         this->setItem(row,16,item16);
     }
+
+    if(item17==NULL){
+        item17 = new QTableWidgetItem();
+        this->setItem(row,17,item17);
+    }
+
     item0->setText(para.Factory);
-    item1->setText(para.OrderID);
+     item1->setText(para.ProductionLine);
+    item2->setText(para.OrderID);
     QString type;
     if(para.OrderType=="1"){
         type="普通订单";
@@ -243,19 +251,19 @@ void OrderTable::setRowData(Order para,int row)
     if(para.OrderType=="3"){
         type="返工订单";
     }
-    item2->setText(type);
-    item3->setText(para.CustomName);
-    item4->setText(para.MaterielDes);
-    item5->setText(QString("%1").arg(para.OrderNum/100.0));
-    item6->setText(para.Unit);
-    item7->setText(QString("%1").arg((para.OrderNum-para.ProduceNum)/100.0));
-    item8->setText(QString("%1").arg(para.ProduceNum/100.0));
-    item9->setText(QString("%1").arg((para.ProduceNum-para.SuccessNum)/100.0));
-    item10->setText(QString("%1").arg(para.SuccessNum/100.0));
-    item11->setText(para.CustomBatch);
-    item12->setText(para.CustomNote);
-    item13->setText(QString("%1").arg(para.Money/100.0));
-    item14->setText(QString("%1").arg(para.TotleMoney/100.0));
+    item3->setText(type);
+    item4->setText(para.CustomName);
+    item5->setText(para.MaterielDes);
+    item6->setText(QString("%1").arg(para.OrderNum/100.0));
+    item7->setText(para.Unit);
+    item8->setText(QString("%1").arg((para.OrderNum-para.ProduceNum)/100.0));
+    item9->setText(QString("%1").arg(para.ProduceNum/100.0));
+    item10->setText(QString("%1").arg((para.ProduceNum-para.SuccessNum)/100.0));
+    item11->setText(QString("%1").arg(para.SuccessNum/100.0));
+    item12->setText(para.CustomBatch);
+    item13->setText(para.CustomNote);
+    item14->setText(QString("%1").arg(para.Money/100.0));
+    item15->setText(QString("%1").arg(para.TotleMoney/100.0));
     QString status;
     if(cutStatus==Status_New){
         status="新建";
@@ -291,15 +299,15 @@ void OrderTable::setRowData(Order para,int row)
         }
     }
 
-    item15->setText(QString("%1").arg(status));
-    item16->setText( QDateTime::fromString(para.CreatTime,"yyyy-MM-dd HH:mm:ss").toString("yyyy-MM-dd"));
+    item16->setText(QString("%1").arg(status));
+    item17->setText( QDateTime::fromString(para.CreatTime,"yyyy-MM-dd HH:mm:ss").toString("yyyy-MM-dd"));
 
     item0->setTextAlignment(Qt::AlignCenter);
     item1->setTextAlignment(Qt::AlignCenter);
     item2->setTextAlignment(Qt::AlignCenter);
-    item3->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+    item3->setTextAlignment(Qt::AlignCenter);
     item4->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-    item5->setTextAlignment(Qt::AlignCenter);
+    item5->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
     item6->setTextAlignment(Qt::AlignCenter);
     item7->setTextAlignment(Qt::AlignCenter);
     item8->setTextAlignment(Qt::AlignCenter);
@@ -311,6 +319,7 @@ void OrderTable::setRowData(Order para,int row)
     item14->setTextAlignment(Qt::AlignCenter);
     item15->setTextAlignment(Qt::AlignCenter);
     item16->setTextAlignment(Qt::AlignCenter);
+    item17->setTextAlignment(Qt::AlignCenter);
 }
 
 void OrderTable::setEnable(bool New, bool mod, bool cancel, bool produce,  bool out, bool modPrice)
@@ -337,7 +346,7 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                     if(row<0){
                         return;
                     }
-                    QTableWidgetItem* item = this->item(row,1);
+                    QTableWidgetItem* item = this->item(row,2);
                     if(item==NULL)
                         return;
                     bool exist =false;
@@ -381,12 +390,13 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
 
 void OrderTable::doubleclickRow(int row, int ool)
 {
+
     if(row<0){
         return;
     }
     this->checkSelect();
     ool = 0;
-    QTableWidgetItem* item = this->item(row,1);
+    QTableWidgetItem* item = this->item(row,2);
     if(item==NULL)
         return;
     bool exist =false;
@@ -397,6 +407,7 @@ void OrderTable::doubleclickRow(int row, int ool)
     if(order_detail ==NULL){
         order_detail = new DialogOrderDetail();
     }
+      qDebug()<<row<<ool;
     order_detail->init(cur_order);
     if (order_detail->exec()==123){
 
@@ -409,7 +420,7 @@ void OrderTable::clickRow(int row, int col)
         return;
     }
     col =0;
-    QTableWidgetItem* item = this->item(row,1);
+    QTableWidgetItem* item = this->item(row,2);
     if (item!=NULL){
         emit orderClick(item->text());
     }

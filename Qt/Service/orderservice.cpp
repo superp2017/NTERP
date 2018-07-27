@@ -181,6 +181,7 @@ QJsonObject OrderService::toJsonObject(Order order)
     obj.insert("OrderType",order.OrderType);
     obj.insert("Factory",order.Factory);
     obj.insert("FactoryNumber",order.FactoryNumber);
+    obj.insert("ProductionLine",order.ProductionLine);
     obj.insert("MaterielID",order.MaterielID);
     obj.insert("MaterielDes",order.MaterielDes);
     obj.insert("Plating",order.Plating);
@@ -252,7 +253,11 @@ Order OrderService::fromJsonObject(QJsonObject obj)
         if(value.isString())
             order.FactoryNumber = value.toString();
     }
-
+    if(obj.contains("ProductionLine")){
+        QJsonValue value = obj.value("ProductionLine");
+        if(value.isString())
+            order.ProductionLine = value.toString();
+    }
     if(obj.contains("OrderType")){
         QJsonValue value = obj.value("OrderType");
         if(value.isString())
@@ -445,7 +450,7 @@ Order OrderService::fromJsonObject(QJsonObject obj)
 bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString filepath, bool isOpen)
 {
     QVector<QVariant> datalist;
-    datalist<<"分厂名称"<<"生产批号"<<"订单类型"<<"客户名称"<<"物料描述"<<"订单数量"<<"单位";
+    datalist<<"分厂名称"<<"产线名称"<<"生产批号"<<"订单类型"<<"客户名称"<<"物料描述"<<"订单数量"<<"单位";
     if(curstatus=="Status_New") {
         datalist<<"未成品";
     }
@@ -511,7 +516,7 @@ bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString f
         }
 
         QVector<QVariant> datalist;
-        datalist<<order.Factory<<"'"+order.OrderID<<type<<order.CustomName\
+        datalist<<order.Factory<<order.ProductionLine<<"'"+order.OrderID<<type<<order.CustomName\
                <<"'"+order.MaterielDes<<QString("%1").arg(order.OrderNum)<<order.Unit;
         if(curstatus=="Status_New")
             datalist<<"'"+QString("%1").arg((order.OrderNum-order.ProduceNum)/100.0);

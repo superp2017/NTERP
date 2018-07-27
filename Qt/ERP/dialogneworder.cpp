@@ -19,6 +19,8 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->comboBox_factory,SIGNAL(currentIndexChanged(int)),this,SLOT(factoryChange(int)));
+
     initData();
 
     connect(dataCenter::instance(),SIGNAL(sig_newOrder(Order,bool)),this,SLOT(newOrderCb(Order,bool)));
@@ -26,6 +28,7 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
 
     connect(ui->comboBox_customerName,SIGNAL(currentIndexChanged(int)),this,SLOT(customChange(int)));
     connect(ui->comboBox_unit,SIGNAL(currentIndexChanged(int)),this,SLOT(unitChange(int)));
+
 
     QRegExp regx("[a-zA-Z0-9]+$");
     QValidator *validator = new QRegExpValidator(regx, this );
@@ -153,6 +156,7 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     }
     order.Factory           = ui->comboBox_factory->currentText();
     order.FactoryNumber     = ui->comboBox_factory->currentData().toString();
+    order.ProductionLine    = ui->comboBox_productionLine->currentText();
     order.OrderType         = ui->comboBox_orderType->currentData().toString();
     order.MaterielDes       = ui->lineEdit_MaterielDes->toPlainText();
     order.Plating           = curMater.Plating;
@@ -269,6 +273,28 @@ void DialogNewOrder::on_pushButton_edit_des_clicked()
     if(mater.exec()==123){
         curMater = mater.getMater();
         ui->lineEdit_MaterielDes->setText(curMater.MaterDes);
+    }
+}
+
+void DialogNewOrder::factoryChange(int index)
+{
+    QString fac = ui->comboBox_factory->currentData().toString();
+
+    if(fac=="01"){
+        ui->comboBox_productionLine->clear();
+        ui->comboBox_productionLine->addItem("涂覆线");
+    }
+    if(fac=="02"){
+       ui->comboBox_productionLine->clear();
+        ui->comboBox_productionLine->addItem("滚镀锌线");
+        ui->comboBox_productionLine->addItem("滚镀锌镍线");
+        ui->comboBox_productionLine->addItem("磷化线");
+        ui->comboBox_productionLine->addItem("镀铜镀锡线");
+    }
+    if(fac=="03"){
+       ui->comboBox_productionLine->clear();
+        ui->comboBox_productionLine->addItem("挂镀锌线");
+        ui->comboBox_productionLine->addItem("挂镀锌镍线");
     }
 }
 

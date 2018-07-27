@@ -113,6 +113,7 @@ struct Order{
     QString           ComponentFormat;//组件规格
     QString           Factory;        //分厂名称
     QString           FactoryNumber;  //分厂号
+    QString           ProductionLine; //产线名称
     QString           Unit;           //单位
     QString           CustomID;       //客户ID
     QString           CustomName;     //客户姓名
