@@ -45,7 +45,7 @@ func getOrderID() string {
 
 //重置订单id
 func resetOrderID() string {
-	gOderSeed = 1001
+	gOderSeed = 1000
 	go JRedis.Redis_set(Ider_Order, &gOderSeed)
 	return strconv.Itoa(gOderSeed)
 }

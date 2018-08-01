@@ -84,7 +84,13 @@ func NewOrder(session *JHttp.Session) {
 		return
 	}
 	st.MaterielID = ma.MaterID
-	id := CurDateEx() + getOrderID()
+	index := getOrderID()
+	curMon := CurMonth()
+	date := getLastOrderDate()
+	if date != "" && curMon != date {
+		index = resetOrderID()
+	}
+	id := CurDateEx() + index
 	id = st.FactoryNumber + id
 	if st.OrderType == "0" {
 		id = "0" + id
@@ -95,13 +101,7 @@ func NewOrder(session *JHttp.Session) {
 	} else {
 		id = "0" + id
 	}
-	curMon := CurMonth()
-	date := getLastOrderDate()
-	if date != "" && curMon != date {
-		st.OrderID = resetOrderID()
-	} else {
-		st.OrderID = id
-	}
+	st.OrderID = id
 	st.CreatTime = CurTime()
 	st.TotleMoney = st.OrderNum * st.Money / 100
 	go setLastOrderDate(curMon)
