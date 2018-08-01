@@ -130,7 +130,7 @@ void DialogNewUser::on_pushButton_creat_clicked()
         return ;
     }
 
-    if(dataCenter::instance()->pub_checkDepartment(user.Department)){
+    if(!dataCenter::instance()->pub_checkDepartment(user.Department)){
         QToolTip::showText(ui->comboBox_department->mapToGlobal(QPoint(100, 0)), "部门不存在!");
         return ;
     }
