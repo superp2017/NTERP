@@ -32,12 +32,13 @@ signals:
     void modOrder();
     void outOrder();
     void modPrice();
+    void delOrder();
 private slots:
     void doubleclickRow(int row,int ool);
     void clickRow(int row,int col);
 private:
     void setRowData(Order para, int row);
-    void setEnable(bool New, bool produce, bool cancel, bool mod, bool out, bool modPrice);
+    void setEnable(bool New, bool produce, bool cancel, bool mod, bool out, bool modPrice, bool del);
 protected:
     void mousePressEvent(QMouseEvent *e);
 private:
@@ -49,6 +50,7 @@ private:
     QAction *m_produce;
     QAction *m_out;
     QAction *m_mod_price;
+    QAction *m_del;
     QString cutStatus;
     int timecol;
 };

@@ -40,6 +40,7 @@ private slots:
     void cancleOrderCb(Order order,bool ok);
     void produceOrderCb(Order order, bool ok);
     void finishOrderCb(Order order,bool ok);
+    void delOrderCb(Order order,bool ok);
     void GlobalOrdersCb(bool ok);
     void on_pushButton_search_clicked();
 
@@ -47,13 +48,15 @@ private slots:
     void showAll();
     void on_pushButton_produce_clicked();
 
+    void on_pushButton_del_clicked();
+
 protected:
     void mousePressEvent(QMouseEvent *e);
 
 private:
     void initSearch();
     void clearCurOrder();
-    void setBtnEnable(bool mod, bool cancel, bool produce, bool out, bool change);
+    void setBtnEnable(bool mod, bool cancel, bool produce, bool out, bool change, bool del);
     void checkSelect();
 private:
     Ui::OrderManager  *ui;

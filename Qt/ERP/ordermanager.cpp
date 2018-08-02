@@ -44,6 +44,8 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_cancleOrder(Order,bool)),this,SLOT(cancleOrderCb(Order,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_produceOrder(Order,bool)),this,SLOT(produceOrderCb(Order,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_finishOrder(Order,bool)),this,SLOT(finishOrderCb(Order,bool)));
+    connect(dataCenter::instance(),SIGNAL(sig_delOrder(Order,bool)),this,SLOT(delOrderCb(Order,bool)));
+
     connect(dataCenter::instance(),SIGNAL(sig_globalOrders(bool)),this,SLOT(GlobalOrdersCb(bool)));
 
 
@@ -66,6 +68,10 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(m_tab_all,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
     connect(m_tab_all,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
     connect(m_tab_all,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
+    connect(m_tab_all,SIGNAL(delOrder()),this,SLOT(on_pushButton_del_clicked()));
+
+
+
 
     connect(&m_search,SIGNAL(searchOrder(bool,bool,qint64,qint64,QString,QString)),\
             this,SLOT(searchOrder(bool,bool,qint64,qint64,QString,QString)));
@@ -90,7 +96,7 @@ OrderManager::OrderManager(QWidget *parent) :
                                           "QPushButton:pressed{border-image: url(:/icon/reflash-a.png);}"
                                           "QPushButton:checked{border-image: url(:/icon/reflash-a.png);}");
 
-    setBtnEnable(false,false,false,false,false);
+    setBtnEnable(false,false,false,false,false,false);
     changeCol();
     updataData();
     initSearch();
@@ -134,7 +140,7 @@ void OrderManager::orderClick(QString orderID)
 
     if(ui->tabWidget->currentWidget()==m_tab_all){
         if(cur_order.Current.Status == Status_Cancle){
-            setBtnEnable(true,false,false,false,false);
+            setBtnEnable(false,false,false,false,false,true);
         }else{
             bool produce = cur_order.Current.Status==Status_New||\
                     cur_order.Current.Status==Status_PartProduce||\
@@ -143,19 +149,19 @@ void OrderManager::orderClick(QString orderID)
                     cur_order.Current.Status==Status_PartSuccess||\
                     cur_order.Current.Status==Status_PartProduce||\
                     cur_order.Current.Status==Status_Part_Part;
-            setBtnEnable(true,false,produce,out,false);
+            setBtnEnable(true,false,produce,out,false,false);
         }
     }
 
     if(ui->tabWidget->currentWidget()== m_tab_new){
-        setBtnEnable(true,true,true,false,true);
+        setBtnEnable(true,true,true,false,true,false);
     }
 
     if(ui->tabWidget->currentWidget()==m_tab_success){
-        setBtnEnable(false,false,false,false,false);
+        setBtnEnable(false,false,false,false,false,false);
     }
     if(ui->tabWidget->currentWidget()==m_tab_produce){
-        setBtnEnable(false,false,false,true,false);
+        setBtnEnable(false,false,false,true,false,false);
     }
 }
 
@@ -311,6 +317,40 @@ void OrderManager::on_pushButton_change_price_clicked()
     }
 }
 
+
+
+void OrderManager::on_pushButton_del_clicked()
+{
+    if(cur_order.OrderID==""){
+        return;
+    }
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("警告");
+    msgBox.setText("您即将删除订单"+cur_order.OrderID);
+    msgBox.setInformativeText("是否继续操作?");
+    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    int ret = msgBox.exec();
+    switch (ret) {
+    case QMessageBox::Ok:
+    {
+        // Save was clicked
+        QJsonObject obj;
+        obj.insert("OrderID",cur_order.OrderID);
+        boost::thread t(boost::bind(&dataCenter::net_delOrder,dataCenter::instance(),obj));
+        t.detach();
+        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
+        break;
+    }
+    case QMessageBox::Cancel:
+        break;
+    default:
+        // should never be reached
+        break;
+    }
+}
+
+
 void OrderManager::on_pushButton_print_clicked()
 {
     DialogOrderPrint  print;
@@ -360,8 +400,6 @@ void OrderManager::produceOrderCb(Order order, bool ok)
     }
 }
 
-
-
 void OrderManager::finishOrderCb(Order order, bool ok)
 {
     dataCenter::instance()->pub_hideLoadding();
@@ -378,12 +416,22 @@ void OrderManager::finishOrderCb(Order order, bool ok)
     }
 }
 
+void OrderManager::delOrderCb(Order order, bool ok)
+{
+    dataCenter::instance()->pub_hideLoadding();
+    if(ok){
+        dataCenter::instance()->pub_showMessage("删除成功!",4000);
+        m_tab_all->removeOrder(order);
+    }else{
+        dataCenter::instance()->pub_showMessage("删除失败!",4000);
+    }
+}
+
 
 void OrderManager::mousePressEvent(QMouseEvent *e)
 {
     e->ignore();
 }
-
 
 
 void OrderManager::clearAllSelect()
@@ -393,7 +441,7 @@ void OrderManager::clearAllSelect()
     m_tab_success->clearSelection();
     m_tab_produce->clearSelection();
     checkSelect();
-    setBtnEnable(false,false,false,false,false);
+    setBtnEnable(false,false,false,false,false,false);
     clearCurOrder();
 }
 
@@ -425,13 +473,14 @@ void OrderManager::clearCurOrder()
     cur_order.Money=0;
 }
 
-void OrderManager::setBtnEnable(bool mod, bool cancel, bool produce, bool out,  bool change)
+void OrderManager::setBtnEnable(bool mod, bool cancel, bool produce, bool out,  bool change,bool del)
 {
     ui->pushButton_mod->setEnabled(mod);
     ui->pushButton_cancle->setEnabled(cancel);
     ui->pushButton_produce->setEnabled(produce);
     ui->pushButton_success->setEnabled(out);
     ui->pushButton_change_price->setEnabled(change);
+    ui->pushButton_del->setEnabled(del);
 
 
     if(mod){
@@ -475,6 +524,14 @@ void OrderManager::setBtnEnable(bool mod, bool cancel, bool produce, bool out,  
                                                    "QPushButton:checked{border-image: url(:/icon/price.png);}");
     }else{
         ui->pushButton_change_price->setStyleSheet("QPushButton{border-image: url(:/icon/price.png);}");
+    }
+    if(del){
+        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete-red.png);}"
+                                                   "QPushButton:hover{border-image: url(:/icon/delete.png);}"
+                                                   "QPushButton:pressed{border-image: url(:/icon/delete.png);}"
+                                                   "QPushButton:checked{border-image: url(:/icon/delete.png);}");
+    }else{
+        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete.png);}");
     }
 }
 

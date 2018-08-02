@@ -34,6 +34,8 @@ OrderTable::OrderTable(QString status, QWidget *w):
     m_produce  = m_menu->addAction("完成生产");
     m_out      = m_menu->addAction("出库");
     m_mod_price= m_menu->addAction("定价");
+    m_del= m_menu->addAction("删除订单");
+
     m_menu->addAction("放弃");
 
     connect(m_new,SIGNAL(triggered(bool)),this,SIGNAL(newOrder()));
@@ -42,6 +44,7 @@ OrderTable::OrderTable(QString status, QWidget *w):
     connect(m_produce,SIGNAL(triggered(bool)),this,SIGNAL(produceOrder()));
     connect(m_out,SIGNAL(triggered(bool)),this,SIGNAL(outOrder()));
     connect(m_mod_price,SIGNAL(triggered(bool)),this,SIGNAL(modPrice()));
+    connect(m_del,SIGNAL(triggered(bool)),this,SIGNAL(delOrder()));
 
     if(cutStatus==Status_New){
         this->hideColumn(8);
@@ -322,7 +325,7 @@ void OrderTable::setRowData(Order para,int row)
     item17->setTextAlignment(Qt::AlignCenter);
 }
 
-void OrderTable::setEnable(bool New, bool mod, bool cancel, bool produce,  bool out, bool modPrice)
+void OrderTable::setEnable(bool New, bool mod, bool cancel, bool produce,  bool out, bool modPrice,bool del)
 {
     m_new->setEnabled(New);
     m_mod->setEnabled(mod);
@@ -330,6 +333,7 @@ void OrderTable::setEnable(bool New, bool mod, bool cancel, bool produce,  bool 
     m_produce->setEnabled(produce);
     m_out->setEnabled(out);
     m_mod_price->setEnabled(modPrice);
+    m_del->setEnabled(del);
 }
 
 
@@ -355,18 +359,18 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                         return;
                     }
                     if(cutStatus==Status_New){
-                        setEnable(true,true,true,true,false,true);
+                        setEnable(true,true,true,true,false,true,false);
                     }
                     if(cutStatus==Status_Produce){
-                        setEnable(true,false,false,false,true,false);
+                        setEnable(true,false,false,false,true,false,false);
                     }
                     if(cur_order.Current.Status==Status_Success){
-                        setEnable(true,false,false,false,false,false);
+                        setEnable(true,false,false,false,false,false,false);
                     }
 
                     if(cutStatus==Status_All){
                         if(cur_order.Current.Status==Status_Cancle){
-                            setEnable(true,false,false,false,false,false);
+                            setEnable(true,false,false,false,false,false,true);
                         }else{
                             bool produce = cur_order.Current.Status==Status_New||\
                                     cur_order.Current.Status==Status_PartProduce||\
@@ -375,7 +379,7 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                                     cur_order.Current.Status==Status_PartProduce||\
                                     cur_order.Current.Status==Status_PartSuccess||\
                                     cur_order.Current.Status==Status_Part_Part;
-                            setEnable(true,false,false,produce,out,false);
+                            setEnable(true,false,false,produce,out,false,false);
                         }
                     }
 
