@@ -17,9 +17,11 @@ DialogNewSupplier::DialogNewSupplier(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_newSupplier(Supplier,bool)),this,SLOT(newSupplierCb(Supplier,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modSUpplier(Supplier,bool)),this,SLOT(modSupplierCb(Supplier,bool)));
     QRegExp rx("[0-9\.]+$");
+    QRegExp regx("[a-zA-Z0-9]+$");
     QRegExpValidator *validator = new QRegExpValidator(rx, this);
+    QRegExpValidator *validatorex = new QRegExpValidator(regx, this);
     ui->lineEdit_bank_number->setValidator(validator);
-    ui->lineEdit_cert_num->setValidator(validator);
+    ui->lineEdit_cert_num->setValidator(validatorex);
     ui->lineEdit_contact_cell->setValidator(validator);
 }
 
@@ -44,8 +46,8 @@ void DialogNewSupplier::on_pushButton_ok_clicked()
     cus.ContactName     = ui->lineEdit_contact->text();
     cus.ContactCell     = ui->lineEdit_contact_cell->text();
     cus.Name            = ui->lineEdit_customName->text();
-    cus.Note            = ui->textEdit_note->toPlainText();  
-   //cus.Goods           = ui->lineEdit_goods->text();
+    cus.Note            = ui->textEdit_note->toPlainText();
+    //cus.Goods           = ui->lineEdit_goods->text();
 
     if(cus.Name==""){
         QToolTip::showText(ui->lineEdit_customName->mapToGlobal(QPoint(100, 0)), "供应商姓名不能为空!");
@@ -121,6 +123,6 @@ void DialogNewSupplier::initSupplier(Supplier sup)
     ui->lineEdit_contact_cell->setText(sup.ContactCell);
     ui->lineEdit_customName->setText(sup.Name);
     ui->textEdit_note->setText(sup.Note);
-   // ui->lineEdit_goods->setText(sup.Goods);
+    // ui->lineEdit_goods->setText(sup.Goods);
     cursupplier = sup;
 }

@@ -17,9 +17,11 @@ DialogNewCustom::DialogNewCustom(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_modCustomer(Customer,bool)),this,SLOT(modCustomerCb(Customer,bool)));
 
     QRegExp rx("[0-9\.]+$");
+    QRegExp regx("[a-zA-Z0-9]+$");
     QRegExpValidator *validator = new QRegExpValidator(rx, this);
+     QRegExpValidator *validatorex = new QRegExpValidator(regx, this);
     ui->lineEdit_bank_number->setValidator(validator);
-    ui->lineEdit_cert_num->setValidator(validator);
+    ui->lineEdit_cert_num->setValidator(validatorex);
     ui->lineEdit_contact_cell->setValidator(validator);
 }
 

@@ -298,16 +298,23 @@ func DelOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if data.Current.Status == Status_Produce {
-		str := fmt.Sprintf("DelOrder faild,order is on produce  \n", data.Current.Status)
+	if data.Current.Status != Status_Cancle {
+		str := fmt.Sprintf("DelOrder faild,order is not cancel  \n", data.Current.Status)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
 	}
-	if err := JRedis.Redis_hdel(Hash_Order, st.OrderID); err != nil {
+	appendStatus(data, data.UserName, CurTime(), "订单标记删除", Status_Del)
+
+	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+
+	//if err := JRedis.Redis_hdel(Hash_Order, st.OrderID); err != nil {
+	//	session.Forward("1", err.Error(), nil)
+	//	return
+	//}
 	if data.MaterielID != "" {
 		go delMaterial(data.MaterielID)
 	}
@@ -435,7 +442,9 @@ func GetGlobalOrders(session *JHttp.Session) {
 		}
 		d := &Order{}
 		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
-			data = append(data, d)
+			if d.Current.Status != Status_Del {
+				data = append(data, d)
+			}
 		}
 	}
 	session.Forward("0", "success", data)
