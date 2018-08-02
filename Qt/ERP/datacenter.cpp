@@ -201,16 +201,16 @@ void dataCenter::net_cancleOrder(const QJsonObject para)
 void dataCenter::net_delOrder(const QJsonObject para)
 {
     bool isOK   = false;
-    QString orderID = OrderService::delOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    Order order = OrderService::delOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(isOK){
         for(int i=0;i<m_orders.size();++i){
-            if(m_orders[i].OrderID==orderID){
+            if(m_orders[i].OrderID==order.OrderID){
                 m_orders.remove(i);
                 break;
             }
         }
     }
-    emit sig_delOrder(orderID,isOK);
+    emit sig_delOrder(order,isOK);
 }
 
 void dataCenter::net_produceOrder(const QJsonObject para)

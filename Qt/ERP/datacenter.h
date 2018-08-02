@@ -128,7 +128,7 @@ signals:
     void sig_produceOrder(Order,bool);
     void sig_finishOrder(Order,bool);
     void sig_modOrderPrice(Order,bool);
-    void sig_delOrder(QString,bool);
+    void sig_delOrder(Order,bool);
     void sig_globalOrders(bool);
     //////////////////////////////////////
     void sig_newEmployee(User,bool);

@@ -40,7 +40,7 @@ private slots:
     void cancleOrderCb(Order order,bool ok);
     void produceOrderCb(Order order, bool ok);
     void finishOrderCb(Order order,bool ok);
-    void delOrderCb(Order order,bool ok);
+    void delOrderCb(Order order, bool ok);
     void GlobalOrdersCb(bool ok);
     void on_pushButton_search_clicked();
 

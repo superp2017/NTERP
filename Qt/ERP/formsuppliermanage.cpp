@@ -139,11 +139,11 @@ void FormSupplierManage::on_pushButton_exit_clicked()
 void FormSupplierManage::checkBox()
 {
     bool check = true;
-    bool check_one = false;
+   // bool check_one = false;
     int checkSize = 0;
     for(QCheckBox* ch:m_boxs){
         check    &= ch->isChecked();
-        check_one|= ch->isChecked();
+       // check_one|= ch->isChecked();
         if(ch->isChecked()){
             checkSize++;
         }
@@ -151,11 +151,11 @@ void FormSupplierManage::checkBox()
     if(check){
         ui->checkBox_check_all->setCheckState(Qt::Checked);
     }else{
-        if(check_one)
-            ui->checkBox_check_all->setCheckState(Qt::PartiallyChecked);
-        else{
+//        if(check_one)
+//            ui->checkBox_check_all->setCheckState(Qt::PartiallyChecked);
+//        else{
             ui->checkBox_check_all->setCheckState(Qt::Unchecked);
-        }
+   //     }
     }
 
     ui->pushButton_del->setEnabled(checkSize==1);
@@ -176,8 +176,11 @@ void FormSupplierManage::exportCb(bool ok)
 void FormSupplierManage::checkAll()
 {
     for(QCheckBox* box:m_boxs){
+        box->blockSignals(true);
         box->setChecked(ui->checkBox_check_all->isChecked());
+        box->blockSignals(false);
     }
+    checkBox();
 }
 
 void FormSupplierManage::delSupplierCb(QString cu, bool ok)

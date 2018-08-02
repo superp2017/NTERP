@@ -73,8 +73,8 @@ func ModSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if st.Name == "" || st.Tel == "" {
-		str := fmt.Sprintf("ModSupplier faild,Name = %s,Tel = %s\n", st.Name, st.Tel)
+	if st.Name == "" {
+		str := fmt.Sprintf("ModSupplier faild,Name = %s\n", st.Name)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return

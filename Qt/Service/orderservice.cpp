@@ -129,15 +129,15 @@ Order OrderService::modOrderPrice(const QJsonObject para, bool &ok, QString host
     return order;
 }
 
-QString OrderService::delOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+Order OrderService::delOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-    QString order;
+    Order order;
     std::string url = Net_DelOrder;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
-        if(ret.data.isString()){
-            order = ret.data.toString();
+        if(ret.data.isObject()){
+            order = fromJsonObject(ret.data.toObject());
             ok = true;
             return  order;
         }
