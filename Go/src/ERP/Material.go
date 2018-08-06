@@ -2,6 +2,7 @@ package main
 
 import (
 	"JGo/JHttp"
+	"JGo/JLogger"
 	"JGo/JStore/JRedis"
 )
 
@@ -14,15 +15,21 @@ type Material struct {
 	Salt            string //盐度
 	ComponentSolid  string //零件固号
 	ComponentFormat string //零件规格
-	Unit            string //单位
+	Factory         string //分厂名称
+	FactoryNumber   string //分厂号
+	ProductionLine  string //产线名称
 	OrderNum        int    //订单数量
+	Unit            string //单位
+	Money           int    //价格
+	TotleMoney      int    //总价
 	CID             string //客户ID
 	CustomName      string //客户姓名
 	Status          string //状态
 	CreatTime       string //创建时间
 }
 
-func newMaterial(des, plating, friction, thickness, salt, solid, format, unit, cid, customer string, num int) (*Material, error) {
+func newMaterial(des, plating, friction, thickness, salt, solid, format,
+	cid, customer, factory, factorynumber, productionline, unit string, ordernum, money int) (*Material, error) {
 	id := getMaterialID()
 	st := &Material{
 		MaterID:         id,
@@ -33,19 +40,24 @@ func newMaterial(des, plating, friction, thickness, salt, solid, format, unit, c
 		Salt:            salt,
 		ComponentSolid:  solid,
 		ComponentFormat: format,
+		Factory:         factory,
+		FactoryNumber:   factorynumber,
+		ProductionLine:  productionline,
 		Unit:            unit,
-		OrderNum:        num,
+		OrderNum:        ordernum,
+		Money:           money,
 		CID:             cid,
 		CustomName:      customer,
 		Status:          "0",
 		CreatTime:       CurTime(),
 	}
+	st.TotleMoney = st.OrderNum * st.Money / 100
 	err := JRedis.Redis_hset(Hash_Material, id, st)
 	return st, err
 }
 
 //修改物料
-func modMaterial(id, des, plating, friction, thickness, salt, solid, format, cid, name string) error {
+func modMaterial(id, des, plating, friction, thickness, salt, solid, format, cid, name, productionline, unit string, ordernum, money int) error {
 	st := &Material{}
 	if err := JRedis.Redis_hget(Hash_Material, id, st); err != nil {
 		return err
@@ -59,6 +71,11 @@ func modMaterial(id, des, plating, friction, thickness, salt, solid, format, cid
 	st.ComponentFormat = format
 	st.CID = cid
 	st.CustomName = name
+	st.ProductionLine = productionline
+	st.Unit = unit
+	st.OrderNum = ordernum
+	st.Money = money
+	st.TotleMoney = st.OrderNum * st.Money / 100
 	if err := JRedis.Redis_hset(Hash_Material, id, st); err != nil {
 		return err
 	}
@@ -109,4 +126,62 @@ func GetAllMaterial(session *JHttp.Session) {
 		}
 	}
 	session.Forward("0", "success", data)
+}
+
+func updateAllMaterial(session *JHttp.Session) {
+	if err := updateallAaterial(); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	session.Forward("0", "success!", nil)
+}
+
+func updateallAaterial() error {
+	list, err := JRedis.Redis_hkeys(Hash_Order)
+	if err != nil {
+		return err
+	}
+	for _, v := range list {
+		if v == Key_LastOrderDate {
+			continue
+		}
+		d := &Order{}
+		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
+			if d.Current.Status != Status_Del {
+				go modMa(d.MaterielID, d.MaterielDes, d.Plating, d.Friction,
+					d.Thickness, d.Salt, d.ComponentSolid, d.ComponentFormat,
+					d.Factory, d.FactoryNumber, d.ProductionLine, d.CustomID, d.CustomName,
+					d.Unit, d.OrderNum, d.Money, d.TotleMoney)
+			}
+		}
+	}
+	return nil
+}
+
+func modMa(mid, des, plat, fric, thick, salt, solid, format, factory, factorynumber, productionline, cid, custommer, unit string, ordernum, money, totlemoney int) error {
+	st := &Material{}
+	if err := JRedis.Redis_hget(Hash_Material, mid, st); err != nil {
+		return err
+	}
+	JLogger.Error(mid)
+	st.MaterDes = des
+	st.Plating = plat
+	st.Friction = fric
+	st.Thickness = thick
+	st.Salt = salt
+	st.ComponentSolid = solid
+	st.ComponentFormat = format
+	st.Factory = factory
+	st.FactoryNumber = factorynumber
+	st.ProductionLine = productionline
+	st.CID = cid
+	st.CustomName = custommer
+	st.Unit = unit
+	st.OrderNum = ordernum
+	st.Money = money
+	st.TotleMoney = totlemoney
+	if err := JRedis.Redis_hset(Hash_Material, mid, st); err != nil {
+		return err
+	}
+	return nil
 }

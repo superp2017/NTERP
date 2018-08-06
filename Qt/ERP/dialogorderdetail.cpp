@@ -41,14 +41,14 @@ void DialogOrderDetail::init(Order order)
     ui->lineEdit_produceNum->setText(QString("%1").arg(order.ProduceNum/100)+order.Unit);
     ui->lineEdit_successNum->setText(QString("%1").arg(order.SuccessNum/100)+order.Unit);
     QString orderType;
-    if(order.OrderType=="0"){
-        orderType = "普通订单";
-    }
     if(order.OrderType=="1"){
-        orderType = "批量订单";
+        orderType = "普通订单";
     }
     if(order.OrderType=="2"){
         orderType = "试样订单";
+    }
+    if(order.OrderType=="3"){
+        orderType = "返工订单";
     }
     ui->lineEdit_orderType->setText(orderType);
     ui->lineEdit_outTime->setText(order.SuccessTime);

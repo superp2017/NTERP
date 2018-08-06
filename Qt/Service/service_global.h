@@ -202,12 +202,17 @@ struct Materiel{
     QString Salt;               //盐度
     QString ComponentSolid;     //组件固号
     QString ComponentFormat;    //组件规格
-    QString Unit;               //单位
-    int     OrderNum;           //订单数量
+    QString Factory;            //分厂名称
+    QString FactoryNumber;      //分厂号
+    QString ProductionLine;     //产线名称
     QString CID;                //客户ID
     QString CustomName;         //客户姓名
     QString Status;             //状态
     QString CreatTime;          //创建时间
+    QString Unit;               //单位
+    int     OrderNum;           //订单数量
+    int     Money;              //价格
+    int     TotleMoney;         //总价
 };
 
 

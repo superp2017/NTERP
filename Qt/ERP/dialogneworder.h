@@ -33,16 +33,19 @@ private slots:
     void modOrderCb(Order order,bool ok);
     void on_pushButton_edit_des_clicked();
     void factoryChange(int index);
+    void materielIDChange(int index);
 private:
-    void initCombox(QVector<Customer> custom, QSet<QString> batch, QVector<QString> unit);
+    void initCombox(QVector<Customer> custom, QSet<QString> batch, \
+                    QVector<QString> unit, QVector<Materiel> mater);
     bool checkOrder(Order curorder);
 
     void changeModel();
 
     Ui::DialogNewOrder *ui;
-    Order  curorder;
-    bool   m_isNewMode;
-     Materiel curMater;
+    Order    curorder;
+    bool     m_isNewMode;//是否是新建或者修改
+    bool     IsHisMode;//是否使用了旧的物料
+    Materiel curMater;
 };
 
 #endif // DIALOGNEWORDER_H

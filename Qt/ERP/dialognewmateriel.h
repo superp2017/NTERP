@@ -21,7 +21,7 @@ public:
 
     Materiel getMater() const;
     void initCommbox();
-
+    void initMater(Materiel ma);
 private slots:
     void on_pushButton_ok_clicked();
 

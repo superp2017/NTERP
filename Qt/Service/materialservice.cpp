@@ -44,10 +44,15 @@ QJsonObject MaterialService::toJsonObject(Materiel ma)
     obj.insert("ComponentFormat",ma.ComponentFormat);
     obj.insert("CID",ma.CID);
     obj.insert("CustomName",ma.CustomName);
-    obj.insert("OrderNum",ma.OrderNum);
-    obj.insert("Unit",ma.Unit);
     obj.insert("Status",ma.Status);
     obj.insert("CreatTime",ma.CreatTime);
+    obj.insert("Factory",ma.Factory);
+    obj.insert("FactoryNumber",ma.FactoryNumber);
+    obj.insert("ProductionLine",ma.ProductionLine);
+    obj.insert("OrderNum",ma.OrderNum);
+    obj.insert("Unit",ma.Unit);
+    obj.insert("Money",ma.Money);
+    obj.insert("TotleMoney",ma.TotleMoney);
     return obj;
 }
 
@@ -104,16 +109,6 @@ Materiel MaterialService::fromJsonObject(QJsonObject obj)
         if(value.isString())
             ma.CustomName = value.toString();
     }
-    if(obj.contains("OrderNum")){
-        QJsonValue value = obj.value("OrderNum");
-        if(value.isDouble())
-            ma.OrderNum = value.toInt();
-    }
-    if(obj.contains("Unit")){
-        QJsonValue value = obj.value("Unit");
-        if(value.isString())
-            ma.Unit = value.toString();
-    }
     if(obj.contains("Status")){
         QJsonValue value = obj.value("Status");
         if(value.isString())
@@ -124,9 +119,43 @@ Materiel MaterialService::fromJsonObject(QJsonObject obj)
         if(value.isString())
             ma.CreatTime = value.toString();
     }
+    if(obj.contains("Factory")){
+        QJsonValue value = obj.value("Factory");
+        if(value.isString())
+            ma.Factory = value.toString();
+    }
+    if(obj.contains("FactoryNumber")){
+        QJsonValue value = obj.value("FactoryNumber");
+        if(value.isString())
+            ma.FactoryNumber = value.toString();
+    }
+    if(obj.contains("ProductionLine")){
+        QJsonValue value = obj.value("ProductionLine");
+        if(value.isString())
+            ma.ProductionLine = value.toString();
+    }
+    if(obj.contains("OrderNum")){
+        QJsonValue value = obj.value("OrderNum");
+        if(value.isDouble())
+            ma.OrderNum = value.toInt();
+    }
+    if(obj.contains("Unit")){
+        QJsonValue value = obj.value("Unit");
+        if(value.isString())
+            ma.Unit = value.toString();
+    }
+    if(obj.contains("Money")){
+        QJsonValue value = obj.value("Money");
+        if(value.isDouble())
+            ma.Money = value.toInt();
+    }
+    if(obj.contains("TotleMoney")){
+        QJsonValue value = obj.value("TotleMoney");
+        if(value.isDouble())
+            ma.TotleMoney = value.toInt();
+    }
     return ma;
 }
-
 
 
 

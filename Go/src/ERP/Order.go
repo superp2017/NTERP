@@ -74,10 +74,9 @@ func NewOrder(session *JHttp.Session) {
 		return
 	}
 	/////////////创建物料/////////////////////
-
 	ma, err := newMaterial(st.MaterielDes, st.Plating,
 		st.Friction, st.Thickness, st.Salt, st.ComponentSolid, st.ComponentFormat,
-		st.Unit, st.CustomID, st.CustomName, st.OrderNum)
+		st.CustomID, st.CustomName, st.Factory, st.FactoryNumber, st.ProductionLine, st.Unit, st.OrderNum, st.Money)
 	if err != nil {
 		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
@@ -92,14 +91,14 @@ func NewOrder(session *JHttp.Session) {
 	}
 	id := CurDateEx() + index
 	id = st.FactoryNumber + id
-	if st.OrderType == "0" {
-		id = "0" + id
-	} else if st.OrderType == "1" {
+	if st.OrderType == "1" {
 		id = "1" + id
 	} else if st.OrderType == "2" {
 		id = "2" + id
+	} else if st.OrderType == "3" {
+		id = "3" + id
 	} else {
-		id = "0" + id
+		id = "1" + id
 	}
 	st.OrderID = id
 	st.CreatTime = CurTime()
@@ -135,6 +134,7 @@ func ModOrder(session *JHttp.Session) {
 		CustomName      string //客户姓名
 		CustomBatch     string //客户批次
 		CustomNote      string //客户备注
+		ProductionLine  string //产线
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
@@ -188,7 +188,9 @@ func ModOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	go modMaterial(st.MaterielID, st.MaterielDes, st.Plating, st.Friction, st.Thickness, st.Salt, st.ComponentSolid, st.ComponentFormat, st.CustomID, st.CustomName)
+	go modMaterial(st.MaterielID, st.MaterielDes, st.Plating, st.Friction,
+		st.Thickness, st.Salt, st.ComponentSolid, st.ComponentFormat,
+		st.CustomID, st.CustomName, st.ProductionLine, st.Unit, st.OrderNum, data.Money)
 	session.Forward("0", "success", data)
 }
 
@@ -232,6 +234,10 @@ func ModOrderPrice(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	//修改物料
+	go modMaterial(data.MaterielID, data.MaterielDes, data.Plating, data.Friction,
+		data.Thickness, data.Salt, data.ComponentSolid, data.ComponentFormat,
+		data.CustomID, data.CustomName, data.ProductionLine, data.Unit, data.OrderNum, data.Money)
 	session.Forward("0", "success", data)
 }
 

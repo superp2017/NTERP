@@ -15,7 +15,8 @@
 DialogNewOrder::DialogNewOrder(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogNewOrder),
-    m_isNewMode(true)
+    m_isNewMode(true),
+    IsHisMode(false)
 {
     ui->setupUi(this);
 
@@ -29,6 +30,7 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
     connect(ui->comboBox_customerName,SIGNAL(currentIndexChanged(int)),this,SLOT(customChange(int)));
     connect(ui->comboBox_unit,SIGNAL(currentIndexChanged(int)),this,SLOT(unitChange(int)));
 
+    connect(ui->comboBox_mater_number,SIGNAL(currentIndexChanged(int)),this,SLOT(materielIDChange(int)));
 
     QRegExp regx("[a-zA-Z0-9]+$");
     QValidator *validator = new QRegExpValidator(regx, this );
@@ -45,14 +47,17 @@ void DialogNewOrder::initData()
 {
     initCombox(dataCenter::instance()->pub_Customers(),\
                dataCenter::instance()->pub_Batchs(),\
-               dataCenter::instance()->pub_Units());
+               dataCenter::instance()->pub_Units(),\
+               dataCenter::instance()->pub_Materiels());
 }
 
-void DialogNewOrder::initCombox(QVector<Customer> custom, QSet<QString> batch, QVector<QString> unit)
+void DialogNewOrder::initCombox(QVector<Customer> custom, QSet<QString> batch,\
+                                QVector<QString> unit,QVector<Materiel>mater)
 
 {
     ui->comboBox_customerName->blockSignals(true);
     ui->comboBox_unit->blockSignals(true);
+    ui->comboBox_mater_number->blockSignals(true);
     ui->comboBox_orderType->clear();
     ui->comboBox_orderType->addItem("普通订单","1");
     ui->comboBox_orderType->addItem("试样订单","2");
@@ -87,27 +92,50 @@ void DialogNewOrder::initCombox(QVector<Customer> custom, QSet<QString> batch, Q
     ui->comboBox_unit->addItem(ItemNewUnit);
     ui->comboBox_unit->setCurrentIndex(-1);
 
+
+    ui->comboBox_mater_number->clear();
+    QStringList materlist;
+    for(Materiel ma:mater){
+        materlist<<ma.MaterID;
+    }
+    ui->comboBox_mater_number->addItems(materlist);
+    ui->comboBox_mater_number->setEditable(true);
+    QCompleter *completermater = new QCompleter(materlist, this);
+    ui->comboBox_mater_number->setCompleter(completermater);
+    ui->comboBox_mater_number->setCurrentIndex(-1);
     ui->comboBox_customerName->blockSignals(false);
     ui->comboBox_unit->blockSignals(false);
+    ui->comboBox_mater_number->blockSignals(false);
 }
 
 void DialogNewOrder::initOrder(Order order)
 {
-    if(order.OrderType=="0"){
+    if(order.OrderType=="1"){
         ui->comboBox_orderType->setCurrentIndex(0);
     }
-    if(order.OrderType=="1"){
+    if(order.OrderType=="2"){
         ui->comboBox_orderType->setCurrentIndex(1);
     }
-    if(order.OrderType=="2"){
+    if(order.OrderType=="3"){
         ui->comboBox_orderType->setCurrentIndex(2);
     }
+    if(order.FactoryNumber=="01"){
+        ui->comboBox_factory->setCurrentIndex(0);
+    }
+    if(order.FactoryNumber=="02"){
+        ui->comboBox_factory->setCurrentIndex(1);
+    }
+    if(order.FactoryNumber=="03"){
+        ui->comboBox_factory->setCurrentIndex(2);
+    }
+
     ui->lineEdit_MaterielDes->setText(order.MaterielDes);
     ui->comboBox_unit->setCurrentText(order.Unit);
-    ui->spinBox_num->setValue(order.OrderNum);
+    ui->spinBox_num->setValue(order.OrderNum/100);
     ui->comboBox_customerName->setCurrentText(order.CustomName);
     ui->lineEdit_custombatch->setText(order.CustomBatch);
     ui->textEdit_custom_note->setText(order.CustomNote);
+    ui->comboBox_productionLine->setCurrentText(order.ProductionLine);
     curorder = order;
 }
 
@@ -135,22 +163,26 @@ void DialogNewOrder::changeModel()
         this->setWindowTitle("新增订单");
         ui->pushButton_ok->setText("创建");
         ui->comboBox_customerName->setEnabled(true);
+        ui->comboBox_factory->setEnabled(true);
+        ui->comboBox_orderType->setEnabled(true);
     }else{
         this->setWindowTitle("订单修改");
         ui->pushButton_ok->setText("修改");
         ui->comboBox_customerName->setEnabled(false);
+        ui->comboBox_factory->setEnabled(false);
+        ui->comboBox_orderType->setEnabled(false);
     }
 }
 
 
 void DialogNewOrder::on_pushButton_ok_clicked()
 {
-    Order  order;
+    Order  order ;
     if(m_isNewMode){
-        order.UID = dataCenter::instance()->pub_CurUser().UID ;
-        order.UserName = dataCenter::instance()->pub_CurUser().Name;
-        order.CustomID = ui->comboBox_customerName->currentData().toString();
-        order.CustomName = ui->comboBox_customerName->currentText();
+        order.UID           = dataCenter::instance()->pub_CurUser().UID ;
+        order.UserName      = dataCenter::instance()->pub_CurUser().Name;
+        order.CustomID      = ui->comboBox_customerName->currentData().toString();
+        order.CustomName    = ui->comboBox_customerName->currentText();
     }else{
         order = curorder;
     }
@@ -165,6 +197,7 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     order.Salt              = curMater.Salt;
     order.ComponentSolid    = curMater.ComponentSolid;
     order.ComponentFormat   = curMater.ComponentFormat;
+    order.Money             = curMater.Money;
     order.Unit              = ui->comboBox_unit->currentText();
     order.CustomBatch       = ui->lineEdit_custombatch->text();
     order.CustomNote        = ui->textEdit_custom_note->toPlainText();
@@ -260,7 +293,6 @@ Order DialogNewOrder::getCurorder() const
 }
 
 
-
 void DialogNewOrder::on_pushButton_cancel_clicked()
 {
     done(-1);
@@ -270,6 +302,8 @@ void DialogNewOrder::on_pushButton_edit_des_clicked()
 {
     DialogNewMateriel mater;
     mater.initCommbox();
+    if(IsHisMode)
+        mater.initMater(curMater);
     if(mater.exec()==123){
         curMater = mater.getMater();
         ui->lineEdit_MaterielDes->setText(curMater.MaterDes);
@@ -285,17 +319,38 @@ void DialogNewOrder::factoryChange(int index)
         ui->comboBox_productionLine->addItem("涂覆线");
     }
     if(fac=="02"){
-       ui->comboBox_productionLine->clear();
+        ui->comboBox_productionLine->clear();
         ui->comboBox_productionLine->addItem("滚镀锌线");
         ui->comboBox_productionLine->addItem("滚镀锌镍线");
         ui->comboBox_productionLine->addItem("磷化线");
         ui->comboBox_productionLine->addItem("镀铜镀锡线");
     }
     if(fac=="03"){
-       ui->comboBox_productionLine->clear();
+        ui->comboBox_productionLine->clear();
         ui->comboBox_productionLine->addItem("挂镀锌线");
         ui->comboBox_productionLine->addItem("挂镀锌镍线");
     }
+}
+
+void DialogNewOrder::materielIDChange(int index)
+{
+    if(index==-1)
+        return;
+    QString id = ui->comboBox_mater_number->currentText().trimmed();
+    if(id.isEmpty())
+        return;
+    bool ok = false;
+    Materiel ma = dataCenter::instance()->pub_getMateriel(id,ok);
+    if(!ok)
+        return;
+    ui->comboBox_factory->setCurrentText(ma.Factory);
+    ui->comboBox_productionLine->setCurrentText(ma.ProductionLine);
+    ui->comboBox_customerName->setCurrentText(ma.CustomName);
+    ui->lineEdit_MaterielDes->setText(ma.MaterDes);
+    ui->comboBox_unit->setCurrentText(ma.Unit);
+    curMater = ma;
+    ui->spinBox_num->setValue(ma.OrderNum/100);
+    IsHisMode = true;
 }
 
 void DialogNewOrder::customChange(int index)

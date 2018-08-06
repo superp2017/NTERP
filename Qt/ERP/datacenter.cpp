@@ -731,6 +731,7 @@ void dataCenter::pri_checkGoodType(QString type)
     m_goodsType.push_back(type);
 }
 
+
 QVector<QString> dataCenter::pub_goodsType() const
 {
     return m_goodsType;

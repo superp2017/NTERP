@@ -125,6 +125,18 @@ void DialogNewMateriel::initCommbox()
     DesChange();
 }
 
+void DialogNewMateriel::initMater(Materiel ma)
+{
+    mater = ma;
+    ui->comboBox_format->setCurrentText(ma.ComponentFormat);
+    ui->comboBox_friction->setCurrentText(ma.Friction);
+    ui->comboBox_Salt->setCurrentText(ma.Salt);
+    ui->comboBox_solid->setCurrentText(ma.ComponentSolid);
+    ui->comboBox_thickness->setCurrentText(ma.Thickness);
+    ui->comboBox_type->setCurrentText(ma.Plating);
+    ui->textEdit->setText(ma.MaterDes);
+}
+
 Materiel DialogNewMateriel::getMater() const
 {
     return mater;
