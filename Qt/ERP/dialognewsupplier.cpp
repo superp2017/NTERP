@@ -16,7 +16,7 @@ DialogNewSupplier::DialogNewSupplier(QWidget *parent) :
     m_isNewMod = false;
     connect(dataCenter::instance(),SIGNAL(sig_newSupplier(Supplier,bool)),this,SLOT(newSupplierCb(Supplier,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modSUpplier(Supplier,bool)),this,SLOT(modSupplierCb(Supplier,bool)));
-    QRegExp rx("[0-9\.]+$");
+    QRegExp rx("[0-9]+$");
     QRegExp regx("[a-zA-Z0-9]+$");
     QRegExpValidator *validator = new QRegExpValidator(rx, this);
     QRegExpValidator *validatorex = new QRegExpValidator(regx, this);

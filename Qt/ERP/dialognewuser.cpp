@@ -26,7 +26,7 @@ DialogNewUser::DialogNewUser(QWidget *parent) :
     ui->lineEdit_accout->setValidator( validator );
     ui->lineEdit_code->setValidator(validator);
 
-    QRegExp rx("[0-9\.]+$");
+    QRegExp rx("[0-9]+$");
     QRegExpValidator *vali = new QRegExpValidator(rx, this);
     ui->lineEdit_cell->setValidator(vali);
 

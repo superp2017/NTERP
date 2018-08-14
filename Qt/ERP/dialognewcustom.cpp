@@ -16,7 +16,7 @@ DialogNewCustom::DialogNewCustom(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_newCustomer(Customer,bool)),this,SLOT(newCustomerCb(Customer,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modCustomer(Customer,bool)),this,SLOT(modCustomerCb(Customer,bool)));
 
-    QRegExp rx("[0-9\.]+$");
+    QRegExp rx("[0-9]+$");
     QRegExp regx("[a-zA-Z0-9]+$");
     QRegExpValidator *validator = new QRegExpValidator(rx, this);
      QRegExpValidator *validatorex = new QRegExpValidator(regx, this);
