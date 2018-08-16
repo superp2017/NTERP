@@ -24,13 +24,13 @@
     <widget class="QWidget" name="widget_2" native="true">
      <property name="minimumSize">
       <size>
-       <width>750</width>
+       <width>700</width>
        <height>480</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>750</width>
+       <width>700</width>
        <height>480</height>
       </size>
      </property>
@@ -54,9 +54,9 @@
        <number>0</number>
       </property>
       <item>
-       <layout class="QGridLayout" name="gridLayout" columnstretch="2,4,1">
+       <layout class="QGridLayout" name="gridLayout" columnstretch="3,5,2">
         <property name="leftMargin">
-         <number>20</number>
+         <number>25</number>
         </property>
         <property name="topMargin">
          <number>35</number>
@@ -65,10 +65,10 @@
          <number>0</number>
         </property>
         <property name="horizontalSpacing">
-         <number>15</number>
+         <number>25</number>
         </property>
         <property name="verticalSpacing">
-         <number>49</number>
+         <number>55</number>
         </property>
         <item row="0" column="1">
          <widget class="QLineEdit" name="n_useNameLine">
@@ -96,7 +96,7 @@ color: rgb(55, 55, 55);</string>
            <string>密码:</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -110,7 +110,7 @@ color: rgb(55, 55, 55);</string>
            <string>用户:</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -162,13 +162,45 @@ color: rgb(55, 55, 55);</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,5,2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <property name="spacing">
-         <number>6</number>
+         <number>20</number>
         </property>
         <property name="leftMargin">
          <number>20</number>
         </property>
+        <item>
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_exit">
+          <property name="minimumSize">
+           <size>
+            <width>230</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>230</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>退出</string>
+          </property>
+         </widget>
+        </item>
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
@@ -186,14 +218,14 @@ color: rgb(55, 55, 55);</string>
          <widget class="QPushButton" name="pushButton">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>230</width>
             <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>300</width>
-            <height>16777215</height>
+            <width>230</width>
+            <height>60</height>
            </size>
           </property>
           <property name="styleSheet">

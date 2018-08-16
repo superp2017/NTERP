@@ -2,6 +2,7 @@
 #define NLOGIN_H
 
 #include <QDialog>
+#include <QResizeEvent>
 #pragma execution_character_set("utf-8")
 
 namespace Ui {
@@ -19,9 +20,12 @@ public:
 private:
     Ui::NLogin *ui;
     void do_login(QString acc,QString pwd);
+protected:
+    void resizeEvent(QResizeEvent *e);
 private slots:
     void loginCb(bool ok);
     void login();
+    void on_pushButton_exit_clicked();
 };
 
 #endif // NLOGIN_H

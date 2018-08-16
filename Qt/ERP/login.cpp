@@ -21,23 +21,14 @@ NLogin::NLogin(QWidget *parent) :
     ui->n_usePwdLine->setEchoMode(QLineEdit::Password);
 
     ui->pushButton->setStyleSheet("QPushButton{border-image: url(:/icon/logon-a.png);}"
-                                           "QPushButton:hover{border-image: url(:/icon/login-b.png);}"
-                                           "QPushButton:pressed{border-image: url(:/icon/login-b.png);}"
-                                           "QPushButton:checked{border-image: url(:/icon/login-b.png);}");
-
-
-    QPalette pal(palette());
-    pal.setBrush(QPalette::Window, QBrush(QImage(":/icon/login-back.png")));
-    setPalette(pal);
-    ////////////////////////////
-    ui->widget_2->setAutoFillBackground(true); // 这句要加上, 否则可能显示不出背景图.
-    QPalette palette = this->palette();
-    palette.setBrush(QPalette::Window,
-                     QBrush(QPixmap(":/icon/login-for.png").scaled(ui->widget_2->size(),
-                                                                 Qt::IgnoreAspectRatio,
-                                                                 Qt::SmoothTransformation)));             // 使用平滑的缩放方式
-    ui->widget_2->setPalette(palette);                           // 给widget加上背景图
-
+                                  "QPushButton:hover{border-image: url(:/icon/login-b.png);}"
+                                  "QPushButton:pressed{border-image: url(:/icon/login-b.png);}"
+                                  "QPushButton:checked{border-image: url(:/icon/login-b.png);}");
+    setWindowFlags(Qt::Window|\
+                   Qt::FramelessWindowHint |\
+                   Qt::WindowSystemMenuHint|\
+                   Qt::WindowMinimizeButtonHint|\
+                   Qt::WindowMaximizeButtonHint);
 
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(login()));
     connect(dataCenter::instance(),SIGNAL(sig_login(bool)),this,SLOT(loginCb(bool)));
@@ -57,6 +48,23 @@ void NLogin::do_login(QString acc, QString pwd)
     boost::thread t(boost::bind(&dataCenter::net_login,dataCenter::instance(),para));
     t.detach();
     dataCenter::instance()->pub_showMessage("正在登录...",3000);
+}
+
+void NLogin::resizeEvent(QResizeEvent *e)
+{
+    QWidget::resizeEvent(e);
+    QPalette pal(palette());
+    pal.setBrush(QPalette::Window, QBrush(QImage(":/icon/login-back.png")));
+    setPalette(pal);
+    ////////////////////////////
+    ui->widget_2->setAutoFillBackground(true); // 这句要加上, 否则可能显示不出背景图.
+    QPalette palette = this->palette();
+    palette.setBrush(QPalette::Window,
+                     QBrush(QPixmap(":/icon/login-for.png").scaled(ui->widget_2->size(),
+                                                                   Qt::IgnoreAspectRatio,
+                                                                   Qt::SmoothTransformation)));             // 使用平滑的缩放方式
+    ui->widget_2->setPalette(palette);                           // 给widget加上背景图
+
 }
 
 void NLogin::loginCb(bool ok)
@@ -84,4 +92,9 @@ void NLogin::login()
         return;
     }
     do_login(useName,usePwd);
+}
+
+void NLogin::on_pushButton_exit_clicked()
+{
+    this->done(-1);
 }
