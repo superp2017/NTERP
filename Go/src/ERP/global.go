@@ -9,6 +9,7 @@ const (
 	Hash_Customer      = "Customer"
 	Hash_Supplier      = "Supplier"
 	Hash_CustomerOrder = "CustomerOrder"
+	Hash_StorageOutIn  = "StorageOutIn"
 	Key_GlobalOrder    = "GlobalOrder"
 	Key_Unit           = "Unit"
 	Key_Plating        = "Plating"
