@@ -8,20 +8,23 @@ import (
 )
 
 type StoreGoods struct {
-	ID           string //商品ID
-	Name         string //商品名称
-	Type         string //类别
-	Price        int    //进价
-	Num          int    //数量
-	Unit         string //单位
-	TotalPrice   int    //库存总价
-	Format       string //规格
-	Color        string //颜色
-	SID          string //供应商id
-	SupplierName string //供应商名称
-	Status       string //状态
-	Note         string //备注
-	CreatTime    string //创建时间
+	ID             string //商品ID
+	Name           string //商品名称
+	Type           string //类别
+	Factory        string //分厂名称~
+	FactoryNumber  string //分厂号~
+	ProductionLine string //产线名称~
+	Price          int    //进价
+	Num            int    //数量
+	Unit           string //单位
+	TotalPrice     int    //库存总价
+	Format         string //规格
+	Color          string //颜色
+	SID            string //供应商id
+	SupplierName   string //供应商名称
+	Status         string //状态
+	Note           string //备注
+	CreatTime      string //创建时间
 }
 
 //新建商品
@@ -94,8 +97,8 @@ func ModifyGoods(session *JHttp.Session) {
 	if data.SID != st.SID && st.SID != "" && data.SID != "" {
 		remove = true
 	}
-	newType :=false
-	if st.Type!= data.Type{
+	newType := false
+	if st.Type != data.Type {
 		newType = true
 	}
 	data.Name = st.Name
@@ -117,11 +120,11 @@ func ModifyGoods(session *JHttp.Session) {
 	}
 	if remove {
 		go removeSupplierGoods(sid, data.ID)
-		if data.SID!=""&&data.ID!=""{
+		if data.SID != "" && data.ID != "" {
 			go appendSupplierGoods(st.SID, st.ID)
 		}
 	}
-	if newType&&data.Type != "" {
+	if newType && data.Type != "" {
 		go appendGoodsType(data.Type)
 	}
 	session.Forward("0", "modify success", data)
@@ -264,7 +267,7 @@ func RemoveGoodsType(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	session.Forward("0", "RemoveGoodsType success\n",  st.Type)
+	session.Forward("0", "RemoveGoodsType success\n", st.Type)
 }
 
 func AddGoodsType(session *JHttp.Session) {

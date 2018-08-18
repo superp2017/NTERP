@@ -2,22 +2,22 @@ package main
 
 //表
 const (
-	Hash_Order         = "Order"
-	Hash_Account       = "Account"
-	Hash_Employee      = "Employee"
-	Hash_Material      = "Material"
-	Hash_Customer      = "Customer"
-	Hash_Supplier      = "Supplier"
-	Hash_CustomerOrder = "CustomerOrder"
-	Hash_StorageOutIn  = "StorageOutIn"
-	Key_GlobalOrder    = "GlobalOrder"
-	Key_Unit           = "Unit"
-	Key_Plating        = "Plating"
-	Hash_Goods         = "Goods"
-	Hash_SupplierGoods = "SupplierGoods"
-	Key_GoodType       = "GoodsType"
-	Key_Department     = "Department"
-	Key_LastOrderDate  = "LastOrderDate"
+	Hash_Order            = "Order"
+	Hash_Account          = "Account"
+	Hash_Employee         = "Employee"
+	Hash_Material         = "Material"
+	Hash_Customer         = "Customer"
+	Hash_Supplier         = "Supplier"
+	Hash_CustomerOrder    = "CustomerOrder"
+	Hash_StorageOutRecord = "StorageOutRecord"
+	Key_GlobalOrder       = "GlobalOrder"
+	Key_Unit              = "Unit"
+	Key_Plating           = "Plating"
+	Hash_Goods            = "Goods"
+	Hash_SupplierGoods    = "SupplierGoods"
+	Key_GoodType          = "GoodsType"
+	Key_Department        = "Department"
+	Key_LastOrderDate     = "LastOrderDate"
 )
 
 //ider
