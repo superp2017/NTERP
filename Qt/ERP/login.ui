@@ -197,7 +197,7 @@ color: rgb(55, 55, 55);</string>
            </size>
           </property>
           <property name="text">
-           <string>退出</string>
+           <string/>
           </property>
          </widget>
         </item>

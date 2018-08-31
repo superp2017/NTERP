@@ -72,5 +72,7 @@
         <file>icon/search-a.png</file>
         <file>icon/duzhong.png</file>
         <file>icon/duzhong-red.png</file>
+        <file>icon/login_exit.png</file>
+        <file>icon/login_exit_down.png</file>
     </qresource>
 </RCC>

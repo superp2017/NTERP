@@ -52,6 +52,7 @@ func GetAllOutRecord(session *JHttp.Session) {
 		return
 	}
 	data := []*StorageOutRecord{}
+
 	for _, v := range list {
 		d := &StorageOutRecord{}
 		if err := JRedis.Redis_hget(Hash_StorageOutRecord, v, d); err == nil {

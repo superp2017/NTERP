@@ -66,6 +66,9 @@ func initRoute() {
 
 	JHttp.WhiteHttp("/updateallmaterial", updateAllMaterial) //更新所有物料
 
+	JHttp.WhiteHttp("/newstorageoutrecord", NewOutRecord)        //新增一个仓库出库记录
+	JHttp.WhiteHttp("/getallstorageoutrecords", GetAllOutRecord) //获取所有的仓库出库记录
+
 }
 
 func main() {

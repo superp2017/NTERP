@@ -16,6 +16,13 @@ NLogin::NLogin(QWidget *parent) :
     ui(new Ui::NLogin)
 {
     ui->setupUi(this);
+
+    setWindowFlags(Qt::Window|\
+                   Qt::FramelessWindowHint |\
+                   Qt::WindowSystemMenuHint|\
+                   Qt::WindowMinimizeButtonHint|\
+                   Qt::WindowMaximizeButtonHint);
+
     ui->n_useNameLine->setPlaceholderText("用户名");
     ui->n_usePwdLine->setPlaceholderText("密码");
     ui->n_usePwdLine->setEchoMode(QLineEdit::Password);
@@ -24,11 +31,11 @@ NLogin::NLogin(QWidget *parent) :
                                   "QPushButton:hover{border-image: url(:/icon/login-b.png);}"
                                   "QPushButton:pressed{border-image: url(:/icon/login-b.png);}"
                                   "QPushButton:checked{border-image: url(:/icon/login-b.png);}");
-    setWindowFlags(Qt::Window|\
-                   Qt::FramelessWindowHint |\
-                   Qt::WindowSystemMenuHint|\
-                   Qt::WindowMinimizeButtonHint|\
-                   Qt::WindowMaximizeButtonHint);
+    ui->pushButton_exit->setStyleSheet("QPushButton{border-image: url(:/icon/login_exit.png);}"
+                                  "QPushButton:hover{border-image: url(:/icon/login_exit_down.png);}"
+                                  "QPushButton:pressed{border-image: url(:/icon/login_exit_down.png);}"
+                                  "QPushButton:checked{border-image: url(:/icon/login_exit_down.png);}");
+
 
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(login()));
     connect(dataCenter::instance(),SIGNAL(sig_login(bool)),this,SLOT(loginCb(bool)));
