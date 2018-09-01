@@ -26,6 +26,7 @@ private slots:
     void loginCb(bool ok);
     void login();
     void on_pushButton_exit_clicked();
+    void on_pushButton_mini_clicked();
 };
 
 #endif // NLOGIN_H

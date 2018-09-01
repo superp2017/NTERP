@@ -31,10 +31,16 @@ NLogin::NLogin(QWidget *parent) :
                                   "QPushButton:hover{border-image: url(:/icon/login-b.png);}"
                                   "QPushButton:pressed{border-image: url(:/icon/login-b.png);}"
                                   "QPushButton:checked{border-image: url(:/icon/login-b.png);}");
-    ui->pushButton_exit->setStyleSheet("QPushButton{border-image: url(:/icon/login_exit.png);}"
-                                  "QPushButton:hover{border-image: url(:/icon/login_exit_down.png);}"
-                                  "QPushButton:pressed{border-image: url(:/icon/login_exit_down.png);}"
-                                  "QPushButton:checked{border-image: url(:/icon/login_exit_down.png);}");
+    ui->pushButton_exit->setStyleSheet("QPushButton{border-image: url(:/icon/Q-out-yellow.png);}"
+                                  "QPushButton:hover{border-image: url(:/icon/Q-out.png);}"
+                                  "QPushButton:pressed{border-image: url(:/icon/Q-out.png);}"
+                                  "QPushButton:checked{border-image: url(:/icon/Q-out.png);}");
+
+
+    ui->pushButton_mini->setStyleSheet("QPushButton{border-image: url(:/icon/mini-a.png);}"
+                                       "QPushButton:hover{border-image: url(:/icon/mini.png);}"
+                                       "QPushButton:pressed{border-image: url(:/icon/mini.png);}");
+
 
 
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(login()));
@@ -104,4 +110,9 @@ void NLogin::login()
 void NLogin::on_pushButton_exit_clicked()
 {
     this->done(-1);
+}
+
+void NLogin::on_pushButton_mini_clicked()
+{
+  this->showMinimized();
 }

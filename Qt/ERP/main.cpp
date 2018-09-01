@@ -28,11 +28,11 @@ int main(int argc, char *argv[])
 
     dataCenter::instance()->initData();
     NLogin login;
-    login.showMaximized();
+    login.showFullScreen();
     if (login.exec()==123){
         MainWindow w;
         w.setMinimumSize(800,800);
-        w.showMaximized();
+        w.showFullScreen();
         return a.exec();
     }
 
