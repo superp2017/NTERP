@@ -6,6 +6,7 @@ const (
 	Hash_Account          = "Account"
 	Hash_Employee         = "Employee"
 	Hash_Material         = "Material"
+	Hash_CustomerMaterial = "CustomerMaterial"
 	Hash_Customer         = "Customer"
 	Hash_Supplier         = "Supplier"
 	Hash_CustomerOrder    = "CustomerOrder"
