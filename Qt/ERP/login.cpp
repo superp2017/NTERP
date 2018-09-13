@@ -94,17 +94,18 @@ void NLogin::loginCb(bool ok)
 
 void NLogin::login()
 {
-    QString useName = ui->n_useNameLine->text();
-    QString usePwd = ui->n_usePwdLine->text();
-    if(useName == "") {
-        QToolTip::showText(ui->n_useNameLine->mapToGlobal(QPoint(100, 0)), "用户名输入有误");
-        return;
-    }
-    if(usePwd == ""){
-        QToolTip::showText(ui->n_usePwdLine->mapToGlobal(QPoint(100, 0)), "密码输入有误");
-        return;
-    }
-    do_login(useName,usePwd);
+//    QString useName = ui->n_useNameLine->text();
+//    QString usePwd = ui->n_usePwdLine->text();
+//    if(useName == "") {
+//        QToolTip::showText(ui->n_useNameLine->mapToGlobal(QPoint(100, 0)), "用户名输入有误");
+//        return;
+//    }
+//    if(usePwd == ""){
+//        QToolTip::showText(ui->n_usePwdLine->mapToGlobal(QPoint(100, 0)), "密码输入有误");
+//        return;
+//    }
+//    do_login(useName,usePwd);
+    this->done(123);
 }
 
 void NLogin::on_pushButton_exit_clicked()

@@ -46,6 +46,7 @@ func NewMaterial(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	go appendCustomerMaterial(st.CID, st.MaterID)
 	session.Forward("0", "success", st)
 }
 
@@ -91,8 +92,24 @@ func GtCustomerMaterial(session *JHttp.Session) {
 }
 
 //删除物料
-func DelMaterial(id string) error {
-	return JRedis.Redis_hdel(Hash_Material, id)
+func DelMaterial(session *JHttp.Session) {
+	type Para struct {
+		CID     string
+		MaterID string
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if err := JRedis.Redis_hdel(Hash_Material, st.MaterID); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	go delFromCustomerMaterial(st.CID, st.MaterID)
+	session.Forward("0", "success\n", nil)
 }
 
 //添加一个物料标号
@@ -102,4 +119,20 @@ func appendCustomerMaterial(CID, MaterID string) error {
 	list = append(list, MaterID)
 	err := JRedis.Redis_hset(Hash_CustomerMaterial, CID, &list)
 	return err
+}
+
+func delFromCustomerMaterial(CID, MaterID string) error {
+	list := []string{}
+	JRedis.Redis_hget(Hash_CustomerMaterial, CID, &list)
+	index := -1
+	for i, v := range list {
+		if v == MaterID {
+			index = i
+			break
+		}
+	}
+	if index != -1 {
+		list = append(list[:index], list[index+1:]...)
+	}
+	return nil
 }
