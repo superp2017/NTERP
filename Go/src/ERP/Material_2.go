@@ -71,7 +71,7 @@ func ModMaterial(session *JHttp.Session) {
 	session.Forward("0", "success", st)
 }
 
-func GtCustomerMaterial(session *JHttp.Session) {
+func GetCustomerMaterial(session *JHttp.Session) {
 	type Para struct {
 		CID string //客户ID
 	}
