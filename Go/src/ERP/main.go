@@ -81,3 +81,65 @@ func main() {
 	initRoute()
 	JHttp.Run()
 }
+
+func getMinRiskValue(n int, m int, x []int, y []int, w []int) int {
+	if n <= 0 || len(x) < m || len(y) < m || len(w) < m {
+		return -1
+	}
+	max_n := y[m-1] + 1
+	nodes := []int{}
+	c_n := x[0]
+	minValue := 50
+	cur_w := 0
+	var vis [][]bool
+	for i := 0; i < max_n; i++ {
+		d := make([]bool, max_n)
+		vis = append(vis, d)
+	}
+	var value [][]int
+	for i := 0; i < max_n; i++ {
+		d := make([]int, max_n)
+		value = append(value, d)
+	}
+	for i := 0; i < m; i++ {
+		value[x[i]][y[i]] = w[i]
+		value[y[i]][x[i]] = w[i]
+	}
+	for {
+		tmp := make([]bool, max_n)
+		for {
+			ok := false
+			for i := 0; i < max_n; i++ {
+				if value[c_n][i] > 0 && !vis[c_n][i] && !tmp[c_n] {
+					vis[c_n][i] = true
+					vis[i][c_n] = true
+					tmp[c_n] = true
+					if cur_w < value[c_n][i] {
+						cur_w = value[c_n][i]
+					}
+					nodes = append(nodes, c_n)
+					c_n = i
+					ok = true
+					break
+				}
+			}
+			if c_n == n {
+				break
+			}
+			if ok == false {
+				break
+			}
+		}
+		if c_n == n {
+			if minValue > cur_w {
+				minValue = cur_w
+			}
+		}
+		c_n = nodes[len(nodes)-1]
+		nodes = nodes[:len(nodes)-1]
+		if len(nodes) <= 0 {
+			break
+		}
+	}
+	return minValue
+}
