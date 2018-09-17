@@ -49,74 +49,6 @@ type Order struct {
 }
 
 //新建订单
-func NewOrder_2(session *JHttp.Session) {
-	st := &Order{}
-	if err := session.GetPara(st); err != nil {
-		JLogger.Error(err.Error())
-		session.Forward("1", err.Error(), nil)
-		return
-	}
-	if st.UserName == "" || st.UID == "" {
-		str := fmt.Sprintf("NewOrder failed,UserName = %s,UID = %s\n", st.UserName, st.UID)
-		JLogger.Error(str)
-		session.Forward("1", str, nil)
-		return
-	}
-	if st.MaterielDes == "" {
-		JLogger.Error("NewOrder MaterielDes is empty\n!")
-		session.Forward("1", "NewOrder MaterielDes is empty\n!", nil)
-		return
-	}
-	if st.Factory == "" || st.FactoryNumber == "" {
-		str := fmt.Sprintf("NewOrder failed,Factory=%s,FactoryNumber=%s\n", st.Factory, st.FactoryNumber)
-		JLogger.Error(str)
-		session.Forward("1", str, nil)
-		return
-	}
-	/////////////创建物料/////////////////////
-	//ma, err := newMaterial(st.MaterielDes, st.Plating,
-	//	st.Friction, st.Thickness, st.Salt, st.ComponentSolid, st.ComponentFormat,
-	//	st.CustomID, st.CustomName, st.Factory, st.FactoryNumber, st.ProductionLine, st.Unit, st.OrderNum, st.Money)
-	//if err != nil {
-	//	JLogger.Error(err.Error())
-	//	session.Forward("1", err.Error(), nil)
-	//	return
-	//}
-	//st.MaterielID = ma.MaterID
-	index := getOrderID()
-	curMon := CurMonth()
-	date := getLastOrderDate()
-	if date != "" && curMon != date {
-		index = resetOrderID()
-	}
-	id := CurDateEx() + index
-	id = st.FactoryNumber + id
-	if st.OrderType == "1" {
-		id = "1" + id
-	} else if st.OrderType == "2" {
-		id = "2" + id
-	} else if st.OrderType == "3" {
-		id = "3" + id
-	} else {
-		id = "1" + id
-	}
-	st.OrderID = id
-	st.CreatTime = CurTime()
-	st.TotleMoney = st.OrderNum * st.Money / 100
-	go setLastOrderDate(curMon)
-	////////////////添加状态///////////////////////////////
-	appendStatus(st, st.UserName, st.CreatTime, "创建订单", Status_New)
-	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, st); err != nil {
-		session.Forward("1", err.Error(), nil)
-		return
-	}
-	if st.CustomID != "" && st.OrderID != "" {
-		go appendCustomerOrderID(st.CustomID, st.OrderID)
-	}
-	session.Forward("0", "success", st)
-}
-
-//新建订单
 func NewOrder(session *JHttp.Session) {
 	st := &Order{}
 	if err := session.GetPara(st); err != nil {
@@ -141,16 +73,6 @@ func NewOrder(session *JHttp.Session) {
 		session.Forward("1", str, nil)
 		return
 	}
-	/////////////创建物料/////////////////////
-	ma, err := newMaterial(st.MaterielDes, st.Plating,
-		st.Friction, st.Thickness, st.Salt, st.ComponentSolid, st.ComponentFormat,
-		st.CustomID, st.CustomName, st.Factory, st.FactoryNumber, st.ProductionLine, st.Unit, st.OrderNum, st.Money)
-	if err != nil {
-		JLogger.Error(err.Error())
-		session.Forward("1", err.Error(), nil)
-		return
-	}
-	st.MaterielID = ma.MaterID
 	index := getOrderID()
 	curMon := CurMonth()
 	date := getLastOrderDate()
@@ -184,25 +106,90 @@ func NewOrder(session *JHttp.Session) {
 	session.Forward("0", "success", st)
 }
 
-//修改订单
+////修改订单
+//func ModOrder(session *JHttp.Session) {
+//	type Para struct {
+//		OrderID         string //订单id
+//		MaterielID      string //材料id
+//		MaterielDes     string //材料描述
+//		Plating         string //镀种
+//		Friction        string //摩擦系数
+//		Thickness       string //厚度
+//		Salt            string //盐度
+//		ComponentSolid  string //组件固号
+//		ComponentFormat string //组件规格
+//		OrderNum        int    //订单数量
+//		Unit            string //单位
+//		CustomID        string //客户ID
+//		CustomName      string //客户姓名
+//		CustomBatch     string //客户批次
+//		CustomNote      string //客户备注
+//		ProductionLine  string //产线
+//	}
+//	st := &Para{}
+//	if err := session.GetPara(st); err != nil {
+//		JLogger.Error(err.Error())
+//		session.Forward("1", err.Error(), nil)
+//		return
+//	}
+//	if st.OrderID == "" {
+//		session.Forward("1", "ModOrder faild,OrderID is empty\n", nil)
+//		return
+//	}
+//	if st.MaterielID == "" || st.MaterielDes == "" {
+//		str := fmt.Sprintf("ModOrder faild,MaterielID =%s,MaterielDes=%s\n", st.MaterielID, st.MaterielDes)
+//		JLogger.Error(str)
+//		session.Forward("1", str, nil)
+//		return
+//	}
+//
+//	data := &Order{}
+//	if err := JRedis.Redis_hget(Hash_Order, st.OrderID, data); err != nil {
+//		session.Forward("1", err.Error(), nil)
+//		return
+//	}
+//	if data.Current.Status == Status_Cancle || data.Current.Status == Status_Success {
+//		str := fmt.Sprintf("ModOrder faild,Current.Status=%s not support modify\n", data.Current.Status)
+//		JLogger.Error(str)
+//		session.Forward("1", str, nil)
+//		return
+//	}
+//	data.MaterielID = st.MaterielID
+//	data.MaterielDes = st.MaterielDes
+//	data.Plating = st.Plating
+//	data.Friction = st.Friction
+//	data.Thickness = st.Thickness
+//	data.Salt = st.Salt
+//	data.ComponentSolid = st.ComponentSolid
+//	data.ComponentFormat = st.ComponentFormat
+//	data.OrderNum = st.OrderNum
+//	data.Unit = st.Unit
+//	data.CustomID = st.CustomID
+//	data.CustomName = st.CustomName
+//	data.CustomBatch = st.CustomBatch
+//	data.CustomNote = st.CustomNote
+//
+//	data.TotleMoney = data.OrderNum * data.Money / 100
+//
+//	////////////////添加状态///////////////////////////////
+//	appendStatus(data, data.UserName, CurTime(), "修改订单", getStatus(data.OrderNum, data.ProduceNum, data.SuccessNum))
+//
+//	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
+//		session.Forward("1", err.Error(), nil)
+//		return
+//	}
+//	//go modMaterial(st.MaterielID, st.MaterielDes, st.Plating, st.Friction,
+//	//	st.Thickness, st.Salt, st.ComponentSolid, st.ComponentFormat,
+//	//	st.CustomID, st.CustomName, st.ProductionLine, st.Unit, st.OrderNum, data.Money)
+//	session.Forward("0", "success", data)
+//}
+
 func ModOrder(session *JHttp.Session) {
 	type Para struct {
-		OrderID         string //订单id
-		MaterielID      string //材料id
-		MaterielDes     string //材料描述
-		Plating         string //镀种
-		Friction        string //摩擦系数
-		Thickness       string //厚度
-		Salt            string //盐度
-		ComponentSolid  string //组件固号
-		ComponentFormat string //组件规格
-		OrderNum        int    //订单数量
-		Unit            string //单位
-		CustomID        string //客户ID
-		CustomName      string //客户姓名
-		CustomBatch     string //客户批次
-		CustomNote      string //客户备注
-		ProductionLine  string //产线
+		OrderID     string //订单id
+		MaterielID  string //材料id
+		OrderNum    int    //订单数量
+		CustomBatch string //客户批次
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
@@ -256,9 +243,9 @@ func ModOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	go modMaterial(st.MaterielID, st.MaterielDes, st.Plating, st.Friction,
-		st.Thickness, st.Salt, st.ComponentSolid, st.ComponentFormat,
-		st.CustomID, st.CustomName, st.ProductionLine, st.Unit, st.OrderNum, data.Money)
+	//go modMaterial(st.MaterielID, st.MaterielDes, st.Plating, st.Friction,
+	//	st.Thickness, st.Salt, st.ComponentSolid, st.ComponentFormat,
+	//	st.CustomID, st.CustomName, st.ProductionLine, st.Unit, st.OrderNum, data.Money)
 	session.Forward("0", "success", data)
 }
 
@@ -302,10 +289,8 @@ func ModOrderPrice(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//修改物料
-	go modMaterial(data.MaterielID, data.MaterielDes, data.Plating, data.Friction,
-		data.Thickness, data.Salt, data.ComponentSolid, data.ComponentFormat,
-		data.CustomID, data.CustomName, data.ProductionLine, data.Unit, data.OrderNum, data.Money)
+	////修改物料
+	go modMaterialPrice(data.Money, st.Money)
 	session.Forward("0", "success", data)
 }
 

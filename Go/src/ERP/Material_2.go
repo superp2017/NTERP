@@ -70,6 +70,23 @@ func ModMaterial(session *JHttp.Session) {
 	}
 	session.Forward("0", "success", st)
 }
+func modMaterialPrice(MaterID string, Money int) error {
+	if MaterID == "" || Money < 0 {
+		str := fmt.Sprintf("modMaterialPrice ,MaterID=%s, Money=%d\n", MaterID, Money)
+		return JLogger.ErrorLog(str)
+	}
+	st := &MaterialInfo{}
+	if err := JRedis.Redis_hget(Hash_Material, MaterID, st); err != nil {
+		JLogger.Error(err.Error())
+		return err
+	}
+	st.Money = Money
+	if err := JRedis.Redis_hset(Hash_Material, st.MaterID, st); err != nil {
+		JLogger.Error(err.Error())
+		return err
+	}
+	return nil
+}
 
 func GetCustomerMaterial(session *JHttp.Session) {
 	type Para struct {
