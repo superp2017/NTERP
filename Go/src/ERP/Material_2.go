@@ -50,6 +50,30 @@ func NewMaterial(session *JHttp.Session) {
 	session.Forward("0", "success", st)
 }
 
+//查询单个物料
+func QuertyMaterial(session *JHttp.Session) {
+	type Para struct {
+		MaterID string
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.MaterID == "" {
+		JLogger.Error("QuertyMaterial,MaterID is empty!\n")
+		session.Forward("1", "QuertyMaterial,MaterID is empty!\n", nil)
+		return
+	}
+	data, err := getMaterial(st.MaterID)
+	if err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	session.Forward("0", "success!\n", data)
+}
 func ModMaterial(session *JHttp.Session) {
 	st := &MaterialInfo{}
 	if err := session.GetPara(st); err != nil {
@@ -87,7 +111,6 @@ func modMaterialPrice(MaterID string, Money int) error {
 	}
 	return nil
 }
-
 func GetCustomerMaterial(session *JHttp.Session) {
 	type Para struct {
 		CID string //客户ID
@@ -137,7 +160,6 @@ func appendCustomerMaterial(CID, MaterID string) error {
 	err := JRedis.Redis_hset(Hash_CustomerMaterial, CID, &list)
 	return err
 }
-
 func delFromCustomerMaterial(CID, MaterID string) error {
 	list := []string{}
 	JRedis.Redis_hget(Hash_CustomerMaterial, CID, &list)
@@ -152,4 +174,11 @@ func delFromCustomerMaterial(CID, MaterID string) error {
 		list = append(list[:index], list[index+1:]...)
 	}
 	return nil
+}
+
+//查询单个物料
+func getMaterial(MID string) (*MaterialInfo, error) {
+	data := &MaterialInfo{}
+	err := JRedis.Redis_hset(Hash_Material, MID, data)
+	return data, err
 }

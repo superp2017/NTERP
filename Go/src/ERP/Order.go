@@ -190,6 +190,7 @@ func ModOrder(session *JHttp.Session) {
 		MaterielID  string //材料id
 		OrderNum    int    //订单数量
 		CustomBatch string //客户批次
+		CustomNote  string //客户备注
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
@@ -201,8 +202,8 @@ func ModOrder(session *JHttp.Session) {
 		session.Forward("1", "ModOrder faild,OrderID is empty\n", nil)
 		return
 	}
-	if st.MaterielID == "" || st.MaterielDes == "" {
-		str := fmt.Sprintf("ModOrder faild,MaterielID =%s,MaterielDes=%s\n", st.MaterielID, st.MaterielDes)
+	if st.MaterielID == "" || st.CustomBatch == "" || st.OrderNum <= 0 {
+		str := fmt.Sprintf("ModOrder faild,MaterielID =%s,CustomBatch=%s,OrderNum=%d\n", st.MaterielID, st.CustomBatch, st.OrderNum)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -219,21 +220,14 @@ func ModOrder(session *JHttp.Session) {
 		session.Forward("1", str, nil)
 		return
 	}
-	data.MaterielID = st.MaterielID
-	data.MaterielDes = st.MaterielDes
-	data.Plating = st.Plating
-	data.Friction = st.Friction
-	data.Thickness = st.Thickness
-	data.Salt = st.Salt
-	data.ComponentSolid = st.ComponentSolid
-	data.ComponentFormat = st.ComponentFormat
-	data.OrderNum = st.OrderNum
-	data.Unit = st.Unit
-	data.CustomID = st.CustomID
-	data.CustomName = st.CustomName
+
+	if mater, err := getMaterial(st.MaterielID); err == nil {
+		initOrderMaterial(data, mater)
+	} else {
+		JLogger.Error("MaterielID=%s获取材料失败\n", st.MaterielID)
+	}
 	data.CustomBatch = st.CustomBatch
 	data.CustomNote = st.CustomNote
-
 	data.TotleMoney = data.OrderNum * data.Money / 100
 
 	////////////////添加状态///////////////////////////////
@@ -243,9 +237,6 @@ func ModOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//go modMaterial(st.MaterielID, st.MaterielDes, st.Plating, st.Friction,
-	//	st.Thickness, st.Salt, st.ComponentSolid, st.ComponentFormat,
-	//	st.CustomID, st.CustomName, st.ProductionLine, st.Unit, st.OrderNum, data.Money)
 	session.Forward("0", "success", data)
 }
 
@@ -290,7 +281,7 @@ func ModOrderPrice(session *JHttp.Session) {
 		return
 	}
 	////修改物料
-	go modMaterialPrice(data.Money, st.Money)
+	go modMaterialPrice(data.MaterielID, st.Money)
 	session.Forward("0", "success", data)
 }
 
@@ -330,7 +321,6 @@ func CancelOrder(session *JHttp.Session) {
 		return
 	}
 
-	go cancleMaterial(data.MaterielID)
 	if data.CustomID != "" && data.OrderID != "" {
 		go removefromCustomerOrderID(data.CustomID, data.OrderID)
 	}
@@ -358,7 +348,7 @@ func DelOrder(session *JHttp.Session) {
 		return
 	}
 	if data.Current.Status != Status_Cancle {
-		str := fmt.Sprintf("DelOrder faild,order is not cancel  \n", data.Current.Status)
+		str := fmt.Sprintf("DelOrder faild,order status =%s ,is not cancel  \n", data.Current.Status)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
@@ -374,9 +364,7 @@ func DelOrder(session *JHttp.Session) {
 	//	session.Forward("1", err.Error(), nil)
 	//	return
 	//}
-	if data.MaterielID != "" {
-		go delMaterial(data.MaterielID)
-	}
+
 	if data.CustomID != "" && data.OrderID != "" {
 		go removefromCustomerOrderID(data.CustomID, data.OrderID)
 	}
@@ -465,7 +453,6 @@ func SuccessOrder(session *JHttp.Session) {
 		return
 	}
 
-	go successMaterial(data.MaterielID)
 	////////////////添加状态///////////////////////////////
 	data.SuccessNum += st.Num
 	if data.SuccessNum >= data.OrderNum {
@@ -502,11 +489,33 @@ func GetGlobalOrders(session *JHttp.Session) {
 		d := &Order{}
 		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
 			if d.Current.Status != Status_Del {
+				if mater, e := getMaterial(d.MaterielID); e == nil {
+					initOrderMaterial(d, mater)
+				}
+				d.TotleMoney = d.OrderNum * d.Money / 100
 				data = append(data, d)
 			}
 		}
 	}
 	session.Forward("0", "success", data)
+}
+
+func initOrderMaterial(data *Order, mater *MaterialInfo) {
+	data.MaterielID = mater.MaterID
+	data.MaterielDes = mater.MaterDes
+	data.Plating = mater.Plating
+	data.Friction = mater.Friction
+	data.Thickness = mater.Thickness
+	data.Salt = mater.Salt
+	data.ComponentSolid = mater.ComponentSolid
+	data.ComponentFormat = mater.ComponentFormat
+	data.Unit = mater.Unit
+	data.CustomID = mater.CID
+	data.CustomName = mater.CustomName
+	data.Factory = mater.Factory
+	data.FactoryNumber = mater.FactoryNumber
+	data.ProductionLine = mater.ProductionLine
+	data.Money = mater.Money
 }
 
 //添加状态
