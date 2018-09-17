@@ -49,6 +49,74 @@ type Order struct {
 }
 
 //新建订单
+func NewOrder_2(session *JHttp.Session) {
+	st := &Order{}
+	if err := session.GetPara(st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.UserName == "" || st.UID == "" {
+		str := fmt.Sprintf("NewOrder failed,UserName = %s,UID = %s\n", st.UserName, st.UID)
+		JLogger.Error(str)
+		session.Forward("1", str, nil)
+		return
+	}
+	if st.MaterielDes == "" {
+		JLogger.Error("NewOrder MaterielDes is empty\n!")
+		session.Forward("1", "NewOrder MaterielDes is empty\n!", nil)
+		return
+	}
+	if st.Factory == "" || st.FactoryNumber == "" {
+		str := fmt.Sprintf("NewOrder failed,Factory=%s,FactoryNumber=%s\n", st.Factory, st.FactoryNumber)
+		JLogger.Error(str)
+		session.Forward("1", str, nil)
+		return
+	}
+	/////////////创建物料/////////////////////
+	//ma, err := newMaterial(st.MaterielDes, st.Plating,
+	//	st.Friction, st.Thickness, st.Salt, st.ComponentSolid, st.ComponentFormat,
+	//	st.CustomID, st.CustomName, st.Factory, st.FactoryNumber, st.ProductionLine, st.Unit, st.OrderNum, st.Money)
+	//if err != nil {
+	//	JLogger.Error(err.Error())
+	//	session.Forward("1", err.Error(), nil)
+	//	return
+	//}
+	//st.MaterielID = ma.MaterID
+	index := getOrderID()
+	curMon := CurMonth()
+	date := getLastOrderDate()
+	if date != "" && curMon != date {
+		index = resetOrderID()
+	}
+	id := CurDateEx() + index
+	id = st.FactoryNumber + id
+	if st.OrderType == "1" {
+		id = "1" + id
+	} else if st.OrderType == "2" {
+		id = "2" + id
+	} else if st.OrderType == "3" {
+		id = "3" + id
+	} else {
+		id = "1" + id
+	}
+	st.OrderID = id
+	st.CreatTime = CurTime()
+	st.TotleMoney = st.OrderNum * st.Money / 100
+	go setLastOrderDate(curMon)
+	////////////////添加状态///////////////////////////////
+	appendStatus(st, st.UserName, st.CreatTime, "创建订单", Status_New)
+	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.CustomID != "" && st.OrderID != "" {
+		go appendCustomerOrderID(st.CustomID, st.OrderID)
+	}
+	session.Forward("0", "success", st)
+}
+
+//新建订单
 func NewOrder(session *JHttp.Session) {
 	st := &Order{}
 	if err := session.GetPara(st); err != nil {
