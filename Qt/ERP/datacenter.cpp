@@ -394,9 +394,25 @@ void dataCenter::net_newMaterial(const QJsonObject para)
     bool ok = false;
     Materiel ma = MaterialService::newMaterial(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(ok){
-       m_maters.push_back(ma);
+        m_maters.push_back(ma);
+        pri_addCustomerMaterial(ma.CID,ma.MaterID);
     }
     emit sig_newMaterial(ma,ok);
+}
+
+void dataCenter::net_modMaterial(const QJsonObject para)
+{
+    bool ok = false;
+    Materiel mater =MaterialService::modMaterial(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        for(int i=0;i<m_maters.size();++i){
+            if(m_maters[i].MaterID==mater.MaterID){
+                m_maters[i] = mater;
+                break;
+            }
+        }
+    }
+    emit sig_modMaterial(mater,ok);
 }
 
 void dataCenter::net_delMaterial(const QJsonObject para)
@@ -407,6 +423,9 @@ void dataCenter::net_delMaterial(const QJsonObject para)
         for(int i=0;i<m_maters.size();++i){
             if(m_maters[i].MaterID==MID){
                 m_maters.remove(i);
+                if(para.contains("CID")){
+                    pri_removeCustomerMaterial(para.value("CID").toString(),MID);
+                }
                 break;
             }
         }
@@ -418,7 +437,7 @@ void dataCenter::net_queryMaterial(const QJsonObject para)
 {
     bool isOK   = false;
     Materiel mater = MaterialService::queryMaterial(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    emit sig_modOrderPrice(mater,isOK);
+    emit sig_modMaterial(mater,isOK);
 }
 
 void dataCenter::net_getCustomerMaterial(const QJsonObject para)
@@ -428,6 +447,7 @@ void dataCenter::net_getCustomerMaterial(const QJsonObject para)
     if(para.contains("CID")){
         m_hashMaterials[para.value("CID").toString()] = data;
     }
+    emit sig_getCustomerMaterial(data,ok);
 }
 
 void dataCenter::net_getglobalMateriels()
@@ -770,6 +790,24 @@ void dataCenter::pri_checkGoodType(QString type)
         }
     }
     m_goodsType.push_back(type);
+}
+
+void dataCenter::pri_removeCustomerMaterial(QString cid, QString materialID)
+{
+    if(m_hashMaterials.contains(cid)){
+        m_hashMaterials[cid].removeOne(materialID);
+    }
+}
+
+void dataCenter::pri_addCustomerMaterial(QString cid, QString materialID)
+{
+    if(m_hashMaterials.contains(cid)){
+        m_hashMaterials[cid].push_back(materialID);
+    }else{
+        QVector<QString> ls;
+        ls.push_back(materialID);
+        m_hashMaterials[cid] = ls;
+    }
 }
 
 

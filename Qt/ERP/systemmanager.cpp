@@ -89,7 +89,7 @@ void SystemManager::initSetting()
 void SystemManager::on_pushButton_supplier_manage_clicked()
 {
     Supplier.initData();
-    Supplier.showNormal();
+    Supplier.showMaximized();
 }
 
 void SystemManager::on_pushButton_goodstype_manage_clicked()
@@ -101,12 +101,13 @@ void SystemManager::on_pushButton_goodstype_manage_clicked()
 void SystemManager::on_pushButton_custon_manage_clicked()
 {
     Custom.initData();
-    Custom.showNormal();
+    Custom.showMaximized();
 }
 
 void SystemManager::on_pushButton_mateial_manage_clicked()
 {
     Material.initData();
+    Material.showMaximized();
     Material.exec();
 }
 

@@ -40,9 +40,9 @@ void DialogNewMateriel::on_pushButton_ok_clicked()
 
     QJsonObject para = MaterialService::toJsonObject(mater);
     if(m_isNewMode){
-        boost::this_thread(boost::bind(&dataCenter::net_newMaterial,dataCenter::instance(),para));
+        boost::thread(boost::bind(&dataCenter::net_newMaterial,dataCenter::instance(),para));
     }else{
-        boost::this_thread(boost::bind(&dataCenter::net_modMaterial,dataCenter::instance(),para));
+        boost::thread(boost::bind(&dataCenter::net_modMaterial,dataCenter::instance(),para));
     }
     dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
@@ -51,7 +51,6 @@ void DialogNewMateriel::on_pushButton_cancle_clicked()
 {
     done(-1);
 }
-
 
 
 void DialogNewMateriel::initCommbox()

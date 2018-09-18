@@ -183,6 +183,8 @@ signals:
 private:
     void pri_initBath();
     void pri_checkGoodType(QString type);
+    void pri_removeCustomerMaterial(QString cid,QString materialID);
+    void pri_addCustomerMaterial(QString cid,QString materialID);
 private:
     User                    cur_user;     //当前登录的账号
     QVector<User>           m_employee;   //所有的员工
@@ -191,7 +193,7 @@ private:
     QVector<QString>        m_Platings;   //所有镀种
     QSet<QString>           m_batch;      //所有用户批次
     QVector<Materiel>       m_maters;     //所有物料
-    QMap<QVector<QString>>  m_hashMaterials;//不同客户的物料ID
+    QMap<QString,QVector<QString>>  m_hashMaterials;//不同客户的物料ID
     QVector<Customer>       m_customers;  //所有客户
     QVector<Supplier>       m_suppliers;  //所有供应商
     QVector<QString>        m_authors;    //所有的权限
