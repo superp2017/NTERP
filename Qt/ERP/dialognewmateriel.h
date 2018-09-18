@@ -22,6 +22,7 @@ public:
     Materiel getMater() const;
     void initCommbox();
     void initMater(Materiel ma);
+    void setModel(bool isNew);
 private slots:
     void on_pushButton_ok_clicked();
 
@@ -35,10 +36,14 @@ private slots:
 
     void on_comboBox_format_currentTextChanged(const QString &arg1);
 
+    void newMaterCb(Materiel ma,bool ok);
+    void modMaterCb(Materiel ma,bool ok);
+
 private:
     Ui::DialogNewMateriel *ui;
     Materiel mater;
-     QVector<Materiel> mater_list;
+    QVector<Materiel> mater_list;
+    bool m_isNewMode;
 
 };
 

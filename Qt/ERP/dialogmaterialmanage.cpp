@@ -5,16 +5,18 @@
 #include "boost/thread.hpp"
 #include <QFileDialog>
 #include "materialservice.h"
+#include "dialognewmateriel.h"
+
 DialogMaterialManage::DialogMaterialManage(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogMaterialManage)
 {
     ui->setupUi(this);
-    ui->tableWidget->setColumnCount(7);
+    ui->tableWidget->setColumnCount(5);
 
     //设置表头内容
     QStringList header;
-    header<<tr("物料编号")<<tr("物料描述")<<tr("客户名称")<<tr("数量")<<tr("单位")<<tr("入库时间")<<tr("状态");
+    header<<tr("物料编号")<<tr("物料描述")<<tr("客户名称")<<tr("单位")<<tr("创建时间");
     ui->tableWidget->setHorizontalHeaderLabels(header);
 
     connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
@@ -47,7 +49,7 @@ void DialogMaterialManage::on_pushButton_exit_clicked()
 void DialogMaterialManage::initData()
 {
     ui->tableWidget->removeAllRow();
-    closeAllStatus();
+   changeCol();
     QVector<Materiel>ls = dataCenter::instance()->pub_Materiels();
     for(Materiel m:ls){
         appendOne(m);
@@ -176,8 +178,6 @@ void DialogMaterialManage::setRowData(Materiel ma, int row)
     QTableWidgetItem *item2 = ui->tableWidget->item(row,2);
     QTableWidgetItem *item3 = ui->tableWidget->item(row,3);
     QTableWidgetItem *item4 = ui->tableWidget->item(row,4);
-    QTableWidgetItem *item5 = ui->tableWidget->item(row,5);
-    QTableWidgetItem *item6 = ui->tableWidget->item(row,6);
     if(item1==NULL){
         item1 = new QTableWidgetItem();
         ui->tableWidget->setItem(row,1,item1);
@@ -194,33 +194,17 @@ void DialogMaterialManage::setRowData(Materiel ma, int row)
         item4 = new QTableWidgetItem();
         ui->tableWidget->setItem(row,4,item4);
     }
-    if(item5==NULL){
-        item5 = new QTableWidgetItem();
-        ui->tableWidget->setItem(row,5,item5);
-    }
-    if(item6==NULL){
-        item6 = new QTableWidgetItem();
-        ui->tableWidget->setItem(row,6,item6);
-    }
+
     QString status;
-    if(ma.Status=="0")status="已入库";
-    if(ma.Status=="1")
-        status="已出库";
-    if(ma.Status=="-1")
-        status = "已取消";
     item1->setText(ma.MaterDes);
     item2->setText(ma.CustomName);
-    item3->setText(QString("%1").arg(ma.OrderNum/100.0));
-    item4->setText(ma.Unit);
-    item5->setText(ma.CreatTime);
-    item6->setText(status);
+    item3->setText(ma.Unit);
+    item4->setText(ma.CreatTime);
 
     item1->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
     item2->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
     item3->setTextAlignment(Qt::AlignCenter);
     item4->setTextAlignment(Qt::AlignCenter);
-    item5->setTextAlignment(Qt::AlignCenter);
-    item6->setTextAlignment(Qt::AlignCenter);
 
 }
 
@@ -248,3 +232,17 @@ void DialogMaterialManage::appendOne(Materiel ma)
 
 
 
+void DialogMaterialManage::on_pushButton_new_clicked()
+{
+
+}
+
+void DialogMaterialManage::on_pushButton_mod_clicked()
+{
+
+}
+
+void DialogMaterialManage::on_pushButton_del_clicked()
+{
+
+}

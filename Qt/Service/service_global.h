@@ -49,7 +49,12 @@ const std::string  Net_OutEmployee="/outemployee" ;         //员工离职
 const std::string  Net_GlobalEmployee="/getallemployeess";  //获取所有的员工信息
 
 
-const std::string  Net_GetAllMateril="/getallmaterials";    //获取所有材料
+const std::string Net_NewMaterial="/newmaterial";           //"创建一个材料"
+const std::string Net_QueryMaterial="/querymaterial";       //"查询一个材料"
+const std::string Net_ModMaterial="/modmaterial";           //"修改材料"
+const std::string Net_DelMaterial="/delmaterial";           //"删除材料"
+const std::string Net_GetCustomerMaterial="/getcustomermaterial";//获取某个用户的所有物料
+const std::string Net_GetAllMateril="/getallmaterials";    //获取所有材料
 
 
 const std::string  Net_NewUnit="/newunit";                  //新建单位
@@ -196,6 +201,8 @@ struct Supplier{
 struct Materiel{
     QString MaterID;            //物料编号
     QString MaterDes;           //物料描述
+    QString CID;                //客户ID
+    QString CustomName;         //客户姓名
     QString Plating;            //镀种
     QString Friction;           //摩擦系数
     QString Thickness;          //厚度
@@ -205,14 +212,9 @@ struct Materiel{
     QString Factory;            //分厂名称
     QString FactoryNumber;      //分厂号
     QString ProductionLine;     //产线名称
-    QString CID;                //客户ID
-    QString CustomName;         //客户姓名
-    QString Status;             //状态
-    QString CreatTime;          //创建时间
     QString Unit;               //单位
-    int     OrderNum;           //订单数量
+    QString CreatTime;          //创建时间
     int     Money;              //价格
-    int     TotleMoney;         //总价
 };
 
 

@@ -5,6 +5,7 @@
 #include "global.h"
 #include "loadding.h"
 #include "nsysconfig.h"
+#include <QMap>
 class dataCenter : public QObject
 {
     Q_OBJECT
@@ -52,6 +53,11 @@ public:
     void net_delSupplier(const QJsonObject para);
     void net_getglobalSuppliers();
     /////////////////////////////////////////////////////
+    void net_newMaterial(const QJsonObject para);
+    void net_modMaterial(const QJsonObject para);
+    void net_delMaterial(const QJsonObject para);
+    void net_queryMaterial(const QJsonObject para);
+    void net_getCustomerMaterial(const QJsonObject para);
     void net_getglobalMateriels();
     //////////////////////////////////////////////////////
     void net_newGoods(const QJsonObject para);
@@ -155,6 +161,11 @@ signals:
     void sig_delSUpplier(QString,bool);
     void sig_globalSUppliers(bool);
     ///////////////////////////////////
+    void sig_newMaterial(Materiel,bool);
+    void sig_modMaterial(Materiel,bool);
+    void sig_queryMaterial(Materiel,bool);
+    void sig_delMaterial(QString,bool);
+    void sig_getCustomerMaterial(QVector<QString>,bool);
     void sig_globalMateriels(bool);
     ////////////////////////////////////
     void sig_newPlating(QString,bool);
@@ -173,21 +184,22 @@ private:
     void pri_initBath();
     void pri_checkGoodType(QString type);
 private:
-    User               cur_user;     //当前登录的账号
-    QVector<User>      m_employee;   //所有的员工
-    QVector<Order>     m_orders;     //所有订单
-    QVector<QString>   m_units;      //所有计量单位
-    QVector<QString>   m_Platings;      //所有镀种
-    QSet<QString>      m_batch;      //所有用户批次
-    QVector<Materiel>  m_maters;     //所有物料
-    QVector<Customer>  m_customers;  //所有客户
-    QVector<Supplier>  m_suppliers;  //所有供应商
-    QVector<QString>   m_authors;    //所有的权限
-    QVector<QString>   m_departments;//所有的部门
-    QVector<Goods>     m_goods;      //所有的商品
-    QVector<QString>   m_goodsType;  //所有商品的分类
-    Loadding           m_load;       //加载动画
-    nSysConfig         m_Config;     //保存系统配置
+    User                    cur_user;     //当前登录的账号
+    QVector<User>           m_employee;   //所有的员工
+    QVector<Order>          m_orders;     //所有订单
+    QVector<QString>        m_units;      //所有计量单位
+    QVector<QString>        m_Platings;   //所有镀种
+    QSet<QString>           m_batch;      //所有用户批次
+    QVector<Materiel>       m_maters;     //所有物料
+    QMap<QVector<QString>>  m_hashMaterials;//不同客户的物料ID
+    QVector<Customer>       m_customers;  //所有客户
+    QVector<Supplier>       m_suppliers;  //所有供应商
+    QVector<QString>        m_authors;    //所有的权限
+    QVector<QString>        m_departments;//所有的部门
+    QVector<Goods>          m_goods;      //所有的商品
+    QVector<QString>        m_goodsType;  //所有商品的分类
+    Loadding                m_load;       //加载动画
+    nSysConfig              m_Config;     //保存系统配置
 };
 
 #endif // DATACENTER_H

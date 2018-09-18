@@ -145,11 +145,11 @@ func DelMaterial(session *JHttp.Session) {
 	}
 	if err := JRedis.Redis_hdel(Hash_Material, st.MaterID); err != nil {
 		JLogger.Error(err.Error())
-		session.Forward("1", err.Error(), nil)
+		session.Forward("1", err.Error(), st.MaterID)
 		return
 	}
 	go delFromCustomerMaterial(st.CID, st.MaterID)
-	session.Forward("0", "success\n", nil)
+	session.Forward("0", "success\n", st.MaterID)
 }
 
 //添加一个物料标号

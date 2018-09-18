@@ -7,6 +7,104 @@ MaterialService::MaterialService()
 
 }
 
+Materiel MaterialService::newMaterial(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    std::string url = Net_NewMaterial;
+    bool r   = false;
+    Materiel c;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            c = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return c;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"newMaterial ret is not 0"<<endl;
+    ok = false;
+    return c;
+}
+
+Materiel MaterialService::modMaterial(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    std::string url = Net_ModMaterial;
+    Materiel c;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            c = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return c;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"modMaterial ret is not 0"<<endl;
+    ok = false;
+    return c;
+}
+
+QString MaterialService::delMaterial(const QJsonObject para, bool &ok,QString hostname, QString hostport)
+{
+    std::string url = Net_DelMaterial;
+    QString c;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isString()){
+            c = ret.data.toString();
+        }
+        ok = true;
+    }
+    if(!ret.ret)
+        qDebug()<<"delMaterial ret is not 0"<<endl;
+    ok = false;
+    return c;
+}
+
+Materiel MaterialService::queryMaterial(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    std::string url = Net_QueryMaterial;
+    Materiel c;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            c = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return c;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"queryMaterial ret is not 0"<<endl;
+    ok = false;
+    return c;
+}
+
+QVector<QString> MaterialService::getCustomerMaterID(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    QVector<QString> data;
+    std::string url = Net_GetCustomerMaterial;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isArray()){
+            for(QJsonValue v:ret.data.toArray()){
+                QString  c = v.toString();
+                data.push_back(c);
+            }
+            ok = true;
+            return  data;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"getAllMateriels ret is not 0"<<endl;
+    ok = false;
+    return data;
+}
+
+
 QVector<Materiel> MaterialService::getAllMateriels(bool &ok, QString hostname, QString hostport)
 {
     QVector<Materiel> data;
@@ -44,15 +142,12 @@ QJsonObject MaterialService::toJsonObject(Materiel ma)
     obj.insert("ComponentFormat",ma.ComponentFormat);
     obj.insert("CID",ma.CID);
     obj.insert("CustomName",ma.CustomName);
-    obj.insert("Status",ma.Status);
     obj.insert("CreatTime",ma.CreatTime);
     obj.insert("Factory",ma.Factory);
     obj.insert("FactoryNumber",ma.FactoryNumber);
     obj.insert("ProductionLine",ma.ProductionLine);
-    obj.insert("OrderNum",ma.OrderNum);
     obj.insert("Unit",ma.Unit);
     obj.insert("Money",ma.Money);
-    obj.insert("TotleMoney",ma.TotleMoney);
     return obj;
 }
 
@@ -109,11 +204,6 @@ Materiel MaterialService::fromJsonObject(QJsonObject obj)
         if(value.isString())
             ma.CustomName = value.toString();
     }
-    if(obj.contains("Status")){
-        QJsonValue value = obj.value("Status");
-        if(value.isString())
-            ma.Status = value.toString();
-    }
     if(obj.contains("CreatTime")){
         QJsonValue value = obj.value("CreatTime");
         if(value.isString())
@@ -134,11 +224,6 @@ Materiel MaterialService::fromJsonObject(QJsonObject obj)
         if(value.isString())
             ma.ProductionLine = value.toString();
     }
-    if(obj.contains("OrderNum")){
-        QJsonValue value = obj.value("OrderNum");
-        if(value.isDouble())
-            ma.OrderNum = value.toInt();
-    }
     if(obj.contains("Unit")){
         QJsonValue value = obj.value("Unit");
         if(value.isString())
@@ -149,11 +234,6 @@ Materiel MaterialService::fromJsonObject(QJsonObject obj)
         if(value.isDouble())
             ma.Money = value.toInt();
     }
-    if(obj.contains("TotleMoney")){
-        QJsonValue value = obj.value("TotleMoney");
-        if(value.isDouble())
-            ma.TotleMoney = value.toInt();
-    }
     return ma;
 }
 
@@ -162,20 +242,14 @@ Materiel MaterialService::fromJsonObject(QJsonObject obj)
 bool MaterialService::exportMateriel(QVector<Materiel> list, QString filepath, bool isOpen)
 {
     QVector<QVariant> datalist;
-    datalist<<"物料编号"<<"物料描述"<<"客户姓名"<<"数量"<<"单位"<<"入库时间"<<"状态";
+    datalist<<"物料编号"<<"物料描述"<<"客户姓名"<<"未税单价"<<"单位"<<"创建时间";
     QVector<QVector<QVariant>> data;
     for(int i=0;i<list.size();++i){
         Materiel ma  = list.at(i);
-        QString status;
-        if(ma.Status=="0")
-            status="已入库";
-        if(ma.Status=="1")
-            status="已出库";
-
         QVector<QVariant> datalist;
         datalist<<"'"+ma.MaterID<<"'"+ma.MaterDes\
-               <<"'"+ma.CustomName<<ma.OrderNum\
-              <<ma.Unit<<"'"+ma.CreatTime<<status;
+               <<"'"+ma.CustomName<<+"'"+ma.Money\
+              <<ma.Unit<<"'"+ma.CreatTime;
         data.push_back(datalist);
     }
     return  ExcelService::dataExport(filepath,datalist,data,isOpen);

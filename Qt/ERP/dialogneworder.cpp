@@ -349,7 +349,7 @@ void DialogNewOrder::materielIDChange(int index)
     ui->lineEdit_MaterielDes->setText(ma.MaterDes);
     ui->comboBox_unit->setCurrentText(ma.Unit);
     curMater = ma;
-    ui->spinBox_num->setValue(ma.OrderNum/100);
+//    ui->spinBox_num->setValue(ma.OrderNum/100);
     IsHisMode = true;
 }
 

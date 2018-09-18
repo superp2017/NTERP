@@ -389,6 +389,47 @@ void dataCenter::net_getglobalSuppliers()
     emit sig_globalSUppliers(ok);
 }
 
+void dataCenter::net_newMaterial(const QJsonObject para)
+{
+    bool ok = false;
+    Materiel ma = MaterialService::newMaterial(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+       m_maters.push_back(ma);
+    }
+    emit sig_newMaterial(ma,ok);
+}
+
+void dataCenter::net_delMaterial(const QJsonObject para)
+{
+    bool ok = false;
+    QString MID = MaterialService::delMaterial(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        for(int i=0;i<m_maters.size();++i){
+            if(m_maters[i].MaterID==MID){
+                m_maters.remove(i);
+                break;
+            }
+        }
+    }
+    emit sig_delMaterial(MID,ok);
+}
+
+void dataCenter::net_queryMaterial(const QJsonObject para)
+{
+    bool isOK   = false;
+    Materiel mater = MaterialService::queryMaterial(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_modOrderPrice(mater,isOK);
+}
+
+void dataCenter::net_getCustomerMaterial(const QJsonObject para)
+{
+    bool ok =false;
+    QVector<QString>data = MaterialService::getCustomerMaterID(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(para.contains("CID")){
+        m_hashMaterials[para.value("CID").toString()] = data;
+    }
+}
+
 void dataCenter::net_getglobalMateriels()
 {
     bool ok =false;
@@ -551,26 +592,26 @@ QVector<Order> dataCenter::pub_StatusOrders(QString status)
                 ls.append(o);
                 continue;
             }
-//            if(o.ProduceNum<o.OrderNum){
-//                ls.append(o);
-//                continue;
-//            }
+            //            if(o.ProduceNum<o.OrderNum){
+            //                ls.append(o);
+            //                continue;
+            //            }
         }
         if(status==Status_Produce){
             if(o.Current.Status==Status_PartProduce||o.Current.Status==Status_Part_Part||o.Current.Status==Status_Produce){
                 ls.append(o);
                 continue;
             }
-//            if(o.ProduceNum>0&&o.SuccessNum<o.OrderNum){
-//                ls.append(o);
-//                continue;
-//            }
+            //            if(o.ProduceNum>0&&o.SuccessNum<o.OrderNum){
+            //                ls.append(o);
+            //                continue;
+            //            }
         }
         if(status==Status_Success){
-//            if(o.SuccessNum>0){
-//                ls.append(o);
-//                continue;
-//            }
+            //            if(o.SuccessNum>0){
+            //                ls.append(o);
+            //                continue;
+            //            }
             if(o.Current.Status==Status_PartSuccess||o.Current.Status==Status_Part_Part||o.Current.Status==Status_Success){
                 ls.append(o);
                 continue;

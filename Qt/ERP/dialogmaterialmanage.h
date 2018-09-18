@@ -33,6 +33,12 @@ private slots:
     void onCellClick(int row,int col);
 
     void changeCol();
+    void on_pushButton_new_clicked();
+
+    void on_pushButton_mod_clicked();
+
+    void on_pushButton_del_clicked();
+
 signals:
     void sig_exportCb(bool);
 private:

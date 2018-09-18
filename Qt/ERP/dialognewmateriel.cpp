@@ -3,7 +3,8 @@
 #include <QDateTime>
 #include <QCompleter>
 #include "datacenter.h"
-
+#include "boost/thread.hpp"
+#include "materialservice.h"
 #include<QDebug>
 DialogNewMateriel::DialogNewMateriel(QWidget *parent) :
     QDialog(parent),
@@ -15,6 +16,10 @@ DialogNewMateriel::DialogNewMateriel(QWidget *parent) :
     connect(ui->comboBox_thickness,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
     connect(ui->comboBox_Salt,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
     connect(ui->comboBox_type,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
+
+    connect(dataCenter::instance(),SIGNAL(sig_newMaterial(Materiel,bool)),this,SLOT(newMaterCb(Materiel,bool)));
+    connect(dataCenter::instance(),SIGNAL(sig_modMaterial(Materiel,bool)),this,SLOT(modMaterCb(Materiel,bool)));
+
 }
 
 DialogNewMateriel::~DialogNewMateriel()
@@ -33,7 +38,13 @@ void DialogNewMateriel::on_pushButton_ok_clicked()
     mater.Salt = ui->comboBox_Salt->currentText();
     mater.Thickness = ui->comboBox_thickness->currentText();
 
-    done(123);
+    QJsonObject para = MaterialService::toJsonObject(mater);
+    if(m_isNewMode){
+        boost::this_thread(boost::bind(&dataCenter::net_newMaterial,dataCenter::instance(),para));
+    }else{
+        boost::this_thread(boost::bind(&dataCenter::net_modMaterial,dataCenter::instance(),para));
+    }
+    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
 
 void DialogNewMateriel::on_pushButton_cancle_clicked()
@@ -137,6 +148,17 @@ void DialogNewMateriel::initMater(Materiel ma)
     ui->textEdit->setText(ma.MaterDes);
 }
 
+void DialogNewMateriel::setModel(bool isNew)
+{
+    m_isNewMode = isNew;
+    if (isNew) {
+        ui->pushButton_ok->setText("新建");
+    }else{
+        ui->pushButton_ok->setText("修改");
+    }
+
+}
+
 Materiel DialogNewMateriel::getMater() const
 {
     return mater;
@@ -220,5 +242,33 @@ void DialogNewMateriel::on_comboBox_format_currentTextChanged(const QString &arg
         ui->comboBox_type->blockSignals(false);
     }
     DesChange();
+}
+
+void DialogNewMateriel::newMaterCb(Materiel ma, bool ok)
+{
+    dataCenter::instance()->pub_hideLoadding();
+    if(ok){
+        dataCenter::instance()->pub_showMessage("创建成功!",4000);
+        mater = ma;
+        done(123);
+    }else{
+        dataCenter::instance()->pub_showMessage("创建失败!",4000);
+        mater = ma;
+        done(0);
+    }
+}
+
+void DialogNewMateriel::modMaterCb(Materiel ma, bool ok)
+{
+    dataCenter::instance()->pub_hideLoadding();
+    if(ok){
+        dataCenter::instance()->pub_showMessage("修改成功!",4000);
+        mater = ma;
+        done(123);
+    }else{
+        dataCenter::instance()->pub_showMessage("修改失败!",4000);
+        mater = ma;
+        done(0);
+    }
 }
 
