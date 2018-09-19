@@ -12,14 +12,19 @@ DialogNewMateriel::DialogNewMateriel(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->comboBox_friction,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
-    connect(ui->comboBox_thickness,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
-    connect(ui->comboBox_Salt,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
-    connect(ui->comboBox_type,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
+
 
     connect(dataCenter::instance(),SIGNAL(sig_newMaterial(Materiel,bool)),this,SLOT(newMaterCb(Materiel,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modMaterial(Materiel,bool)),this,SLOT(modMaterCb(Materiel,bool)));
 
+    initCommbox();
+    connect(ui->comboBox_friction,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
+    connect(ui->comboBox_thickness,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
+    connect(ui->comboBox_Salt,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
+    connect(ui->comboBox_type,SIGNAL(currentTextChanged(QString)),this,SLOT(DesChange()));
+    connect(ui->comboBox_factoury,SIGNAL(currentIndexChanged(int)),this,SLOT(factoryChange(int)));
+    factoryChange(0);
+    DesChange();
 }
 
 DialogNewMateriel::~DialogNewMateriel()
@@ -27,22 +32,74 @@ DialogNewMateriel::~DialogNewMateriel()
     delete ui;
 }
 
+void DialogNewMateriel::initMater(Materiel ma)
+{
+    mater = ma;
+    ui->comboBox_customer->setCurrentText(ma.CustomName);
+    ui->comboBox_format->setCurrentText(ma.ComponentFormat);
+    ui->comboBox_friction->setCurrentText(ma.Friction);
+    ui->comboBox_Salt->setCurrentText(ma.Salt);
+    ui->comboBox_solid->setCurrentText(ma.ComponentSolid);
+    ui->comboBox_thickness->setCurrentText(ma.Thickness);
+    ui->comboBox_type->setCurrentText(ma.Plating);
+    ui->textEdit->setText(ma.MaterDes);
+    if(m_Model==2){
+        this->setWindowTitle(ma.MaterID);
+    }
+}
+
+void DialogNewMateriel::setModel(int  model_index)
+{
+    m_Model = model_index;
+    if (m_Model==0) {
+        ui->pushButton_ok->setText("新建");
+        this->setWindowTitle("新建");
+    }else if(m_Model==1){
+        ui->pushButton_ok->setText("修改");
+        this->setWindowTitle("修改");
+    }else{
+        ui->pushButton_ok->hide();
+        this->setWindowTitle("物料详情");
+        ui->textEdit->setEnabled(false);
+        ui->comboBox_format->setEnabled(false);
+        ui->comboBox_solid->setEnabled(false);
+        ui->comboBox_friction->setEnabled(false);
+        ui->comboBox_type->setEnabled(false);
+        ui->comboBox_Salt->setEnabled(false);
+        ui->comboBox_thickness->setEnabled(false);
+        ui->comboBox_customer->setEnabled(false);
+        ui->comboBox_customer->setEnabled(false);
+        ui->comboBox_factoury->setEnabled(false);
+        ui->comboBox_factoury->setEnabled(false);
+        ui->comboBox_product_line->setEnabled(false);
+        ui->doubleSpinBox_money->setEnabled(false);
+        ui->pushButton_clear->setEnabled(false);
+    }
+}
+
 void DialogNewMateriel::on_pushButton_ok_clicked()
 {
-    mater.MaterID = QString("%1").arg(QDateTime::currentDateTime().toMSecsSinceEpoch());
-    mater.MaterDes = ui->textEdit->toPlainText();
-    mater.ComponentFormat = ui->comboBox_format->currentText();
-    mater.ComponentSolid = ui->comboBox_solid->currentText();
-    mater.Friction = ui->comboBox_friction->currentText();
-    mater.Plating = ui->comboBox_type->currentText();
-    mater.Salt = ui->comboBox_Salt->currentText();
-    mater.Thickness = ui->comboBox_thickness->currentText();
+    mater.MaterDes          = ui->textEdit->toPlainText();
+    mater.ComponentFormat   = ui->comboBox_format->currentText();
+    mater.ComponentSolid    = ui->comboBox_solid->currentText();
+    mater.Friction          = ui->comboBox_friction->currentText();
+    mater.Plating           = ui->comboBox_type->currentText();
+    mater.Salt              = ui->comboBox_Salt->currentText();
+    mater.Thickness         = ui->comboBox_thickness->currentText();
+    mater.CID               = ui->comboBox_customer->currentData().toString();
+    mater.CustomName        = ui->comboBox_customer->currentText();
+    mater.Factory           = ui->comboBox_factoury->currentText();
+    mater.FactoryNumber     = ui->comboBox_factoury->currentData().toString();
+    mater.ProductionLine    = ui->comboBox_product_line->currentText();
+    mater.Money             = ui->doubleSpinBox_money->value()*100;
 
-    QJsonObject para = MaterialService::toJsonObject(mater);
-    if(m_isNewMode){
+    QJsonObject para        = MaterialService::toJsonObject(mater);
+    if(m_Model==0){
         boost::thread(boost::bind(&dataCenter::net_newMaterial,dataCenter::instance(),para));
-    }else{
+    }else if(m_Model==1){
         boost::thread(boost::bind(&dataCenter::net_modMaterial,dataCenter::instance(),para));
+    }else{
+        return;
     }
     dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
@@ -55,12 +112,23 @@ void DialogNewMateriel::on_pushButton_cancle_clicked()
 
 void DialogNewMateriel::initCommbox()
 {
+    ui->comboBox_factoury->blockSignals(true);
+    ui->comboBox_customer->blockSignals(true);
     ui->comboBox_solid->blockSignals(true);
     ui->comboBox_friction->blockSignals(true);
     ui->comboBox_format->blockSignals(true);
     ui->comboBox_Salt->blockSignals(true);
     ui->comboBox_thickness->blockSignals(true);
     ui->comboBox_type->blockSignals(true);
+
+    ui->comboBox_factoury->addItem("涂覆分厂","01");
+    ui->comboBox_factoury->addItem("滚镀分厂","02");
+    ui->comboBox_factoury->addItem("挂镀分厂","03");
+
+    for(Customer cus:dataCenter::instance()->pub_Customers()){
+        ui->comboBox_customer->addItem(cus.Name,cus.CID);
+    }
+
 
     QStringList solid;
     QStringList format;
@@ -131,32 +199,11 @@ void DialogNewMateriel::initCommbox()
     ui->comboBox_Salt->blockSignals(false);
     ui->comboBox_thickness->blockSignals(false);
     ui->comboBox_type->blockSignals(false);
-
-    DesChange();
+    ui->comboBox_customer->blockSignals(false);
+    ui->comboBox_factoury->blockSignals(false);
 }
 
-void DialogNewMateriel::initMater(Materiel ma)
-{
-    mater = ma;
-    ui->comboBox_format->setCurrentText(ma.ComponentFormat);
-    ui->comboBox_friction->setCurrentText(ma.Friction);
-    ui->comboBox_Salt->setCurrentText(ma.Salt);
-    ui->comboBox_solid->setCurrentText(ma.ComponentSolid);
-    ui->comboBox_thickness->setCurrentText(ma.Thickness);
-    ui->comboBox_type->setCurrentText(ma.Plating);
-    ui->textEdit->setText(ma.MaterDes);
-}
 
-void DialogNewMateriel::setModel(bool isNew)
-{
-    m_isNewMode = isNew;
-    if (isNew) {
-        ui->pushButton_ok->setText("新建");
-    }else{
-        ui->pushButton_ok->setText("修改");
-    }
-
-}
 
 Materiel DialogNewMateriel::getMater() const
 {
@@ -268,6 +315,28 @@ void DialogNewMateriel::modMaterCb(Materiel ma, bool ok)
         dataCenter::instance()->pub_showMessage("修改失败!",4000);
         mater = ma;
         done(0);
+    }
+}
+
+void DialogNewMateriel::factoryChange(int index)
+{
+    QString fac = ui->comboBox_factoury->currentData().toString();
+
+    if(fac=="01"){
+        ui->comboBox_product_line->clear();
+        ui->comboBox_product_line->addItem("涂覆线");
+    }
+    if(fac=="02"){
+        ui->comboBox_product_line->clear();
+        ui->comboBox_product_line->addItem("滚镀锌线");
+        ui->comboBox_product_line->addItem("滚镀锌镍线");
+        ui->comboBox_product_line->addItem("磷化线");
+        ui->comboBox_product_line->addItem("镀铜镀锡线");
+    }
+    if(fac=="03"){
+        ui->comboBox_product_line->clear();
+        ui->comboBox_product_line->addItem("挂镀锌线");
+        ui->comboBox_product_line->addItem("挂镀锌镍线");
     }
 }
 

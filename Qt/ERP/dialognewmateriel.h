@@ -22,7 +22,7 @@ public:
     Materiel getMater() const;
     void initCommbox();
     void initMater(Materiel ma);
-    void setModel(bool isNew);
+    void setModel(int model_index);
 private slots:
     void on_pushButton_ok_clicked();
 
@@ -39,11 +39,12 @@ private slots:
     void newMaterCb(Materiel ma,bool ok);
     void modMaterCb(Materiel ma,bool ok);
 
+    void factoryChange(int index);
 private:
     Ui::DialogNewMateriel *ui;
     Materiel mater;
     QVector<Materiel> mater_list;
-    bool m_isNewMode;
+    int  m_Model;
 
 };
 

@@ -30,7 +30,7 @@ private slots:
 
     void checkAll();
 
-    void onCellClick(int row,int col);
+    void cellDoubleClicked(int row,int col);
 
     void changeCol();
     void on_pushButton_new_clicked();
@@ -39,11 +39,13 @@ private slots:
 
     void on_pushButton_del_clicked();
 
+    void delMaterCb(QString MID,bool ok);
+
 signals:
     void sig_exportCb(bool);
 private:
     void setRowData(Materiel ma,int row);
-    void removeOne(Materiel ma);
+    void removeOne(QString ma);
     void appendOne(Materiel ma);
     void doExport(QVector<Materiel> ls, QString filepath);
 private:
