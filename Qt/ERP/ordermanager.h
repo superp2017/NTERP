@@ -64,7 +64,6 @@ private:
     OrderTable        *m_tab_success;
     OrderTable        *m_tab_produce;
     OrderTable        *m_tab_all;
-    DialogNewOrder    *neworer;
     Order             cur_order;
     DialogOrderSearch m_search;
     QMap<QString, QVector<QString> > searchdata;

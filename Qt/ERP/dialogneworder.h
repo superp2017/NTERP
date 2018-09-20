@@ -21,24 +21,16 @@ public:
     ~DialogNewOrder();
     void  initOrder(Order order);
     void  setModel(bool isNew);
-    void  clearUI();
     Order getCurorder() const;
-    void  initData();
 private slots:
     void on_pushButton_ok_clicked();
     void on_pushButton_cancel_clicked();
-    void customChange(int index);
-    void unitChange(int index);
     void newOrderCb(Order order, bool ok);
     void modOrderCb(Order order,bool ok);
-    void on_pushButton_edit_des_clicked();
-    void factoryChange(int index);
     void materielIDChange(int index);
 private:
-    void initCombox(QVector<Customer> custom, QSet<QString> batch, \
-                    QVector<QString> unit, QVector<Materiel> mater);
+    void initCombox(QSet<QString> batch,QVector<Materiel>mater);
     bool checkOrder(Order curorder);
-
     void changeModel();
 
     Ui::DialogNewOrder *ui;

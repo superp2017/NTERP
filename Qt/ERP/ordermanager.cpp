@@ -15,7 +15,6 @@ OrderManager::OrderManager(QWidget *parent) :
     ui(new Ui::OrderManager)
 {
     ui->setupUi(this);
-    neworer = NULL;
 
     m_tab_new     = new OrderTable(Status_New);
     m_tab_success = new OrderTable(Status_Success);
@@ -189,15 +188,10 @@ void OrderManager::changeCol()
 
 void OrderManager::new_order()
 {
-    if(neworer==NULL){
-        neworer = new DialogNewOrder();
-    }else{
-        neworer->initData();
-    }
-    neworer->clearUI();
-    neworer->setModel(true);
-    if(neworer->exec()==123){
-        Order order = neworer->getCurorder();
+    DialogNewOrder    neworer;
+    neworer.setModel(true);
+    if(neworer.exec()==123){
+        Order order = neworer.getCurorder();
         m_tab_new->appendOrder(order);
         m_tab_all->appendOrder(order);
     }
@@ -213,16 +207,11 @@ void OrderManager::on_pushButton_mod_clicked()
     if(cur_order.OrderID==""){
         return;
     }
-    if(neworer==NULL){
-        neworer = new DialogNewOrder();
-    }else{
-        neworer->initData();
-    }
-    neworer->setModel(false);
-    neworer->clearUI();
-    neworer->initOrder(cur_order);
-    if(neworer->exec()==123){
-        Order order = neworer->getCurorder();
+    DialogNewOrder    neworer;
+    neworer.setModel(false);
+    neworer.initOrder(cur_order);
+    if(neworer.exec()==123){
+        Order order = neworer.getCurorder();
         m_tab_new->modOrder(order);
         m_tab_all->modOrder(order);
     }
