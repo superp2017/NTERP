@@ -22,8 +22,10 @@ func initRoute() {
 	JHttp.WhiteHttp("/successorder", SuccessOrder)       //订单完成
 	JHttp.WhiteHttp("/getglobalorders", GetGlobalOrders) //获取所有订单
 
-	JHttp.WhiteHttp("/newmaterial", NewMaterial)                 //创建一个物料
-	JHttp.WhiteHttp("/modMaterial", ModMaterial)                 //修改物料
+	JHttp.WhiteHttp("/newmaterial", NewMaterial)      //创建一个物料
+	JHttp.WhiteHttp("/modMaterial", ModMaterial)      //修改物料
+	JHttp.WhiteHttp("/querymaterial", QuertyMaterial) //查询物料
+
 	JHttp.WhiteHttp("/getcustomermaterial", GetCustomerMaterial) //获取客户的所有物料id
 	JHttp.WhiteHttp("/delmaterial", DelMaterial)                 //删除一个物料
 
@@ -69,7 +71,7 @@ func initRoute() {
 	JHttp.WhiteHttp("/delplating", DelPlating)       //删除一个镀种
 	JHttp.WhiteHttp("/getallplating", GetAllPlating) //获取所有的镀种
 
-	JHttp.WhiteHttp("/updateallmaterial", updateAllMaterial) //更新所有物料
+	//JHttp.WhiteHttp("/updateallmaterial", updateAllMaterial) //更新所有物料
 
 	JHttp.WhiteHttp("/newstorageoutrecord", NewOutRecord)        //新增一个仓库出库记录
 	JHttp.WhiteHttp("/getallstorageoutrecords", GetAllOutRecord) //获取所有的仓库出库记录

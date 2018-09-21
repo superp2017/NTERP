@@ -179,6 +179,21 @@ func delFromCustomerMaterial(CID, MaterID string) error {
 //查询单个物料
 func getMaterial(MID string) (*MaterialInfo, error) {
 	data := &MaterialInfo{}
-	err := JRedis.Redis_hset(Hash_Material, MID, data)
+	err := JRedis.Redis_hget(Hash_Material, MID, data)
 	return data, err
+}
+
+//获取所有材料
+func GetAllMaterial(session *JHttp.Session) {
+	list, err := JRedis.Redis_hkeys(Hash_Material)
+	data := []*MaterialInfo{}
+	if err == nil {
+		for _, v := range list {
+			d := &MaterialInfo{}
+			if e := JRedis.Redis_hget(Hash_Material, v, d); e == nil {
+				data = append(data, d)
+			}
+		}
+	}
+	session.Forward("0", "success", data)
 }

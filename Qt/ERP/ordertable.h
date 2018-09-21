@@ -23,7 +23,7 @@ public:
     void modOrder(Order para);
     void removeOrder(Order para);
     void showAllRow();
-    int getTimeColNum();
+    int  getTimeColNum();
 signals:
     void orderClick(QString orderID);
     void newOrder();

@@ -92,7 +92,7 @@ func NewOrder(session *JHttp.Session) {
 	}
 	st.OrderID = id
 	st.CreatTime = CurTime()
-	st.TotleMoney = st.OrderNum * st.Money / 100
+	st.TotleMoney = st.OrderNum * st.Money
 	go setLastOrderDate(curMon)
 	////////////////添加状态///////////////////////////////
 	appendStatus(st, st.UserName, st.CreatTime, "创建订单", Status_New)
@@ -228,7 +228,8 @@ func ModOrder(session *JHttp.Session) {
 	}
 	data.CustomBatch = st.CustomBatch
 	data.CustomNote = st.CustomNote
-	data.TotleMoney = data.OrderNum * data.Money / 100
+	data.OrderNum = st.OrderNum
+	data.TotleMoney = data.OrderNum * data.Money
 
 	////////////////添加状态///////////////////////////////
 	appendStatus(data, data.UserName, CurTime(), "修改订单", getStatus(data.OrderNum, data.ProduceNum, data.SuccessNum))
@@ -272,7 +273,7 @@ func ModOrderPrice(session *JHttp.Session) {
 	}
 
 	data.Money = st.Money
-	data.TotleMoney = data.OrderNum * st.Money / 100
+	data.TotleMoney = data.OrderNum * st.Money
 	////////////////添加状态///////////////////////////////
 	appendStatus(data, data.UserName, CurTime(), "修改订单价格", getStatus(data.OrderNum, data.ProduceNum, data.SuccessNum))
 
@@ -492,7 +493,7 @@ func GetGlobalOrders(session *JHttp.Session) {
 				if mater, e := getMaterial(d.MaterielID); e == nil {
 					initOrderMaterial(d, mater)
 				}
-				d.TotleMoney = d.OrderNum * d.Money / 100
+				d.TotleMoney = d.OrderNum * d.Money
 				data = append(data, d)
 			}
 		}

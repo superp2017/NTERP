@@ -5,14 +5,15 @@
 #include "datacenter.h"
 #include "boost/thread.hpp"
 #include "materialservice.h"
-#include<QDebug>
+#include <QDebug>
+#include <QVector>
+#include <QToolTip>
+
 DialogNewMateriel::DialogNewMateriel(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogNewMateriel)
 {
     ui->setupUi(this);
-
-
 
     connect(dataCenter::instance(),SIGNAL(sig_newMaterial(Materiel,bool)),this,SLOT(newMaterCb(Materiel,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modMaterial(Materiel,bool)),this,SLOT(modMaterCb(Materiel,bool)));
@@ -43,6 +44,8 @@ void DialogNewMateriel::initMater(Materiel ma)
     ui->comboBox_thickness->setCurrentText(ma.Thickness);
     ui->comboBox_type->setCurrentText(ma.Plating);
     ui->textEdit->setText(ma.MaterDes);
+    ui->doubleSpinBox_money->setValue(ma.Money/100.0);
+    ui->comboBox_unit->setCurrentText(mater.Unit);
     if(m_Model==2){
         this->setWindowTitle(ma.MaterID);
     }
@@ -74,6 +77,7 @@ void DialogNewMateriel::setModel(int  model_index)
         ui->comboBox_product_line->setEnabled(false);
         ui->doubleSpinBox_money->setEnabled(false);
         ui->pushButton_clear->setEnabled(false);
+        ui->comboBox_unit->setEnabled(false);
     }
 }
 
@@ -92,6 +96,21 @@ void DialogNewMateriel::on_pushButton_ok_clicked()
     mater.FactoryNumber     = ui->comboBox_factoury->currentData().toString();
     mater.ProductionLine    = ui->comboBox_product_line->currentText();
     mater.Money             = ui->doubleSpinBox_money->value()*100;
+    mater.Unit              = ui->comboBox_unit->currentText();
+
+    if(mater.CID==""||mater.CustomName==""){
+        QToolTip::showText(ui->comboBox_customer->mapToGlobal(QPoint(100, 0)), "客户姓名不能为空!");
+        return;
+    }
+    if(mater.MaterDes==""){
+        QToolTip::showText(ui->textEdit->mapToGlobal(QPoint(100, 0)), "物料描述不能为空!");
+        return;
+    }
+    if(mater.Unit==""){
+        QToolTip::showText(ui->comboBox_unit->mapToGlobal(QPoint(100, 0)), "计量单位不能为空!");
+        return;
+    }
+
 
     QJsonObject para        = MaterialService::toJsonObject(mater);
     if(m_Model==0){
@@ -192,6 +211,14 @@ void DialogNewMateriel::initCommbox()
     ui->comboBox_thickness->setEditable(true);
     ui->comboBox_thickness->addItems(thick);
     ui->comboBox_thickness->setCompleter(completerThickness);
+
+
+    QVector<QString >unit = dataCenter::instance()->pub_Units();
+    ui->comboBox_unit->clear();
+    ui->comboBox_unit->setEditable(true);
+    ui->comboBox_unit->addItems(unit.toList());
+    QCompleter *unit_com= new QCompleter(unit.toList(), this);
+    ui->comboBox_unit->setCompleter(unit_com);
 
     ui->comboBox_solid->blockSignals(false);
     ui->comboBox_friction->blockSignals(false);

@@ -51,7 +51,7 @@ const std::string  Net_GlobalEmployee="/getallemployeess";  //获取所有的员
 
 const std::string Net_NewMaterial="/newmaterial";           //"创建一个材料"
 const std::string Net_QueryMaterial="/querymaterial";       //"查询一个材料"
-const std::string Net_ModMaterial="/modmaterial";           //"修改材料"
+const std::string Net_ModMaterial="/modMaterial";           //"修改材料"
 const std::string Net_DelMaterial="/delmaterial";           //"删除材料"
 const std::string Net_GetCustomerMaterial="/getcustomermaterial";//获取某个用户的所有物料
 const std::string Net_GetAllMateril="/getallmaterials";    //获取所有材料

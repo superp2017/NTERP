@@ -33,7 +33,9 @@ OrderTable::OrderTable(QString status, QWidget *w):
     m_cancle   = m_menu->addAction("取消");
     m_produce  = m_menu->addAction("完成生产");
     m_out      = m_menu->addAction("出库");
-    m_mod_price= m_menu->addAction("定价");
+//    m_mod_price= m_menu->addAction("定价");
+    m_mod_price = new QAction();
+
     m_del= m_menu->addAction("删除订单");
 
     m_menu->addAction("放弃");
@@ -98,7 +100,7 @@ void OrderTable::modOrder(Order para)
     bool ok = false;
     int count = this->rowCount();
     for(int i=0;i<count;++i){
-        QTableWidgetItem *item0 =  this->item(i,1);
+        QTableWidgetItem *item0 =  this->item(i,2);
         if(item0!=NULL&&item0->text()==para.OrderID){
             setRowData(para,i);
             ok = true;
@@ -115,7 +117,7 @@ void OrderTable::removeOrder(Order para)
 {
     int count = this->rowCount();
     for(int i=0;i<count;++i){
-        QTableWidgetItem *item0 =  this->item(i,1);
+        QTableWidgetItem *item0 =  this->item(i,2);
         if(item0!=NULL&&item0->text()==para.OrderID){
             this->removeRow(i);
             break;
@@ -257,12 +259,12 @@ void OrderTable::setRowData(Order para,int row)
     item3->setText(type);
     item4->setText(para.CustomName);
     item5->setText(para.MaterielDes);
-    item6->setText(QString("%1").arg(para.OrderNum/100.0));
+    item6->setText(QString("%1").arg(para.OrderNum));
     item7->setText(para.Unit);
-    item8->setText(QString("%1").arg((para.OrderNum-para.ProduceNum)/100.0));
-    item9->setText(QString("%1").arg(para.ProduceNum/100.0));
-    item10->setText(QString("%1").arg((para.ProduceNum-para.SuccessNum)/100.0));
-    item11->setText(QString("%1").arg(para.SuccessNum/100.0));
+    item8->setText(QString("%1").arg(para.OrderNum-para.ProduceNum));
+    item9->setText(QString("%1").arg(para.ProduceNum));
+    item10->setText(QString("%1").arg(para.ProduceNum-para.SuccessNum));
+    item11->setText(QString("%1").arg(para.SuccessNum));
     item12->setText(para.CustomBatch);
     item13->setText(para.CustomNote);
     item14->setText(QString("%1").arg(para.Money/100.0));
@@ -364,7 +366,7 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                     if(cutStatus==Status_Produce){
                         setEnable(true,false,false,false,true,false,false);
                     }
-                    if(cur_order.Current.Status==Status_Success){
+                    if(cutStatus==Status_Success){
                         setEnable(true,false,false,false,false,false,false);
                     }
 

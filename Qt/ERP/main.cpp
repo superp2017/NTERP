@@ -19,6 +19,8 @@ void registerMetaType(){
     qRegisterMetaType<Customer>("Customer");
     qRegisterMetaType<Supplier>("Supplier");
     qRegisterMetaType<Goods>("Goods");
+    qRegisterMetaType<Materiel>("Materiel");
+
 }
 
 int main(int argc, char *argv[])

@@ -14,12 +14,9 @@
 DialogNewOrder::DialogNewOrder(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogNewOrder),
-    m_isNewMode(true),
-    IsHisMode(false)
+    m_isNewMode(true)
 {
     ui->setupUi(this);
-
-
 
     initCombox(dataCenter::instance()->pub_Batchs(),
                dataCenter::instance()->pub_Materiels());
@@ -41,9 +38,7 @@ DialogNewOrder::~DialogNewOrder()
 }
 
 void DialogNewOrder::initCombox(QSet<QString> batch,QVector<Materiel>mater)
-
 {
-
     ui->comboBox_orderType->addItem("普通订单","1");
     ui->comboBox_orderType->addItem("试样订单","2");
     ui->comboBox_orderType->addItem("返工订单","3");
@@ -77,12 +72,9 @@ void DialogNewOrder::initOrder(Order order)
         ui->comboBox_orderType->setCurrentIndex(2);
     }
     ui->comboBox_mater_number->setCurrentText(order.MaterielID);
-    ui->lineEdit_fatory->setText(order.Factory);
-    ui->lineEdit_productline->setText(order.ProductionLine);
-    ui->lineEdit_MaterielDes->setText(order.MaterielDes);
-    ui->lineEdit_unit->setText(order.Unit);
+    materielIDChange(0);
+
     ui->spinBox_num->setValue(order.OrderNum);
-    ui->lineEdit_cumerName->setText(order.CustomName);
     ui->lineEdit_custombatch->setText(order.CustomBatch);
     ui->textEdit_custom_note->setText(order.CustomNote);
 
@@ -138,8 +130,9 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     order.OrderType         = ui->comboBox_orderType->currentData().toString();
     order.CustomBatch       = ui->lineEdit_custombatch->text();
     order.CustomNote        = ui->textEdit_custom_note->toPlainText();
-    order.OrderNum          = ui->spinBox_num->value()*100;
-
+    order.OrderNum          = ui->spinBox_num->value();
+    order.ProduceNum        = curorder.ProduceNum;
+    order.SuccessNum        = curorder.SuccessNum;
     if(!checkOrder(order)){
         return;
     }
@@ -185,11 +178,16 @@ void DialogNewOrder::modOrderCb(Order order,bool ok)
 
 bool DialogNewOrder::checkOrder(Order order)
 {
+    if(order.MaterielID==""||order.MaterielDes==""){
+        QToolTip::showText(ui->comboBox_mater_number->mapToGlobal(QPoint(100, 0)), "物料编号不能为空!");
+        return false;
+    }
+
     if(order.OrderNum<=0){
         QToolTip::showText(ui->spinBox_num->mapToGlobal(QPoint(100, 0)), "订单数量填写不正确!");
         return false;
     }
-
+    qDebug()<<order.OrderNum<<order.ProduceNum<<order.SuccessNum;
     if(order.OrderNum<order.ProduceNum||order.OrderNum<order.SuccessNum){
         QToolTip::showText(ui->spinBox_num->mapToGlobal(QPoint(100, 0)), "订单数量不能少于已经成品或者已经出库的数量!");
         return false;
@@ -211,23 +209,33 @@ void DialogNewOrder::on_pushButton_cancel_clicked()
 
 
 void DialogNewOrder::materielIDChange(int index)
-{
-    if(index==-1)
-        return;
-    QString id = ui->comboBox_mater_number->currentText().trimmed();
-    if(id.isEmpty())
-        return;
-    bool ok = false;
-    Materiel ma = dataCenter::instance()->pub_getMateriel(id,ok);
-    if(!ok)
-        return;
+{  
+    Materiel ma;
+    if(ui->comboBox_mater_number->currentText()==""){
+        ma.MaterDes="";
+        ma.MaterID="";
+        ma.Factory= "";
+        ma.ProductionLine="";
+        ma.Unit="";
+        ma.CustomName="";
+        ma.CID="";
+        ma.Money=0;
+    }else{
+        QString id = ui->comboBox_mater_number->currentText().trimmed();
+        if(id.isEmpty())
+            return;
+        bool ok = false;
+        ma = dataCenter::instance()->pub_getMateriel(id,ok);
+        if(!ok)
+            return;
+    }
+
     ui->lineEdit_fatory->setText(ma.Factory);
     ui->lineEdit_MaterielDes->setText(ma.MaterDes);
     ui->lineEdit_productline->setText(ma.ProductionLine);
     ui->lineEdit_unit->setText(ma.Unit);
     ui->lineEdit_cumerName->setText(ma.CustomName);
     curMater = ma;
-
 }
 
 

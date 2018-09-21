@@ -519,19 +519,19 @@ bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString f
         datalist<<order.Factory<<order.ProductionLine<<"'"+order.OrderID<<type<<order.CustomName\
                <<"'"+order.MaterielDes<<QString("%1").arg(order.OrderNum)<<order.Unit;
         if(curstatus=="Status_New")
-            datalist<<"'"+QString("%1").arg((order.OrderNum-order.ProduceNum)/100.0);
+            datalist<<"'"+QString("%1").arg(order.OrderNum-order.ProduceNum);
         if(curstatus=="Status_Produce"){
-            datalist<<"'"+QString("%1").arg(order.ProduceNum/100.0);
-            datalist<<"'"+QString("%1").arg((order.ProduceNum-order.SuccessNum)/100.0);
+            datalist<<"'"+QString("%1").arg(order.ProduceNum);
+            datalist<<"'"+QString("%1").arg(order.ProduceNum-order.SuccessNum);
         }
         if(curstatus=="Status_Success"){
             datalist<<"'"+QString("%1").arg(order.SuccessNum/100.0);
         }
         if(curstatus=="Status_All"){
-            datalist<<"'"+QString("%1").arg((order.OrderNum-order.ProduceNum)/100.0);
-            datalist<<"'"+QString("%1").arg(order.ProduceNum/100.0);
-            datalist<<"'"+QString("%1").arg((order.ProduceNum-order.SuccessNum)/100.0);
-            datalist<<"'"+QString("%1").arg(order.SuccessNum/100.0);
+            datalist<<"'"+QString("%1").arg(order.OrderNum-order.ProduceNum);
+            datalist<<"'"+QString("%1").arg(order.ProduceNum);
+            datalist<<"'"+QString("%1").arg(order.ProduceNum-order.SuccessNum);
+            datalist<<"'"+QString("%1").arg(order.SuccessNum);
         }
 
         datalist<<"'"+order.CustomBatch<<"'"+order.CustomNote\

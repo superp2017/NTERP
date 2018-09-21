@@ -19,9 +19,9 @@ void DialogOrderProduceOrOut::initData(bool isSuccess,QString OrderID, double un
     m_isSuccess = isSuccess;
     ui->lineEdit_orderID->setText(OrderID);
     curOrderID = OrderID;
-    ui->lineEdit_un->setText(QString("%1").arg(un/100));
-    ui->doubleSpinBox->setRange(1.0,un/100);
-    ui->doubleSpinBox->setValue(un/100);
+    ui->lineEdit_un->setText(QString("%1").arg(un));
+    ui->spinBox->setRange(1,un);
+    ui->spinBox->setValue(un);
     if(isSuccess){
         this->setWindowTitle("订单出库");
         QString str1=QString("未出库的数量")+QString("(")+unit+QString(")");
@@ -41,7 +41,7 @@ void DialogOrderProduceOrOut::initData(bool isSuccess,QString OrderID, double un
 
 void DialogOrderProduceOrOut::on_pushButton_ok_clicked()
 {
-    int num = ui->doubleSpinBox->value()*100;
+    int num = ui->spinBox->value();
     QJsonObject obj;
     obj.insert("OrderID",curOrderID);
     obj.insert("Num",num);

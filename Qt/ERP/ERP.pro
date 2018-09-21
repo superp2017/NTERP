@@ -14,12 +14,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = ERP
 TEMPLATE = app
 
+include(../pub.pri)
 
-DESTDIR = ../../bin
-QMAKE_LIBDIR += ../../bin
 
-QMAKE_CXXFLAGS += -wd4100  -wd4005 -wd4503 -wd4101 -wd4100
-QMAKE_CXXFLAGS += -wd4996  -wd4522 -wd4189 -wd4819 -wd4042
 UI_DIR = ../../../temp/ui/ERP
 OBJECTS_DIR = ../../../temp/obj/ERP
 MOC_DIR = ../../../temp/moc/ERP
@@ -34,14 +31,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-ROOT = "D:/workspace/libs/boost_1_59_0"
 
-INCLUDEPATH += $${ROOT}/boost
-QMAKE_INCDIR += $${ROOT}/boost
-QMAKE_LIBDIR += $${ROOT}/lib64
-
-LIBS += boost_system-vc140-mt-1_59.lib
-LIBS += boost_thread-vc140-mt-1_59.lib
 
 RC_FILE = app.rc
 

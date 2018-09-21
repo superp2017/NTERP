@@ -36,7 +36,6 @@ private:
     Ui::DialogNewOrder *ui;
     Order    curorder;
     bool     m_isNewMode;//是否是新建或者修改
-    bool     IsHisMode;//是否使用了旧的物料
     Materiel curMater;
 };
 

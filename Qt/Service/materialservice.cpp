@@ -56,6 +56,7 @@ QString MaterialService::delMaterial(const QJsonObject para, bool &ok,QString ho
             c = ret.data.toString();
         }
         ok = true;
+        return c;
     }
     if(!ret.ret)
         qDebug()<<"delMaterial ret is not 0"<<endl;
@@ -248,7 +249,7 @@ bool MaterialService::exportMateriel(QVector<Materiel> list, QString filepath, b
         Materiel ma  = list.at(i);
         QVector<QVariant> datalist;
         datalist<<"'"+ma.MaterID<<"'"+ma.MaterDes\
-               <<"'"+ma.CustomName<<+"'"+ma.Money\
+               <<"'"+ma.CustomName<<+"'"+QString("%1").arg(ma.Money/100.0)\
               <<ma.Unit<<"'"+ma.CreatTime;
         data.push_back(datalist);
     }

@@ -13,14 +13,16 @@ DialogMaterialManage::DialogMaterialManage(QWidget *parent) :
     ui(new Ui::DialogMaterialManage)
 {
     ui->setupUi(this);
-    ui->tableWidget->setColumnCount(5);
+    ui->tableWidget->setColumnCount(6);
 
     //设置表头内容
     QStringList header;
-    header<<tr("物料编号")<<tr("物料描述")<<tr("客户名称")<<tr("单位")<<tr("创建时间");
+    header<<tr("物料编号")<<tr("物料描述")<<tr("客户名称")<<tr("未税单价")<<tr("单位")<<tr("创建时间");
     ui->tableWidget->setHorizontalHeaderLabels(header);
 
     connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
+    connect(dataCenter::instance(),SIGNAL(sig_delMaterial(QString,bool)),this,SLOT(delMaterCb(QString,bool)));
+
     connect(ui->checkBox_check_all,SIGNAL(clicked(bool)),this,SLOT(checkAll()));
 
     connect(ui->tableWidget,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(cellDoubleClicked(int,int)));
@@ -192,6 +194,7 @@ void DialogMaterialManage::setRowData(Materiel ma, int row)
     QTableWidgetItem *item2 = ui->tableWidget->item(row,2);
     QTableWidgetItem *item3 = ui->tableWidget->item(row,3);
     QTableWidgetItem *item4 = ui->tableWidget->item(row,4);
+    QTableWidgetItem *item5 = ui->tableWidget->item(row,5);
     if(item1==NULL){
         item1 = new QTableWidgetItem();
         ui->tableWidget->setItem(row,1,item1);
@@ -208,18 +211,22 @@ void DialogMaterialManage::setRowData(Materiel ma, int row)
         item4 = new QTableWidgetItem();
         ui->tableWidget->setItem(row,4,item4);
     }
+    if(item5==NULL){
+        item5 = new QTableWidgetItem();
+        ui->tableWidget->setItem(row,5,item5);
+    }
 
-    QString status;
     item1->setText(ma.MaterDes);
     item2->setText(ma.CustomName);
-    item3->setText(ma.Unit);
-    item4->setText(ma.CreatTime);
+    item3->setText(QString("%1").arg(ma.Money/100.0));
+    item4->setText(ma.Unit);
+    item5->setText(ma.CreatTime);
 
     item1->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
     item2->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
     item3->setTextAlignment(Qt::AlignCenter);
     item4->setTextAlignment(Qt::AlignCenter);
-
+    item5->setTextAlignment(Qt::AlignCenter);
 }
 
 void DialogMaterialManage::removeOne(QString ma)
@@ -230,6 +237,7 @@ void DialogMaterialManage::removeOne(QString ma)
         if(w!=NULL){
             QCheckBox *box = reinterpret_cast<QCheckBox *>(w);
             if(box->text()==ma){
+
                 ui->tableWidget->removeRow(i);
                 m_boxs.remove(i);
                 break;
