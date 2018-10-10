@@ -80,9 +80,9 @@ func getSupplierID() string {
 
 //获取商品id
 func getGoodsID() string {
-	gSupplierSeed++
-	go JRedis.Redis_set(Ider_Supplier, &gSupplierSeed)
-	return "G" + strconv.Itoa(gSupplierSeed)
+	gGoodsSeed++
+	go JRedis.Redis_set(Ider_Supplier, &gGoodsSeed)
+	return "G" + strconv.Itoa(gGoodsSeed)
 }
 
 //返回当前时间：例如 2017-02-17 16:33
