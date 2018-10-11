@@ -40,12 +40,9 @@ void DialogInOutGoods::initGoods(Goods goods)
         ui->spinBox->setMaximum(goods.Num);
     }
     ui->lineEdit_name->setText(goods.Name);
-    ui->lineEdit_color->setText(goods.Color);
     ui->lineEdit_format->setText(goods.Format);
     ui->lineEdit_id->setText(goods.ID);
-    ui->lineEdit_in_price->setText(QString("%1").arg(goods.Price/100.0));
     ui->lineEdit_num->setText(QString("%1").arg(goods.Num));
-    ui->lineEdit_totle->setText(QString("%1").arg(goods.TotalPrice/100.0));
     ui->lineEdit_type->setText(goods.Type);
 }
 

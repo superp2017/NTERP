@@ -4,25 +4,24 @@ import (
 	"JGo/JHttp"
 	"JGo/JLogger"
 	"JGo/JStore/JRedis"
-	"JsGo/JsStore/JsRedis"
 	"time"
 )
 
 type StorageOutRecord struct {
-	OutID          string //进出凭证id
-	Factory        string //分厂名称
-	FactoryNumber  string //分厂号
-	ProductionLine string //产线名称
-	CreatDate      string //领用时间
-	ID             string //商品ID
-	Name           string //商品名称
-	Type           string //类别
-	StrorageName   string //仓库名称
-	Nums           int    //数量
-	Unit           string //单位
-	Note           string //备注
-	UserName       string //领用人姓名
-	UserID         string //领用人工号
+	OutID         string //进出凭证id
+	Factory       string //分厂名称
+	FactoryNumber string //分厂号
+	Department    string //部门名称
+	CreatDate     string //领用时间
+	ID            string //商品ID
+	Name          string //商品名称
+	Type          string //类别
+	StrorageName  string //仓库名称
+	Nums          int    //数量
+	Unit          string //单位
+	Note          string //备注
+	UserName      string //领用人姓名
+	UserID        string //领用人工号
 }
 
 //新的领用记录
@@ -38,7 +37,7 @@ func NewOutRecord(session *JHttp.Session) {
 		return
 	}
 	st.ID = time.Unix(time.Now().Unix(), 0).Format("20060102150405")
-	if err := JsRedis.Redis_hset(Hash_StorageOutRecord, st.ID, st); err != nil {
+	if err := JRedis.Redis_hset(Hash_StorageOutRecord, st.ID, st); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -52,7 +51,6 @@ func GetAllOutRecord(session *JHttp.Session) {
 		return
 	}
 	data := []*StorageOutRecord{}
-
 	for _, v := range list {
 		d := &StorageOutRecord{}
 		if err := JRedis.Redis_hget(Hash_StorageOutRecord, v, d); err == nil {

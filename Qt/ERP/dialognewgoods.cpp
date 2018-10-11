@@ -40,9 +40,7 @@ void DialogNewGoods::setModule(bool isNew)
 void DialogNewGoods::initUI()
 {
     ui->comboBox_type->setCurrentIndex(-1);
-    ui->lineEdit_color->clear();
     ui->lineEdit_format->clear();
-    ui->doubleSpinBox_price->setValue(0);
     ui->lineEdit_name->clear();
     ui->comboBox_supplier->setCurrentIndex(-1);
 }
@@ -60,12 +58,9 @@ void DialogNewGoods::initGoods(Goods goods)
 {
     ui->lineEdit_name->setText(goods.Name);
     ui->comboBox_type->setCurrentText(goods.Type);
-    ui->lineEdit_color->setText(goods.Color);
     ui->lineEdit_format->setText(goods.Format);
     ui->spinBox_num->setValue(goods.Num);
-    ui->doubleSpinBox_price->setValue(goods.Price/100.0);
     ui->comboBox_supplier->setCurrentText(goods.SupplierName);
-    ui->textEdit_note->setText(goods.Note);
     curGoods = goods;
 }
 
@@ -75,9 +70,6 @@ void DialogNewGoods::on_pushButton_ok_clicked()
     goods.Name          = ui->lineEdit_name->text().trimmed();\
     goods.Type          = ui->comboBox_type->currentText();
     goods.Format        = ui->lineEdit_format->text();
-    goods.Color         = ui->lineEdit_color->text();
-    goods.Price         = (int)(ui->doubleSpinBox_price->value()*100);
-    goods.Note          = ui->textEdit_note->toPlainText();
     goods.SupplierName  = ui->comboBox_supplier->currentText();
     goods.Num           = ui->spinBox_num->value();
     goods.Unit          = ui->comboBox_unit->currentText();

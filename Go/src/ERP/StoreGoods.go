@@ -1,31 +1,31 @@
 package main
 
-import (
-	"JGo/JHttp"
-	"JGo/JLogger"
-	"JGo/JStore/JRedis"
-	"fmt"
-)
+//import (
+//"JGo/JHttp"
+//"JGo/JLogger"
+//"JGo/JStore/JRedis"
+//"fmt"
+//)
 
-type StoreGoods struct {
-	ID             string //商品ID
-	Name           string //商品名称
-	Type           string //类别
-	Factory        string //分厂名称~
-	FactoryNumber  string //分厂号~
-	ProductionLine string //产线名称~
-	Price          int    //进价
-	Num            int    //数量
-	Unit           string //单位
-	TotalPrice     int    //库存总价
-	Format         string //规格
-	Color          string //颜色
-	SID            string //供应商id
-	SupplierName   string //供应商名称
-	Status         string //状态
-	Note           string //备注
-	CreatTime      string //创建时间
-}
+//type StoreGoods struct {
+//	ID             string //商品ID
+//	Name           string //商品名称
+//	Type           string //类别
+//	Factory        string //分厂名称~
+//	FactoryNumber  string //分厂号~
+//	ProductionLine string //产线名称~
+//	Price          int    //进价
+//	Num            int    //数量
+//	Unit           string //单位
+//	TotalPrice     int    //库存总价
+//	Format         string //规格
+//	Color          string //颜色
+//	SID            string //供应商id
+//	SupplierName   string //供应商名称
+//	Status         string //状态
+//	Note           string //备注
+//	CreatTime      string //创建时间
+//}
 
 ////新建商品
 //func NewGoods(session *JHttp.Session) {
@@ -130,49 +130,49 @@ type StoreGoods struct {
 //	session.Forward("0", "modify success", data)
 //}
 
-func InOutGoods(session *JHttp.Session) {
-	type Para struct {
-		ID   string //商品id
-		Num  int    //数量
-		IsIn bool   //是否入库或者出库
-	}
-	st := &Para{}
-	if err := session.GetPara(st); err != nil {
-		JLogger.Error(err.Error())
-		session.Forward("1", err.Error(), nil)
-		return
-	}
-	if st.ID == "" || st.Num <= 0 {
-		str := fmt.Sprintf("InOutGoods failed,ID=%s,Num=%d\n", st.ID, st.Num)
-		JLogger.Error(str)
-		session.Forward("1", str, nil)
-		return
-	}
-	data := &StoreGoods{}
-	if err := JRedis.Redis_hget(Hash_Goods, st.ID, data); err != nil {
-		JLogger.Error(err.Error())
-		session.Forward("1", err.Error(), nil)
-		return
-	}
-	if st.IsIn {
-		data.Num += st.Num
-	} else {
-		if data.Num < st.Num {
-			str := fmt.Sprintf("InOutGoods failed,cur Num(%d) < param.Num(%d)\n", data.Num, st.Num)
-			JLogger.Error(str)
-			session.Forward("1", str, nil)
-			return
-		}
-		data.Num -= st.Num
-	}
-	data.TotalPrice = data.Num * data.Price
-	if err := JRedis.Redis_hset(Hash_Goods, st.ID, data); err != nil {
-		JLogger.Error(err.Error())
-		session.Forward("1", err.Error(), nil)
-		return
-	}
-	session.Forward("0", "mod success\n", data)
-}
+//func InOutGoods(session *JHttp.Session) {
+//	type Para struct {
+//		ID   string //商品id
+//		Num  int    //数量
+//		IsIn bool   //是否入库或者出库
+//	}
+//	st := &Para{}
+//	if err := session.GetPara(st); err != nil {
+//		JLogger.Error(err.Error())
+//		session.Forward("1", err.Error(), nil)
+//		return
+//	}
+//	if st.ID == "" || st.Num <= 0 {
+//		str := fmt.Sprintf("InOutGoods failed,ID=%s,Num=%d\n", st.ID, st.Num)
+//		JLogger.Error(str)
+//		session.Forward("1", str, nil)
+//		return
+//	}
+//	data := &StoreGoods{}
+//	if err := JRedis.Redis_hget(Hash_Goods, st.ID, data); err != nil {
+//		JLogger.Error(err.Error())
+//		session.Forward("1", err.Error(), nil)
+//		return
+//	}
+//	if st.IsIn {
+//		data.Num += st.Num
+//	} else {
+//		if data.Num < st.Num {
+//			str := fmt.Sprintf("InOutGoods failed,cur Num(%d) < param.Num(%d)\n", data.Num, st.Num)
+//			JLogger.Error(str)
+//			session.Forward("1", str, nil)
+//			return
+//		}
+//		data.Num -= st.Num
+//	}
+//	data.TotalPrice = data.Num * data.Price
+//	if err := JRedis.Redis_hset(Hash_Goods, st.ID, data); err != nil {
+//		JLogger.Error(err.Error())
+//		session.Forward("1", err.Error(), nil)
+//		return
+//	}
+//	session.Forward("0", "mod success\n", data)
+//}
 
 ////删除商品
 //func DelGoods(session *JHttp.Session) {
@@ -251,123 +251,3 @@ func InOutGoods(session *JHttp.Session) {
 //	}
 //	session.Forward("0", "GetGlobalGoods success\n", data)
 //}
-
-func RemoveGoodsType(session *JHttp.Session) {
-	type Para struct {
-		Type string
-	}
-	st := &Para{}
-	if err := session.GetPara(st); err != nil {
-		JLogger.Error(err.Error())
-		session.Forward("1", err.Error(), nil)
-		return
-	}
-	if err := removeGoodsType(st.Type); err != nil {
-		JLogger.Error(err.Error())
-		session.Forward("1", err.Error(), nil)
-		return
-	}
-	session.Forward("0", "RemoveGoodsType success\n", st.Type)
-}
-
-func AddGoodsType(session *JHttp.Session) {
-	type Para struct {
-		Type string
-	}
-	st := &Para{}
-	if err := session.GetPara(st); err != nil {
-		JLogger.Error(err.Error())
-		session.Forward("1", err.Error(), nil)
-		return
-	}
-	if err := appendGoodsType(st.Type); err != nil {
-		JLogger.Error(err.Error())
-		session.Forward("1", err.Error(), nil)
-		return
-	}
-	session.Forward("0", "AddGoodsType success\n", st.Type)
-}
-
-func GetAllGoodsType(session *JHttp.Session) {
-	list := []string{}
-	if err := JRedis.Redis_hget(Hash_SupplierGoods, Key_GoodType, &list); err != nil {
-		JLogger.Error(err.Error())
-	}
-	session.Forward("0", "get GoodsType success\n", list)
-}
-
-func appendGoodsType(Type string) error {
-	list := []string{}
-	if err := JRedis.Redis_hget(Hash_SupplierGoods, Key_GoodType, &list); err != nil {
-		JLogger.Info(err.Error())
-	}
-	ok := false
-	for _, v := range list {
-		if v == Type {
-			ok = true
-			break
-		}
-	}
-	if !ok {
-		list = append(list, Type)
-	}
-
-	return JRedis.Redis_hset(Hash_SupplierGoods, Key_GoodType, &list)
-}
-
-func removeGoodsType(Type string) error {
-	list := []string{}
-	if err := JRedis.Redis_hget(Hash_SupplierGoods, Key_GoodType, &list); err != nil {
-		JLogger.Error(err.Error())
-		return err
-	}
-	index := -1
-	for i, v := range list {
-		if v == Type {
-			index = i
-			break
-		}
-	}
-	if index != -1 {
-		list = append(list[:index], list[index+1:]...)
-	}
-	return JRedis.Redis_hset(Hash_SupplierGoods, Key_GoodType, &list)
-}
-
-func appendSupplierGoods(SID, GoodsID string) error {
-	list := []string{}
-	if err := JRedis.Redis_hget(Hash_SupplierGoods, SID, &list); err != nil {
-		JLogger.Info(err.Error())
-	}
-	ok := false
-	for _, v := range list {
-		if v == GoodsID {
-			ok = true
-			break
-		}
-	}
-	if !ok {
-		list = append(list, GoodsID)
-	}
-
-	return JRedis.Redis_hset(Hash_SupplierGoods, SID, &list)
-}
-
-func removeSupplierGoods(SID, GoodsID string) error {
-	list := []string{}
-	if err := JRedis.Redis_hget(Hash_SupplierGoods, SID, &list); err != nil {
-		JLogger.Info(err.Error())
-	}
-	index := -1
-	for i, v := range list {
-		if v == GoodsID {
-			index = i
-			break
-		}
-	}
-	if index != -1 {
-		list = append(list[:index], list[index+1:]...)
-	}
-
-	return JRedis.Redis_hset(Hash_SupplierGoods, SID, &list)
-}

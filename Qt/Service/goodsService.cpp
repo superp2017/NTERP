@@ -202,14 +202,9 @@ QJsonObject GoodsService::toJsonObject(Goods goods)
     obj.insert("Type",goods.Type);
     obj.insert("Unit",goods.Unit);
     obj.insert("Format",goods.Format);
-    obj.insert("Color",goods.Color);
     obj.insert("SID",goods.SID);
     obj.insert("SupplierName",goods.SupplierName);
-    obj.insert("Status",goods.Status);
-    obj.insert("Note",goods.Note);
     obj.insert("CreatTime",goods.CreatTime);
-    obj.insert("TotalPrice",goods.TotalPrice);
-    obj.insert("Price",goods.Price);
     obj.insert("Num",goods.Num);
     return obj;
 }
@@ -242,11 +237,6 @@ Goods GoodsService::fromJsonObject(QJsonObject obj)
         if(value.isString())
             goods.Format = value.toString();
     }
-    if(obj.contains("Color")){
-        QJsonValue value = obj.value("Color");
-        if(value.isString())
-            goods.Color = value.toString();
-    }
     if(obj.contains("SID")){
         QJsonValue value = obj.value("SID");
         if(value.isString())
@@ -257,35 +247,10 @@ Goods GoodsService::fromJsonObject(QJsonObject obj)
         if(value.isString())
             goods.SupplierName = value.toString();
     }
-    if(obj.contains("Status")){
-        QJsonValue value = obj.value("Status");
-        if(value.isString())
-            goods.Status = value.toString();
-    }
-    if(obj.contains("Note")){
-        QJsonValue value = obj.value("Note");
-        if(value.isString())
-            goods.Note = value.toString();
-    }
     if(obj.contains("CreatTime")){
         QJsonValue value = obj.value("CreatTime");
         if(value.isString())
             goods.CreatTime = value.toString();
-    }
-    if(obj.contains("Note")){
-        QJsonValue value = obj.value("Note");
-        if(value.isString())
-            goods.Note = value.toString();
-    }
-    if(obj.contains("TotalPrice")){
-        QJsonValue value = obj.value("TotalPrice");
-        if(value.isDouble())
-            goods.TotalPrice = value.toInt();
-    }
-    if(obj.contains("Price")){
-        QJsonValue value = obj.value("Price");
-        if(value.isDouble())
-            goods.Price = value.toInt();
     }
     if(obj.contains("Num")){
         QJsonValue value = obj.value("Num");
@@ -298,19 +263,15 @@ Goods GoodsService::fromJsonObject(QJsonObject obj)
 bool GoodsService::exportGoods(QVector<Goods> list, QString filepath, bool isOpen)
 {
     QVector<QVariant> datalist;
-    datalist<<"商品编号"<<"商品名称"<<"类别"\
-           <<"进价(元)"<<"库存数量"<<"单位"<<"库存总价(元)"\
-          <<"规格"<<"颜色"<<"供应商"<<"状态"<<"备注";
+    datalist<<"商品编号"<<"商品名称"<<"类别"<<"规格"\
+          <<"库存数量"<<"单位"<<"供应商";
     QVector<QVector<QVariant>> data;
     for(int i=0;i<list.size();++i){
         Goods goods  = list.at(i);
         QVector<QVariant> datalist;
-        double price = goods.Price/100.0;
-        double toPrice = goods.TotalPrice/100.0;
         datalist<<"'"+goods.ID<<"'"+goods.Name<<goods.Type\
-               <<"'"+QString("%1").arg(price)<<"'"+goods.Num<<goods.Unit\
-              <<"'"+QString("%1").arg(toPrice)<<goods.Format<<goods.Color\
-             <<goods.SupplierName<<goods.Status<<goods.Note;
+              <<goods.Format<<"'"+goods.Num\
+             <<goods.Unit<<goods.SupplierName;
         data.push_back(datalist);
     }
     return  ExcelService::dataExport(filepath,datalist,data,isOpen);

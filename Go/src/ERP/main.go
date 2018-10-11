@@ -53,12 +53,12 @@ func initRoute() {
 
 	JHttp.WhiteHttp("/getallmaterials", GetAllMaterial) //获取所有的物料
 
-	JHttp.WhiteHttp("/getglobalgoods", GetGlobalGoods)     //获取仓库商品
-	JHttp.WhiteHttp("/newgoods", NewGoods)                 //新建一个商品
-	JHttp.WhiteHttp("/delgoods", DelGoods)                 //删除一个商品
-	JHttp.WhiteHttp("/inoutgoods", InOutGoods)             //商品出入库
-	JHttp.WhiteHttp("/modifygoods", ModifyGoods)           //修改商品
-	JHttp.WhiteHttp("/getsuppliergoods", GetSupplierGoods) //获取供应商的物品
+	JHttp.WhiteHttp("/getglobalgoods", getGlobalGoods)     //获取仓库商品
+	JHttp.WhiteHttp("/newgoods", newGoods)                 //新建一个商品
+	JHttp.WhiteHttp("/delgoods", delGoods)                 //删除一个商品
+	JHttp.WhiteHttp("/inoutgoods", addGoodsNum)            //商品出入库
+	JHttp.WhiteHttp("/modifygoods", modGoods)              //修改商品
+	JHttp.WhiteHttp("/getsuppliergoods", getSupplierGoods) //获取供应商的物品
 	JHttp.WhiteHttp("/removegoodstype", RemoveGoodsType)   //删除商品的分类
 	JHttp.WhiteHttp("/newgoodstype", AddGoodsType)         //新建商品的分类
 	JHttp.WhiteHttp("/getallgoodstype", GetAllGoodsType)   //获取所有商品分类
@@ -82,66 +82,4 @@ func main() {
 	JExit.RegisterExitCb(exit)
 	initRoute()
 	JHttp.Run()
-}
-
-func getMinRiskValue(n int, m int, x []int, y []int, w []int) int {
-	if n <= 0 || len(x) < m || len(y) < m || len(w) < m {
-		return -1
-	}
-	max_n := y[m-1] + 1
-	nodes := []int{}
-	c_n := x[0]
-	minValue := 50
-	cur_w := 0
-	var vis [][]bool
-	for i := 0; i < max_n; i++ {
-		d := make([]bool, max_n)
-		vis = append(vis, d)
-	}
-	var value [][]int
-	for i := 0; i < max_n; i++ {
-		d := make([]int, max_n)
-		value = append(value, d)
-	}
-	for i := 0; i < m; i++ {
-		value[x[i]][y[i]] = w[i]
-		value[y[i]][x[i]] = w[i]
-	}
-	for {
-		tmp := make([]bool, max_n)
-		for {
-			ok := false
-			for i := 0; i < max_n; i++ {
-				if value[c_n][i] > 0 && !vis[c_n][i] && !tmp[c_n] {
-					vis[c_n][i] = true
-					vis[i][c_n] = true
-					tmp[c_n] = true
-					if cur_w < value[c_n][i] {
-						cur_w = value[c_n][i]
-					}
-					nodes = append(nodes, c_n)
-					c_n = i
-					ok = true
-					break
-				}
-			}
-			if c_n == n {
-				break
-			}
-			if ok == false {
-				break
-			}
-		}
-		if c_n == n {
-			if minValue > cur_w {
-				minValue = cur_w
-			}
-		}
-		c_n = nodes[len(nodes)-1]
-		nodes = nodes[:len(nodes)-1]
-		if len(nodes) <= 0 {
-			break
-		}
-	}
-	return minValue
 }
