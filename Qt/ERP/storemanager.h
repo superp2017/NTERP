@@ -5,6 +5,8 @@
 #include "goodsService.h"
 #include "dialognewgoods.h"
 #include "dialoginoutgoods.h"
+#include "goodstable.h"
+#include "goodsoutrecord.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -34,14 +36,15 @@ private slots:
     void getGlobalGoodsCb(bool ok);
     void changeCol();
     void on_pushButton_mod_clicked();
-
+    void clearSelectSection();
 private:
     void initData();
-    void clearSelectSection();
     void setBtnEnable(bool mod, bool in, bool out, bool del);
     Ui::StoreManager *ui;
     DialogNewGoods  *newGoods;
     DialogInOutGoods inout;
+    goodsTable  m_goods_Table;
+    Tab_GoodsOutRecord m_record_Table;
     Goods   cur_Goods;
 };
 

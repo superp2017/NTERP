@@ -275,5 +275,4 @@ bool GoodsService::exportGoods(QVector<Goods> list, QString filepath, bool isOpe
         data.push_back(datalist);
     }
     return  ExcelService::dataExport(filepath,datalist,data,isOpen);
-
 }

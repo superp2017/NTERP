@@ -47,7 +47,8 @@ SOURCES += service.cpp \
     supplierservice.cpp \
     accountservice.cpp \
     goodsService.cpp \
-    platingservice.cpp
+    platingservice.cpp \
+    goodsoutrecordservice.cpp
 
 HEADERS += service.h\
         service_global.h \
@@ -61,7 +62,8 @@ HEADERS += service.h\
     supplierservice.h \
     accountservice.h \
     goodsService.h \
-    platingservice.h
+    platingservice.h \
+    goodsoutrecordservice.h
 
 unix {
     target.path = /usr/lib

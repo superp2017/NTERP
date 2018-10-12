@@ -113,7 +113,9 @@ SOURCES += main.cpp\
     formdepartmentmanage.cpp \
     dialogordersearch.cpp \
     dialogplatingmanage.cpp \
-    dialogorderproduceorout.cpp
+    dialogorderproduceorout.cpp \
+    goodsoutrecord.cpp \
+    dialoggoodsout.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -192,7 +194,9 @@ HEADERS  += mainwindow.h \
     formdepartmentmanage.h \
     dialogordersearch.h \
     dialogplatingmanage.h \
-    dialogorderproduceorout.h
+    dialogorderproduceorout.h \
+    goodsoutrecord.h \
+    dialoggoodsout.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -256,7 +260,8 @@ FORMS    += mainwindow.ui \
     formdepartmentmanage.ui \
     dialogordersearch.ui \
     dialogplatingmanage.ui \
-    dialogorderproduceorout.ui
+    dialogorderproduceorout.ui \
+    dialoggoodsout.ui
 
 RESOURCES += \
     res.qrc

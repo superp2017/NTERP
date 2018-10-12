@@ -12,6 +12,12 @@ StoreManager::StoreManager(QWidget *parent) :
     ui->setupUi(this);
     newGoods = NULL;
 
+    ui->tabWidget->addTab(&m_goods_Table,"商品库存");
+    ui->tabWidget->addTab(&m_record_Table,"出库记录");
+    ui->tabWidget->tabBar()->setMovable(true);
+    ui->tabWidget->tabBar()->setFont(QFont("Times", 14, QFont::Bold));
+
+
     ui->pushButton_new->setStyleSheet("QPushButton{border-image: url(:/icon/new-red.png);}"
                                       "QPushButton:hover{border-image: url(:/icon/new.png);}"
                                       "QPushButton:pressed{border-image: url(:/icon/new.png);}"
@@ -26,6 +32,8 @@ StoreManager::StoreManager(QWidget *parent) :
                                           "QPushButton:hover{border-image: url(:/icon/reflash-a.png);}"
                                           "QPushButton:pressed{border-image: url(:/icon/reflash-a.png);}"
                                           "QPushButton:checked{border-image: url(:/icon/reflash-a.png);}");
+    connect(ui->tabWidget,SIGNAL(currentChanged(int)),this,SLOT(clearSelectSection()));
+
 
     connect(ui->radioButton_ave,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_content,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
@@ -34,7 +42,12 @@ StoreManager::StoreManager(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_globalGoods(bool)),this,SLOT(getGlobalGoodsCb(bool)));
     connect(dataCenter::instance(),SIGNAL(sig_delGoods(QString,bool)),this,SLOT(delGoodsCb(QString,bool)));
 
-    connect(ui->tableWidget,SIGNAL(GoodsClick(QString)),this,SLOT(GoodsClick(QString)));
+    connect(&m_goods_Table,SIGNAL(GoodsClick(QString)),this,SLOT(GoodsClick(QString)));
+
+    connect(&m_goods_Table,SIGNAL(modGoods()),this,SLOT(on_pushButton_mod_clicked()));
+
+    connect(&m_goods_Table,SIGNAL(delGoods()),this,SLOT(on_pushButton_del_clicked()));
+
 
     changeCol();
     setBtnEnable(false,false,false,false);
@@ -48,15 +61,16 @@ StoreManager::~StoreManager()
 
 void StoreManager::initData()
 {
-    ui->tableWidget->initGoods(dataCenter::instance()->pub_goods());
-    ui->tableWidget->checkSelect();
+    m_goods_Table.initGoods(dataCenter::instance()->pub_goods());
+    m_goods_Table.checkSelect();
+    m_record_Table.checkSelect();
 }
 
 void StoreManager::clearSelectSection()
 {
-    ui->tableWidget->clearSelection();
+    m_goods_Table.clearSelection();
+    m_record_Table.clearSelection();
     setBtnEnable(false,false,false,false);
-    ui->tableWidget->checkSelect();
 }
 
 
@@ -71,7 +85,7 @@ void StoreManager::on_pushButton_new_clicked()
     newGoods->initData();
     if(newGoods->exec()==123){
         Goods goods = newGoods->getCurGoods();
-        ui->tableWidget->appendGoods(goods);
+        m_goods_Table.appendGoods(goods);
     }
 }
 
@@ -88,9 +102,10 @@ void StoreManager::on_pushButton_mod_clicked()
     newGoods->initGoods(cur_Goods);
     if(newGoods->exec()==123){
         Goods goods = newGoods->getCurGoods();
-        ui->tableWidget->modGoods(goods);
+        m_goods_Table.modGoods(goods);
     }
 }
+
 
 
 void StoreManager::on_pushButton_in_store_clicked()
@@ -100,7 +115,7 @@ void StoreManager::on_pushButton_in_store_clicked()
     if(inout.exec()==123){
         Goods goods=  inout.getCurgoods();
         cur_Goods = goods;
-        ui->tableWidget->modGoods(goods);
+        m_goods_Table.modGoods(goods);
     }
 }
 
@@ -110,7 +125,7 @@ void StoreManager::on_pushButton_out_store_clicked()
     inout.initGoods(cur_Goods);
     if(inout.exec()==123){
         Goods goods=  inout.getCurgoods();
-        ui->tableWidget->modGoods(goods);
+        m_goods_Table.modGoods(goods);
     }
 }
 
@@ -171,7 +186,7 @@ void StoreManager::delGoodsCb(QString ID, bool ok)
 {
     dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        ui->tableWidget->removeGoods(ID);
+        m_goods_Table.removeGoods(ID);
         dataCenter::instance()->pub_showMessage("删除成功",3000);
     }else{
         dataCenter::instance()->pub_showMessage("删除失败",4000);
@@ -192,13 +207,13 @@ void StoreManager::getGlobalGoodsCb(bool ok)
 void StoreManager::changeCol()
 {
     if(ui->radioButton_ave->isChecked()){
-        ui->tableWidget->setHeaderColModel(QHeaderView::Stretch);
+        m_goods_Table.setHeaderColModel(QHeaderView::Stretch);
     }
     if(ui->radioButton_content->isChecked()){
-        ui->tableWidget->setHeaderColModel(QHeaderView::ResizeToContents);
+        m_goods_Table.setHeaderColModel(QHeaderView::ResizeToContents);
     }
     if(ui->radioButton_manu->isChecked()){
-        ui->tableWidget->setHeaderColModel(QHeaderView::Interactive);
+        m_goods_Table.setHeaderColModel(QHeaderView::Interactive);
     }
     clearSelectSection();
 }
@@ -206,6 +221,7 @@ void StoreManager::changeCol()
 
 void StoreManager::setBtnEnable(bool mod,bool in, bool out, bool del)
 {
+    mod = in = out = del = true;
     ui->pushButton_mod->setEnabled(mod);
     ui->pushButton_in_store->setEnabled(in);
     ui->pushButton_out_store->setEnabled(out);
@@ -220,10 +236,10 @@ void StoreManager::setBtnEnable(bool mod,bool in, bool out, bool del)
     }
 
     if(in){
-        ui->pushButton_in_store->setStyleSheet("QPushButton{border-image: url(:/icon/modify-red.png);}"
-                                               "QPushButton:hover{border-image: url(:/icon/modify.png);}"
-                                               "QPushButton:pressed{border-image: url(:/icon/modify.png);}"
-                                               "QPushButton:checked{border-image: url(:/icon/modify.png);}");
+        ui->pushButton_in_store->setStyleSheet("QPushButton{border-image: url(:/icon/instroe-red.png);}"
+                                               "QPushButton:hover{border-image: url(:/icon/instroe.png);}"
+                                               "QPushButton:pressed{border-image: url(:/icon/instroe.png);}"
+                                               "QPushButton:checked{border-image: url(:/icon/instroe.png);}");
     }else{
         ui->pushButton_in_store->setStyleSheet("QPushButton{border-image: url(:/icon/modify.png);}");
     }

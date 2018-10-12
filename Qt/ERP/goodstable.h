@@ -2,6 +2,8 @@
 #define GOODSTABLE_H
 #include "m_tablewidget.h"
 #include "goodsService.h"
+#include <QAction>
+#include <QMenu>
 #pragma execution_character_set("utf-8")
 
 
@@ -17,11 +19,15 @@ public:
     void removeGoods(QString g);
 signals:
     void GoodsClick(QString ID);
+    void modGoods();
+    void delGoods();
 private slots:
     void clickRow(int row,int col);
 private:
     void setRowData(Goods para, int row);
-
+    QMenu   *m_menu;
+    QAction *m_mod;
+    QAction *m_del;
 };
 
 #endif // GOODSTABLE_H

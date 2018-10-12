@@ -11,8 +11,14 @@ goodsTable::goodsTable(QWidget *w):M_TableWidget(w)
          <<tr("库存数量")<<tr("单位")<<tr("供应商");
     this->setHorizontalHeaderLabels(header);
 
-
     connect(this,SIGNAL(cellPressed(int,int)),this,SLOT(clickRow(int,int)));
+
+    m_menu = new QMenu();
+    m_mod  = m_menu->addAction("修改");
+    m_del  = m_menu->addAction("删除");
+    connect(m_mod,SIGNAL(triggered(bool)),this,SIGNAL(modGoods()));
+    connect(m_del,SIGNAL(triggered(bool)),this,SIGNAL(delGoods()));
+
 }
 
 
@@ -68,10 +74,9 @@ void goodsTable::clickRow(int row, int col)
     if(row<0){
         return;
     }
-
     col =0;
     QTableWidgetItem* item = this->item(row,0);
-    if (item!=NULL){
+    if (item!=NULL&&!item->text().isEmpty()){
         emit GoodsClick(item->text());
     }
 }

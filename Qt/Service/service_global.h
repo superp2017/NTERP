@@ -78,6 +78,11 @@ const std::string Net_NewGoodsType="/newgoodstype";         //新建一个商品
 const std::string Net_RemoveGoodsType="/removegoodstype";   //删除一个商品分类
 const std::string Net_GetAllGoodsType="/getallgoodstype";   //获取所有的商品分类
 
+const std::string Net_GetAllGoodsOutRecord="/getallgoodsoutrecords";   //获取所有的商品出库记录
+const std::string Net_NewGoodsOutRecord="/newgoodsoutrecord";   //新增一个商品出库记录
+
+
+
 const std::string Net_NewDepartment="/newdepartment";       //获取所有的商品分类
 const std::string Net_DelDepartment="/removedepartment";    //获取所有的商品分类
 const std::string Net_GetAllDepartment="/getalldepartment"; //获取所有的商品分类
@@ -230,6 +235,22 @@ struct Goods{
     int     Num;            //库存
 };
 
+
+struct GoodsOutRecord{
+    QString   OutID;          //进出凭证id
+    QString   Factory;        //分厂名称
+    QString   Department;     //部门名称
+    QString   CreatDate;      //领用时间
+    QString   GoodsID;        //商品ID
+    QString   GoodsName;      //商品名称
+    QString   Type;           //类别
+    QString   StrorageName;   //仓库名称
+    int       Nums;           //数量
+    QString   Unit;           //单位
+    QString   Note;           //备注
+    QString   UserName;       //领用人姓名
+    QString   UserID;         //领用人工号
+};
 
 
 
