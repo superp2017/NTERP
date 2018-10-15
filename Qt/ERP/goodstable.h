@@ -4,6 +4,7 @@
 #include "goodsService.h"
 #include <QAction>
 #include <QMenu>
+#include <QMouseEvent>
 #pragma execution_character_set("utf-8")
 
 
@@ -21,6 +22,8 @@ signals:
     void GoodsClick(QString ID);
     void modGoods();
     void delGoods();
+protected:
+    void mousePressEvent(QMouseEvent *e);
 private slots:
     void clickRow(int row,int col);
 private:

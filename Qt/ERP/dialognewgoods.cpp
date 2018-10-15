@@ -156,11 +156,11 @@ void DialogNewGoods::newGoodsCb(Goods goods,bool ok)
 {
     dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->pub_showMessage("修改成功!",3000);
+        dataCenter::instance()->pub_showMessage("创建成功!",3000);
         curGoods = goods;
         this->done(123);
     }else{
-        dataCenter::instance()->pub_showMessage("修改失败!",3000);
+        dataCenter::instance()->pub_showMessage("创建失败!",3000);
     }
 }
 
@@ -168,11 +168,11 @@ void DialogNewGoods::modGoodsCb(Goods goods,bool ok)
 {
     dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->pub_showMessage("创建成功!",3000);
+        dataCenter::instance()->pub_showMessage("修改成功!",3000);
         curGoods = goods;
         this->done(123);
     }else{
-        dataCenter::instance()->pub_showMessage("创建失败!",3000);
+        dataCenter::instance()->pub_showMessage("修改失败!",3000);
     }
 }
 

@@ -4,13 +4,13 @@
 #include <QMessageBox>
 #include "boost/thread.hpp"
 #include "dialoggoodsprint.h"
+#include "dialognewgoods.h"
 
 StoreManager::StoreManager(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::StoreManager)
 {
     ui->setupUi(this);
-    newGoods = NULL;
 
     ui->tabWidget->addTab(&m_goods_Table,"商品库存");
     ui->tabWidget->addTab(&m_record_Table,"出库记录");
@@ -77,14 +77,11 @@ void StoreManager::clearSelectSection()
 
 void StoreManager::on_pushButton_new_clicked()
 {
-    if(newGoods==NULL){
-        newGoods = new DialogNewGoods();
-    }
-    newGoods->initUI();
-    newGoods->setModule(true);
-    newGoods->initData();
-    if(newGoods->exec()==123){
-        Goods goods = newGoods->getCurGoods();
+    DialogNewGoods newGoods;
+    newGoods.setModule(true);
+    newGoods.initData();
+    if(newGoods.exec()==123){
+        Goods goods = newGoods.getCurGoods();
         m_goods_Table.appendGoods(goods);
     }
 }
@@ -94,14 +91,13 @@ void StoreManager::on_pushButton_mod_clicked()
     if (cur_Goods.ID==""){
         return ;
     }
-    if(newGoods==NULL){
-        newGoods = new DialogNewGoods();
-    }
-    newGoods->setModule(false);
-    newGoods->initData();
-    newGoods->initGoods(cur_Goods);
-    if(newGoods->exec()==123){
-        Goods goods = newGoods->getCurGoods();
+
+    DialogNewGoods newGoods;
+    newGoods.setModule(false);
+    newGoods.initData();
+    newGoods.initGoods(cur_Goods);
+    if(newGoods.exec()==123){
+        Goods goods = newGoods.getCurGoods();
         m_goods_Table.modGoods(goods);
     }
 }

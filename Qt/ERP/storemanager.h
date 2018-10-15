@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include "goodsService.h"
-#include "dialognewgoods.h"
 #include "dialoginoutgoods.h"
 #include "goodstable.h"
 #include "goodsoutrecord.h"
@@ -30,18 +29,18 @@ private slots:
     void on_pushButton_del_clicked();
     void on_pushButton_export_clicked();
     void on_pushButton_reflash_clicked();
+    void on_pushButton_mod_clicked();
 
     void GoodsClick(QString id);
     void delGoodsCb(QString ID,bool ok);
     void getGlobalGoodsCb(bool ok);
     void changeCol();
-    void on_pushButton_mod_clicked();
+
     void clearSelectSection();
 private:
     void initData();
     void setBtnEnable(bool mod, bool in, bool out, bool del);
     Ui::StoreManager *ui;
-    DialogNewGoods  *newGoods;
     DialogInOutGoods inout;
     goodsTable  m_goods_Table;
     Tab_GoodsOutRecord m_record_Table;

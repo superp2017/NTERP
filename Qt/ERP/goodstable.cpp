@@ -69,6 +69,29 @@ void goodsTable::removeGoods(QString g)
     }
 }
 
+void goodsTable::mousePressEvent(QMouseEvent *e)
+{
+    QTableWidget::mousePressEvent(e);
+    e->accept();
+    if(e->buttons()==Qt::RightButton){
+        int count =this->rowCount();
+        if(count>0){
+            if(e->pos().y()<=this->rowHeight(0)*count)  {
+                if(this->selectedRanges().size()>0){
+                    int row = this->selectedRanges().at(0).topRow();
+                    if(row<0){
+                        return;
+                    }
+                    QTableWidgetItem* item = this->item(row,0);
+                    if(item==NULL||item->text()=="")
+                        return;
+                    m_menu->exec(e->globalPos());
+                }
+            }
+        }
+    }
+}
+
 void goodsTable::clickRow(int row, int col)
 {
     if(row<0){

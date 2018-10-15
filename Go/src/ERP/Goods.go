@@ -55,7 +55,6 @@ func modGoods(session *JHttp.Session) {
 		ID           string
 		Name         string //商品名称
 		Type         string //类别
-		Price        int    //进价
 		Unit         string //单位
 		Format       string //规格
 		SID          string //供应商id
@@ -89,7 +88,6 @@ func modGoods(session *JHttp.Session) {
 	}
 	data.Name = st.Name
 	data.Type = st.Type
-	data.Price = st.Price
 	data.Unit = st.Unit
 	data.Format = st.Format
 	data.SID = st.SID
