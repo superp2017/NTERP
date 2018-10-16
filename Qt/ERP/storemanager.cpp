@@ -5,7 +5,7 @@
 #include "boost/thread.hpp"
 #include "dialoggoodsprint.h"
 #include "dialognewgoods.h"
-
+#include  "dialogoutgoods.h"
 StoreManager::StoreManager(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::StoreManager)
@@ -117,11 +117,15 @@ void StoreManager::on_pushButton_in_store_clicked()
 
 void StoreManager::on_pushButton_out_store_clicked()
 {
-    inout.setModule(false);
-    inout.initGoods(cur_Goods);
-    if(inout.exec()==123){
-        Goods goods=  inout.getCurgoods();
-        m_goods_Table.modGoods(goods);
+    //    inout.setModule(false);
+    //    inout.initGoods(cur_Goods);
+    //    if(inout.exec()==123){
+    //        Goods goods=  inout.getCurgoods();
+    //        m_goods_Table.modGoods(goods);
+    //    }
+    DialogOutGoods out;
+    if(out.exec()==123){
+        m_record_Table.appendRecord(out.getCur_record());
     }
 }
 

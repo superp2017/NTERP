@@ -2,7 +2,7 @@
 #define DIALOGOUTGOODS_H
 
 #include <QDialog>
-
+#include "service_global.h"
 namespace Ui {
 class DialogOutGoods;
 }
@@ -15,13 +15,18 @@ public:
     explicit DialogOutGoods(QWidget *parent = 0);
     ~DialogOutGoods();
 
-private slots:
-    void on_pushButton_ok_clicked();
+    GoodsOutRecord getCur_record() const;
 
+private slots:
+    void initCombox();
+    void on_pushButton_ok_clicked();
     void on_pushButton_cancel_clicked();
+    void GoodIDChange();
+    void NewOutCb(GoodsOutRecord g,bool ok);
 
 private:
     Ui::DialogOutGoods *ui;
+    GoodsOutRecord  cur_record;
 };
 
 #endif // DIALOGOUTGOODS_H

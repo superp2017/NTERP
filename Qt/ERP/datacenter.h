@@ -69,6 +69,9 @@ public:
     void net_delGoodsType(const QJsonObject para);
     void net_getGlobalGoodsType();
     /////////////////////////////////////////////////////
+    void net_newGoodsOut(const QJsonObject para);
+    void net_getAllGoodsOutRecords(const QJsonObject para);
+    /////////////////////////////////////////////////////
     void net_newPlating(const QJsonObject para);
     void net_delPlating(const QJsonObject para);
     void net_getglobalPlating();
@@ -118,6 +121,8 @@ public:
     QVector<QString> pub_goodsType() const;
     QVector<Goods> pub_GetTypeGoods(QString type);
     bool pub_checkTypeExist(QString type);
+    ///////////////////////////////////////////////////
+    QVector<GoodsOutRecord>pub_AllOutRecord();
     ////////////////////////////////////////////////////
     SysSetting CurSettings();
     void setCurSettings(SysSetting set);
@@ -180,6 +185,9 @@ signals:
     void sig_newGoodsType(QString,bool);
     void sig_delGoodsType(QString,bool);
     void sig_globalGoodsType(bool);
+    /////////////////////////////////
+    void sig_newGoodsRecord(GoodsOutRecord,bool);
+    void sig_getAllOutRecord(bool);
 private:
     void pri_initBath();
     void pri_checkGoodType(QString type);
@@ -200,6 +208,7 @@ private:
     QVector<QString>        m_departments;//所有的部门
     QVector<Goods>          m_goods;      //所有的商品
     QVector<QString>        m_goodsType;  //所有商品的分类
+    QVector<GoodsOutRecord> m_goodsRecords;//所有商品出库记录
     Loadding                m_load;       //加载动画
     nSysConfig              m_Config;     //保存系统配置
 };

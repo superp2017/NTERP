@@ -7,7 +7,7 @@ GoodsOutRecordService::GoodsOutRecordService()
 
 }
 
-GoodsOutRecord GoodsOutRecordService::newGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+GoodsOutRecord GoodsOutRecordService::newGoodsRecord(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
     GoodsOutRecord goods;
     std::string url = Net_NewGoodsOutRecord;

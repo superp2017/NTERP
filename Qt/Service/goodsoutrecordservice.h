@@ -2,12 +2,13 @@
 #define GOODSOUTRECORDSERVICE_H
 
 #include "service_global.h"
+#pragma execution_character_set("utf-8")
 
-class GoodsOutRecordService
+class SERVICESHARED_EXPORT GoodsOutRecordService
 {
 public:
     GoodsOutRecordService();
-    static GoodsOutRecord newGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static GoodsOutRecord newGoodsRecord(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QVector<GoodsOutRecord>GetAllRecords(bool &ok, QString hostname, QString hostport);
     static QJsonObject toJsonObject(GoodsOutRecord record);
     static GoodsOutRecord fromJsonObject(QJsonObject obj);

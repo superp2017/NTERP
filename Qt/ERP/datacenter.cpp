@@ -11,6 +11,7 @@
 #include "goodsService.h"
 #include "platingservice.h"
 #include "boost/thread.hpp"
+#include "goodsoutrecordservice.h"
 
 
 dataCenter::dataCenter(QObject *parent) : QObject(parent)
@@ -466,7 +467,7 @@ void dataCenter::net_newGoods(const QJsonObject para)
         m_goods.push_back(goods);
         pri_checkGoodType(goods.Type);
     }
-    emit sig_modGoods(goods,ok);
+    emit sig_newGoods(goods,ok);
 }
 
 void dataCenter::net_modGoods(const QJsonObject para)
@@ -544,6 +545,23 @@ void dataCenter::net_getGlobalGoodsType()
     bool ok = false;
     m_goodsType = GoodsService::getAllGoodsType(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     emit sig_globalGoodsType(ok);
+}
+
+void dataCenter::net_newGoodsOut(const QJsonObject para)
+{
+    bool ok = false;
+    GoodsOutRecord goods = GoodsOutRecordService::newGoodsRecord(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if (ok){
+        m_goodsRecords.push_back(goods);
+    }
+    emit sig_newGoodsRecord(goods,ok);
+}
+
+void dataCenter::net_getAllGoodsOutRecords(const QJsonObject para)
+{
+    bool ok = false;
+    m_goodsRecords = GoodsOutRecordService::GetAllRecords(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_getAllOutRecord(ok);
 }
 
 void dataCenter::net_newPlating(const QJsonObject para)
@@ -830,6 +848,11 @@ QVector<Goods> dataCenter::pub_GetTypeGoods(QString type)
 bool dataCenter::pub_checkTypeExist(QString type)
 {
     return m_goodsType.contains(type);
+}
+
+QVector<GoodsOutRecord> dataCenter::pub_AllOutRecord()
+{
+    return m_goodsRecords;
 }
 
 QVector<Goods> dataCenter::pub_goods() const
