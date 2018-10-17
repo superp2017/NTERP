@@ -19,18 +19,24 @@ public:
     void modGoods(Goods g);
     void removeGoods(QString g);
 signals:
-    void GoodsClick(QString ID);
-    void modGoods();
-    void delGoods();
+    void inGoods(Goods,bool);
+    void outGoods(Goods,bool);
 protected:
     void mousePressEvent(QMouseEvent *e);
 private slots:
-    void clickRow(int row,int col);
+    void modGoods();
+    void delGoods();
+    void inGoods();
+    void outGoods();
+    void delGoodsCb(QString GoodsID, bool ok);
 private:
     void setRowData(Goods para, int row);
     QMenu   *m_menu;
     QAction *m_mod;
     QAction *m_del;
+    QAction *m_in;
+    QAction *m_out;
+    Goods   cur_Goods;
 };
 
 #endif // GOODSTABLE_H

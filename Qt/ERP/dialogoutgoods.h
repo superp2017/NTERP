@@ -14,8 +14,8 @@ class DialogOutGoods : public QDialog
 public:
     explicit DialogOutGoods(QWidget *parent = 0);
     ~DialogOutGoods();
-
     GoodsOutRecord getCur_record() const;
+    void initGood(Goods g);
 
 private slots:
     void initCombox();

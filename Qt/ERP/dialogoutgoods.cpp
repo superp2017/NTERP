@@ -13,7 +13,7 @@ DialogOutGoods::DialogOutGoods(QWidget *parent) :
 {
     ui->setupUi(this);
     initCombox();
-    connect(ui->comboBox_goods_id,SIGNAL(currentIndexChanged(int)),this,SLOT(GoodIDChange()));
+    connect(ui->comboBox_goods_id,SIGNAL(currentIndexChanged(QString)),this,SLOT(GoodIDChange()));
     ui->textEdit_des->setEnabled(false);
     ui->lineEdit_type->setEnabled(false);
 }
@@ -123,11 +123,19 @@ void DialogOutGoods::on_pushButton_cancel_clicked()
 void DialogOutGoods::GoodIDChange()
 {
     QString goodsID =  ui->comboBox_goods_id->currentText();
-    bool ok = false;
-    Goods g = dataCenter::instance()->pub_getGoods(goodsID,ok);
-    if(ok){
-        ui->textEdit_des->setText(g.Name);
-        ui->lineEdit_type->setText(g.Type);
+    if(!goodsID.isEmpty()){
+        bool ok = false;
+        Goods g = dataCenter::instance()->pub_getGoods(goodsID,ok);
+        if(ok){
+            ui->textEdit_des->setText(g.Name);
+            ui->lineEdit_type->setText(g.Type);
+        }else{
+            ui->textEdit_des->setText("");
+            ui->lineEdit_type->setText("");
+        }
+    }else{
+        ui->textEdit_des->setText("");
+        ui->lineEdit_type->setText("");
     }
 }
 
@@ -148,4 +156,11 @@ void DialogOutGoods::NewOutCb(GoodsOutRecord g, bool ok)
 GoodsOutRecord DialogOutGoods::getCur_record() const
 {
     return cur_record;
+}
+
+void DialogOutGoods::initGood(Goods g)
+{
+    ui->comboBox_goods_id->setCurrentText(g.ID);
+    ui->textEdit_des->setText(g.Name);
+    ui->lineEdit_type->setText(g.Type);
 }

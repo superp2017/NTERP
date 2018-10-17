@@ -1,5 +1,9 @@
 ﻿#include "goodstable.h"
 #include <QDebug>
+#include "datacenter.h"
+#include "dialognewgoods.h"
+#include <QMessageBox>
+#include "boost/thread.hpp"
 
 goodsTable::goodsTable(QWidget *w):M_TableWidget(w)
 {
@@ -7,17 +11,19 @@ goodsTable::goodsTable(QWidget *w):M_TableWidget(w)
 
     //设置表头内容
     QStringList header;
-    header<<tr("商品编号")<<tr("商品名称")<<tr("类别")<<tr("规格")\
-         <<tr("库存数量")<<tr("单位")<<tr("供应商");
+    header<<tr("商品编号")<<tr("商品名称")<<tr("类别")<<tr("规格")<<tr("库存数量")<<tr("单位")<<tr("供应商");
     this->setHorizontalHeaderLabels(header);
-
-    connect(this,SIGNAL(cellPressed(int,int)),this,SLOT(clickRow(int,int)));
 
     m_menu = new QMenu();
     m_mod  = m_menu->addAction("修改");
     m_del  = m_menu->addAction("删除");
-    connect(m_mod,SIGNAL(triggered(bool)),this,SIGNAL(modGoods()));
-    connect(m_del,SIGNAL(triggered(bool)),this,SIGNAL(delGoods()));
+    m_in   = m_menu->addAction("出库");
+    m_out  = m_menu->addAction("入库");
+    connect(m_mod,SIGNAL(triggered(bool)),this,SLOT(modGoods()));
+    connect(m_del,SIGNAL(triggered(bool)),this,SLOT(delGoods()));
+    connect(m_in,SIGNAL(triggered(bool)),this,SLOT(inGoods()));
+    connect(m_out,SIGNAL(triggered(bool)),this,SLOT(outGoods()));
+    connect(dataCenter::instance(),SIGNAL(sig_delGoods(QString,bool)),this,SLOT(delGoodsCb(QString,bool)));
 
 }
 
@@ -92,15 +98,97 @@ void goodsTable::mousePressEvent(QMouseEvent *e)
     }
 }
 
-void goodsTable::clickRow(int row, int col)
+
+void goodsTable::modGoods()
 {
-    if(row<0){
-        return;
-    }
-    col =0;
+    int row =currentRow();
+    if(row<0) return;
     QTableWidgetItem* item = this->item(row,0);
     if (item!=NULL&&!item->text().isEmpty()){
-        emit GoodsClick(item->text());
+        bool ok = false;
+        Goods g = dataCenter::instance()->pub_getGoods(item->text(),ok);
+        if(ok){
+            DialogNewGoods newGoods;
+            newGoods.setModule(false);
+            newGoods.initData();
+            newGoods.initGoods(g);
+            if(newGoods.exec()==123){
+                Goods goods = newGoods.getCurGoods();
+                this->modGoods(goods);
+            }
+        }
+    }
+}
+
+void goodsTable::delGoods()
+{
+    int row =currentRow();
+    if(row<0) return;
+    QTableWidgetItem* item = this->item(row,0);
+    if (item!=NULL&&!item->text().isEmpty()){
+        bool ok = false;
+        Goods g  = dataCenter::instance()->pub_getGoods(item->text(),ok);
+        if(ok){
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("提示");
+            msgBox.setText("您将删除商品:"+g.Name);
+            msgBox.setInformativeText("是否继续操作?");
+            msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+            msgBox.setDefaultButton(QMessageBox::Ok);
+            int ret = msgBox.exec();
+            switch (ret) {
+            case QMessageBox::Ok:
+            {
+                boost::thread t(boost::bind(&dataCenter::net_delGoods,dataCenter::instance(),GoodsService::toJsonObject(g)));
+                t.detach();
+                dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
+                break;
+            }
+            case QMessageBox::Cancel:
+                break;
+            default:
+                break;
+            }
+        }
+    }
+}
+
+void goodsTable::inGoods()
+{
+    int row =currentRow();
+    if(row<0) return;
+    QTableWidgetItem* item = this->item(row,0);
+    if (item!=NULL&&!item->text().isEmpty()){
+        bool ok = false;
+        Goods g = dataCenter::instance()->pub_getGoods(item->text(),ok);
+        if(ok){
+            emit inGoods(g,true);
+        }
+    }
+}
+
+void goodsTable::outGoods()
+{
+    int row =currentRow();
+    if(row<0) return;
+    QTableWidgetItem* item = this->item(row,0);
+    if (item!=NULL&&!item->text().isEmpty()){
+        bool ok = false;
+        Goods g = dataCenter::instance()->pub_getGoods(item->text(),ok);
+        if(ok){
+            emit outGoods(g,true);
+        }
+    }
+}
+
+void goodsTable::delGoodsCb(QString GoodsID,bool ok)
+{
+    dataCenter::instance()->pub_hideLoadding();
+    if(ok){
+        this->removeGoods(GoodsID);
+        dataCenter::instance()->pub_showMessage("删除成功",3000);
+    }else{
+        dataCenter::instance()->pub_showMessage("删除失败",4000);
     }
 }
 

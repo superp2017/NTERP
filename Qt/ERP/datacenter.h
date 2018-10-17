@@ -180,7 +180,7 @@ signals:
     void sig_newGoods(Goods,bool);
     void sig_modGoods(Goods,bool);
     void sig_delGoods(QString,bool);
-    void sig_inoutGoods(Goods,bool);
+    void sig_inGoods(Goods,bool);
     void sig_globalGoods(bool);
     void sig_newGoodsType(QString,bool);
     void sig_delGoodsType(QString,bool);

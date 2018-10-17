@@ -513,7 +513,7 @@ void dataCenter::net_inOutGoods(const QJsonObject para)
             }
         }
     }
-    emit sig_inoutGoods(goods,ok);
+    emit sig_inGoods(goods,ok);
 }
 
 void dataCenter::net_getglobalGoods()

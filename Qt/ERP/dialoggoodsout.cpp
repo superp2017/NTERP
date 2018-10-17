@@ -1,4 +1,4 @@
-#include "dialoggoodsout.h"
+﻿#include "dialoggoodsout.h"
 #include "ui_dialoggoodsout.h"
 
 DialogGoodsOut::DialogGoodsOut(QWidget *parent) :
@@ -11,4 +11,9 @@ DialogGoodsOut::DialogGoodsOut(QWidget *parent) :
 DialogGoodsOut::~DialogGoodsOut()
 {
     delete ui;
+}
+
+void DialogGoodsOut::on_pushButton_out_clicked()
+{
+
 }

@@ -1,4 +1,4 @@
-#ifndef DIALOGGOODSOUT_H
+﻿#ifndef DIALOGGOODSOUT_H
 #define DIALOGGOODSOUT_H
 
 #include <QDialog>
@@ -14,6 +14,9 @@ class DialogGoodsOut : public QDialog
 public:
     explicit DialogGoodsOut(QWidget *parent = 0);
     ~DialogGoodsOut();
+
+private slots:
+    void on_pushButton_out_clicked();
 
 private:
     Ui::DialogGoodsOut *ui;

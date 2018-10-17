@@ -1,68 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DialogNewGoods</class>
- <widget class="QDialog" name="DialogNewGoods">
+ <class>DialogGoodsIn</class>
+ <widget class="QDialog" name="DialogGoodsIn">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>254</width>
-    <height>425</height>
+    <width>243</width>
+    <height>423</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>商品入库</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" rowstretch="6,1">
-   <property name="leftMargin">
-    <number>15</number>
-   </property>
-   <property name="rightMargin">
-    <number>15</number>
-   </property>
-   <property name="bottomMargin">
-    <number>12</number>
-   </property>
-   <property name="verticalSpacing">
-    <number>12</number>
-   </property>
+  <layout class="QGridLayout" name="gridLayout_2" rowstretch="8,1">
    <item row="0" column="0">
-    <layout class="QFormLayout" name="formLayout">
+    <layout class="QGridLayout" name="gridLayout">
      <property name="horizontalSpacing">
       <number>25</number>
      </property>
      <property name="verticalSpacing">
-      <number>25</number>
+      <number>20</number>
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>商品名称</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit_name">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maxLength">
-        <number>10</number>
+        <string>商品编号</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>商品分类</string>
+        <string>商品名称</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QComboBox" name="comboBox_type">
+      <widget class="QLineEdit" name="lineEdit_name">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -72,37 +50,37 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_5">
+      <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>库存量</string>
+        <string>商品分类</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QSpinBox" name="spinBox_num">
+      <widget class="QLineEdit" name="lineEdit_type">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="minimumSize">
         <size>
          <width>0</width>
          <height>30</height>
         </size>
        </property>
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="maximum">
-        <number>9999999</number>
-       </property>
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label_9">
+      <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>单位</string>
+        <string>商品规格</string>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QComboBox" name="comboBox_unit">
+      <widget class="QLineEdit" name="lineEdit_format">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -112,34 +90,64 @@
       </widget>
      </item>
      <item row="4" column="0">
-      <widget class="QLabel" name="label_4">
+      <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>商品规格</string>
+        <string>供应商</string>
        </property>
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="QLineEdit" name="lineEdit_format">
+      <widget class="QLineEdit" name="lineEdit_supplier">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="minimumSize">
         <size>
          <width>0</width>
          <height>30</height>
         </size>
        </property>
-       <property name="maxLength">
-        <number>32</number>
-       </property>
       </widget>
      </item>
      <item row="5" column="0">
-      <widget class="QLabel" name="label_6">
+      <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>供应商</string>
+        <string>入库数量</string>
        </property>
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="QComboBox" name="comboBox_supplier">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_Num">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>计量单位</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLineEdit" name="lineEdit_unit">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="comboBox_goodID">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -153,7 +161,7 @@
    <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
-      <number>10</number>
+      <number>6</number>
      </property>
      <item>
       <spacer name="horizontalSpacer">
@@ -190,7 +198,7 @@
         </size>
        </property>
        <property name="text">
-        <string>创建</string>
+        <string>出库</string>
        </property>
       </widget>
      </item>

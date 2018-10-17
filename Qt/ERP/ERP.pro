@@ -71,10 +71,8 @@ SOURCES += main.cpp\
     dialoggoodsprint.cpp \
     dialognewgoodstype.cpp \
     formgoodstypemanage.cpp \
-    dialoginoutgoods.cpp \
     datacenter.cpp \
     dialoggoodsprint.cpp \
-    dialoginoutgoods.cpp \
     dialogmaterialmanage.cpp \
     dialogmodprice.cpp \
     dialognewcustom.cpp \
@@ -116,7 +114,8 @@ SOURCES += main.cpp\
     dialogorderproduceorout.cpp \
     goodsoutrecord.cpp \
     dialoggoodsout.cpp \
-    dialogoutgoods.cpp
+    dialogoutgoods.cpp \
+    dialoggoodsin.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -153,10 +152,8 @@ HEADERS  += mainwindow.h \
     dialoggoodsprint.h \
     dialognewgoodstype.h \
     formgoodstypemanage.h \
-    dialoginoutgoods.h \
     datacenter.h \
     dialoggoodsprint.h \
-    dialoginoutgoods.h \
     dialogmaterialmanage.h \
     dialogmodprice.h \
     dialognewcustom.h \
@@ -198,7 +195,8 @@ HEADERS  += mainwindow.h \
     dialogorderproduceorout.h \
     goodsoutrecord.h \
     dialoggoodsout.h \
-    dialogoutgoods.h
+    dialogoutgoods.h \
+    dialoggoodsin.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -228,9 +226,7 @@ FORMS    += mainwindow.ui \
     dialoggoodsprint.ui \
     dialognewgoodstype.ui \
     formgoodstypemanage.ui \
-    dialoginoutgoods.ui \
     dialoggoodsprint.ui \
-    dialoginoutgoods.ui \
     dialogmaterialmanage.ui \
     dialogmodprice.ui \
     dialognewcustom.ui \
@@ -264,7 +260,8 @@ FORMS    += mainwindow.ui \
     dialogplatingmanage.ui \
     dialogorderproduceorout.ui \
     dialoggoodsout.ui \
-    dialogoutgoods.ui
+    dialogoutgoods.ui \
+    dialoggoodsin.ui
 
 RESOURCES += \
     res.qrc

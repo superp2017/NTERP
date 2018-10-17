@@ -6,6 +6,8 @@
 #include "dialoggoodsprint.h"
 #include "dialognewgoods.h"
 #include  "dialogoutgoods.h"
+#include "dialoggoodsin.h"
+
 StoreManager::StoreManager(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::StoreManager)
@@ -42,11 +44,8 @@ StoreManager::StoreManager(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_globalGoods(bool)),this,SLOT(getGlobalGoodsCb(bool)));
     connect(dataCenter::instance(),SIGNAL(sig_delGoods(QString,bool)),this,SLOT(delGoodsCb(QString,bool)));
 
-    connect(&m_goods_Table,SIGNAL(GoodsClick(QString)),this,SLOT(GoodsClick(QString)));
-
-    connect(&m_goods_Table,SIGNAL(modGoods()),this,SLOT(on_pushButton_mod_clicked()));
-
-    connect(&m_goods_Table,SIGNAL(delGoods()),this,SLOT(on_pushButton_del_clicked()));
+    connect(&m_goods_Table,SIGNAL(inGoods(Goods,bool)),this,SLOT(inGoods(Goods,bool)));
+    connect(&m_goods_Table,SIGNAL(outGoods(Goods,bool)),this,SLOT(outGoods(Goods,bool)));
 
 
     changeCol();
@@ -86,75 +85,79 @@ void StoreManager::on_pushButton_new_clicked()
     }
 }
 
-void StoreManager::on_pushButton_mod_clicked()
+//void StoreManager::on_pushButton_mod_clicked()
+//{
+//    if (cur_Goods.ID==""){
+//        return ;
+//    }
+
+//    DialogNewGoods newGoods;
+//    newGoods.setModule(false);
+//    newGoods.initData();
+//    newGoods.initGoods(cur_Goods);
+//    if(newGoods.exec()==123){
+//        Goods goods = newGoods.getCurGoods();
+//        m_goods_Table.modGoods(goods);
+//    }
+//}
+
+void StoreManager::inGoods(Goods g,bool e)
 {
-    if (cur_Goods.ID==""){
-        return ;
-    }
-
-    DialogNewGoods newGoods;
-    newGoods.setModule(false);
-    newGoods.initData();
-    newGoods.initGoods(cur_Goods);
-    if(newGoods.exec()==123){
-        Goods goods = newGoods.getCurGoods();
-        m_goods_Table.modGoods(goods);
-    }
-}
-
-
-
-void StoreManager::on_pushButton_in_store_clicked()
-{
-    inout.setModule(true);
-    inout.initGoods(cur_Goods);
+    DialogGoodsIn inout;
+    if(e)
+        inout.initGoods(g);
     if(inout.exec()==123){
         Goods goods=  inout.getCurgoods();
-        cur_Goods = goods;
         m_goods_Table.modGoods(goods);
     }
 }
 
-void StoreManager::on_pushButton_out_store_clicked()
+void StoreManager::outGoods(Goods g,bool e)
 {
-    //    inout.setModule(false);
-    //    inout.initGoods(cur_Goods);
-    //    if(inout.exec()==123){
-    //        Goods goods=  inout.getCurgoods();
-    //        m_goods_Table.modGoods(goods);
-    //    }
     DialogOutGoods out;
+    if(e)
+        out.initGood(g);
     if(out.exec()==123){
         m_record_Table.appendRecord(out.getCur_record());
     }
 }
 
-void StoreManager::on_pushButton_del_clicked()
+void StoreManager::on_pushButton_in_store_clicked()
 {
-    if(cur_Goods.ID==""){
-        return;
-    }
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("提示");
-    msgBox.setText("您将删除商品:"+cur_Goods.Name);
-    msgBox.setInformativeText("是否继续操作?");
-    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Ok);
-    int ret = msgBox.exec();
-    switch (ret) {
-    case QMessageBox::Ok:
-    {
-        boost::thread t(boost::bind(&dataCenter::net_delGoods,dataCenter::instance(),GoodsService::toJsonObject(cur_Goods)));
-        t.detach();
-        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
-        break;
-    }
-    case QMessageBox::Cancel:
-        break;
-    default:
-        break;
-    }
+    inGoods(cur_Goods,false);
 }
+
+void StoreManager::on_pushButton_out_store_clicked()
+{
+    outGoods(cur_Goods,false);
+}
+
+//void StoreManager::on_pushButton_del_clicked()
+//{
+//    if(cur_Goods.ID==""){
+//        return;
+//    }
+//    QMessageBox msgBox;
+//    msgBox.setWindowTitle("提示");
+//    msgBox.setText("您将删除商品:"+cur_Goods.Name);
+//    msgBox.setInformativeText("是否继续操作?");
+//    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+//    msgBox.setDefaultButton(QMessageBox::Ok);
+//    int ret = msgBox.exec();
+//    switch (ret) {
+//    case QMessageBox::Ok:
+//    {
+//        boost::thread t(boost::bind(&dataCenter::net_delGoods,dataCenter::instance(),GoodsService::toJsonObject(cur_Goods)));
+//        t.detach();
+//        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
+//        break;
+//    }
+//    case QMessageBox::Cancel:
+//        break;
+//    default:
+//        break;
+//    }
+//}
 
 
 void StoreManager::on_pushButton_export_clicked()
@@ -171,27 +174,31 @@ void StoreManager::on_pushButton_reflash_clicked()
     dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
 
-void StoreManager::GoodsClick(QString id)
-{
-    bool ok =false;
-    cur_Goods = dataCenter::instance()->pub_getGoods(id,ok);
-    if(ok&&cur_Goods.ID!=""){
-        setBtnEnable(true,true,true,true);
-    }
-}
+
+
+//void StoreManager::GoodsClick(QString id)
+//{
+//    bool ok =false;
+//    cur_Goods = dataCenter::instance()->pub_getGoods(id,ok);
+//    if(ok&&cur_Goods.ID!=""){
+//        setBtnEnable(true,true,true,true);
+//    }else{
+//         setBtnEnable(false,true,true,false);
+//    }
+//}
 
 
 
-void StoreManager::delGoodsCb(QString ID, bool ok)
-{
-    dataCenter::instance()->pub_hideLoadding();
-    if(ok){
-        m_goods_Table.removeGoods(ID);
-        dataCenter::instance()->pub_showMessage("删除成功",3000);
-    }else{
-        dataCenter::instance()->pub_showMessage("删除失败",4000);
-    }
-}
+//void StoreManager::delGoodsCb(QString ID, bool ok)
+//{
+//    dataCenter::instance()->pub_hideLoadding();
+//    if(ok){
+//        m_goods_Table.removeGoods(ID);
+//        dataCenter::instance()->pub_showMessage("删除成功",3000);
+//    }else{
+//        dataCenter::instance()->pub_showMessage("删除失败",4000);
+//    }
+//}
 
 void StoreManager::getGlobalGoodsCb(bool ok)
 {
@@ -222,18 +229,18 @@ void StoreManager::changeCol()
 void StoreManager::setBtnEnable(bool mod,bool in, bool out, bool del)
 {
     mod = in = out = del = true;
-    ui->pushButton_mod->setEnabled(mod);
+    //    ui->pushButton_mod->setVisible(mod);
     ui->pushButton_in_store->setEnabled(in);
     ui->pushButton_out_store->setEnabled(out);
-    ui->pushButton_del->setEnabled(del);
-    if(mod){
-        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify-red.png);}"
-                                          "QPushButton:hover{border-image: url(:/icon/modify.png);}"
-                                          "QPushButton:pressed{border-image: url(:/icon/modify.png);}"
-                                          "QPushButton:checked{border-image: url(:/icon/modify.png);}");
-    }else{
-        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify.png);}");
-    }
+    //    ui->pushButton_del->setVisible(del);
+    //    if(mod){
+    //        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify-red.png);}"
+    //                                          "QPushButton:hover{border-image: url(:/icon/modify.png);}"
+    //                                          "QPushButton:pressed{border-image: url(:/icon/modify.png);}"
+    //                                          "QPushButton:checked{border-image: url(:/icon/modify.png);}");
+    //    }else{
+    //        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify.png);}");
+    //    }
 
     if(in){
         ui->pushButton_in_store->setStyleSheet("QPushButton{border-image: url(:/icon/instroe-red.png);}"
@@ -253,13 +260,13 @@ void StoreManager::setBtnEnable(bool mod,bool in, bool out, bool del)
         ui->pushButton_out_store->setStyleSheet("QPushButton{border-image: url(:/icon/out.png);}");
     }
 
-    if(del){
-        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete-red.png);}"
-                                          "QPushButton:hover{border-image: url(:/icon/delete.png);}"
-                                          "QPushButton:pressed{border-image: url(:/icon/delete.png);}"
-                                          "QPushButton:checked{border-image: url(:/icon/delete.png);}");
-    }else{
-        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete.png);}");
-    }
+    //    if(del){
+    //        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete-red.png);}"
+    //                                          "QPushButton:hover{border-image: url(:/icon/delete.png);}"
+    //                                          "QPushButton:pressed{border-image: url(:/icon/delete.png);}"
+    //                                          "QPushButton:checked{border-image: url(:/icon/delete.png);}");
+    //    }else{
+    //        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete.png);}");
+    //    }
 }
 
