@@ -43,7 +43,6 @@ private:
     void setBtnEnable(bool m, bool o, bool d);
 
     Ui::PersonManager *ui;
-    DialogNewUser *newuser;
     QHeaderView::ResizeMode tab_mode;
     User        curUser;
 };

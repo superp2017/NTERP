@@ -8,15 +8,15 @@ import (
 )
 
 type Goods struct {
-	ID           string //商品ID
-	Name         string //商品名称
-	Type         string //商品类别
-	Format       string //规格
-	Num          int    //库存
-	Unit         string //单位
-	SID          string //供应商id
-	SupplierName string //供应商名称
-	CreatTime    string //创建时间
+	ID           string  //商品ID
+	Name         string  //商品名称
+	Type         string  //商品类别
+	Format       string  //规格
+	Num          float64 //库存
+	Unit         string  //单位
+	SID          string  //供应商id
+	SupplierName string  //供应商名称
+	CreatTime    string  //创建时间
 }
 
 //新建商品
@@ -47,6 +47,32 @@ func newGoods(session *JHttp.Session) {
 		go appendGoodsType(st.Type)
 	}
 	session.Forward("0", "NewGoods success", st)
+}
+
+//查询商品信息
+func QueryGoods(session *JHttp.Session) {
+	type Para struct {
+		GoodsID string
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.GoodsID == "" {
+		JLogger.Error("QueryGoods failed,GoodsID is empty\n")
+		session.Forward("1", "QueryGoods failed,GoodsID is empty\n", nil)
+		return
+	}
+
+	data := &Goods{}
+	if err := JRedis.Redis_hget(Hash_Goods, st.GoodsID, data); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	session.Forward("0", "success\n", data)
 }
 
 //修改商品
@@ -109,10 +135,11 @@ func modGoods(session *JHttp.Session) {
 	session.Forward("0", "modify success", data)
 }
 
+//商品入库
 func addGoodsNum(session *JHttp.Session) {
 	type Para struct {
-		ID  string //商品id
-		Num int    //数量
+		ID  string  //商品id
+		Num float64 //数量
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
@@ -121,24 +148,49 @@ func addGoodsNum(session *JHttp.Session) {
 		return
 	}
 	if st.ID == "" || st.Num <= 0 {
-		str := fmt.Sprintf("AddGoodsNums failed,ID=%s,Num=%d\n", st.ID, st.Num)
+		str := fmt.Sprintf("AddGoodsNums failed,ID=%s,Num=%f\n", st.ID, st.Num)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
 	}
-	data := &Goods{}
-	if err := JRedis.Redis_hget(Hash_Goods, st.ID, data); err != nil {
+	data, err := inoutGoodsNum(st.ID, st.Num, true)
+	if err != nil {
 		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	data.Num += st.Num
-	if err := JRedis.Redis_hset(Hash_Goods, st.ID, data); err != nil {
-		JLogger.Error(err.Error())
-		session.Forward("1", err.Error(), nil)
-		return
-	}
+	//data := &Goods{}
+	//if err := JRedis.Redis_hget(Hash_Goods, st.ID, data); err != nil {
+	//	JLogger.Error(err.Error())
+	//	session.Forward("1", err.Error(), nil)
+	//	return
+	//}
+	//data.Num += st.Num
+	//if err := JRedis.Redis_hset(Hash_Goods, st.ID, data); err != nil {
+	//	JLogger.Error(err.Error())
+	//	session.Forward("1", err.Error(), nil)
+	//	return
+	//}
 	session.Forward("0", "mod success\n", data)
+}
+
+//商品入库、出库
+func inoutGoodsNum(ID string, Num float64, isAdd bool) (*Goods, error) {
+	data := &Goods{}
+	if err := JRedis.Redis_hget(Hash_Goods, ID, data); err != nil {
+		JLogger.Error(err.Error())
+		return data, err
+	}
+	if isAdd {
+		data.Num += Num
+	} else {
+		data.Num -= Num
+	}
+	if err := JRedis.Redis_hset(Hash_Goods, ID, data); err != nil {
+		JLogger.Error(err.Error())
+		return data, err
+	}
+	return data, nil
 }
 
 //删除商品

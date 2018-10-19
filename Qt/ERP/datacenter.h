@@ -61,16 +61,17 @@ public:
     void net_getglobalMateriels();
     //////////////////////////////////////////////////////
     void net_newGoods(const QJsonObject para);
+    void net_getGoods(const QJsonObject para);
     void net_modGoods(const QJsonObject para);
     void net_delGoods(const QJsonObject para);
-    void net_inOutGoods(const QJsonObject para);
+    void net_addOutGoodsNum(const QJsonObject para);
     void net_getglobalGoods();
     void net_newGoodsType(const QJsonObject para);
     void net_delGoodsType(const QJsonObject para);
     void net_getGlobalGoodsType();
     /////////////////////////////////////////////////////
     void net_newGoodsOut(const QJsonObject para);
-    void net_getAllGoodsOutRecords(const QJsonObject para);
+    void net_getAllOutRecords();
     /////////////////////////////////////////////////////
     void net_newPlating(const QJsonObject para);
     void net_delPlating(const QJsonObject para);
@@ -178,6 +179,7 @@ signals:
     void sig_globalPlating(bool);
     //////////////////////////////////
     void sig_newGoods(Goods,bool);
+    void sig_queryGoods(Goods);
     void sig_modGoods(Goods,bool);
     void sig_delGoods(QString,bool);
     void sig_inGoods(Goods,bool);

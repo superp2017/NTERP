@@ -59,7 +59,7 @@ void DialogNewGoods::initGoods(Goods goods)
     ui->lineEdit_name->setText(goods.Name);
     ui->comboBox_type->setCurrentText(goods.Type);
     ui->lineEdit_format->setText(goods.Format);
-    ui->spinBox_num->setValue(goods.Num);
+    ui->doubleSpinBox_num->setValue(goods.Num);
     ui->comboBox_supplier->setCurrentText(goods.SupplierName);
     curGoods = goods;
 }
@@ -71,7 +71,7 @@ void DialogNewGoods::on_pushButton_ok_clicked()
     goods.Type          = ui->comboBox_type->currentText();
     goods.Format        = ui->lineEdit_format->text();
     goods.SupplierName  = ui->comboBox_supplier->currentText();
-    goods.Num           = ui->spinBox_num->value();
+    goods.Num           = ui->doubleSpinBox_num->value();
     goods.Unit          = ui->comboBox_unit->currentText();
 
     if(goods.Name==""){

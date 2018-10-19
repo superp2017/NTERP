@@ -53,15 +53,18 @@ func initRoute() {
 
 	JHttp.WhiteHttp("/getallmaterials", GetAllMaterial) //获取所有的物料
 
-	JHttp.WhiteHttp("/getglobalgoods", getGlobalGoods)     //获取仓库商品
-	JHttp.WhiteHttp("/newgoods", newGoods)                 //新建一个商品
-	JHttp.WhiteHttp("/delgoods", delGoods)                 //删除一个商品
-	JHttp.WhiteHttp("/inoutgoods", addGoodsNum)            //商品出入库
-	JHttp.WhiteHttp("/modifygoods", modGoods)              //修改商品
-	JHttp.WhiteHttp("/getsuppliergoods", getSupplierGoods) //获取供应商的物品
-	JHttp.WhiteHttp("/removegoodstype", RemoveGoodsType)   //删除商品的分类
-	JHttp.WhiteHttp("/newgoodstype", AddGoodsType)         //新建商品的分类
-	JHttp.WhiteHttp("/getallgoodstype", GetAllGoodsType)   //获取所有商品分类
+	JHttp.WhiteHttp("/getglobalgoods", getGlobalGoods)           //获取仓库商品
+	JHttp.WhiteHttp("/newgoods", newGoods)                       //新建一个商品
+	JHttp.WhiteHttp("/querygoods", QueryGoods)                   //获取商品信息
+	JHttp.WhiteHttp("/delgoods", delGoods)                       //删除一个商品
+	JHttp.WhiteHttp("/addgoodsnum", addGoodsNum)                 //商品入库
+	JHttp.WhiteHttp("/newstorageoutrecord", NewOutRecord)        //新增一个仓库出库记录
+	JHttp.WhiteHttp("/getallstorageoutrecords", GetAllOutRecord) //获取所有的仓库出库记录
+	JHttp.WhiteHttp("/modifygoods", modGoods)                    //修改商品
+	JHttp.WhiteHttp("/getsuppliergoods", getSupplierGoods)       //获取供应商的物品
+	JHttp.WhiteHttp("/removegoodstype", RemoveGoodsType)         //删除商品的分类
+	JHttp.WhiteHttp("/newgoodstype", AddGoodsType)               //新建商品的分类
+	JHttp.WhiteHttp("/getallgoodstype", GetAllGoodsType)         //获取所有商品分类
 
 	JHttp.WhiteHttp("/newdepartment", NewDepartMent)       //新建一个部门
 	JHttp.WhiteHttp("/removedepartment", RemoveDepartment) //删除一个部门
@@ -72,9 +75,6 @@ func initRoute() {
 	JHttp.WhiteHttp("/getallplating", GetAllPlating) //获取所有的镀种
 
 	//JHttp.WhiteHttp("/updateallmaterial", updateAllMaterial) //更新所有物料
-
-	JHttp.WhiteHttp("/newstorageoutrecord", NewOutRecord)        //新增一个仓库出库记录
-	JHttp.WhiteHttp("/getallstorageoutrecords", GetAllOutRecord) //获取所有的仓库出库记录
 
 }
 

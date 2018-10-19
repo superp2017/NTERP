@@ -27,6 +27,25 @@ Goods GoodsService::newGoods(const QJsonObject para, bool &ok, QString hostname,
     return goods;
 }
 
+Goods GoodsService::getGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    Goods goods;
+    std::string url = Net_QueryGoods;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isObject()){
+            goods = fromJsonObject(ret.data.toObject());
+            ok = true;
+            return  goods;
+        }
+    }
+    if(!ret.ret)
+        qDebug()<<"getGoods ret is not 0"<<endl;
+    ok = false;
+    return goods;
+}
+
 Goods GoodsService::modGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
     Goods goods;
@@ -46,10 +65,10 @@ Goods GoodsService::modGoods(const QJsonObject para, bool &ok, QString hostname,
     return goods;
 }
 
-Goods GoodsService::inOutGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+Goods GoodsService::addOutGoodsNum(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
     Goods goods;
-    std::string url = Net_InOutGoods;
+    std::string url = Net_InGoodsNum;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
@@ -255,7 +274,7 @@ Goods GoodsService::fromJsonObject(QJsonObject obj)
     if(obj.contains("Num")){
         QJsonValue value = obj.value("Num");
         if(value.isDouble())
-            goods.Num = value.toInt();
+            goods.Num = value.toDouble();
     }
     return goods;
 }
@@ -270,7 +289,7 @@ bool GoodsService::exportGoods(QVector<Goods> list, QString filepath, bool isOpe
         Goods goods  = list.at(i);
         QVector<QVariant> datalist;
         datalist<<"'"+goods.ID<<"'"+goods.Name<<goods.Type\
-              <<goods.Format<<"'"+goods.Num\
+              <<goods.Format<<QString("%1").arg(goods.Num)\
              <<goods.Unit<<goods.SupplierName;
         data.push_back(datalist);
     }

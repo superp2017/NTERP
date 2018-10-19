@@ -17,8 +17,8 @@ goodsTable::goodsTable(QWidget *w):M_TableWidget(w)
     m_menu = new QMenu();
     m_mod  = m_menu->addAction("修改");
     m_del  = m_menu->addAction("删除");
-    m_in   = m_menu->addAction("出库");
-    m_out  = m_menu->addAction("入库");
+    m_in   = m_menu->addAction("入库");
+    m_out  = m_menu->addAction("出库");
     connect(m_mod,SIGNAL(triggered(bool)),this,SLOT(modGoods()));
     connect(m_del,SIGNAL(triggered(bool)),this,SLOT(delGoods()));
     connect(m_in,SIGNAL(triggered(bool)),this,SLOT(inGoods()));

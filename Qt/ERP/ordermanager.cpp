@@ -51,7 +51,7 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(m_tab_new,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_new,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
     connect(m_tab_new,SIGNAL(cancleOrder()),this,SLOT(on_pushButton_cancle_clicked()));
-    connect(m_tab_new,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
+//    connect(m_tab_new,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
     connect(m_tab_new,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
 
 
@@ -64,7 +64,7 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(m_tab_all,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_all,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
     connect(m_tab_all,SIGNAL(cancleOrder()),this,SLOT(on_pushButton_cancle_clicked()));
-    connect(m_tab_all,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
+//    connect(m_tab_all,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
     connect(m_tab_all,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
     connect(m_tab_all,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
     connect(m_tab_all,SIGNAL(delOrder()),this,SLOT(on_pushButton_del_clicked()));
@@ -291,20 +291,20 @@ void OrderManager::GlobalOrdersCb(bool ok)
     }
 }
 
-void OrderManager::on_pushButton_change_price_clicked()
-{
-    if(cur_order.OrderID==""){
-        return;
-    }
-    DialogModPrice mod;
-    mod.setWindowTitle("定价");
-    mod.initData(cur_order);
-    if(mod.exec()==123){
-        Order order = mod.getCurOrder();
-        m_tab_new->modOrder(order);
-        m_tab_all->modOrder(order);
-    }
-}
+//void OrderManager::on_pushButton_change_price_clicked()
+//{
+//    if(cur_order.OrderID==""){
+//        return;
+//    }
+//    DialogModPrice mod;
+//    mod.setWindowTitle("定价");
+//    mod.initData(cur_order);
+//    if(mod.exec()==123){
+//        Order order = mod.getCurOrder();
+//        m_tab_new->modOrder(order);
+//        m_tab_all->modOrder(order);
+//    }
+//}
 
 
 

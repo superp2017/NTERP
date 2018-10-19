@@ -12,8 +12,6 @@ PersonManager::PersonManager(QWidget *parent) :
 {
     ui->setupUi(this);
     tab_mode = QHeaderView::Stretch;
-    newuser =NULL;
-
     connect(ui->radioButton_ave,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_connent,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_manue,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
@@ -77,13 +75,11 @@ void PersonManager::clearAllSelect()
 
 void PersonManager::new_employee()
 {
-    if(newuser==NULL){
-        newuser = new DialogNewUser();
-    }
-    newuser->setModel(true);
-    newuser->clearUI();
-    if(newuser->exec()==123){
-        User user = newuser->CurUser();
+    DialogNewUser newuser;
+    newuser.setModel(true);
+    newuser.clearUI();
+    if(newuser.exec()==123){
+        User user = newuser.CurUser();
         ui->tableWidget->appendUser(user);
     }
 }
@@ -100,14 +96,13 @@ void PersonManager::on_pushButton_mod_clicked()
     if(curUser.UID==""){
         return;
     }
-    if(newuser==NULL){
-        newuser = new DialogNewUser();
-    }
-    newuser->setModel(false);
-    newuser->clearUI();
-    newuser->initUI(curUser);
-    if(newuser->exec()==123){
-        User user = newuser->CurUser();
+
+    DialogNewUser newuser;
+    newuser.setModel(false);
+    newuser.clearUI();
+    newuser.initUI(curUser);
+    if(newuser.exec()==123){
+        User user = newuser.CurUser();
         ui->tableWidget->modUser(user);
     }
 }

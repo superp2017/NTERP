@@ -56,6 +56,9 @@ void dataCenter::initData()
     //////////////初始化所有商品的分类//////////////////
     boost::thread(boost::bind(&dataCenter::net_getglobalPlating,dataCenter::instance())).detach();
 
+    //////////////获取所有商品的出库记录//////////////////////////////
+    boost::thread(boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance())).detach();
+
 }
 
 void dataCenter::net_login(const QJsonObject para)
@@ -470,17 +473,37 @@ void dataCenter::net_newGoods(const QJsonObject para)
     emit sig_newGoods(goods,ok);
 }
 
+void dataCenter::net_getGoods(const QJsonObject para)
+{
+    bool ok = false;
+    Goods goods = GoodsService::getGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if (ok){
+        bool ex =false;
+        for(int i=0;i<m_goods.size();++i){
+            if(m_goods[i].ID==goods.ID){
+                m_goods[i] = goods;
+                ex = true;
+                break;
+            }
+        }
+        if(!ex) m_goods.push_back(goods);
+    }
+    emit sig_queryGoods(goods);
+}
+
 void dataCenter::net_modGoods(const QJsonObject para)
 {
     bool ok = false;
     Goods goods = GoodsService::modGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(ok){
+        bool ex =false;
         for(int i=0;i<m_goods.size();++i){
             if(m_goods[i].ID==goods.ID){
                 m_goods[i] = goods;
                 break;
             }
         }
+        if(!ex) m_goods.push_back(goods);
         pri_checkGoodType(goods.Type);
     }
     emit sig_modGoods(goods,ok);
@@ -501,10 +524,10 @@ void dataCenter::net_delGoods(const QJsonObject para)
     emit sig_delGoods(id,ok);
 }
 
-void dataCenter::net_inOutGoods(const QJsonObject para)
+void dataCenter::net_addOutGoodsNum(const QJsonObject para)
 {
     bool ok = false;
-    Goods goods = GoodsService::inOutGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    Goods goods = GoodsService::addOutGoodsNum(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(ok){
         for(int i=0;i<m_goods.size();++i){
             if(m_goods[i].ID==goods.ID){
@@ -557,7 +580,7 @@ void dataCenter::net_newGoodsOut(const QJsonObject para)
     emit sig_newGoodsRecord(goods,ok);
 }
 
-void dataCenter::net_getAllGoodsOutRecords(const QJsonObject para)
+void dataCenter::net_getAllOutRecords()
 {
     bool ok = false;
     m_goodsRecords = GoodsOutRecordService::GetAllRecords(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());

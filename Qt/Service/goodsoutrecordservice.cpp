@@ -114,7 +114,7 @@ GoodsOutRecord GoodsOutRecordService::fromJsonObject(QJsonObject obj)
     if(obj.contains("Nums")){
         QJsonValue value = obj.value("Nums");
         if(value.isDouble())
-            record.Nums = value.toInt();
+            record.Nums = value.toDouble();
     }
     if(obj.contains("Unit")){
         QJsonValue value = obj.value("Unit");
@@ -151,7 +151,7 @@ bool GoodsOutRecordService::exportGoods(QVector<GoodsOutRecord> list, QString fi
         QVector<QVariant> datalist;
         datalist<<"'"+record.OutID<<record.Factory<<record.Department\
                <<record.CreatDate<<record.GoodsID<<record.GoodsName\
-              <<"'"+record.Nums<<record.Unit<<record.Type\
+              <<QString("%1").arg(record.Nums )<<record.Unit<<record.Type\
              <<record.StrorageName<<record.UserID<<record.UserName;
         data.push_back(datalist);
     }

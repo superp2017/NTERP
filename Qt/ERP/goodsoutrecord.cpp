@@ -1,4 +1,5 @@
 ﻿#include "goodsoutrecord.h"
+#include "datacenter.h"
 
 Tab_GoodsOutRecord::Tab_GoodsOutRecord(QWidget *w):M_TableWidget(w)
 {
@@ -10,6 +11,7 @@ Tab_GoodsOutRecord::Tab_GoodsOutRecord(QWidget *w):M_TableWidget(w)
          <<"物料号"<<"物料描述"<<"数量"<<"单位"\
         <<"物料组"<<"库存地点"<<"领用人工号"<<"领用人姓名";
     this->setHorizontalHeaderLabels(header);
+    initRecords(dataCenter::instance()->pub_AllOutRecord());
 }
 
 void Tab_GoodsOutRecord::initRecords(QVector<GoodsOutRecord> list)
@@ -53,7 +55,6 @@ void Tab_GoodsOutRecord::setRowData(GoodsOutRecord para, int row)
     QTableWidgetItem *item9 = this->item(row,9);
     QTableWidgetItem *item10 = this->item(row,10);
     QTableWidgetItem *item11 = this->item(row,11);
-
 
 
     if(item0==NULL){
@@ -120,7 +121,7 @@ void Tab_GoodsOutRecord::setRowData(GoodsOutRecord para, int row)
     item8->setText(para.Type);
     item9->setText(para.StrorageName);
     item10->setText(para.UserID);
-    item10->setText(para.UserName);
+    item11->setText(para.UserName);
 
     item0->setTextAlignment(Qt::AlignCenter);
     item1->setTextAlignment(Qt::AlignCenter);

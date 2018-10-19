@@ -69,7 +69,7 @@ void DialogGoodsIn::on_pushButton_ok_clicked()
     QJsonObject obj;
     obj.insert("ID",goodsID);
     obj.insert("Num",num);
-    boost::thread(boost::bind(&dataCenter::net_inOutGoods,dataCenter::instance(),obj)).detach();
+    boost::thread(boost::bind(&dataCenter::net_addOutGoodsNum,dataCenter::instance(),obj)).detach();
     dataCenter::instance()->pub_showLoadding("正在通讯...",10000);
 
 }

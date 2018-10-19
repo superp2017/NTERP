@@ -20,6 +20,8 @@ void registerMetaType(){
     qRegisterMetaType<Supplier>("Supplier");
     qRegisterMetaType<Goods>("Goods");
     qRegisterMetaType<Materiel>("Materiel");
+    qRegisterMetaType<GoodsOutRecord>("GoodsOutRecord");
+
 
 }
 

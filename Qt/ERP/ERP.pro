@@ -113,7 +113,6 @@ SOURCES += main.cpp\
     dialogplatingmanage.cpp \
     dialogorderproduceorout.cpp \
     goodsoutrecord.cpp \
-    dialoggoodsout.cpp \
     dialogoutgoods.cpp \
     dialoggoodsin.cpp
 
@@ -194,7 +193,6 @@ HEADERS  += mainwindow.h \
     dialogplatingmanage.h \
     dialogorderproduceorout.h \
     goodsoutrecord.h \
-    dialoggoodsout.h \
     dialogoutgoods.h \
     dialoggoodsin.h
 
@@ -259,7 +257,6 @@ FORMS    += mainwindow.ui \
     dialogordersearch.ui \
     dialogplatingmanage.ui \
     dialogorderproduceorout.ui \
-    dialoggoodsout.ui \
     dialogoutgoods.ui \
     dialoggoodsin.ui
 

@@ -10,10 +10,10 @@ class Tab_GoodsOutRecord: public M_TableWidget
     Q_OBJECT
 public:
     Tab_GoodsOutRecord(QWidget *w=0);
-    void initRecords(QVector<GoodsOutRecord>list);
     void appendRecord(GoodsOutRecord g);
     void removeGoodsRecord(QString g);
 private:
+    void initRecords(QVector<GoodsOutRecord>list);
     void setRowData(GoodsOutRecord para, int row);
 
 };

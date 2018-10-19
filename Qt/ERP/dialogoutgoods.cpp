@@ -16,6 +16,8 @@ DialogOutGoods::DialogOutGoods(QWidget *parent) :
     connect(ui->comboBox_goods_id,SIGNAL(currentIndexChanged(QString)),this,SLOT(GoodIDChange()));
     ui->textEdit_des->setEnabled(false);
     ui->lineEdit_type->setEnabled(false);
+    ui->comboBox_unit->setEditable(false);
+    connect(dataCenter::instance(),SIGNAL(sig_newGoodsRecord(GoodsOutRecord,bool)),this,SLOT(NewOutCb(GoodsOutRecord,bool)));
 }
 
 DialogOutGoods::~DialogOutGoods()
@@ -73,7 +75,13 @@ void DialogOutGoods::initCombox()
     ui->comboBox_unit->addItems(unit_list);
     ui->comboBox_unit->setCompleter(completer_unit);
 
+    QStringList store_list;
+    store_list<<"总仓库"<<"涂覆仓库"<<"滚镀仓库"<<"挂镀仓库";
+    QCompleter *completer_store= new QCompleter(store_list, this);
+    ui->comboBox_storeName->clear();
     ui->comboBox_storeName->setEditable(true);
+    ui->comboBox_storeName->addItems(store_list);
+    ui->comboBox_storeName->setCompleter(completer_store);
 
 
     ui->comboBox_goods_id->blockSignals(false);
@@ -87,7 +95,7 @@ void DialogOutGoods::on_pushButton_ok_clicked()
     cur_record.Factory      = ui->comboBox_factory->currentText();
     cur_record.Department   = ui->comboBox_department->currentText();
     cur_record.Note         = ui->textEdit_note->toPlainText();
-    cur_record.Nums         = (int)(ui->doubleSpinBox_num->value()*100);
+    cur_record.Nums         = ui->doubleSpinBox_num->value();
     cur_record.StrorageName = ui->comboBox_storeName->currentText();
     cur_record.Unit         = ui->comboBox_unit->currentText();
     cur_record.UserName     = ui->comboBox_userName->currentText();
@@ -163,4 +171,5 @@ void DialogOutGoods::initGood(Goods g)
     ui->comboBox_goods_id->setCurrentText(g.ID);
     ui->textEdit_des->setText(g.Name);
     ui->lineEdit_type->setText(g.Type);
+    ui->doubleSpinBox_num->setMaximum(g.Num);
 }

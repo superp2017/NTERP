@@ -42,7 +42,7 @@ StoreManager::StoreManager(QWidget *parent) :
     connect(ui->radioButton_manu,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
 
     connect(dataCenter::instance(),SIGNAL(sig_globalGoods(bool)),this,SLOT(getGlobalGoodsCb(bool)));
-    connect(dataCenter::instance(),SIGNAL(sig_delGoods(QString,bool)),this,SLOT(delGoodsCb(QString,bool)));
+    connect(dataCenter::instance(),SIGNAL(sig_queryGoods(Goods)),this,SLOT(queryGoods(Goods)));
 
     connect(&m_goods_Table,SIGNAL(inGoods(Goods,bool)),this,SLOT(inGoods(Goods,bool)));
     connect(&m_goods_Table,SIGNAL(outGoods(Goods,bool)),this,SLOT(outGoods(Goods,bool)));
@@ -118,8 +118,16 @@ void StoreManager::outGoods(Goods g,bool e)
     if(e)
         out.initGood(g);
     if(out.exec()==123){
+        QJsonObject obj;
+        obj.insert("GoodsID",g.ID);
+        boost::thread(boost::bind(&dataCenter::net_getGoods,dataCenter::instance(),obj)).detach();
         m_record_Table.appendRecord(out.getCur_record());
     }
+}
+
+void StoreManager::queryGoods(Goods g)
+{
+    m_goods_Table.modGoods(g);
 }
 
 void StoreManager::on_pushButton_in_store_clicked()

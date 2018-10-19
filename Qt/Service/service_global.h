@@ -68,8 +68,9 @@ const std::string  Net_GlobalPlating="/getallplating";           //获取所有�
 
 
 const std::string Net_NewGoods="/newgoods";                 //新建一个商品
+const std::string Net_QueryGoods="/querygoods";             //查询商品信息
 const std::string Net_ModifyGoods="/modifygoods";           //修改商品
-const std::string Net_InOutGoods="/inoutgoods";             //商品出入库
+const std::string Net_InGoodsNum="/addgoodsnum";             //商品入库
 const std::string Net_DelGoods="/delgoods";                 //删除商品
 const std::string Net_SupplierGoods="/getsuppliergoods";    //获取供应商的供应的商品
 const std::string Net_GlobalGoods="/getglobalgoods";        //获获取所有的商品
@@ -78,8 +79,8 @@ const std::string Net_NewGoodsType="/newgoodstype";         //新建一个商品
 const std::string Net_RemoveGoodsType="/removegoodstype";   //删除一个商品分类
 const std::string Net_GetAllGoodsType="/getallgoodstype";   //获取所有的商品分类
 
-const std::string Net_GetAllGoodsOutRecord="/getallgoodsoutrecords";   //获取所有的商品出库记录
-const std::string Net_NewGoodsOutRecord="/newgoodsoutrecord";   //新增一个商品出库记录
+const std::string Net_GetAllGoodsOutRecord="/getallstorageoutrecords";   //获取所有的商品出库记录
+const std::string Net_NewGoodsOutRecord="/newstorageoutrecord";   //新增一个商品出库记录
 
 
 
@@ -232,7 +233,7 @@ struct Goods{
     QString	SID;            //供应商id
     QString	SupplierName;   //供应商名称
     QString	CreatTime;      //创建时间
-    int     Num;            //库存
+    double   Num;            //库存
 };
 
 
@@ -245,19 +246,12 @@ struct GoodsOutRecord{
     QString   GoodsName;      //商品名称
     QString   Type;           //类别
     QString   StrorageName;   //仓库名称
-    int       Nums;           //数量
+    double    Nums;           //数量
     QString   Unit;           //单位
     QString   Note;           //备注
     QString   UserName;       //领用人姓名
     QString   UserID;         //领用人工号
 };
-
-
-
-
-
-
-
 
 
 

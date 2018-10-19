@@ -31,7 +31,7 @@ private slots:
     void on_pushButton_cancle_clicked();
     void on_pushButton_success_clicked();
     void on_pushButton_reflash_clicked();
-    void on_pushButton_change_price_clicked();
+//    void on_pushButton_change_price_clicked();
     void on_pushButton_print_clicked();
 
     void changeCol();

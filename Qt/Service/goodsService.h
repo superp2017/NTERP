@@ -9,8 +9,9 @@ class SERVICESHARED_EXPORT GoodsService
 public:
     GoodsService();
     static Goods newGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static Goods getGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static Goods modGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport);
-    static Goods inOutGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static Goods addOutGoodsNum(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QString delGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QVector<Goods> getAllGoods(bool &ok, QString hostname, QString hostport);
     static QVector<Goods> getSupplierGoods(bool &ok, QString hostname, QString hostport);

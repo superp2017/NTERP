@@ -29,12 +29,12 @@ private slots:
     void on_pushButton_reflash_clicked();
     void inGoods(Goods g, bool e);
     void outGoods(Goods g,bool e);
+    void queryGoods(Goods g);
 
 //  void GoodsClick(QString id);
 //  void delGoodsCb(QString ID,bool ok);
     void getGlobalGoodsCb(bool ok);
     void changeCol();
-
     void clearSelectSection();
 private:
     void initData();
