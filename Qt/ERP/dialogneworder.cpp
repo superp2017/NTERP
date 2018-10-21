@@ -107,8 +107,12 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     if(m_isNewMode){
         order.UID           = dataCenter::instance()->pub_CurUser().UID ;
         order.UserName      = dataCenter::instance()->pub_CurUser().Name;
+        order.ProduceNum    = 0;
+        order.SuccessNum    = 0;
     }else{
         order = curorder;
+        order.ProduceNum        = curorder.ProduceNum;
+        order.SuccessNum        = curorder.SuccessNum;
     }
 
     order.CustomID          = curMater.CID;
@@ -131,8 +135,7 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     order.CustomBatch       = ui->lineEdit_custombatch->text();
     order.CustomNote        = ui->textEdit_custom_note->toPlainText();
     order.OrderNum          = ui->spinBox_num->value();
-    order.ProduceNum        = curorder.ProduceNum;
-    order.SuccessNum        = curorder.SuccessNum;
+
     if(!checkOrder(order)){
         return;
     }

@@ -34,6 +34,7 @@ private slots:
 //  void GoodsClick(QString id);
 //  void delGoodsCb(QString ID,bool ok);
     void getGlobalGoodsCb(bool ok);
+    void getAllGoodsRecordCb(bool ok);
     void changeCol();
     void clearSelectSection();
 private:

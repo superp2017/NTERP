@@ -14,7 +14,7 @@ class DialogGoodsIn : public QDialog
 public:
     explicit DialogGoodsIn(QWidget *parent = 0);
     ~DialogGoodsIn();
-    void initGoods(Goods goods);
+    void initGoods(Goods goods, bool isNew=false);
     Goods getCurgoods() const;
 
 private slots:

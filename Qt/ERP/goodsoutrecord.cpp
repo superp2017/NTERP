@@ -14,6 +14,17 @@ Tab_GoodsOutRecord::Tab_GoodsOutRecord(QWidget *w):M_TableWidget(w)
     initRecords(dataCenter::instance()->pub_AllOutRecord());
 }
 
+void Tab_GoodsOutRecord::updateData()
+{
+    QVector<GoodsOutRecord> list =dataCenter::instance()->pub_AllOutRecord();
+    this->setRowCount(list.size());
+    for(int i=0;i<list.size();++i){
+        setRowData(list.at(i),i);
+    }
+}
+
+
+
 void Tab_GoodsOutRecord::initRecords(QVector<GoodsOutRecord> list)
 {
     removeAllRow();
@@ -40,6 +51,9 @@ void Tab_GoodsOutRecord::removeGoodsRecord(QString g)
         }
     }
 }
+
+
+
 
 void Tab_GoodsOutRecord::setRowData(GoodsOutRecord para, int row)
 {

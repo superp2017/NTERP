@@ -166,8 +166,9 @@ GoodsOutRecord DialogOutGoods::getCur_record() const
     return cur_record;
 }
 
-void DialogOutGoods::initGood(Goods g)
+void DialogOutGoods::initGood(Goods g, bool isNew)
 {
+    ui->comboBox_goods_id->setEnabled(!isNew);
     ui->comboBox_goods_id->setCurrentText(g.ID);
     ui->textEdit_des->setText(g.Name);
     ui->lineEdit_type->setText(g.Type);

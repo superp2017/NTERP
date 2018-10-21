@@ -24,7 +24,12 @@ goodsTable::goodsTable(QWidget *w):M_TableWidget(w)
     connect(m_in,SIGNAL(triggered(bool)),this,SLOT(inGoods()));
     connect(m_out,SIGNAL(triggered(bool)),this,SLOT(outGoods()));
     connect(dataCenter::instance(),SIGNAL(sig_delGoods(QString,bool)),this,SLOT(delGoodsCb(QString,bool)));
+    initGoods(dataCenter::instance()->pub_goods());
+}
 
+void goodsTable::updateData()
+{
+    updataGoods(dataCenter::instance()->pub_goods());
 }
 
 

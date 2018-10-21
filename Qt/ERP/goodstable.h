@@ -13,8 +13,7 @@ class goodsTable : public M_TableWidget
     Q_OBJECT
 public:
     goodsTable(QWidget *w=0);
-    void initGoods(QVector<Goods>list);
-    void updataGoods(QVector<Goods>list);
+    void updateData();
     void appendGoods(Goods g);
     void modGoods(Goods g);
     void removeGoods(QString g);
@@ -31,6 +30,8 @@ private slots:
     void delGoodsCb(QString GoodsID, bool ok);
 private:
     void setRowData(Goods para, int row);
+    void initGoods(QVector<Goods>list);
+    void updataGoods(QVector<Goods>list);
     QMenu   *m_menu;
     QAction *m_mod;
     QAction *m_del;

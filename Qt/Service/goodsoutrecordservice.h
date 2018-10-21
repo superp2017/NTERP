@@ -12,7 +12,7 @@ public:
     static QVector<GoodsOutRecord>GetAllRecords(bool &ok, QString hostname, QString hostport);
     static QJsonObject toJsonObject(GoodsOutRecord record);
     static GoodsOutRecord fromJsonObject(QJsonObject obj);
-    static bool exportGoods(QVector<GoodsOutRecord>list, QString filepath, bool isOpen=false);
+    static bool exportGoodsRecord(QVector<GoodsOutRecord>list, QString filepath, bool isOpen=false);
 
 };
 

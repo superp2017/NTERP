@@ -139,7 +139,7 @@ GoodsOutRecord GoodsOutRecordService::fromJsonObject(QJsonObject obj)
     return record;
 }
 
-bool GoodsOutRecordService::exportGoods(QVector<GoodsOutRecord> list, QString filepath, bool isOpen)
+bool GoodsOutRecordService::exportGoodsRecord(QVector<GoodsOutRecord> list, QString filepath, bool isOpen)
 {
     QVector<QVariant> datalist;
     datalist<<"凭证号"<<"分厂"<<"领用部门"<<"凭证日期"\
@@ -150,8 +150,8 @@ bool GoodsOutRecordService::exportGoods(QVector<GoodsOutRecord> list, QString fi
         GoodsOutRecord record  = list.at(i);
         QVector<QVariant> datalist;
         datalist<<"'"+record.OutID<<record.Factory<<record.Department\
-               <<record.CreatDate<<record.GoodsID<<record.GoodsName\
-              <<QString("%1").arg(record.Nums )<<record.Unit<<record.Type\
+               <<"'"+record.CreatDate<<record.GoodsID<<record.GoodsName\
+              <<QString("%1").arg(record.Nums)<<record.Unit<<record.Type\
              <<record.StrorageName<<record.UserID<<record.UserName;
         data.push_back(datalist);
     }

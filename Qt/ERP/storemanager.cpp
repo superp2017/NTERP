@@ -7,6 +7,8 @@
 #include "dialognewgoods.h"
 #include  "dialogoutgoods.h"
 #include "dialoggoodsin.h"
+#include "dialoggoodsoutrecordprint.h"
+
 
 StoreManager::StoreManager(QWidget *parent) :
     QWidget(parent),
@@ -42,6 +44,7 @@ StoreManager::StoreManager(QWidget *parent) :
     connect(ui->radioButton_manu,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
 
     connect(dataCenter::instance(),SIGNAL(sig_globalGoods(bool)),this,SLOT(getGlobalGoodsCb(bool)));
+    connect(dataCenter::instance(),SIGNAL(sig_getAllOutRecord(bool)),this,SLOT(getAllGoodsRecordCb(bool)));
     connect(dataCenter::instance(),SIGNAL(sig_queryGoods(Goods)),this,SLOT(queryGoods(Goods)));
 
     connect(&m_goods_Table,SIGNAL(inGoods(Goods,bool)),this,SLOT(inGoods(Goods,bool)));
@@ -59,8 +62,7 @@ StoreManager::~StoreManager()
 }
 
 void StoreManager::initData()
-{
-    m_goods_Table.initGoods(dataCenter::instance()->pub_goods());
+{  
     m_goods_Table.checkSelect();
     m_record_Table.checkSelect();
 }
@@ -105,7 +107,7 @@ void StoreManager::inGoods(Goods g,bool e)
 {
     DialogGoodsIn inout;
     if(e)
-        inout.initGoods(g);
+        inout.initGoods(g,true);
     if(inout.exec()==123){
         Goods goods=  inout.getCurgoods();
         m_goods_Table.modGoods(goods);
@@ -116,7 +118,7 @@ void StoreManager::outGoods(Goods g,bool e)
 {
     DialogOutGoods out;
     if(e)
-        out.initGood(g);
+        out.initGood(g,true);
     if(out.exec()==123){
         QJsonObject obj;
         obj.insert("GoodsID",g.ID);
@@ -167,18 +169,26 @@ void StoreManager::on_pushButton_out_store_clicked()
 //    }
 //}
 
-
 void StoreManager::on_pushButton_export_clicked()
 {
-    DialogGoodsPrint print;
-    print.exec();
+    if(ui->tabWidget->currentWidget()==&m_goods_Table){
+        DialogGoodsPrint print;
+        print.exec();
+    }else{
+        DialogGoodsOutRecordPrint p;
+        p.exec();
+    }
 }
 
 void StoreManager::on_pushButton_reflash_clicked()
 {
+
     cur_Goods.ID = "";
-    boost::thread t(boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance()));
-    t.detach();
+    if(ui->tabWidget->currentWidget()==&m_goods_Table){
+        boost::thread (boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance())).detach();
+    }else{
+        boost::thread (boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance())).detach();
+    }
     dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
 
@@ -212,6 +222,19 @@ void StoreManager::getGlobalGoodsCb(bool ok)
 {
     dataCenter::instance()->pub_hideLoadding();
     if(ok){
+        m_goods_Table.updateData();
+        initData();
+        dataCenter::instance()->pub_showMessage("刷新成功",3000);
+    }else{
+        dataCenter::instance()->pub_showMessage("刷新成功",4000);
+    }
+}
+
+void StoreManager::getAllGoodsRecordCb(bool ok)
+{
+    dataCenter::instance()->pub_hideLoadding();
+    if(ok){
+        m_record_Table.updateData();
         initData();
         dataCenter::instance()->pub_showMessage("刷新成功",3000);
     }else{

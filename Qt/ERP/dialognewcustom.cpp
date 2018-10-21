@@ -23,6 +23,9 @@ DialogNewCustom::DialogNewCustom(QWidget *parent) :
     ui->lineEdit_bank_number->setValidator(validator);
     ui->lineEdit_cert_num->setValidator(validatorex);
     ui->lineEdit_contact_cell->setValidator(validator);
+    ui->label_cart->setHidden(true);
+    ui->lineEdit_cart->setHidden(true);
+    ui->pushButton_select_cert->setHidden(true);
 }
 
 DialogNewCustom::~DialogNewCustom()

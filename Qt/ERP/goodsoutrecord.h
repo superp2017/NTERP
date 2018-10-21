@@ -12,6 +12,7 @@ public:
     Tab_GoodsOutRecord(QWidget *w=0);
     void appendRecord(GoodsOutRecord g);
     void removeGoodsRecord(QString g);
+    void updateData();
 private:
     void initRecords(QVector<GoodsOutRecord>list);
     void setRowData(GoodsOutRecord para, int row);

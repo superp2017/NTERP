@@ -42,8 +42,9 @@ DialogGoodsIn::~DialogGoodsIn()
     delete ui;
 }
 
-void DialogGoodsIn::initGoods(Goods goods)
+void DialogGoodsIn::initGoods(Goods goods,bool isNew)
 {
+    ui->comboBox_goodID->setEnabled(!isNew);
     curgoods = goods;
     ui->comboBox_goodID->setCurrentText(goods.ID);
     ui->lineEdit_name->setText(goods.Name);
