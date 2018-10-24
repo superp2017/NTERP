@@ -55,7 +55,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_10">
        <property name="text">
-        <string>参考物料</string>
+        <string>组件固号</string>
        </property>
       </widget>
      </item>

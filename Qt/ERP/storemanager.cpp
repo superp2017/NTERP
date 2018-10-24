@@ -244,15 +244,20 @@ void StoreManager::getAllGoodsRecordCb(bool ok)
 
 void StoreManager::changeCol()
 {
+    QHeaderView::ResizeMode mode = QHeaderView::Stretch;
     if(ui->radioButton_ave->isChecked()){
-        m_goods_Table.setHeaderColModel(QHeaderView::Stretch);
+        mode = QHeaderView::Stretch;
     }
     if(ui->radioButton_content->isChecked()){
-        m_goods_Table.setHeaderColModel(QHeaderView::ResizeToContents);
+        mode = QHeaderView::ResizeToContents;
     }
     if(ui->radioButton_manu->isChecked()){
-        m_goods_Table.setHeaderColModel(QHeaderView::Interactive);
+        mode = QHeaderView::Interactive;
     }
+    if(ui->tabWidget->currentWidget()==&m_goods_Table)
+        m_goods_Table.setHeaderColModel(mode);
+    else
+        m_record_Table.setHeaderColModel(mode);
     clearSelectSection();
 }
 

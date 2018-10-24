@@ -44,13 +44,11 @@ void DialogNewOrder::initCombox(QSet<QString> batch,QVector<Materiel>mater)
     ui->comboBox_orderType->addItem("返工订单","3");
 
     ui->comboBox_mater_number->blockSignals(true);
-    QCompleter *completerBatch = new QCompleter(batch.toList(), this);
-    ui->lineEdit_custombatch->setCompleter(completerBatch);
 
     ui->comboBox_mater_number->clear();
     QStringList materlist;
     for(Materiel ma:mater){
-        materlist<<ma.MaterID;
+        materlist<<ma.ComponentSolid;
     }
     ui->comboBox_mater_number->addItems(materlist);
     ui->comboBox_mater_number->setEditable(true);
@@ -58,6 +56,10 @@ void DialogNewOrder::initCombox(QSet<QString> batch,QVector<Materiel>mater)
     ui->comboBox_mater_number->setCompleter(completermater);
     ui->comboBox_mater_number->setCurrentIndex(-1);
     ui->comboBox_mater_number->blockSignals(false);
+
+    QCompleter *completerBatch = new QCompleter(batch.toList(), this);
+    ui->lineEdit_custombatch->setCompleter(completerBatch);
+
 }
 
 void DialogNewOrder::initOrder(Order order)
@@ -228,7 +230,7 @@ void DialogNewOrder::materielIDChange(int index)
         if(id.isEmpty())
             return;
         bool ok = false;
-        ma = dataCenter::instance()->pub_getMateriel(id,ok);
+        ma = dataCenter::instance()->pub_getMaterielFromSolidID(id,ok);
         if(!ok)
             return;
     }

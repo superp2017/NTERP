@@ -747,6 +747,20 @@ Materiel dataCenter::pub_getMateriel(QString MID, bool &ok)
     return s;
 }
 
+Materiel dataCenter::pub_getMaterielFromSolidID(QString sID, bool &ok)
+{
+    ok = true;
+    for(Materiel m:m_maters){
+        if (m.ComponentSolid==sID){
+            ok = true;
+            return m;
+        }
+    }
+    ok = false;
+    Materiel s;
+    return s;
+}
+
 
 QSet<QString> dataCenter::pub_Batchs()
 {
