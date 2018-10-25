@@ -220,11 +220,12 @@ func ModOrder(session *JHttp.Session) {
 		session.Forward("1", str, nil)
 		return
 	}
-
-	if mater, err := getMaterial(st.MaterielID); err == nil {
-		initOrderMaterial(data, mater)
-	} else {
-		JLogger.Error("MaterielID=%s获取材料失败\n", st.MaterielID)
+	if data.MaterielID != st.MaterielID {
+		if mater, err := getMaterial(st.MaterielID); err == nil {
+			initOrderMaterial(data, mater)
+		} else {
+			JLogger.Error("MaterielID=%s获取材料失败\n", st.MaterielID)
+		}
 	}
 	data.CustomBatch = st.CustomBatch
 	data.CustomNote = st.CustomNote
@@ -281,8 +282,8 @@ func ModOrderPrice(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	////修改物料
-	go modMaterialPrice(data.MaterielID, st.Money)
+	//////修改物料
+	//go modMaterialPrice(data.MaterielID, st.Money)
 	session.Forward("0", "success", data)
 }
 
@@ -490,10 +491,10 @@ func GetGlobalOrders(session *JHttp.Session) {
 		d := &Order{}
 		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
 			if d.Current.Status != Status_Del {
-				if mater, e := getMaterial(d.MaterielID); e == nil {
-					initOrderMaterial(d, mater)
-				}
-				d.TotleMoney = d.OrderNum * d.Money
+				////if mater, e := getMaterial(d.MaterielID); e == nil {
+				////	initOrderMaterial(d, mater)
+				////}
+				////d.TotleMoney = d.OrderNum * d.Money
 				data = append(data, d)
 			}
 		}

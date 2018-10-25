@@ -31,8 +31,11 @@ private slots:
     void on_pushButton_cancle_clicked();
     void on_pushButton_success_clicked();
     void on_pushButton_reflash_clicked();
-//    void on_pushButton_change_price_clicked();
     void on_pushButton_print_clicked();
+    void on_pushButton_produce_clicked();
+    void on_pushButton_del_clicked();
+    void on_pushButton_change_price_clicked();
+
 
     void changeCol();
     void orderClick(QString orderID);
@@ -46,9 +49,6 @@ private slots:
 
     void searchOrder(bool isTime,bool isOther,qint64 min,qint64 max,QString type,QString content);
     void showAll();
-    void on_pushButton_produce_clicked();
-
-    void on_pushButton_del_clicked();
 
 protected:
     void mousePressEvent(QMouseEvent *e);

@@ -101,6 +101,7 @@ public:
     Materiel pub_getMaterielFromSolidID(QString sID, bool &ok);
     ////////////////////////////////////////////////////
     QSet<QString> pub_Batchs();
+    bool pub_checkComponentSolid(QString solid);
     ////////////////////////////////////////////////////
     QVector<Customer>pub_Customers();
     bool pub_checkCustomerExist(QString name);

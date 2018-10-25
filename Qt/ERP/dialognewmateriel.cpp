@@ -111,6 +111,11 @@ void DialogNewMateriel::on_pushButton_ok_clicked()
         return;
     }
 
+    if(dataCenter::instance()->pub_checkComponentSolid(mater.ComponentSolid)){
+        QToolTip::showText(ui->comboBox_solid->mapToGlobal(QPoint(100, 0)), "零件固号已经存在!");
+        return;
+    }
+
 
     QJsonObject para        = MaterialService::toJsonObject(mater);
     if(m_Model==0){

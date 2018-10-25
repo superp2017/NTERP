@@ -767,6 +767,16 @@ QSet<QString> dataCenter::pub_Batchs()
     return m_batch;
 }
 
+bool dataCenter::pub_checkComponentSolid(QString solid)
+{
+    for(Materiel m:m_maters){
+        if (m.ComponentSolid==solid){
+            return true;
+        }
+    }
+    return false;
+}
+
 
 QVector<QString> dataCenter::pub_getAuthors() const
 {
