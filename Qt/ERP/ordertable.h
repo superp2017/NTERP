@@ -4,7 +4,6 @@
 #include <QTableWidget>
 #include <QHeaderView>
 #include "global.h"
-#include "dialogorderdetail.h"
 #include <QMenu>
 #include <QMouseEvent>
 #include "m_tablewidget.h"
@@ -38,11 +37,10 @@ private slots:
     void clickRow(int row,int col);
 private:
     void setRowData(Order para, int row);
-    void setEnable(bool New, bool produce, bool cancel, bool mod, bool out, bool modPrice, bool del);
+    void setEnable(bool produce, bool cancel, bool mod, bool out, bool modPrice, bool del);
 protected:
     void mousePressEvent(QMouseEvent *e);
 private:
-    DialogOrderDetail *order_detail;
     QMenu   *m_menu;
     QAction *m_new;
     QAction *m_mod;
@@ -51,6 +49,7 @@ private:
     QAction *m_out;
     QAction *m_mod_price;
     QAction *m_del;
+    QAction *m_giveup;
     QString cutStatus;
     int timecol;
 };

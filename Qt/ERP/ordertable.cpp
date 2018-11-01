@@ -2,6 +2,8 @@
 #include "datacenter.h"
 #include <QDateTime>
 
+#include "dialogorderdetail.h"
+
 OrderTable::OrderTable(QString status, QWidget *w):
     M_TableWidget(w)
 {
@@ -20,25 +22,21 @@ OrderTable::OrderTable(QString status, QWidget *w):
     this->setHorizontalHeaderLabels(header);
     this->setSortingEnabled(true);//允许列排序
 
-    order_detail = NULL;
     connect(this,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(doubleclickRow(int,int)));
 
     connect(this,SIGNAL(cellPressed(int,int)),this,SLOT(clickRow(int,int)));
 
 
-    m_menu = new QMenu();
+    m_menu      = new QMenu();
+    m_new       = new QAction("新建");
+    m_mod       = new QAction("修改");
+    m_cancle    = new QAction("取消");
+    m_produce   = new QAction("生产");
+    m_out       = new QAction("出库");
+    m_mod_price = new QAction("定价");
+    m_del       = new QAction("删除");
+    m_giveup    = new QAction("放弃");
 
-    m_new      = m_menu->addAction("新建");
-    m_mod      = m_menu->addAction("修改");
-    m_cancle   = m_menu->addAction("取消");
-    m_produce  = m_menu->addAction("完成生产");
-    m_out      = m_menu->addAction("出库");
-//    m_mod_price= m_menu->addAction("定价");
-    m_mod_price = new QAction();
-
-    m_del= m_menu->addAction("删除订单");
-
-    m_menu->addAction("放弃");
 
     connect(m_new,SIGNAL(triggered(bool)),this,SIGNAL(newOrder()));
     connect(m_mod,SIGNAL(triggered(bool)),this,SIGNAL(modOrder()));
@@ -164,7 +162,7 @@ void OrderTable::setRowData(Order para,int row)
     QTableWidgetItem *item14 = this->item(row,14);
     QTableWidgetItem *item15 = this->item(row,15);
     QTableWidgetItem *item16 = this->item(row,16);
-     QTableWidgetItem *item17 = this->item(row,17);
+    QTableWidgetItem *item17 = this->item(row,17);
     if(item0==NULL){
         item0 = new QTableWidgetItem();
         this->setItem(row,0,item0);
@@ -244,7 +242,7 @@ void OrderTable::setRowData(Order para,int row)
     }
 
     item0->setText(para.Factory);
-     item1->setText(para.ProductionLine);
+    item1->setText(para.ProductionLine);
     item2->setText(para.OrderID);
     QString type;
     if(para.OrderType=="1"){
@@ -267,42 +265,42 @@ void OrderTable::setRowData(Order para,int row)
     item11->setText(QString("%1").arg(para.SuccessNum));
     item12->setText(para.CustomBatch);
     item13->setText(para.CustomNote);
-    item14->setText(QString("%1").arg(para.Money/100.0));
-    item15->setText(QString("%1").arg(para.TotleMoney/100.0));
+    item14->setText(QString("%1").arg(para.Money));
+    item15->setText(QString("%1").arg(para.TotleMoney));
     QString status;
-    if(cutStatus==Status_New){
+    //    if(cutStatus==Status_New){
+    //        status="新建";
+    //    }
+    //    if(cutStatus==Status_Produce){
+    //        status="已成品";
+    //    }
+    //    if(cutStatus==Status_Success){
+    //        status="已出库";
+    //    }
+    //    if(cutStatus==Status_All)
+    //    {
+    if(para.Current.Status==Status_Cancle){
+        status="已取消";
+    }
+    if(para.Current.Status==Status_PartSuccess){
+        status="部分出库";
+    }
+    if(para.Current.Status==Status_PartProduce){
+        status="部分成品";
+    }
+    if(para.Current.Status==Status_New){
         status="新建";
     }
-    if(cutStatus==Status_Produce){
-        status="已成品";
+    if(para.Current.Status==Status_Produce){
+        status="全部成品";
     }
-    if(cutStatus==Status_Success){
-        status="已出库";
+    if(para.Current.Status==Status_Success){
+        status="全部出库";
     }
-    if(cutStatus==Status_All)
-    {
-        if(para.Current.Status==Status_Cancle){
-            status="已取消";
-        }
-        if(para.Current.Status==Status_PartSuccess){
-            status="部分出库";
-        }
-        if(para.Current.Status==Status_PartProduce){
-            status="部分成品";
-        }
-        if(para.Current.Status==Status_New){
-            status="新建";
-        }
-        if(para.Current.Status==Status_Produce){
-            status="全部成品";
-        }
-        if(para.Current.Status==Status_Success){
-            status="全部出库";
-        }
-        if(para.Current.Status==Status_Part_Part){
-            status="部分成品部分出库";
-        }
+    if(para.Current.Status==Status_Part_Part){
+        status="部分成品部分出库";
     }
+    //    }
 
     item16->setText(QString("%1").arg(status));
     item17->setText( QDateTime::fromString(para.CreatTime,"yyyy-MM-dd HH:mm:ss").toString("yyyy-MM-dd"));
@@ -327,15 +325,26 @@ void OrderTable::setRowData(Order para,int row)
     item17->setTextAlignment(Qt::AlignCenter);
 }
 
-void OrderTable::setEnable(bool New, bool mod, bool cancel, bool produce,  bool out, bool modPrice,bool del)
+void OrderTable::setEnable(bool mod, bool cancel, bool produce,  bool out, bool modPrice,bool del)
 {
-    m_new->setEnabled(New);
-    m_mod->setEnabled(mod);
-    m_cancle->setEnabled(cancel);
-    m_produce->setEnabled(produce);
-    m_out->setEnabled(out);
-    m_mod_price->setEnabled(modPrice);
-    m_del->setEnabled(del);
+    //    m_new->setEnabled(New);
+    //    m_mod->setEnabled(mod);
+    //    m_cancle->setEnabled(cancel);
+    //    m_produce->setEnabled(produce);
+    //    m_out->setEnabled(out);
+    //    m_mod_price->setEnabled(modPrice);
+    //    m_del->setEnabled(del);
+
+    m_menu->clear();
+    m_menu->addAction(m_new);
+    if(mod) m_menu->addAction(m_mod);
+    if(cancel) m_menu->addAction(m_cancle);
+    if(produce)m_menu->addAction(m_produce);
+    if(out) m_menu->addAction(m_out);
+    if(modPrice) m_menu->addAction(m_mod_price);
+    if(del) m_menu->addAction(m_del);
+    m_menu->addAction(m_giveup);
+
 }
 
 
@@ -360,30 +369,32 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                     if(!exist){
                         return;
                     }
-                    if(cutStatus==Status_New){
-                        setEnable(true,true,true,true,false,true,false);
-                    }
-                    if(cutStatus==Status_Produce){
-                        setEnable(true,false,false,false,true,false,false);
-                    }
-                    if(cutStatus==Status_Success){
-                        setEnable(true,false,false,false,false,false,false);
-                    }
+                    //                    if(cutStatus==Status_New){
+                    //                        setEnable(true,true,true,false,true,false);
+                    //                    }
+                    //                    if(cutStatus==Status_Produce){
+                    //                        setEnable(false,false,false,true,false,false);
+                    //                    }
+                    //                    if(cutStatus==Status_Success){
+                    //                        setEnable(false,false,false,false,false,false);
+                    //                    }
 
-                    if(cutStatus==Status_All){
-                        if(cur_order.Current.Status==Status_Cancle){
-                            setEnable(true,false,false,false,false,false,true);
-                        }else{
-                            bool produce = cur_order.Current.Status==Status_New||\
-                                    cur_order.Current.Status==Status_PartProduce||\
-                                    cur_order.Current.Status==Status_Part_Part;
-                            bool out = cur_order.Current.Status==Status_Produce||\
-                                    cur_order.Current.Status==Status_PartProduce||\
-                                    cur_order.Current.Status==Status_PartSuccess||\
-                                    cur_order.Current.Status==Status_Part_Part;
-                            setEnable(true,false,false,produce,out,false,false);
-                        }
-                    }
+                    //                    if(cutStatus==Status_All){
+                    //                        if(cur_order.Current.Status==Status_Cancle){
+//                    setEnable(false,false,false,false,false,true);
+               // }else{
+                    bool produce = cur_order.Current.Status==Status_New||\
+                            cur_order.Current.Status==Status_PartProduce||\
+                            cur_order.Current.Status==Status_Part_Part;
+                    bool out = cur_order.Current.Status==Status_Produce||\
+                            cur_order.Current.Status==Status_PartProduce||\
+                            cur_order.Current.Status==Status_PartSuccess||\
+                            cur_order.Current.Status==Status_Part_Part;
+                    bool mod = cur_order.Current.Status==Status_New;
+                    bool cancel = cur_order.Current.Status== Status_Cancle;
+                    setEnable(mod,mod,produce,out,mod,cancel);
+                    //      }
+                    //                    }
 
                     m_menu->exec(e->globalPos());
                 }
@@ -410,12 +421,10 @@ void OrderTable::doubleclickRow(int row, int ool)
     if(!exist){
         return;
     }
-    if(order_detail ==NULL){
-        order_detail = new DialogOrderDetail();
-    }
-      qDebug()<<row<<ool;
-    order_detail->init(cur_order);
-    if (order_detail->exec()==123){
+    DialogOrderDetail order_detail;
+
+    order_detail.init(cur_order);
+    if (order_detail.exec()==123){
 
     }
 }

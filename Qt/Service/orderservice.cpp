@@ -354,31 +354,31 @@ Order OrderService::fromJsonObject(QJsonObject obj)
     if(obj.contains("OrderNum")){
         QJsonValue value = obj.value("OrderNum");
         if(value.isDouble())
-            order.OrderNum = value.toInt();
+            order.OrderNum = value.toDouble();
     }
 
     if(obj.contains("ProduceNum")){
         QJsonValue value = obj.value("ProduceNum");
         if(value.isDouble())
-            order.ProduceNum = value.toInt();
+            order.ProduceNum = value.toDouble();
     }
 
     if(obj.contains("SuccessNum")){
         QJsonValue value = obj.value("SuccessNum");
         if(value.isDouble())
-            order.SuccessNum = value.toInt();
+            order.SuccessNum = value.toDouble();
     }
 
     if(obj.contains("Money")){
         QJsonValue value = obj.value("Money");
         if(value.isDouble())
-            order.Money = value.toInt();
+            order.Money = value.toDouble();
     }
 
     if(obj.contains("TotleMoney")){
         QJsonValue value = obj.value("TotleMoney");
         if(value.isDouble())
-            order.TotleMoney = value.toInt();
+            order.TotleMoney = value.toDouble();
     }
 
     if(obj.contains("Flow")){
@@ -525,7 +525,7 @@ bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString f
             datalist<<"'"+QString("%1").arg(order.ProduceNum-order.SuccessNum);
         }
         if(curstatus=="Status_Success"){
-            datalist<<"'"+QString("%1").arg(order.SuccessNum/100.0);
+            datalist<<"'"+QString("%1").arg(order.SuccessNum);
         }
         if(curstatus=="Status_All"){
             datalist<<"'"+QString("%1").arg(order.OrderNum-order.ProduceNum);
@@ -535,8 +535,8 @@ bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString f
         }
 
         datalist<<"'"+order.CustomBatch<<"'"+order.CustomNote\
-               <<"'"+QString("%1").arg(order.Money/100.0)\
-              <<"'"+QString("%1").arg(order.TotleMoney/100.0)<<status\
+               <<"'"+QString("%1").arg(order.Money)\
+              <<"'"+QString("%1").arg(order.TotleMoney)<<status\
              <<"'"+QDateTime::fromString(order.CreatTime,"yyyy-MM-dd HH:mm:ss").toString("yyyy-MM-dd");
         data.push_back(datalist);
     }

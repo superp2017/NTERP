@@ -44,7 +44,7 @@ void DialogNewMateriel::initMater(Materiel ma)
     ui->comboBox_thickness->setCurrentText(ma.Thickness);
     ui->comboBox_type->setCurrentText(ma.Plating);
     ui->textEdit->setText(ma.MaterDes);
-    ui->doubleSpinBox_money->setValue(ma.Money/100.0);
+    ui->doubleSpinBox_money->setValue(ma.Money);
     ui->comboBox_unit->setCurrentText(mater.Unit);
     if(m_Model==2){
         this->setWindowTitle(ma.MaterID);
@@ -95,7 +95,7 @@ void DialogNewMateriel::on_pushButton_ok_clicked()
     mater.Factory           = ui->comboBox_factoury->currentText();
     mater.FactoryNumber     = ui->comboBox_factoury->currentData().toString();
     mater.ProductionLine    = ui->comboBox_product_line->currentText();
-    mater.Money             = ui->doubleSpinBox_money->value()*100;
+    mater.Money             = ui->doubleSpinBox_money->value();
     mater.Unit              = ui->comboBox_unit->currentText();
 
     if(mater.CID==""||mater.CustomName==""){

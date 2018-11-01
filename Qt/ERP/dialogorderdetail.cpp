@@ -55,21 +55,44 @@ void DialogOrderDetail::init(Order order)
     ui->lineEdit_produceID->setText(order.ProduceTime);
 
     QString status;
-    if(order.Current.Status==Status_New){
-        status="新建";
-        // ui->pushButton_out_table->setVisible(false);
-    }
-    if(order.Current.Status==Status_Produce){
-        status="已生产";
-        // ui->pushButton_out_table->setVisible(false);
-    }
-    if(order.Current.Status==Status_Success){
-        status="已出货";
-        // ui->pushButton_out_table->setVisible(true);
-    }
+//    if(order.Current.Status==Status_New){
+//        status="新建";
+//        // ui->pushButton_out_table->setVisible(false);
+//    }
+//    if(order.Current.Status==Status_Produce){
+//        status="已生产";
+//        // ui->pushButton_out_table->setVisible(false);
+//    }
+//    if(order.Current.Status==Status_Success){
+//        status="已出货";
+//        // ui->pushButton_out_table->setVisible(true);
+//    }
+//    if(order.Current.Status==Status_Cancle){
+//        status="已取消";
+//    }
+
     if(order.Current.Status==Status_Cancle){
         status="已取消";
     }
+    if(order.Current.Status==Status_PartSuccess){
+        status="部分出库";
+    }
+    if(order.Current.Status==Status_PartProduce){
+        status="部分成品";
+    }
+    if(order.Current.Status==Status_New){
+        status="新建";
+    }
+    if(order.Current.Status==Status_Produce){
+        status="全部成品";
+    }
+    if(order.Current.Status==Status_Success){
+        status="全部出库";
+    }
+    if(order.Current.Status==Status_Part_Part){
+        status="部分成品部分出库";
+    }
+
 
     ui->lineEdit_status->setText(status);
     ui->textEdit_customNote->setText(order.CustomNote);

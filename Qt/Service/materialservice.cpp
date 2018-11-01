@@ -233,7 +233,7 @@ Materiel MaterialService::fromJsonObject(QJsonObject obj)
     if(obj.contains("Money")){
         QJsonValue value = obj.value("Money");
         if(value.isDouble())
-            ma.Money = value.toInt();
+            ma.Money = value.toDouble();
     }
     return ma;
 }
@@ -249,7 +249,7 @@ bool MaterialService::exportMateriel(QVector<Materiel> list, QString filepath, b
         Materiel ma  = list.at(i);
         QVector<QVariant> datalist;
         datalist<<"'"+ma.MaterID<<"'"+ma.MaterDes\
-               <<"'"+ma.CustomName<<+"'"+QString("%1").arg(ma.Money/100.0)\
+               <<"'"+ma.CustomName<<+"'"+QString("%1").arg(ma.Money)\
               <<ma.Unit<<"'"+ma.CreatTime;
         data.push_back(datalist);
     }

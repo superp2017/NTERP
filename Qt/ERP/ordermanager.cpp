@@ -56,9 +56,13 @@ OrderManager::OrderManager(QWidget *parent) :
 
 
     connect(m_tab_produce,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
+    connect(m_tab_produce,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
     connect(m_tab_produce,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
+
     connect(m_tab_success,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
+    connect(m_tab_success,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
+    connect(m_tab_success,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
 
     connect(m_tab_all,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
@@ -137,31 +141,49 @@ void OrderManager::orderClick(QString orderID)
         return;
     }
 
-    if(ui->tabWidget->currentWidget()==m_tab_all){
-        if(cur_order.Current.Status == Status_Cancle){
-            setBtnEnable(false,false,false,false,false,true);
-        }else{
-            bool produce = cur_order.Current.Status==Status_New||\
-                    cur_order.Current.Status==Status_PartProduce||\
-                    cur_order.Current.Status==Status_Part_Part;
-            bool out = cur_order.Current.Status==Status_Produce||\
-                    cur_order.Current.Status==Status_PartSuccess||\
-                    cur_order.Current.Status==Status_PartProduce||\
-                    cur_order.Current.Status==Status_Part_Part;
-            setBtnEnable(true,false,produce,out,false,false);
-        }
-    }
+//    if(cur_order.Current.Status == Status_Cancle){
+//        setBtnEnable(false,false,false,false,false,true);
+//    }else{
+        bool produce = cur_order.Current.Status==Status_New||\
+                cur_order.Current.Status==Status_PartProduce||\
+                cur_order.Current.Status==Status_Part_Part;
+        bool out = cur_order.Current.Status==Status_Produce||\
+                cur_order.Current.Status==Status_PartSuccess||\
+                cur_order.Current.Status==Status_PartProduce||\
+                cur_order.Current.Status==Status_Part_Part;
+        bool mod = cur_order.Current.Status==Status_New;
+        bool cancel = cur_order.Current.Status== Status_Cancle;
+        setBtnEnable(mod,mod,produce,out,mod,cancel);
+//    }
 
-    if(ui->tabWidget->currentWidget()== m_tab_new){
-        setBtnEnable(true,true,true,false,true,false);
-    }
 
-    if(ui->tabWidget->currentWidget()==m_tab_success){
-        setBtnEnable(false,false,false,false,false,false);
-    }
-    if(ui->tabWidget->currentWidget()==m_tab_produce){
-        setBtnEnable(false,false,false,true,false,false);
-    }
+//    if(ui->tabWidget->currentWidget()==m_tab_all){
+//        if(cur_order.Current.Status == Status_Cancle){
+//            setBtnEnable(false,false,false,false,false,true);
+//        }else{
+//            bool produce = cur_order.Current.Status==Status_New||\
+//                    cur_order.Current.Status==Status_PartProduce||\
+//                    cur_order.Current.Status==Status_Part_Part;
+//            bool out = cur_order.Current.Status==Status_Produce||\
+//                    cur_order.Current.Status==Status_PartSuccess||\
+//                    cur_order.Current.Status==Status_PartProduce||\
+//                    cur_order.Current.Status==Status_Part_Part;
+//            bool mod = cur_order.Current.Status==Status_New;
+//            bool cancel = cur_order.Current.Status== Status_Cancle;
+//            setBtnEnable(mod,mod,produce,out,mod,cancel);
+//        }
+//    }
+
+//    if(ui->tabWidget->currentWidget()== m_tab_new){
+//        setBtnEnable(true,true,true,false,true,false);
+//    }
+
+//    if(ui->tabWidget->currentWidget()==m_tab_success){
+//        setBtnEnable(false,false,false,false,false,false);
+//    }
+//    if(ui->tabWidget->currentWidget()==m_tab_produce){
+//        setBtnEnable(false,false,false,true,false,false);
+//    }
 }
 
 void OrderManager::changeCol()
@@ -465,12 +487,12 @@ void OrderManager::clearCurOrder()
 
 void OrderManager::setBtnEnable(bool mod, bool cancel, bool produce, bool out,  bool change,bool del)
 {
-    ui->pushButton_mod->setEnabled(mod);
-    ui->pushButton_cancle->setEnabled(cancel);
-    ui->pushButton_produce->setEnabled(produce);
-    ui->pushButton_success->setEnabled(out);
-    ui->pushButton_change_price->setEnabled(change);
-    ui->pushButton_del->setEnabled(del);
+    ui->pushButton_mod->setVisible(mod);
+    ui->pushButton_cancle->setVisible(cancel);
+    ui->pushButton_produce->setVisible(produce);
+    ui->pushButton_success->setVisible(out);
+    ui->pushButton_change_price->setVisible(change);
+    ui->pushButton_del->setVisible(del);
 
 
     if(mod){

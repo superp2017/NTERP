@@ -259,22 +259,6 @@
        </property>
       </widget>
      </item>
-     <item row="7" column="1">
-      <widget class="QSpinBox" name="spinBox_num">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="maximum">
-        <number>99999999</number>
-       </property>
-      </widget>
-     </item>
      <item row="8" column="0">
       <widget class="QLabel" name="label_6">
        <property name="minimumSize">
@@ -330,6 +314,16 @@
        </property>
        <property name="documentTitle">
         <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_num">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
        </property>
       </widget>
      </item>
