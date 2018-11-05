@@ -23,6 +23,10 @@ FormCenter::FormCenter(QWidget *parent) :
                                  "QToolButton:hover{border-image: url(:/icon/OrderManagementgreen.jpg);}"
                                  "QToolButton:pressed{border-image: url(:/icon/OrderManagementgreen.jpg);}"
                                  "QToolButton:checked{border-image: url(:/icon/OrderManagementgreen.jpg);}");
+    ui->finance_btn ->setStyleSheet("QToolButton{border-image: url(:/icon/finance.jpg);}"
+                                    "QToolButton:hover{border-image: url(:/icon/finance_green.jpg);}"
+                                    "QToolButton:pressed{border-image: url(:/icon/finance_green.jpg);}"
+                                    "QToolButton:checked{border-image: url(:/icon/finance_green.jpg);}");
     ui->person_btn->setStyleSheet("QToolButton{border-image: url(:/icon/PersonnelManagement.jpg);}"
                                   "QToolButton:hover{border-image: url(:/icon/PersonnelManagementgreen.jpg);}"
                                   "QToolButton:pressed{border-image: url(:/icon/PersonnelManagementgreen.jpg);}"
@@ -35,8 +39,10 @@ FormCenter::FormCenter(QWidget *parent) :
                                "QToolButton:hover{border-image: url(:/icon/SystemSetupgreen.jpg);}"
                                "QToolButton:pressed{border-image: url(:/icon/SystemSetupgreen.jpg);}"
                                "QToolButton:checked{border-image: url(:/icon/SystemSetupgreen.jpg);}");
+
     ui->stackedWidget->addWidget(&m_order);
     ui->stackedWidget->addWidget(&m_store);
+    ui->stackedWidget->addWidget(&m_finance);
     ui->stackedWidget->addWidget(&m_person);
     ui->stackedWidget->addWidget(&m_sys);
 
@@ -68,6 +74,7 @@ void FormCenter::on_order_btn_clicked()
     ui->person_btn->setChecked(false);
     ui->store_btn->setChecked(false);
     ui->set_Btn->setChecked(false);
+        ui->finance_btn->setChecked(false);
     ui->stackedWidget->setCurrentWidget(&m_order);
 
 }
@@ -77,6 +84,7 @@ void FormCenter::on_store_btn_clicked()
     ui->order_btn->setChecked(false);
     ui->person_btn->setChecked(false);
     ui->set_Btn->setChecked(false);
+    ui->finance_btn->setChecked(false);
     ui->stackedWidget->setCurrentWidget(&m_store);
 }
 
@@ -85,6 +93,7 @@ void FormCenter::on_person_btn_clicked()
     ui->order_btn->setChecked(false);
     ui->store_btn->setChecked(false);
     ui->set_Btn->setChecked(false);
+    ui->finance_btn->setChecked(false);
     ui->stackedWidget->setCurrentWidget(&m_person);
 }
 
@@ -93,8 +102,20 @@ void FormCenter::on_set_Btn_clicked()
     ui->order_btn->setChecked(false);
     ui->store_btn->setChecked(false);
     ui->person_btn->setChecked(false);
+    ui->finance_btn->setChecked(false);
     ui->stackedWidget->setCurrentWidget(&m_sys);
 }
+
+void FormCenter::on_finance_btn_clicked()
+{
+    ui->order_btn->setChecked(false);
+    ui->store_btn->setChecked(false);
+    ui->person_btn->setChecked(false);
+    ui->set_Btn->setChecked(false);
+    ui->stackedWidget->setCurrentWidget(&m_finance);
+
+}
+
 
 
 void FormCenter::timeoutslot()
@@ -134,11 +155,14 @@ void FormCenter::clearChecked()
     ui->order_btn->setChecked(false);
     ui->store_btn->setChecked(false);
     ui->person_btn->setChecked(false);
+    ui->finance_btn->setChecked(false);
 }
 
 void FormCenter::on_pushButton_mini_clicked()
 {
     emit show_mini();
 }
+
+
 
 

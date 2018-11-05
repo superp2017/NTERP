@@ -32,10 +32,10 @@
         <file>icon/Q-out-yellow.png</file>
         <file>icon/quit.png</file>
         <file>icon/quit-red.png</file>
-        <file>icon/reflash.png</file>
+        <file>icon/reflash-a.png</file>
         <file>icon/export.png</file>
         <file>icon/export-a.png</file>
-        <file>icon/reflash-a.png</file>
+        <file>icon/reflash.png</file>
         <file>icon/mini.png</file>
         <file>icon/mini-a.png</file>
         <file>icon/commodity.png</file>
@@ -68,11 +68,13 @@
         <file>icon/logon-a.png</file>
         <file>icon/instroe.png</file>
         <file>icon/instroe-red.png</file>
-        <file>icon/search.png</file>
         <file>icon/search-a.png</file>
+        <file>icon/search.png</file>
         <file>icon/duzhong.png</file>
         <file>icon/duzhong-red.png</file>
         <file>icon/login_exit.png</file>
         <file>icon/login_exit_down.png</file>
+        <file>icon/finance.jpg</file>
+        <file>icon/finance_green.jpg</file>
     </qresource>
 </RCC>

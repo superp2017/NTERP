@@ -6,7 +6,7 @@
 #include "personmanager.h"
 #include "ordermanager.h"
 #include "systemmanager.h"
-
+#include "formfinance.h"
 #include <QTimer>
 
 #pragma execution_character_set("utf-8")
@@ -46,10 +46,13 @@ private slots:
     void showMessage(QString msg,int delay);
     void on_pushButton_mini_clicked();
 
+    void on_finance_btn_clicked();
+
 private:
     Ui::FormCenter *ui;
     OrderManager         m_order;    //订单管理
     StoreManager         m_store;    //仓库管理
+    FormFinance          m_finance;  //财务管理
     PersonManager        m_person;   //员工管理
     SystemManager        m_sys;      //系统管理
     QTimer               *m_timer;

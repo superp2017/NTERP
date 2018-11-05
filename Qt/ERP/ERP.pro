@@ -115,7 +115,8 @@ SOURCES += main.cpp\
     goodsoutrecord.cpp \
     dialogoutgoods.cpp \
     dialoggoodsin.cpp \
-    dialoggoodsoutrecordprint.cpp
+    dialoggoodsoutrecordprint.cpp \
+    formfinance.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -196,7 +197,8 @@ HEADERS  += mainwindow.h \
     goodsoutrecord.h \
     dialogoutgoods.h \
     dialoggoodsin.h \
-    dialoggoodsoutrecordprint.h
+    dialoggoodsoutrecordprint.h \
+    formfinance.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -261,7 +263,8 @@ FORMS    += mainwindow.ui \
     dialogorderproduceorout.ui \
     dialogoutgoods.ui \
     dialoggoodsin.ui \
-    dialoggoodsoutrecordprint.ui
+    dialoggoodsoutrecordprint.ui \
+    formfinance.ui
 
 RESOURCES += \
     res.qrc

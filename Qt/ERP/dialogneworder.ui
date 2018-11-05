@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>729</height>
+    <height>750</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -59,8 +59,50 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="2" column="2">
+      <widget class="QLineEdit" name="lineEdit_productline">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>产线名称</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
       <widget class="QComboBox" name="comboBox_mater_number">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="lineEdit_fatory">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -82,45 +124,25 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_fatory">
+     <item row="3" column="2">
+      <widget class="QTextEdit" name="lineEdit_MaterielDes">
        <property name="enabled">
         <bool>false</bool>
        </property>
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>65</height>
         </size>
        </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_9">
-       <property name="minimumSize">
+       <property name="maximumSize">
         <size>
-         <width>0</width>
-         <height>30</height>
+         <width>16777215</width>
+         <height>150</height>
         </size>
        </property>
-       <property name="text">
-        <string>产线名称</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEdit_productline">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
+       <property name="lineWidth">
+        <number>0</number>
        </property>
       </widget>
      </item>
@@ -140,28 +162,6 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="QTextEdit" name="lineEdit_MaterielDes">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>80</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>150</height>
-        </size>
-       </property>
-       <property name="lineWidth">
-        <number>0</number>
-       </property>
-      </widget>
-     </item>
      <item row="4" column="0">
       <widget class="QLabel" name="label">
        <property name="minimumSize">
@@ -175,19 +175,6 @@
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QLineEdit" name="lineEdit_cumerName">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
        </property>
       </widget>
      </item>
@@ -207,12 +194,35 @@
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
+     <item row="5" column="2">
       <widget class="QLineEdit" name="lineEdit_custombatch">
        <property name="minimumSize">
         <size>
          <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QLineEdit" name="lineEdit_cumerName">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
          <height>30</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="2">
+      <widget class="QComboBox" name="comboBox_orderType">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
         </size>
        </property>
       </widget>
@@ -233,13 +243,42 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
-      <widget class="QComboBox" name="comboBox_orderType">
+     <item row="9" column="0">
+      <widget class="QLabel" name="label_6">
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>35</height>
         </size>
+       </property>
+       <property name="text">
+        <string>计量单位</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="2">
+      <widget class="QLineEdit" name="lineEdit_unit">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>客户备注</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -259,46 +298,20 @@
        </property>
       </widget>
      </item>
-     <item row="8" column="0">
-      <widget class="QLabel" name="label_6">
+     <item row="7" column="2">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_num">
        <property name="minimumSize">
         <size>
          <width>0</width>
          <height>35</height>
         </size>
        </property>
-       <property name="text">
-        <string>计量单位</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
+       <property name="maximum">
+        <double>999999999.990000009536743</double>
        </property>
       </widget>
      </item>
-     <item row="8" column="1">
-      <widget class="QLineEdit" name="lineEdit_unit">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>客户备注</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="1">
+     <item row="10" column="2">
       <widget class="QTextEdit" name="textEdit_custom_note">
        <property name="minimumSize">
         <size>
@@ -317,12 +330,25 @@
        </property>
       </widget>
      </item>
-     <item row="7" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_num">
+     <item row="8" column="0">
+      <widget class="QLabel" name="label_11">
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>数量确认</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="2">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_num_confirm">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
         </size>
        </property>
       </widget>

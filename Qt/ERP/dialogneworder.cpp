@@ -77,6 +77,7 @@ void DialogNewOrder::initOrder(Order order)
     materielIDChange(0);
 
     ui->doubleSpinBox_num->setValue(order.OrderNum);
+    ui->doubleSpinBox_num_confirm->setValue(order.OrderNum);
     ui->lineEdit_custombatch->setText(order.CustomBatch);
     ui->textEdit_custom_note->setText(order.CustomNote);
 
@@ -96,6 +97,7 @@ void DialogNewOrder::changeModel()
         ui->pushButton_ok->setText("创建");
         ui->comboBox_orderType->setEnabled(true);
         ui->doubleSpinBox_num->setValue(1);
+        ui->doubleSpinBox_num_confirm->setValue(1);
     }else{
         this->setWindowTitle("订单修改");
         ui->pushButton_ok->setText("修改");
@@ -138,6 +140,7 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     order.CustomBatch       = ui->lineEdit_custombatch->text();
     order.CustomNote        = ui->textEdit_custom_note->toPlainText();
     order.OrderNum          = ui->doubleSpinBox_num->value();
+
 
     if(!checkOrder(order)){
         return;
@@ -195,6 +198,11 @@ bool DialogNewOrder::checkOrder(Order order)
     }
     if(order.OrderNum<order.ProduceNum||order.OrderNum<order.SuccessNum){
         QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "订单数量不能少于已经成品或者已经出库的数量!");
+        return false;
+    }
+    double confirm_num = ui->doubleSpinBox_num_confirm->value();
+    if (order.OrderNum!=confirm_num){
+        QToolTip::showText(ui->doubleSpinBox_num_confirm->mapToGlobal(QPoint(100, 0)), "两次输入的订单数量不一样!");
         return false;
     }
     return true;
