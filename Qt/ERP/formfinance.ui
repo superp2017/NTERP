@@ -16,7 +16,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_4" columnstretch="5,1">
+  <layout class="QGridLayout" name="gridLayout_4" columnstretch="6,1">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <property name="spacing">
@@ -76,7 +76,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QTableWidget" name="tableWidget"/>
+      <widget class="M_TableWidget" name="tableWidget"/>
      </item>
     </layout>
    </item>
@@ -448,6 +448,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>M_TableWidget</class>
+   <extends>QTableWidget</extends>
+   <header location="global">m_tablewidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
