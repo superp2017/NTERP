@@ -37,7 +37,6 @@ FormFinance::FormFinance(QWidget *parent) :
 
     initUI();
 
-    initOrder(dataCenter::instance()->pub_StatusOrders(Status_All));
 }
 
 FormFinance::~FormFinance()
@@ -118,7 +117,7 @@ void FormFinance::do_search(QString cusName, QString status, QString type, QStri
                             qint64 start, qint64 end, bool Iscus, bool Isrtype,\
                             bool IsStatus, bool isFac, bool time)
 {
-
+  initOrder(dataCenter::instance()->pub_StatusOrders(status));
 }
 
 
@@ -137,6 +136,7 @@ void FormFinance::setRowData(Order para, int row)
     QTableWidgetItem *item10 = ui->tableWidget->item(row,10);
     QTableWidgetItem *item11 = ui->tableWidget->item(row,11);
     QTableWidgetItem *item12 = ui->tableWidget->item(row,12);
+
     if(item0==NULL){
         item0 = new QTableWidgetItem();
         ui->tableWidget->setItem(row,0,item0);
