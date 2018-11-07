@@ -682,6 +682,11 @@ QVector<Order> dataCenter::pub_StatusOrders(QString status)
     return ls;
 }
 
+QVector<Order> dataCenter::pub_orders()
+{
+    return m_orders;
+}
+
 //获取单个订单
 Order dataCenter::pub_getOrder(QString OrderID, bool &ok)
 {

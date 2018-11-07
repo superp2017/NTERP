@@ -3,6 +3,8 @@
 #include "datacenter.h"
 #include <QToolTip>
 #include <QTableWidgetItem>
+#include <QDateTime>
+#include <QMessageBox>
 
 FormFinance::FormFinance(QWidget *parent) :
     QWidget(parent),
@@ -71,12 +73,14 @@ void FormFinance::initUI()
 void FormFinance::initOrder(QVector<Order> list)
 {
     ui->tableWidget->removeAllRow();
-    for(Order o:list){
-        ui->tableWidget->setRowCount(list.size());
-        for(int i=0;i<list.size();++i){
-            setRowData(list.at(i),i);
-        }
+    double money=0;
+    ui->tableWidget->setRowCount(list.size());
+    for(int i=0;i<list.size();++i){
+        setRowData(list.at(i),i);
+        money += list.at(i).TotleMoney;
     }
+    ui->lineEdit_ordernum->setText(QString("%1").arg(list.size()));
+    ui->lineEdit_order_money->setText(QString("%1 元").arg(money));
 }
 
 
@@ -99,9 +103,10 @@ void FormFinance::on_pushButton_search_clicked()
     do_search(ui->comboBox_company->currentText(),\
               ui->comboBox_order_status->currentData().toString(),\
               ui->comboBox_order_type->currentData().toString(),\
-              ui->comboBox_factort->currentData().toString(),\
+              ui->comboBox_factort->currentText(),\
               start,end,\
               ui->groupBox_company->isChecked(),\
+              ui->groupBox_order_Status->isChecked(),\
               ui->groupBox_order_type->isChecked(),\
               ui->groupBox_factory->isChecked(),\
               ui->groupBox_time->isChecked());
@@ -112,12 +117,46 @@ void FormFinance::on_pushButton_export_clicked()
 {
 
 }
-
+#include <QDebug>
 void FormFinance::do_search(QString cusName, QString status, QString type, QString fac, \
                             qint64 start, qint64 end, bool Iscus, bool Isrtype,\
-                            bool IsStatus, bool isFac, bool time)
+                            bool IsStatus, bool isFac, bool Istime)
 {
-  initOrder(dataCenter::instance()->pub_StatusOrders(status));
+    m_data.clear();
+
+    if(!(Iscus||Isrtype||IsStatus||isFac||Istime)){
+        initOrder(QVector<Order>());
+        QMessageBox::information(this,"提示","请至少选择一种搜索方式!");
+        return;
+    }
+
+
+    QVector<Order> ls;
+    if(IsStatus){
+        ls = dataCenter::instance()->pub_StatusOrders(status);
+    }else{
+        ls = dataCenter::instance()->pub_orders();
+    }
+
+    for(Order o:ls){
+        if(Istime){
+            qint64 t=  QDateTime::fromString(o.CreatTime,"yyyy-MM-dd HH:mm:ss").toMSecsSinceEpoch();
+            if(t<start||t>end) continue;
+        }
+        if(Iscus){
+            if(o.CustomName!=cusName) continue;
+        }
+        if(isFac&&fac!="全部分厂"){
+            if(o.Factory!=fac) continue;
+        }
+        if(Isrtype){
+            if(o.OrderType!=type) continue;
+        }
+        m_data.push_back(o);
+    }
+
+    initOrder(m_data);
+
 }
 
 

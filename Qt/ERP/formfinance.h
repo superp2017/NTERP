@@ -23,14 +23,15 @@ private slots:
 
     void do_search(QString cusName,QString status,QString type,\
                    QString fac, qint64 start,qint64 end,\
-                   bool Iscus =false,bool Isrtype =false,\
-                   bool IsStatus =false,bool isFac =false,\
-                   bool time =false);
+                   bool Iscus ,bool Isrtype ,\
+                   bool IsStatus ,bool isFac,\
+                   bool Istime);
      void initOrder(QVector<Order>list);
 private:
     void initUI();
     void setRowData(Order para, int row);
     Ui::FormFinance *ui;
+    QVector<Order>m_data;
 };
 
 #endif // FORMFINANCE_H

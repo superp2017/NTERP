@@ -87,6 +87,7 @@ public:
     User pub_CurUser();
     ////////////////////////////////////////////////////
     QVector<Order> pub_StatusOrders(QString status);
+    QVector<Order> pub_orders();
     Order pub_getOrder(QString OrderID,bool &ok);
     ////////////////////////////////////////////////////
     QVector<QString> pub_Units();
