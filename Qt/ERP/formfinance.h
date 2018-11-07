@@ -26,10 +26,15 @@ private slots:
                    bool Iscus ,bool Isrtype ,\
                    bool IsStatus ,bool isFac,\
                    bool Istime);
-     void initOrder(QVector<Order>list);
+    void initOrder(QVector<Order>list);
+    void changeCol();
+    void exportCb(bool ok);
+signals:
+    void sig_exportCb(bool);
 private:
     void initUI();
     void setRowData(Order para, int row);
+    void doExport(QVector<Order> ls, QString filepath);
     Ui::FormFinance *ui;
     QVector<Order>m_data;
 };

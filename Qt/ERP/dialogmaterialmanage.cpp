@@ -147,7 +147,7 @@ void DialogMaterialManage::on_pushButton_export_clicked()
     if(!filepath.isEmpty()){
         boost::thread t(boost::bind(&DialogMaterialManage::doExport,this,ls,filepath));
         t.detach();
-        dataCenter::instance()->pub_showLoadding("正在导出...",10000);
+        dataCenter::instance()->pub_showLoadding("正在导出...",30000);
     }else{
         dataCenter::instance()->pub_showMessage("保存路径为空!",3000);
     }

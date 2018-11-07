@@ -543,3 +543,76 @@ bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString f
     return  ExcelService::dataExport(filepath,datalist,data,isOpen);
 }
 
+bool OrderService::exportOrdersEx(QVector<Order> list, QString filepath, bool isOpen)
+{
+    QVector<QVariant> datalist;
+    datalist<<"生产批号"<<"订单类型"<<"分厂名称"<<"客户名称"<<"物料描述"\
+           <<"订单总量"<<"单位"<<"未税单价(元)"<<"未税总价(元)"<<"状态"<<"创建时间";
+
+    QVector<QVector<QVariant>> data;
+    double money;
+    for(int i=0;i<list.size();++i){
+        Order order  = list.at(i);
+        QString status;
+
+        if(order.Current.Status=="Status_Cancle"){
+            status="已取消";
+        }
+        if(order.Current.Status=="Status_PartSuccess"){
+            status="部分出库";
+        }
+        if(order.Current.Status=="Status_PartProduce"){
+            status="部分成品";
+        }
+        if(order.Current.Status=="Status_New"){
+            status="新建";
+        }
+        if(order.Current.Status=="Status_Produce"){
+            status="全部成品";
+        }
+        if(order.Current.Status=="Status_Success"){
+            status="全部出库";
+        }
+        if(order.Current.Status=="Status_Part_Part"){
+            status="部分成品部分出库";
+        }
+
+        QString type;
+        if(order.OrderType=="1"){
+            type="普通订单";
+        }
+        if(order.OrderType=="2"){
+            type="试样订单";
+        }
+        if(order.OrderType=="3"){
+            type="返工订单";
+        }
+
+        QVector<QVariant> datalist;
+        datalist<<"'"+order.OrderID<<type<<order.Factory<<order.CustomName\
+               <<"'"+order.MaterielDes<<QString("%1").arg(order.OrderNum)<<order.Unit\
+              <<"'"+QString("%1").arg(order.Money)<<"'"+QString("%1").arg(order.TotleMoney)\
+             <<status<<order.CreatTime;
+        data.push_back(datalist);
+        money+=order.TotleMoney;
+    }
+    QVector<QVector<QVariant>> res;
+    QVector<QVariant> m;
+    for(int i=0;i<8;++i){
+        m.push_back("");
+    }
+    m.push_back("总金额");
+    m.push_back(QString("%1").arg(money));
+
+    QVector<QVariant> n;
+    for(int i=0;i<8;++i){
+        n.push_back("");
+    }
+    n.push_back("订单数量");
+    n.push_back(QString("%1").arg(list.size()));
+    res.push_back(n);
+    res.push_back(m);
+
+    return  ExcelService::dataExportEx(filepath,datalist,data,res,isOpen);
+}
+

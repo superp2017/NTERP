@@ -22,6 +22,8 @@ public:
     static Order fromJsonObject(QJsonObject obj);
 
     static bool exportOrders(QString curstatus, QVector<Order> list, QString filepath, bool isOpen=false);
+
+    static bool exportOrdersEx(QVector<Order>list,QString filepath,bool isOpen = false);
 private:
 };
 

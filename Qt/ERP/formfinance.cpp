@@ -5,6 +5,9 @@
 #include <QTableWidgetItem>
 #include <QDateTime>
 #include <QMessageBox>
+#include "orderservice.h"
+#include <QFileDialog>
+#include "boost/thread.hpp"
 
 FormFinance::FormFinance(QWidget *parent) :
     QWidget(parent),
@@ -22,20 +25,28 @@ FormFinance::FormFinance(QWidget *parent) :
                                          "QPushButton:checked{border-image: url(:/icon/search-a.png);}");
 
 
-    ui->dateEdit_start->setDate(QDate::currentDate().addDays(-1));
+    connect(ui->radioButton_ave,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
+    connect(ui->radioButton_content,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
+    connect(ui->radioButton_manu,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
+
+
+    ui->dateEdit_start->setDate(QDate::currentDate().addDays(-30));
     ui->dateEdit_end->setDate(QDate::currentDate());
 
 
-    ui->tableWidget->setColumnCount(13);
+    ui->tableWidget->setColumnCount(11);
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     //设置表头内容
     QStringList header;
     header<<tr("生产批号")<<tr("订单类型")<<tr("分厂名称")<<tr("客户名称")<<tr("物料描述")\
-         <<tr("订单总量")<<tr("单位")<<tr("客户批次")<<tr("客户备注")<<tr("未税单价(元)")\
-        <<tr("未税总价(元)")<<tr("状态")<<tr("创建时间");
+         <<tr("订单总量")<<tr("单位") <<tr("未税单价(元)") <<tr("未税总价(元)")<<tr("状态")<<tr("创建时间");
+
 
     ui->tableWidget->setHorizontalHeaderLabels(header);
     ui->tableWidget->setSortingEnabled(true);//允许列排序
+
+    connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
+
 
     initUI();
 
@@ -79,8 +90,35 @@ void FormFinance::initOrder(QVector<Order> list)
         setRowData(list.at(i),i);
         money += list.at(i).TotleMoney;
     }
-    ui->lineEdit_ordernum->setText(QString("%1").arg(list.size()));
-    ui->lineEdit_order_money->setText(QString("%1 元").arg(money));
+    ui->label_order_num->setText(QString("%1").arg(list.size()));
+    ui->label_order_money->setText(QString("%1 元").arg(money));
+    ui->tableWidget->checkSelect();
+}
+
+void FormFinance::changeCol()
+{
+    QHeaderView::ResizeMode  tab_mode;
+    if(ui->radioButton_ave->isChecked()){
+        tab_mode = QHeaderView::Stretch;
+    }
+    if(ui->radioButton_content->isChecked()){
+        tab_mode = QHeaderView::ResizeToContents;
+    }
+    if(ui->radioButton_manu->isChecked()){
+        tab_mode = QHeaderView::Interactive;
+    }
+    ui->tableWidget->setHeaderColModel(tab_mode);
+    ui->tableWidget->checkSelect();
+}
+
+void FormFinance::exportCb(bool ok)
+{
+    dataCenter::instance()->pub_hideLoadding();
+    if(ok){
+        dataCenter::instance()->pub_showMessage("导出成功!",3000);
+    }else{
+        dataCenter::instance()->pub_showMessage("导出失败!",3000);
+    }
 }
 
 
@@ -115,9 +153,22 @@ void FormFinance::on_pushButton_search_clicked()
 
 void FormFinance::on_pushButton_export_clicked()
 {
+    if(m_data.size()==0){
+        QMessageBox::information(this,"提示","请至少选择一个订单...");
+        return;
+    }
 
+    QString filepath= QFileDialog::getSaveFileName(NULL,"Save orders",".","Microsoft Office 2007 (*.xlsx)");//获取保存路径
+    if(!filepath.isEmpty()){
+        boost::thread t(boost::bind(&FormFinance::doExport,this,m_data,filepath));
+        t.detach();
+        dataCenter::instance()->pub_showLoadding("正在导出...",50000);
+    }else{
+        dataCenter::instance()->pub_showMessage("保存路径为空!",3000);
+    }
 }
-#include <QDebug>
+
+
 void FormFinance::do_search(QString cusName, QString status, QString type, QString fac, \
                             qint64 start, qint64 end, bool Iscus, bool Isrtype,\
                             bool IsStatus, bool isFac, bool Istime)
@@ -170,11 +221,9 @@ void FormFinance::setRowData(Order para, int row)
     QTableWidgetItem *item5 = ui->tableWidget->item(row,5);
     QTableWidgetItem *item6 = ui->tableWidget->item(row,6);
     QTableWidgetItem *item7 = ui->tableWidget->item(row,7);
-    QTableWidgetItem *item8 = ui->tableWidget->item(row,8);
+    QTableWidgetItem *item8= ui->tableWidget->item(row,8);
     QTableWidgetItem *item9 = ui->tableWidget->item(row,9);
     QTableWidgetItem *item10 = ui->tableWidget->item(row,10);
-    QTableWidgetItem *item11 = ui->tableWidget->item(row,11);
-    QTableWidgetItem *item12 = ui->tableWidget->item(row,12);
 
     if(item0==NULL){
         item0 = new QTableWidgetItem();
@@ -220,18 +269,6 @@ void FormFinance::setRowData(Order para, int row)
         item10 = new QTableWidgetItem();
         ui->tableWidget->setItem(row,10,item10);
     }
-    if(item11==NULL){
-        item11 = new QTableWidgetItem();
-        ui->tableWidget->setItem(row,11,item11);
-    }
-    if(item11==NULL){
-        item11 = new QTableWidgetItem();
-        ui->tableWidget->setItem(row,11,item11);
-    }
-    if(item12==NULL){
-        item12 = new QTableWidgetItem();
-        ui->tableWidget->setItem(row,12,item12);
-    }
 
 
     item0->setText(para.OrderID);
@@ -251,10 +288,8 @@ void FormFinance::setRowData(Order para, int row)
     item4->setText(para.MaterielDes);
     item5->setText(QString("%1").arg(para.OrderNum));
     item6->setText(para.Unit);
-    item7->setText(para.CustomBatch);
-    item8->setText(para.CustomNote);
-    item9->setText(QString("%1").arg(para.Money));
-    item10->setText(QString("%1").arg(para.TotleMoney));
+    item7->setText(QString("%1").arg(para.Money));
+    item8->setText(QString("%1").arg(para.TotleMoney));
     QString status;
 
     if(para.Current.Status==Status_Cancle){
@@ -280,8 +315,8 @@ void FormFinance::setRowData(Order para, int row)
     }
 
 
-    item11->setText(QString("%1").arg(status));
-    item12->setText( QDateTime::fromString(para.CreatTime,"yyyy-MM-dd HH:mm:ss").toString("yyyy-MM-dd"));
+    item9->setText(QString("%1").arg(status));
+    item10->setText( QDateTime::fromString(para.CreatTime,"yyyy-MM-dd HH:mm:ss").toString("yyyy-MM-dd"));
 
     item0->setTextAlignment(Qt::AlignCenter);
     item1->setTextAlignment(Qt::AlignCenter);
@@ -294,8 +329,13 @@ void FormFinance::setRowData(Order para, int row)
     item8->setTextAlignment(Qt::AlignCenter);
     item9->setTextAlignment(Qt::AlignCenter);
     item10->setTextAlignment(Qt::AlignCenter);
-    item11->setTextAlignment(Qt::AlignCenter);
-    item12->setTextAlignment(Qt::AlignCenter);
+
+}
+
+void FormFinance::doExport(QVector<Order> ls, QString filepath)
+{
+    bool ok = OrderService::exportOrdersEx(ls,filepath,true);
+    emit sig_exportCb(ok);
 }
 
 
