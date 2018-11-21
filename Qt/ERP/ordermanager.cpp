@@ -10,6 +10,8 @@
 #include<QDateTime>
 #include "dialogorderproduceorout.h"
 
+#include "dialogprintouttable.h"
+
 OrderManager::OrderManager(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OrderManager)
@@ -76,19 +78,16 @@ OrderManager::OrderManager(QWidget *parent) :
 
 
 
-    connect(&m_search,SIGNAL(searchOrder(bool,bool,qint64,qint64,QString,QString)),\
-            this,SLOT(searchOrder(bool,bool,qint64,qint64,QString,QString)));
 
-    connect(&m_search,SIGNAL(showAll()),this,SLOT(showAll()));
 
     ui->pushButton_new->setStyleSheet("QPushButton{border-image: url(:/icon/new-red.png);}"
                                       "QPushButton:hover{border-image: url(:/icon/new.png);}"
                                       "QPushButton:pressed{border-image: url(:/icon/new.png);}"
                                       "QPushButton:checked{border-image: url(:/icon/new.png);}");
-    ui->pushButton_search->setStyleSheet("QPushButton{border-image: url(:/icon/search.png);}"
-                                         "QPushButton:hover{border-image: url(:/icon/search-a.png);}"
-                                         "QPushButton:pressed{border-image: url(:/icon/search-a.png);}"
-                                         "QPushButton:checked{border-image: url(:/icon/search-a.png);}");
+    ui->pushButton_out_print->setStyleSheet("QPushButton{border-image: url(:/icon/search.png);}"
+                                            "QPushButton:hover{border-image: url(:/icon/search-a.png);}"
+                                            "QPushButton:pressed{border-image: url(:/icon/search-a.png);}"
+                                            "QPushButton:checked{border-image: url(:/icon/search-a.png);}");
 
     ui->pushButton_print->setStyleSheet("QPushButton{border-image: url(:/icon/export.png);}"
                                         "QPushButton:hover{border-image: url(:/icon/export-a.png);}"
@@ -102,7 +101,7 @@ OrderManager::OrderManager(QWidget *parent) :
     setBtnEnable(false,false,false,false,false,false);
     changeCol();
     updataData();
-    initSearch();
+
 }
 
 OrderManager::~OrderManager()
@@ -110,17 +109,7 @@ OrderManager::~OrderManager()
     delete ui;
 }
 
-void OrderManager::initSearch()
-{
-    QVector<Customer> ls=dataCenter::instance()->pub_Customers();
-    for(Customer c:ls){
-        searchdata["客户名称"].push_back(c.Name);
-    }
-    searchdata["分厂名称"].push_back("涂覆分厂");
-    searchdata["分厂名称"].push_back("滚镀分厂");
-    searchdata["分厂名称"].push_back("挂镀分厂");
-    m_search.initSearchContent(searchdata);
-}
+
 
 
 void OrderManager::updataData()
@@ -141,49 +130,49 @@ void OrderManager::orderClick(QString orderID)
         return;
     }
 
-//    if(cur_order.Current.Status == Status_Cancle){
-//        setBtnEnable(false,false,false,false,false,true);
-//    }else{
-        bool produce = cur_order.Current.Status==Status_New||\
-                cur_order.Current.Status==Status_PartProduce||\
-                cur_order.Current.Status==Status_Part_Part;
-        bool out = cur_order.Current.Status==Status_Produce||\
-                cur_order.Current.Status==Status_PartSuccess||\
-                cur_order.Current.Status==Status_PartProduce||\
-                cur_order.Current.Status==Status_Part_Part;
-        bool mod = cur_order.Current.Status==Status_New;
-        bool cancel = cur_order.Current.Status== Status_Cancle;
-        setBtnEnable(mod,mod,produce,out,mod,cancel);
-//    }
+    //    if(cur_order.Current.Status == Status_Cancle){
+    //        setBtnEnable(false,false,false,false,false,true);
+    //    }else{
+    bool produce = cur_order.Current.Status==Status_New||\
+            cur_order.Current.Status==Status_PartProduce||\
+            cur_order.Current.Status==Status_Part_Part;
+    bool out = cur_order.Current.Status==Status_Produce||\
+            cur_order.Current.Status==Status_PartSuccess||\
+            cur_order.Current.Status==Status_PartProduce||\
+            cur_order.Current.Status==Status_Part_Part;
+    bool mod = cur_order.Current.Status==Status_New;
+    bool cancel = cur_order.Current.Status== Status_Cancle;
+    setBtnEnable(mod,mod,produce,out,mod,cancel);
+    //    }
 
 
-//    if(ui->tabWidget->currentWidget()==m_tab_all){
-//        if(cur_order.Current.Status == Status_Cancle){
-//            setBtnEnable(false,false,false,false,false,true);
-//        }else{
-//            bool produce = cur_order.Current.Status==Status_New||\
-//                    cur_order.Current.Status==Status_PartProduce||\
-//                    cur_order.Current.Status==Status_Part_Part;
-//            bool out = cur_order.Current.Status==Status_Produce||\
-//                    cur_order.Current.Status==Status_PartSuccess||\
-//                    cur_order.Current.Status==Status_PartProduce||\
-//                    cur_order.Current.Status==Status_Part_Part;
-//            bool mod = cur_order.Current.Status==Status_New;
-//            bool cancel = cur_order.Current.Status== Status_Cancle;
-//            setBtnEnable(mod,mod,produce,out,mod,cancel);
-//        }
-//    }
+    //    if(ui->tabWidget->currentWidget()==m_tab_all){
+    //        if(cur_order.Current.Status == Status_Cancle){
+    //            setBtnEnable(false,false,false,false,false,true);
+    //        }else{
+    //            bool produce = cur_order.Current.Status==Status_New||\
+    //                    cur_order.Current.Status==Status_PartProduce||\
+    //                    cur_order.Current.Status==Status_Part_Part;
+    //            bool out = cur_order.Current.Status==Status_Produce||\
+    //                    cur_order.Current.Status==Status_PartSuccess||\
+    //                    cur_order.Current.Status==Status_PartProduce||\
+    //                    cur_order.Current.Status==Status_Part_Part;
+    //            bool mod = cur_order.Current.Status==Status_New;
+    //            bool cancel = cur_order.Current.Status== Status_Cancle;
+    //            setBtnEnable(mod,mod,produce,out,mod,cancel);
+    //        }
+    //    }
 
-//    if(ui->tabWidget->currentWidget()== m_tab_new){
-//        setBtnEnable(true,true,true,false,true,false);
-//    }
+    //    if(ui->tabWidget->currentWidget()== m_tab_new){
+    //        setBtnEnable(true,true,true,false,true,false);
+    //    }
 
-//    if(ui->tabWidget->currentWidget()==m_tab_success){
-//        setBtnEnable(false,false,false,false,false,false);
-//    }
-//    if(ui->tabWidget->currentWidget()==m_tab_produce){
-//        setBtnEnable(false,false,false,true,false,false);
-//    }
+    //    if(ui->tabWidget->currentWidget()==m_tab_success){
+    //        setBtnEnable(false,false,false,false,false,false);
+    //    }
+    //    if(ui->tabWidget->currentWidget()==m_tab_produce){
+    //        setBtnEnable(false,false,false,true,false,false);
+    //    }
 }
 
 void OrderManager::changeCol()
@@ -539,9 +528,9 @@ void OrderManager::setBtnEnable(bool mod, bool cancel, bool produce, bool out,  
     }
     if(del){
         ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete-red.png);}"
-                                                   "QPushButton:hover{border-image: url(:/icon/delete.png);}"
-                                                   "QPushButton:pressed{border-image: url(:/icon/delete.png);}"
-                                                   "QPushButton:checked{border-image: url(:/icon/delete.png);}");
+                                          "QPushButton:hover{border-image: url(:/icon/delete.png);}"
+                                          "QPushButton:pressed{border-image: url(:/icon/delete.png);}"
+                                          "QPushButton:checked{border-image: url(:/icon/delete.png);}");
     }else{
         ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete.png);}");
     }
@@ -554,52 +543,13 @@ void OrderManager::checkSelect()
     m_tab_all->checkSelect();
 }
 
-
-
-
-void OrderManager::on_pushButton_search_clicked()
+void OrderManager::on_pushButton_out_print_clicked()
 {
-    m_search.exec();
+    DialogPrintOutTable print;
+    print.exec();
 }
 
 
-void OrderManager::searchOrder(bool isTime, bool isOther, qint64 min, qint64 max, QString type, QString content)
-{
-    OrderTable *table = NULL;
-    if(ui->tabWidget->currentWidget()==m_tab_all){
-        table = m_tab_all;
-    }
-    if(ui->tabWidget->currentWidget()== m_tab_new){
-        table = m_tab_new;
-    }
-    if(ui->tabWidget->currentWidget()==m_tab_success){
-        table = m_tab_success;
-    }
-    if(table==NULL) return;
-    int col = 0;
-    if(type=="分厂名称")
-        col =0;
-    if(type=="客户名称")
-        col = 3;
-    int count = table->rowCount();
-    for(int i =0;i<count;++i){
-        bool show = true;
-        if(isOther){
-            QString c = table->item(i,col)->text();
-            if(c!=content){
-                show&=false;
-            }
-        }
-        if(show&&isTime){
-            QString time = table->item(i,table->getTimeColNum())->text();
-            qint64 t=   QDateTime::fromString(time,"yyyy-MM-dd").toMSecsSinceEpoch();
-            if(t<min||t>max){
-                show&=false;
-            }
-        }
-        table->setRowHidden(i,!show);
-    }
-}
 
 void OrderManager::showAll()
 {
@@ -615,6 +565,7 @@ void OrderManager::showAll()
         m_tab_success->showAllRow();
     }
 }
+
 
 
 

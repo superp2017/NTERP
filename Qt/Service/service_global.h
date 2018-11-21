@@ -141,6 +141,7 @@ struct Order{
     double            SuccessNum;     //出库数量
     double            Money;          //价格
     double            TotleMoney;     //总价
+    int               PrintNum;       //打印次数
 };
 
 struct User {

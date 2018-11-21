@@ -550,7 +550,7 @@ bool OrderService::exportOrdersEx(QVector<Order> list, QString filepath, bool is
            <<"订单总量"<<"单位"<<"未税单价(元)"<<"未税总价(元)"<<"状态"<<"创建时间";
 
     QVector<QVector<QVariant>> data;
-    double money;
+    double money = 0;
     for(int i=0;i<list.size();++i){
         Order order  = list.at(i);
         QString status;

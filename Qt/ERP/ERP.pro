@@ -7,9 +7,13 @@
 QT       += core gui
 QT       += network
 
+QT	+= printsupport
 
 QT       += axcontainer
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+
+
 
 TARGET = ERP
 TEMPLATE = app
@@ -116,7 +120,8 @@ SOURCES += main.cpp\
     dialogoutgoods.cpp \
     dialoggoodsin.cpp \
     dialoggoodsoutrecordprint.cpp \
-    formfinance.cpp
+    formfinance.cpp \
+    dialogprintouttable.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -198,7 +203,8 @@ HEADERS  += mainwindow.h \
     dialogoutgoods.h \
     dialoggoodsin.h \
     dialoggoodsoutrecordprint.h \
-    formfinance.h
+    formfinance.h \
+    dialogprintouttable.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -264,7 +270,8 @@ FORMS    += mainwindow.ui \
     dialogoutgoods.ui \
     dialoggoodsin.ui \
     dialoggoodsoutrecordprint.ui \
-    formfinance.ui
+    formfinance.ui \
+    dialogprintouttable.ui
 
 RESOURCES += \
     res.qrc

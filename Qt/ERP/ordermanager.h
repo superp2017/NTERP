@@ -45,16 +45,15 @@ private slots:
     void finishOrderCb(Order order,bool ok);
     void delOrderCb(Order order, bool ok);
     void GlobalOrdersCb(bool ok);
-    void on_pushButton_search_clicked();
 
-    void searchOrder(bool isTime,bool isOther,qint64 min,qint64 max,QString type,QString content);
     void showAll();
+
+    void on_pushButton_out_print_clicked();
 
 protected:
     void mousePressEvent(QMouseEvent *e);
 
 private:
-    void initSearch();
     void clearCurOrder();
     void setBtnEnable(bool mod, bool cancel, bool produce, bool out, bool change, bool del);
     void checkSelect();
@@ -65,8 +64,6 @@ private:
     OrderTable        *m_tab_produce;
     OrderTable        *m_tab_all;
     Order             cur_order;
-    DialogOrderSearch m_search;
-    QMap<QString, QVector<QString> > searchdata;
 };
 
 #endif // ORDERMANAGER_H

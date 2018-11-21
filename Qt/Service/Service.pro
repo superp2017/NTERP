@@ -8,6 +8,8 @@ QT       -= gui
 
 TARGET = Service
 TEMPLATE = lib
+QT += printsupport
+
 
 DEFINES += SERVICE_LIBRARY
 
@@ -48,7 +50,8 @@ SOURCES += service.cpp \
     accountservice.cpp \
     goodsService.cpp \
     platingservice.cpp \
-    goodsoutrecordservice.cpp
+    goodsoutrecordservice.cpp \
+    printer.cpp
 
 HEADERS += service.h\
         service_global.h \
@@ -63,7 +66,8 @@ HEADERS += service.h\
     accountservice.h \
     goodsService.h \
     platingservice.h \
-    goodsoutrecordservice.h
+    goodsoutrecordservice.h \
+    printer.h
 
 unix {
     target.path = /usr/lib

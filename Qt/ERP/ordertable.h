@@ -51,7 +51,7 @@ private:
     QAction *m_del;
     QAction *m_giveup;
     QString cutStatus;
-    int timecol;
+    int     timecol;
 };
 
 #endif // ORDERTABLE_H

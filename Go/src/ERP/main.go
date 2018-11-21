@@ -17,6 +17,7 @@ func initRoute() {
 	JHttp.WhiteHttp("/modorder", ModOrder)               //修改订单
 	JHttp.WhiteHttp("/delorder", DelOrder)               //删除订单
 	JHttp.WhiteHttp("/modorderprice", ModOrderPrice)     //修改订单价格
+	JHttp.WhiteHttp("/updateprintnum", UpdatePrintNum)   //修改订单打印次数
 	JHttp.WhiteHttp("/cancleorder", CancelOrder)         //取消订单
 	JHttp.WhiteHttp("/produceorder", PorduceOrder)       //订单生产
 	JHttp.WhiteHttp("/successorder", SuccessOrder)       //订单完成

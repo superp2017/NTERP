@@ -78,7 +78,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_search">
+      <widget class="QPushButton" name="pushButton_out_print">
        <property name="minimumSize">
         <size>
          <width>80</width>

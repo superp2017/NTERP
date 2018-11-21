@@ -46,6 +46,7 @@ type Order struct {
 	SuccessNum      float64    //出库数量
 	TotleMoney      float64    //总价
 	Money           float64    //单价
+	PrintNum        int        //打印次数
 }
 
 //新建订单
@@ -104,6 +105,22 @@ func NewOrder(session *JHttp.Session) {
 		go appendCustomerOrderID(st.CustomID, st.OrderID)
 	}
 	session.Forward("0", "success", st)
+}
+func UpdatePrintNum(session *JHttp.Session) {
+	st := &[]string{}
+	if err := session.GetPara(st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	for _, v := range st {
+		data := &Order{}
+		if err := JRedis.Redis_hget(Hash_Order, v, data); err == nil {
+			data.PrintNum++
+			JRedis.Redis_hset(Hash_Order, v, data)
+		}
+	}
+	session.Forward("0", "success", nil)
 }
 
 ////修改订单
