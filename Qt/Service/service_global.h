@@ -26,6 +26,7 @@ const std::string  Net_ProductOrder="/produceorder";        //订单生产
 const std::string  Net_CancelOrder="/cancleorder";          //取消订单
 const std::string  Net_SuccessOrder="/successorder";        //完成订单
 const std::string  Net_ModOrderPrice="/modorderprice";      //修改订单价格
+const std::string  Net_ModPrintNum="/updateprintnum";      //修改订单打印次数
 const std::string  Net_GlobalOrders="/getglobalorders";     //获取所有订单
 
 

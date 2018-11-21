@@ -107,20 +107,23 @@ func NewOrder(session *JHttp.Session) {
 	session.Forward("0", "success", st)
 }
 func UpdatePrintNum(session *JHttp.Session) {
-	st := &[]string{}
-	if err := session.GetPara(st); err != nil {
+	st := []string{}
+	if err := session.GetPara(&st); err != nil {
 		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	list := []Order{}
 	for _, v := range st {
 		data := &Order{}
 		if err := JRedis.Redis_hget(Hash_Order, v, data); err == nil {
 			data.PrintNum++
-			JRedis.Redis_hset(Hash_Order, v, data)
+			if e := JRedis.Redis_hset(Hash_Order, v, data); e == nil {
+				list = append(list, data)
+			}
 		}
 	}
-	session.Forward("0", "success", nil)
+	session.Forward("0", "success", list)
 }
 
 ////修改订单

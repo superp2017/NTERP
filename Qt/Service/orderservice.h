@@ -17,7 +17,7 @@ public:
     static Order modOrderPrice(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static Order delOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QVector<Order> getAllOrders(bool &ok,QString hostname, QString hostport);
-
+    static void updatePrintNum(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QJsonObject toJsonObject(Order order);
     static Order fromJsonObject(QJsonObject obj);
 

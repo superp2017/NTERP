@@ -171,6 +171,21 @@ QVector<Order> OrderService::getAllOrders(bool &ok,QString hostname, QString hos
     return data;
 }
 
+void OrderService::updatePrintNum(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    std::string url = Net_ModPrintNum;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        ok = true;
+        return  ;
+    }
+    if(!ret.ret)
+        qDebug()<<"modOrderPrice ret is not 0"<<endl;
+    ok = false;
+    return;
+}
+
 
 QJsonObject OrderService::toJsonObject(Order order)
 {
@@ -204,7 +219,7 @@ QJsonObject OrderService::toJsonObject(Order order)
     obj.insert("SuccessNum",order.SuccessNum);
     obj.insert("Money",order.Money);
     obj.insert("TotleMoney",order.TotleMoney);
-
+    obj.insert("PrintNum",order.PrintNum);
     QJsonArray flow;
     for (OderFlow s: order.Flow) {
         QJsonObject m;
@@ -379,6 +394,13 @@ Order OrderService::fromJsonObject(QJsonObject obj)
         QJsonValue value = obj.value("TotleMoney");
         if(value.isDouble())
             order.TotleMoney = value.toDouble();
+    }
+
+
+    if(obj.contains("PrintNum")){
+        QJsonValue value = obj.value("PrintNum");
+        if(value.isDouble())
+            order.PrintNum = value.toInt();
     }
 
     if(obj.contains("Flow")){
