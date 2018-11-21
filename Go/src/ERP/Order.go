@@ -113,7 +113,7 @@ func UpdatePrintNum(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	list := []Order{}
+	list := []*Order{}
 	for _, v := range st {
 		data := &Order{}
 		if err := JRedis.Redis_hget(Hash_Order, v, data); err == nil {
