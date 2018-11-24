@@ -29,6 +29,9 @@ private slots:
 
     void appendOrder(Order para);
     void checkboxChecked();
+
+    void updatePrintNum(QVector<Order> list);
+    void updatePrintNumCb(QVector<Order> list,bool ok);
 private:
     void setRowData(Order para, int row);
     QVector<Order> getSelectOrder();

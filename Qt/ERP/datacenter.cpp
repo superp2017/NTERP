@@ -262,6 +262,25 @@ void dataCenter::net_modOrderPrice(const QJsonObject para)
     emit sig_modOrderPrice(order,isOK);
 }
 
+void dataCenter::net_updatePrintNum(const QJsonObject para)
+{
+    //    updatePrintNum
+
+    bool isOK   = false;
+    QVector<Order> list = OrderService::updatePrintNum(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK){
+        for (Order o:list){
+            for(int i=0;i<m_orders.size();++i){
+                if(m_orders[i].OrderID==o.OrderID){
+                    m_orders[i] = o;
+                    break;
+                }
+            }
+        }
+    }
+    emit sig_updatePrintNum(list,isOK);
+}
+
 void dataCenter::net_getglobalOrders()
 {
     bool ok =false;

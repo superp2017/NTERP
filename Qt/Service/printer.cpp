@@ -32,7 +32,7 @@ void printer::doPreview(QWidget* w)
     QPrintPreviewDialog preview(&printer, w);
     connect(&preview, SIGNAL(paintRequested(QPrinter*)),this, SLOT(printDocument(QPrinter*)));
     if (preview.exec()==QDialog::Accepted){
-        updateOrderPrintNum(m_data);
+      emit  updateOrderPrintNum(m_data);
     }
 }
 
@@ -49,7 +49,7 @@ void printer::doPrint(QWidget* w)
     if (dialog.exec() == QDialog::Accepted)
     {
         printDocument(&printer);
-        updateOrderPrintNum(m_data);
+        emit updateOrderPrintNum(m_data);
     }
 }
 
@@ -188,10 +188,7 @@ void printer::printRow(QPainter *print, QVector<QString> &data, int row, double 
     }
 }
 
-void printer::updateOrderPrintNum(QVector<Order> order)
-{
 
-}
 
 void printer::setData(const QVector<Order> &data)
 {

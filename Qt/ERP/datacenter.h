@@ -37,6 +37,7 @@ public:
     void net_produceOrder(const QJsonObject para);
     void net_finishOrder(const QJsonObject para);
     void net_modOrderPrice(const QJsonObject para);
+    void net_updatePrintNum(const QJsonObject para);
     void net_getglobalOrders();
     /////////////////////////////////////////////////////
     void net_newCustomer(const QJsonObject para);
@@ -143,6 +144,7 @@ signals:
     void sig_produceOrder(Order,bool);
     void sig_finishOrder(Order,bool);
     void sig_modOrderPrice(Order,bool);
+    void sig_updatePrintNum(QVector<Order>,bool);
     void sig_delOrder(Order,bool);
     void sig_globalOrders(bool);
     //////////////////////////////////////

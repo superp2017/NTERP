@@ -171,19 +171,27 @@ QVector<Order> OrderService::getAllOrders(bool &ok,QString hostname, QString hos
     return data;
 }
 
-void OrderService::updatePrintNum(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+QVector<Order> OrderService::updatePrintNum(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
+    QVector<Order> list;
     std::string url = Net_ModPrintNum;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
+        if(ret.data.isArray()){
+            QJsonArray arr = ret.data.toArray();
+            for(QJsonValue v:arr){
+                Order r = fromJsonObject(v.toObject());
+                list.push_back(r);
+            }
+        }
         ok = true;
-        return  ;
+        return  list;
     }
     if(!ret.ret)
         qDebug()<<"modOrderPrice ret is not 0"<<endl;
     ok = false;
-    return;
+    return list;
 }
 
 

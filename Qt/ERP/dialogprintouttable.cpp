@@ -2,6 +2,7 @@
 #include "ui_dialogprintouttable.h"
 #include "datacenter.h"
 #include <QMessageBox>
+#include "boost/thread.hpp"
 
 DialogPrintOutTable::DialogPrintOutTable(QWidget *parent) :
     QDialog(parent),
@@ -16,6 +17,9 @@ DialogPrintOutTable::DialogPrintOutTable(QWidget *parent) :
     QStringList header;
     header<<tr("生产批号")<<tr("物料描述")<<tr("订单数量")<<tr("单位")<<tr("打印次数")<<tr("客户名称")<<tr("备注");
     ui->tableWidget->setHorizontalHeaderLabels(header);
+
+    connect(&m_printer,SIGNAL(updateOrderPrintNum(QVector<Order>)),this,SLOT(updatePrintNum(QVector<Order>)));
+    connect(dataCenter::instance(),SIGNAL(sig_updatePrintNum(QVector<Order>,bool)),this,SLOT(updatePrintNumCb(QVector<Order>,bool)));
 
     for(Order o:dataCenter::instance()->pub_StatusOrders(Status_Success)){
         appendOrder(o);
@@ -89,6 +93,36 @@ void DialogPrintOutTable::checkboxChecked()
         b->setChecked(false);
     }
 
+}
+
+void DialogPrintOutTable::updatePrintNum(QVector<Order> list)
+{
+    QJsonArray arr;
+    for (Order o:list){
+        arr.append(o.OrderID);
+    }
+    QJsonObject obj;
+    obj.insert("Orders",arr);
+
+    boost::thread t(boost::bind(&dataCenter::net_updatePrintNum,dataCenter::instance(),obj));
+    t.detach();
+    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
+}
+
+void DialogPrintOutTable::updatePrintNumCb(QVector<Order> list, bool ok)
+{
+    int row =  ui->tableWidget->rowCount();
+    for(Order o:list){
+        for(int i=0;i<row;++i){
+            QWidget *w=  ui->tableWidget->cellWidget(i,0);
+            if(w!=NULL){
+                QCheckBox * box =reinterpret_cast<QCheckBox *>(w);
+                if(box->text()==o.OrderID){
+                    setRowData(o,i);
+                }
+            }
+        }
+    }
 }
 
 void DialogPrintOutTable::setRowData(Order para, int row)

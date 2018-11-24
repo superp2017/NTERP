@@ -107,14 +107,17 @@ func NewOrder(session *JHttp.Session) {
 	session.Forward("0", "success", st)
 }
 func UpdatePrintNum(session *JHttp.Session) {
-	st := []string{}
+	type Para struct {
+		Orders []string
+	}
+	st := &Para{}
 	if err := session.GetPara(&st); err != nil {
 		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 	list := []*Order{}
-	for _, v := range st {
+	for _, v := range st.Orders {
 		data := &Order{}
 		if err := JRedis.Redis_hget(Hash_Order, v, data); err == nil {
 			data.PrintNum++

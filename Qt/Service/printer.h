@@ -31,12 +31,14 @@ public:
 private slots:
     void printDocument(QPrinter *printer);
 
+signals:
+    void updateOrderPrintNum(QVector<Order> order);
 private:
 
     void printRow(QPainter *print, QVector<QString>& data, \
                   int row, double left, double top, \
                   double d_w,double d_h);
-    void updateOrderPrintNum(QVector<Order> order);
+
 private:
     QVector<Order> m_data;
     bool m_isTwoTtile;
