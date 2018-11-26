@@ -10,6 +10,7 @@
 #include "boost/thread.hpp"
 #include <QJsonObject>
 #include <QDebug>
+#include <QCompleter>
 
 NLogin::NLogin(QWidget *parent) :
     QDialog(parent),
@@ -32,9 +33,9 @@ NLogin::NLogin(QWidget *parent) :
                                   "QPushButton:pressed{border-image: url(:/icon/login-b.png);}"
                                   "QPushButton:checked{border-image: url(:/icon/login-b.png);}");
     ui->pushButton_exit->setStyleSheet("QPushButton{border-image: url(:/icon/Q-out-yellow.png);}"
-                                  "QPushButton:hover{border-image: url(:/icon/Q-out.png);}"
-                                  "QPushButton:pressed{border-image: url(:/icon/Q-out.png);}"
-                                  "QPushButton:checked{border-image: url(:/icon/Q-out.png);}");
+                                       "QPushButton:hover{border-image: url(:/icon/Q-out.png);}"
+                                       "QPushButton:pressed{border-image: url(:/icon/Q-out.png);}"
+                                       "QPushButton:checked{border-image: url(:/icon/Q-out.png);}");
 
 
     ui->pushButton_mini->setStyleSheet("QPushButton{border-image: url(:/icon/mini-a.png);}"
@@ -42,10 +43,15 @@ NLogin::NLogin(QWidget *parent) :
                                        "QPushButton:pressed{border-image: url(:/icon/mini.png);}");
 
 
-
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(login()));
     connect(dataCenter::instance(),SIGNAL(sig_login(bool)),this,SLOT(loginCb(bool)));
+    QStringList list = QStringList::fromSet(dataCenter::instance()->Accounts());
+    QCompleter *acc = new QCompleter(list,this);
+    ui->n_useNameLine->setCompleter(acc);
+    connect(ui->n_useNameLine,SIGNAL(textChanged(QString)),ui->n_usePwdLine,SLOT(clear()));
     ui->n_useNameLine->setText(dataCenter::instance()->CurSettings().Account);
+    ui->n_usePwdLine->setText(dataCenter::instance()->CurSettings().Code);
+
 }
 
 NLogin::~NLogin()
@@ -114,5 +120,5 @@ void NLogin::on_pushButton_exit_clicked()
 
 void NLogin::on_pushButton_mini_clicked()
 {
-  this->showMinimized();
+    this->showMinimized();
 }

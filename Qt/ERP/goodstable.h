@@ -17,6 +17,7 @@ public:
     void appendGoods(Goods g);
     void modGoods(Goods g);
     void removeGoods(QString g);
+    void checkAuthor(int index);
 signals:
     void inGoods(Goods,bool);
     void outGoods(Goods,bool);

@@ -42,6 +42,15 @@ QVector<Order> DialogPrintOutTable::getSelectOrder()
     return data;
 }
 
+void DialogPrintOutTable::clearSelect()
+{
+    for(QCheckBox*box:m_boxs){
+        box->setChecked(false);
+    }
+    ui->tableWidget->clearSelection();
+    ui->tableWidget->checkSelect();
+}
+
 void DialogPrintOutTable::on_pushButton_preview_clicked()
 {
     QVector<Order> ls = getSelectOrder();
@@ -49,7 +58,7 @@ void DialogPrintOutTable::on_pushButton_preview_clicked()
         QMessageBox::warning(this,"提示","请至少选择一个订单打印!");
         return ;
     }
-    m_printer.setData(ls);
+    m_printer.setData(ls,dataCenter::instance()->put_getPrintNumber());
     m_printer.doPreview(this);
 
 }
@@ -61,7 +70,7 @@ void DialogPrintOutTable::on_pushButton_print_clicked()
         QMessageBox::warning(this,"提示","请至少选择一个订单打印!");
         return ;
     }
-    m_printer.setData(ls);
+    m_printer.setData(ls,dataCenter::instance()->put_getPrintNumber());
     m_printer.doPrint(this);
 }
 
@@ -103,14 +112,19 @@ void DialogPrintOutTable::updatePrintNum(QVector<Order> list)
     }
     QJsonObject obj;
     obj.insert("Orders",arr);
+    obj.insert("UserID",dataCenter::instance()->pub_CurUser().UID);
+    obj.insert("UserName",dataCenter::instance()->pub_CurUser().Name);
 
     boost::thread t(boost::bind(&dataCenter::net_updatePrintNum,dataCenter::instance(),obj));
     t.detach();
+
     dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
 
 void DialogPrintOutTable::updatePrintNumCb(QVector<Order> list, bool ok)
 {
+    clearSelect();
+    dataCenter::instance()->pub_hideLoadding();
     int row =  ui->tableWidget->rowCount();
     for(Order o:list){
         for(int i=0;i<row;++i){

@@ -60,6 +60,7 @@ OrderTable::OrderTable(QString status, QWidget *w):
         this->hideColumn(8);
         this->hideColumn(9);
     }
+    checkAuthor(dataCenter::instance()->pub_CurUser().Author);
 }
 
 
@@ -134,6 +135,40 @@ void OrderTable::showAllRow()
 int  OrderTable::getTimeColNum()
 {
     return timecol;
+}
+
+void OrderTable::checkAuthor(int author)
+{
+    switch (author) {
+    case 0:
+        m_del->setEnabled(false);
+        m_mod_price->setEnabled(false);
+        this->hideColumn(14);
+        this->hideColumn(15);
+        break;
+    case 1:
+        m_new->setEnabled(false);
+        m_mod->setEnabled(false);
+        m_cancle->setEnabled(false);
+        m_produce->setEnabled(false);
+        m_out->setEnabled(false);
+        m_mod_price->setEnabled(false);
+        m_del->setEnabled(false);
+        m_giveup->setEnabled(false);
+        this->hideColumn(14);
+        this->hideColumn(15);
+        break;
+    case 2:
+        m_new->setEnabled(false);
+        m_mod->setEnabled(false);
+        m_cancle->setEnabled(false);
+        m_produce->setEnabled(false);
+        m_out->setEnabled(false);
+        m_del->setEnabled(false);
+        break;
+    default:
+        break;
+    }
 }
 
 
@@ -327,24 +362,40 @@ void OrderTable::setRowData(Order para,int row)
 
 void OrderTable::setEnable(bool mod, bool cancel, bool produce,  bool out, bool modPrice,bool del)
 {
-    //    m_new->setEnabled(New);
-    //    m_mod->setEnabled(mod);
-    //    m_cancle->setEnabled(cancel);
-    //    m_produce->setEnabled(produce);
-    //    m_out->setEnabled(out);
-    //    m_mod_price->setEnabled(modPrice);
-    //    m_del->setEnabled(del);
 
     m_menu->clear();
-    m_menu->addAction(m_new);
-    if(mod) m_menu->addAction(m_mod);
-    if(cancel) m_menu->addAction(m_cancle);
-    if(produce)m_menu->addAction(m_produce);
-    if(out) m_menu->addAction(m_out);
-    if(modPrice) m_menu->addAction(m_mod_price);
-    if(del) m_menu->addAction(m_del);
-    m_menu->addAction(m_giveup);
-
+    int i=0;
+    if(m_new->isEnabled()){
+        m_menu->addAction(m_new);
+        i++;
+    }
+    if(m_mod->isEnabled()&&mod){
+        m_menu->addAction(m_mod);
+        i++;
+    }
+    if(m_cancle->isEnabled()&&cancel) {
+        m_menu->addAction(m_cancle);
+        i++;
+    }
+    if(m_produce->isEnabled()&&produce){
+        m_menu->addAction(m_produce);
+        i++;
+    }
+    if(m_out->isEnabled()&&out){
+        m_menu->addAction(m_out);
+        i++;
+    }
+    if(m_mod_price->isEnabled()&&modPrice){
+        m_menu->addAction(m_mod_price);
+        i++;
+    }
+    if(m_del->isEnabled()&&del) {
+        m_menu->addAction(m_del);
+        i++;
+    }
+    if(m_giveup->isEnabled()&&i>0){
+        m_menu->addAction(m_giveup);
+    }
 }
 
 
@@ -381,8 +432,8 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
 
                     //                    if(cutStatus==Status_All){
                     //                        if(cur_order.Current.Status==Status_Cancle){
-//                    setEnable(false,false,false,false,false,true);
-               // }else{
+                    //                    setEnable(false,false,false,false,false,true);
+                    // }else{
                     bool produce = cur_order.Current.Status==Status_New||\
                             cur_order.Current.Status==Status_PartProduce||\
                             cur_order.Current.Status==Status_Part_Part;
@@ -395,8 +446,8 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                     setEnable(mod,mod,produce,out,mod,cancel);
                     //      }
                     //                    }
-
-                    m_menu->exec(e->globalPos());
+                    if(m_menu->actions().size()>0)
+                        m_menu->exec(e->globalPos());
                 }
             }
         }

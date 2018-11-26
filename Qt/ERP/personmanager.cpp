@@ -43,18 +43,35 @@ PersonManager::PersonManager(QWidget *parent) :
                                           "QPushButton:hover{border-image: url(:/icon/reflash-a.png);}"
                                           "QPushButton:pressed{border-image: url(:/icon/reflash-a.png);}"
                                           "QPushButton:checked{border-image: url(:/icon/reflash-a.png);}");
-
+    checkAuthor(dataCenter::instance()->pub_CurUser().Author);
     setBtnEnable(false,false,false);
 
     changeCol();
     updateData();
 }
 
+void PersonManager::checkAuthor(int author)
+{
+    switch (author) {
+    case 0:
+    case 1:
+    case 2:
+        ui->pushButton_del->setEnabled(false);
+        ui->pushButton_mod->setEnabled(false);
+        ui->pushButton_newUser->setEnabled(false);
+        ui->pushButton_out->setEnabled(false);
+        break;
+    default:
+        break;
+    }
+}
+
+
+
 PersonManager::~PersonManager()
 {
     delete ui;
 }
-
 
 
 void PersonManager::updateData()
@@ -96,7 +113,9 @@ void PersonManager::on_pushButton_mod_clicked()
     if(curUser.UID==""){
         return;
     }
-
+    if(curUser.Author>3){
+        AUTHOR_Limit(4);
+    }
     DialogNewUser newuser;
     newuser.setModel(false);
     newuser.clearUI();
@@ -130,6 +149,9 @@ void PersonManager::on_pushButton_out_clicked()
     if(curUser.UID==""){
         return;
     }
+    if(curUser.Author>3){
+        AUTHOR_Limit(4);
+    }
     QMessageBox msgBox;
     msgBox.setWindowTitle("提示");
     msgBox.setText("您将离职员工:"+curUser.Name);
@@ -157,7 +179,9 @@ void PersonManager::on_pushButton_del_clicked()
     if(curUser.UID==""){
         return;
     }
-
+    if(curUser.Author>3){
+        AUTHOR_Limit(4);
+    }
     QMessageBox msgBox;
     msgBox.setWindowTitle("提示");
     msgBox.setText("您将永久删除员工:"+curUser.Name+"的全部信息,");
@@ -251,36 +275,49 @@ void PersonManager::on_pushButton_reflash_clicked()
 
 void PersonManager::setBtnEnable(bool m, bool o, bool d)
 {
-    ui->pushButton_mod->setEnabled(m);
-    ui->pushButton_out->setEnabled(o);
-    ui->pushButton_del->setEnabled(d);
-
-    if(m){
-        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify-red.png);}"
-                                          "QPushButton:hover{border-image: url(:/icon/modify.png);}"
-                                          "QPushButton:pressed{border-image: url(:/icon/modify.png);}"
-                                          "QPushButton:checked{border-image: url(:/icon/modify.png);}");
-    }else{
-        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify.png);}");
+    if(!ui->pushButton_newUser->isEnabled()){
+        ui->pushButton_newUser->setVisible(false);
     }
-
-    if(o){
-        ui->pushButton_out->setStyleSheet("QPushButton{border-image: url(:/icon/quit-red.png);}"
-                                          "QPushButton:hover{border-image: url(:/icon/quit.png);}"
-                                          "QPushButton:pressed{border-image: url(:/icon/quit.png);}"
-                                          "QPushButton:checked{border-image: url(:/icon/quit.png);}");
-
+    if(ui->pushButton_mod->isEnabled()){
+        ui->pushButton_mod->setVisible(m);
+        if(m){
+            ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify-red.png);}"
+                                              "QPushButton:hover{border-image: url(:/icon/modify.png);}"
+                                              "QPushButton:pressed{border-image: url(:/icon/modify.png);}"
+                                              "QPushButton:checked{border-image: url(:/icon/modify.png);}");
+        }else{
+            ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify.png);}");
+        }
     }else{
-        ui->pushButton_out->setStyleSheet("QPushButton{border-image: url(:/icon/quit.png);}");
+        ui->pushButton_mod->setVisible(false);
     }
+    if(ui->pushButton_out->isEnabled()){
 
-    if(d){
-        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete-red.png);}"
-                                          "QPushButton:hover{border-image: url(:/icon/delete.png);}"
-                                          "QPushButton:pressed{border-image: url(:/icon/delete.png);}"
-                                          "QPushButton:checked{border-image: url(:/icon/delete.png);}");
+        ui->pushButton_out->setVisible(o);
+        if(o){
+            ui->pushButton_out->setStyleSheet("QPushButton{border-image: url(:/icon/quit-red.png);}"
+                                              "QPushButton:hover{border-image: url(:/icon/quit.png);}"
+                                              "QPushButton:pressed{border-image: url(:/icon/quit.png);}"
+                                              "QPushButton:checked{border-image: url(:/icon/quit.png);}");
+
+        }else{
+            ui->pushButton_out->setStyleSheet("QPushButton{border-image: url(:/icon/quit.png);}");
+        }
     }else{
-        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete.png);}");
+        ui->pushButton_out->setVisible(false);
+    }
+    if(ui->pushButton_del->isEnabled()){
+        ui->pushButton_del->setVisible(d);
+        if(d){
+            ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete-red.png);}"
+                                              "QPushButton:hover{border-image: url(:/icon/delete.png);}"
+                                              "QPushButton:pressed{border-image: url(:/icon/delete.png);}"
+                                              "QPushButton:checked{border-image: url(:/icon/delete.png);}");
+        }else{
+            ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete.png);}");
+        }
+    }else{
+        ui->pushButton_del->setVisible(false);
     }
 
 }

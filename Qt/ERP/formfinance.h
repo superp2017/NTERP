@@ -15,7 +15,7 @@ class FormFinance : public QWidget
 public:
     explicit FormFinance(QWidget *parent = 0);
     ~FormFinance();
-
+ void checkAuthor(int author);
 private slots:
     void on_pushButton_search_clicked();
 

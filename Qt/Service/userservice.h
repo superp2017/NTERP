@@ -23,7 +23,7 @@ public:
     static QJsonObject toJsonObject(User user);
     static User fromJsonObject(QJsonObject obj);
 
-    static bool exportUser(QVector<User> list, QString filepath, bool isOpen=false);
+    static bool exportUser(QVector<User> list, QString filepath, int author, bool isOpen=false);
 
 };
 

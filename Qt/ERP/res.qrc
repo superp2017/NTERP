@@ -76,5 +76,9 @@
         <file>icon/login_exit_down.png</file>
         <file>icon/finance.jpg</file>
         <file>icon/finance_green.jpg</file>
+        <file>icon/outprint.png</file>
+        <file>icon/outprint-a.png</file>
+        <file>icon/outprint_big.png</file>
+        <file>icon/outprint_big-red.png</file>
     </qresource>
 </RCC>

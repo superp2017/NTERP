@@ -59,6 +59,10 @@ void dataCenter::initData()
     //////////////获取所有商品的出库记录//////////////////////////////
     boost::thread(boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance())).detach();
 
+    //////////////获取打印数量/////////////////////////////
+    boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
+
+
 }
 
 void dataCenter::net_login(const QJsonObject para)
@@ -67,7 +71,7 @@ void dataCenter::net_login(const QJsonObject para)
     User u= accountService::login(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(ok){
         cur_user = u;
-        m_Config.setAccount(cur_user.Account);
+        m_Config.setAccount(cur_user.Account,cur_user.Code);
         m_Config.reSave();
     }
     emit sig_login(ok);
@@ -264,8 +268,6 @@ void dataCenter::net_modOrderPrice(const QJsonObject para)
 
 void dataCenter::net_updatePrintNum(const QJsonObject para)
 {
-    //    updatePrintNum
-
     bool isOK   = false;
     QVector<Order> list = OrderService::updatePrintNum(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(isOK){
@@ -277,8 +279,24 @@ void dataCenter::net_updatePrintNum(const QJsonObject para)
                 }
             }
         }
+        //////////////获取打印数量/////////////////////////////
+        boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
     }
     emit sig_updatePrintNum(list,isOK);
+}
+
+
+
+void dataCenter::net_getPrintNumber()
+{
+    QJsonObject para;
+    bool isOK = false;
+    QString ret =OrderService::setPrintNumber(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(isOK&&ret!=-1){
+        m_print_number = ret;
+    }else{
+        m_print_number ="20189999";
+    }
 }
 
 void dataCenter::net_getglobalOrders()
@@ -720,6 +738,11 @@ Order dataCenter::pub_getOrder(QString OrderID, bool &ok)
     return a;
 }
 
+QString dataCenter::put_getPrintNumber()
+{
+    return m_print_number;;
+}
+
 
 QVector<QString> dataCenter::pub_Units()
 {
@@ -856,6 +879,11 @@ bool dataCenter::pub_checkSuppliser(QString name)
 SysSetting dataCenter::CurSettings()
 {
     return m_Config.Setting();
+}
+
+QSet<QString> dataCenter::Accounts()
+{
+    return m_Config.accounts();
 }
 
 void dataCenter::setCurSettings(SysSetting set)

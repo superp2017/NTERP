@@ -21,6 +21,9 @@ void registerMetaType(){
     qRegisterMetaType<Goods>("Goods");
     qRegisterMetaType<Materiel>("Materiel");
     qRegisterMetaType<GoodsOutRecord>("GoodsOutRecord");
+    qRegisterMetaType<QVector<Order>>("QVector<Order>");
+
+
 
 
 }

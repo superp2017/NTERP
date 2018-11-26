@@ -14,13 +14,14 @@ printer::printer(bool isTwoTtile, QString firstTitle, QString secTtile,QObject *
     m_secTtile     = secTtile;
 }
 
-printer::printer(QVector<Order> d, bool isTwoTtile, \
+printer::printer(QVector<Order> d,QString printNum, bool isTwoTtile, \
                  QString firstTitle, QString secTtile,QObject *w):QObject(w)
 {
     m_data         = d;
     m_isTwoTtile   = isTwoTtile;
     m_fistTitle    = firstTitle;
     m_secTtile     = secTtile;
+    m_printNum     = printNum;
 }
 
 #include <QDebug>
@@ -32,7 +33,7 @@ void printer::doPreview(QWidget* w)
     QPrintPreviewDialog preview(&printer, w);
     connect(&preview, SIGNAL(paintRequested(QPrinter*)),this, SLOT(printDocument(QPrinter*)));
     if (preview.exec()==QDialog::Accepted){
-      emit  updateOrderPrintNum(m_data);
+        emit  updateOrderPrintNum(m_data);
     }
 }
 
@@ -92,8 +93,8 @@ void printer::printDocument(QPrinter *printer)
     painter.drawText(left*3,third_Titile_bottom,printer->width()/7.0*3,top-third_Titile_bottom,Qt::AlignTop|Qt::AlignLeft,customerName);
 
     painter.setFont(QFont("宋体", 16, QFont::Normal));
-
-    painter.drawText(left,third_Titile_bottom,right-left,top-third_Titile_bottom,Qt::AlignTop|Qt::AlignRight,"N.O 123123");
+    QString number = QString("N.O ")+m_printNum;
+    painter.drawText(left,third_Titile_bottom,right-left,top-third_Titile_bottom,Qt::AlignTop|Qt::AlignRight,number);
 
     painter.setFont(QFont("宋体", 11, QFont::Normal));
     painter.drawRect(left,top,width,height);
@@ -190,9 +191,10 @@ void printer::printRow(QPainter *print, QVector<QString> &data, int row, double 
 
 
 
-void printer::setData(const QVector<Order> &data)
+void printer::setData(const QVector<Order> &data,QString printNum)
 {
     m_data = data;
+    m_printNum = printNum;
 }
 
 

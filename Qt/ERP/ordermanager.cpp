@@ -78,16 +78,14 @@ OrderManager::OrderManager(QWidget *parent) :
 
 
 
-
-
     ui->pushButton_new->setStyleSheet("QPushButton{border-image: url(:/icon/new-red.png);}"
                                       "QPushButton:hover{border-image: url(:/icon/new.png);}"
                                       "QPushButton:pressed{border-image: url(:/icon/new.png);}"
                                       "QPushButton:checked{border-image: url(:/icon/new.png);}");
-    ui->pushButton_out_print->setStyleSheet("QPushButton{border-image: url(:/icon/search.png);}"
-                                            "QPushButton:hover{border-image: url(:/icon/search-a.png);}"
-                                            "QPushButton:pressed{border-image: url(:/icon/search-a.png);}"
-                                            "QPushButton:checked{border-image: url(:/icon/search-a.png);}");
+    ui->pushButton_out_print->setStyleSheet("QPushButton{border-image: url(:/icon/outprint.png);}"
+                                            "QPushButton:hover{border-image: url(:/icon/outprint-a.png);}"
+                                            "QPushButton:pressed{border-image: url(:/icon/outprint-a.png);}"
+                                            "QPushButton:checked{border-image: url(:/icon/outprint-a.png);}");
 
     ui->pushButton_print->setStyleSheet("QPushButton{border-image: url(:/icon/export.png);}"
                                         "QPushButton:hover{border-image: url(:/icon/export-a.png);}"
@@ -97,6 +95,8 @@ OrderManager::OrderManager(QWidget *parent) :
                                           "QPushButton:hover{border-image: url(:/icon/reflash-a.png);}"
                                           "QPushButton:pressed{border-image: url(:/icon/reflash-a.png);}"
                                           "QPushButton:checked{border-image: url(:/icon/reflash-a.png);}");
+
+    checkAuthor(dataCenter::instance()->pub_CurUser().Author);
 
     setBtnEnable(false,false,false,false,false,false);
     changeCol();
@@ -119,6 +119,37 @@ void OrderManager::updataData()
     m_tab_success->initOrder(dataCenter::instance()->pub_StatusOrders(Status_Success));
     m_tab_all->initOrder(dataCenter::instance()->pub_StatusOrders(Status_All));
     clearAllSelect();
+}
+
+void OrderManager::checkAuthor(int author)
+{
+    switch (author) {
+    case 0:
+        ui->pushButton_del->setEnabled(false);
+        ui->pushButton_change_price->setEnabled(false);
+        break;
+    case 1:
+        ui->pushButton_new->setEnabled(false);
+        ui->pushButton_change_price->setEnabled(false);
+        ui->pushButton_cancle->setEnabled(false);
+        ui->pushButton_mod->setEnabled(false);
+        ui->pushButton_out_print->setEnabled(false);
+        ui->pushButton_success->setEnabled(false);
+        ui->pushButton_del->setEnabled(false);
+        ui->pushButton_produce->setEnabled(false);
+        break;
+    case 2:
+        ui->pushButton_new->setEnabled(false);
+        ui->pushButton_cancle->setEnabled(false);
+        ui->pushButton_mod->setEnabled(false);
+        ui->pushButton_out_print->setEnabled(false);
+        ui->pushButton_success->setEnabled(false);
+        ui->pushButton_del->setEnabled(false);
+        ui->pushButton_produce->setEnabled(false);
+        break;
+    default:
+        break;
+    }
 }
 
 
@@ -199,6 +230,8 @@ void OrderManager::changeCol()
 
 void OrderManager::new_order()
 {
+    AUTHOR_Equal(1);
+    AUTHOR_Equal(2);
     DialogNewOrder    neworer;
     neworer.setModel(true);
     if(neworer.exec()==123){
@@ -215,6 +248,8 @@ void OrderManager::on_pushButton_new_clicked()
 
 void OrderManager::on_pushButton_mod_clicked()
 {
+    AUTHOR_Equal(1);
+    AUTHOR_Equal(2);
     if(cur_order.OrderID==""){
         return;
     }
@@ -230,6 +265,8 @@ void OrderManager::on_pushButton_mod_clicked()
 
 void OrderManager::on_pushButton_cancle_clicked()
 {
+    AUTHOR_Equal(1);
+    AUTHOR_Equal(2);
     if(cur_order.OrderID==""){
         return;
     }
@@ -263,6 +300,8 @@ void OrderManager::on_pushButton_cancle_clicked()
 
 void OrderManager::on_pushButton_produce_clicked()
 {
+    AUTHOR_Equal(1);
+    AUTHOR_Equal(2);
     if(cur_order.OrderID==""){
         return;
     }
@@ -274,6 +313,8 @@ void OrderManager::on_pushButton_produce_clicked()
 
 void OrderManager::on_pushButton_success_clicked()
 {
+    AUTHOR_Equal(1);
+    AUTHOR_Equal(2);
     if(cur_order.OrderID==""){
         return;
     }
@@ -305,6 +346,7 @@ void OrderManager::GlobalOrdersCb(bool ok)
 
 void OrderManager::on_pushButton_change_price_clicked()
 {
+    AUTHOR_Limit(2);
     if(cur_order.OrderID==""){
         return;
     }
@@ -322,6 +364,7 @@ void OrderManager::on_pushButton_change_price_clicked()
 
 void OrderManager::on_pushButton_del_clicked()
 {
+    AUTHOR_Limit(3);
     if(cur_order.OrderID==""){
         return;
     }
@@ -371,6 +414,17 @@ void OrderManager::on_pushButton_print_clicked()
     print.initData(status,"全部分厂");
     print.exec();
 }
+
+void OrderManager::on_pushButton_out_print_clicked()
+{
+    AUTHOR_Equal(1);
+    AUTHOR_Equal(2);
+    DialogPrintOutTable print;
+    print.exec();
+}
+
+
+
 
 void OrderManager::cancleOrderCb(Order order, bool ok)
 {
@@ -476,63 +530,98 @@ void OrderManager::clearCurOrder()
 
 void OrderManager::setBtnEnable(bool mod, bool cancel, bool produce, bool out,  bool change,bool del)
 {
-    ui->pushButton_mod->setVisible(mod);
-    ui->pushButton_cancle->setVisible(cancel);
-    ui->pushButton_produce->setVisible(produce);
-    ui->pushButton_success->setVisible(out);
-    ui->pushButton_change_price->setVisible(change);
-    ui->pushButton_del->setVisible(del);
+    if(!ui->pushButton_new->isEnabled())
+        ui->pushButton_new->setVisible(false);
 
+    if(!ui->pushButton_out_print->isEnabled())
+        ui->pushButton_out_print->setVisible(false);
 
-    if(mod){
-        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify-red.png);}"
-                                          "QPushButton:hover{border-image: url(:/icon/modify.png);}"
-                                          "QPushButton:pressed{border-image: url(:/icon/modify.png);}"
-                                          "QPushButton:checked{border-image: url(:/icon/modify.png);}");
-    }else{
-        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify.png);}");
-    }
-    if(cancel){
-        ui->pushButton_cancle->setStyleSheet("QPushButton{border-image: url(:/icon/cancel-red.png);}"
-                                             "QPushButton:hover{border-image: url(:/icon/cancel.png);}"
-                                             "QPushButton:pressed{border-image: url(:/icon/cancel.png);}"
-                                             "QPushButton:checked{border-image: url(:/icon/cancel.png);}");
-    }else{
-        ui->pushButton_cancle->setStyleSheet("QPushButton{border-image: url(:/icon/cancel.png);}");
-    }
-    if(produce){
-        ui->pushButton_produce->setStyleSheet("QPushButton{border-image: url(:/icon/production-red.png);}"
-                                              "QPushButton:hover{border-image: url(:/icon/production.png);}"
-                                              "QPushButton:pressed{border-image: url(:/icon/production.png);}"
-                                              "QPushButton:checked{border-image: url(:/icon/production.png);}");
-    }else{
-        ui->pushButton_produce->setStyleSheet("QPushButton{border-image: url(:/icon/production.png);}");
+    if(!ui->pushButton_print->isEnabled()){
+        ui->pushButton_print->setVisible(false);
     }
 
+    if(ui->pushButton_mod->isEnabled()){
+        ui->pushButton_mod->setVisible(mod);
+        if(mod){
+            ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify-red.png);}"
+                                              "QPushButton:hover{border-image: url(:/icon/modify.png);}"
+                                              "QPushButton:pressed{border-image: url(:/icon/modify.png);}"
+                                              "QPushButton:checked{border-image: url(:/icon/modify.png);}");
+        }else{
+            ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify.png);}");
+        }
+    }else{
+        ui->pushButton_mod->setVisible(false);
+    }
 
-    if(out){
-        ui->pushButton_success->setStyleSheet("QPushButton{border-image: url(:/icon/out-red.png);}"
-                                              "QPushButton:hover{border-image: url(:/icon/out.png);}"
-                                              "QPushButton:pressed{border-image: url(:/icon/out.png);}"
-                                              "QPushButton:checked{border-image: url(:/icon/out.png);}");
-    } else{
-        ui->pushButton_success->setStyleSheet("QPushButton{border-image: url(:/icon/out.png);}");
-    }
-    if(change){
-        ui->pushButton_change_price->setStyleSheet("QPushButton{border-image: url(:/icon/price-red.png);}"
-                                                   "QPushButton:hover{border-image: url(:/icon/price.png);}"
-                                                   "QPushButton:pressed{border-image: url(:/icon/price.png);}"
-                                                   "QPushButton:checked{border-image: url(:/icon/price.png);}");
+    if(ui->pushButton_cancle->isEnabled()){
+        ui->pushButton_cancle->setVisible(cancel);
+        if(cancel){
+            ui->pushButton_cancle->setStyleSheet("QPushButton{border-image: url(:/icon/cancel-red.png);}"
+                                                 "QPushButton:hover{border-image: url(:/icon/cancel.png);}"
+                                                 "QPushButton:pressed{border-image: url(:/icon/cancel.png);}"
+                                                 "QPushButton:checked{border-image: url(:/icon/cancel.png);}");
+        }else{
+            ui->pushButton_cancle->setStyleSheet("QPushButton{border-image: url(:/icon/cancel.png);}");
+        }
     }else{
-        ui->pushButton_change_price->setStyleSheet("QPushButton{border-image: url(:/icon/price.png);}");
+        ui->pushButton_cancle->setVisible(false);
     }
-    if(del){
-        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete-red.png);}"
-                                          "QPushButton:hover{border-image: url(:/icon/delete.png);}"
-                                          "QPushButton:pressed{border-image: url(:/icon/delete.png);}"
-                                          "QPushButton:checked{border-image: url(:/icon/delete.png);}");
+
+
+    if(ui->pushButton_produce->isEnabled()){
+        ui->pushButton_produce->setVisible(produce);
+        if(produce){
+            ui->pushButton_produce->setStyleSheet("QPushButton{border-image: url(:/icon/production-red.png);}"
+                                                  "QPushButton:hover{border-image: url(:/icon/production.png);}"
+                                                  "QPushButton:pressed{border-image: url(:/icon/production.png);}"
+                                                  "QPushButton:checked{border-image: url(:/icon/production.png);}");
+        }else{
+            ui->pushButton_produce->setStyleSheet("QPushButton{border-image: url(:/icon/production.png);}");
+        }
     }else{
-        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete.png);}");
+        ui->pushButton_produce->setVisible(false);
+    }
+
+    if( ui->pushButton_success->isEnabled()){
+        ui->pushButton_success->setVisible(out);
+        if(out){
+            ui->pushButton_success->setStyleSheet("QPushButton{border-image: url(:/icon/out-red.png);}"
+                                                  "QPushButton:hover{border-image: url(:/icon/out.png);}"
+                                                  "QPushButton:pressed{border-image: url(:/icon/out.png);}"
+                                                  "QPushButton:checked{border-image: url(:/icon/out.png);}");
+        } else{
+            ui->pushButton_success->setStyleSheet("QPushButton{border-image: url(:/icon/out.png);}");
+        }
+    }else{
+        ui->pushButton_success->setVisible(false);
+    }
+    if(ui->pushButton_change_price->isEnabled()){
+        ui->pushButton_change_price->setVisible(change);
+        if(change){
+            ui->pushButton_change_price->setStyleSheet("QPushButton{border-image: url(:/icon/price-red.png);}"
+                                                       "QPushButton:hover{border-image: url(:/icon/price.png);}"
+                                                       "QPushButton:pressed{border-image: url(:/icon/price.png);}"
+                                                       "QPushButton:checked{border-image: url(:/icon/price.png);}");
+        }else{
+            ui->pushButton_change_price->setStyleSheet("QPushButton{border-image: url(:/icon/price.png);}");
+        }
+    }else{
+        ui->pushButton_change_price->setVisible(false);
+    }
+    if(ui->pushButton_del->isEnabled()){
+        ui->pushButton_del->setVisible(del);
+
+        if(del){
+            ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete-red.png);}"
+                                              "QPushButton:hover{border-image: url(:/icon/delete.png);}"
+                                              "QPushButton:pressed{border-image: url(:/icon/delete.png);}"
+                                              "QPushButton:checked{border-image: url(:/icon/delete.png);}");
+        }else{
+            ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete.png);}");
+        }
+    }else{
+        ui->pushButton_del->setVisible(false);
     }
 }
 
@@ -541,12 +630,6 @@ void OrderManager::checkSelect()
     m_tab_new->checkSelect();
     m_tab_success->checkSelect();
     m_tab_all->checkSelect();
-}
-
-void OrderManager::on_pushButton_out_print_clicked()
-{
-    DialogPrintOutTable print;
-    print.exec();
 }
 
 

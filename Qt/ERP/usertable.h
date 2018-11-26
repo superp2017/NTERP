@@ -22,6 +22,7 @@ public:
     void appendUser(User para);
     void modUser(User para);
     void removeUser(QString para);
+    void checkAuthor(int author);
 signals:
     void userClick(QString UID);
     void newUser();
@@ -42,6 +43,7 @@ private:
     QAction *m_mod;
     QAction *m_out;
     QAction *m_del;
+    QAction *m_giveup;
 };
 
 #endif // USERTABLE_H

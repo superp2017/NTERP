@@ -5,6 +5,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include "dialogplatingmanage.h"
+#include "dialogprintouttable.h"
 
 SystemManager::SystemManager(QWidget *parent) :
     QWidget(parent),
@@ -20,57 +21,67 @@ SystemManager::SystemManager(QWidget *parent) :
 
 
     ui->pushButton_newOrder->setStyleSheet("QPushButton{border-image: url(:/icon/Order-red.png);}"
-                                         "QPushButton:hover{border-image: url(:/icon/Order.png);}"
-                                         "QPushButton:pressed{border-image: url(:/icon/Order.png);}"
-                                         "QPushButton:checked{border-image: url(:/icon/Order.png);}");
+                                           "QPushButton:hover{border-image: url(:/icon/Order.png);}"
+                                           "QPushButton:pressed{border-image: url(:/icon/Order.png);}"
+                                           "QPushButton:checked{border-image: url(:/icon/Order.png);}");
     ui->pushButton_about_commpany->setStyleSheet("QPushButton{border-image: url(:/icon/company-red.png);}"
-                                         "QPushButton:hover{border-image: url(:/icon/company.png);}"
-                                         "QPushButton:pressed{border-image: url(:/icon/company.png);}"
-                                         "QPushButton:checked{border-image: url(:/icon/company.png);}");
+                                                 "QPushButton:hover{border-image: url(:/icon/company.png);}"
+                                                 "QPushButton:pressed{border-image: url(:/icon/company.png);}"
+                                                 "QPushButton:checked{border-image: url(:/icon/company.png);}");
     ui->pushButton_custon_manage->setStyleSheet("QPushButton{border-image: url(:/icon/Customer-red.png);}"
-                                         "QPushButton:hover{border-image: url(:/icon/Customer.png);}"
-                                         "QPushButton:pressed{border-image: url(:/icon/Customer.png);}"
-                                         "QPushButton:checked{border-image: url(:/icon/Customer.png);}");
+                                                "QPushButton:hover{border-image: url(:/icon/Customer.png);}"
+                                                "QPushButton:pressed{border-image: url(:/icon/Customer.png);}"
+                                                "QPushButton:checked{border-image: url(:/icon/Customer.png);}");
     ui->pushButton_goodstype_manage->setStyleSheet("QPushButton{border-image: url(:/icon/classification-red.png);}"
-                                         "QPushButton:hover{border-image: url(:/icon/classification.png);}"
-                                         "QPushButton:pressed{border-image: url(:/icon/classification.png);}"
-                                         "QPushButton:checked{border-image: url(:/icon/classification.png);}");
+                                                   "QPushButton:hover{border-image: url(:/icon/classification.png);}"
+                                                   "QPushButton:pressed{border-image: url(:/icon/classification.png);}"
+                                                   "QPushButton:checked{border-image: url(:/icon/classification.png);}");
     ui->pushButton_mateial_manage->setStyleSheet("QPushButton{border-image: url(:/icon/materiel-red.png);}"
-                                         "QPushButton:hover{border-image: url(:/icon/materiel.png);}"
-                                         "QPushButton:pressed{border-image: url(:/icon/materiel.png);}"
-                                         "QPushButton:checked{border-image: url(:/icon/materiel.png);}");
+                                                 "QPushButton:hover{border-image: url(:/icon/materiel.png);}"
+                                                 "QPushButton:pressed{border-image: url(:/icon/materiel.png);}"
+                                                 "QPushButton:checked{border-image: url(:/icon/materiel.png);}");
     ui->pushButton_supplier_manage->setStyleSheet("QPushButton{border-image: url(:/icon/Supply-red.png);}"
-                                         "QPushButton:hover{border-image: url(:/icon/Supply.png);}"
-                                         "QPushButton:pressed{border-image: url(:/icon/Supply.png);}"
-                                         "QPushButton:checked{border-image: url(:/icon/Supply.png);}");
+                                                  "QPushButton:hover{border-image: url(:/icon/Supply.png);}"
+                                                  "QPushButton:pressed{border-image: url(:/icon/Supply.png);}"
+                                                  "QPushButton:checked{border-image: url(:/icon/Supply.png);}");
     ui->pushButton_unit_manage->setStyleSheet("QPushButton{border-image: url(:/icon/t-red.png);}"
-                                         "QPushButton:hover{border-image: url(:/icon/t.png);}"
-                                         "QPushButton:pressed{border-image: url(:/icon/t.png);}"
-                                         "QPushButton:checked{border-image: url(:/icon/t.png);}");
+                                              "QPushButton:hover{border-image: url(:/icon/t.png);}"
+                                              "QPushButton:pressed{border-image: url(:/icon/t.png);}"
+                                              "QPushButton:checked{border-image: url(:/icon/t.png);}");
 
     ui->pushButton_plating->setStyleSheet("QPushButton{border-image: url(:/icon/duzhong-red.png);}"
-                                         "QPushButton:hover{border-image: url(:/icon/duzhong.png);}"
-                                         "QPushButton:pressed{border-image: url(:/icon/duzhong.png);}"
-                                         "QPushButton:checked{border-image: url(:/icon/duzhong.png);}");
+                                          "QPushButton:hover{border-image: url(:/icon/duzhong.png);}"
+                                          "QPushButton:pressed{border-image: url(:/icon/duzhong.png);}"
+                                          "QPushButton:checked{border-image: url(:/icon/duzhong.png);}");
 
     ui->pushButton__about_system->setStyleSheet("QPushButton{border-image: url(:/icon/system-red.png);}"
-                                         "QPushButton:hover{border-image: url(:/icon/system.png);}"
-                                         "QPushButton:pressed{border-image: url(:/icon/system.png);}"
-                                         "QPushButton:checked{border-image: url(:/icon/system.png);}");
+                                                "QPushButton:hover{border-image: url(:/icon/system.png);}"
+                                                "QPushButton:pressed{border-image: url(:/icon/system.png);}"
+                                                "QPushButton:checked{border-image: url(:/icon/system.png);}");
 
     ui->pushButton_department_manage->setStyleSheet("QPushButton{border-image: url(:/icon/department-red.png);}"
-                                         "QPushButton:hover{border-image: url(:/icon/department.png);}"
-                                         "QPushButton:pressed{border-image: url(:/icon/department.png);}"
-                                         "QPushButton:checked{border-image: url(:/icon/department.png);}");
+                                                    "QPushButton:hover{border-image: url(:/icon/department.png);}"
+                                                    "QPushButton:pressed{border-image: url(:/icon/department.png);}"
+                                                    "QPushButton:checked{border-image: url(:/icon/department.png);}");
     ui->pushButton_author_manage->setStyleSheet("QPushButton{border-image: url(:/icon/Jurisdiction-red.png);}"
-                                         "QPushButton:hover{border-image: url(:/icon/Jurisdiction.png);}"
-                                         "QPushButton:pressed{border-image: url(:/icon/Jurisdiction.png);}"
-                                         "QPushButton:checked{border-image: url(:/icon/Jurisdiction.png);}");
+                                                "QPushButton:hover{border-image: url(:/icon/Jurisdiction.png);}"
+                                                "QPushButton:pressed{border-image: url(:/icon/Jurisdiction.png);}"
+                                                "QPushButton:checked{border-image: url(:/icon/Jurisdiction.png);}");
+    ui->pushButton_out_print->setStyleSheet("QPushButton{border-image: url(:/icon/outprint_big-red.png);}"
+                                                "QPushButton:hover{border-image: url(:/icon/outprint_big.png);}"
+                                                "QPushButton:pressed{border-image: url(:/icon/outprint_big.png);}"
+                                                "QPushButton:checked{border-image: url(:/icon/outprint_big.png);}");
+
 }
 
 SystemManager::~SystemManager()
 {
     delete ui;
+}
+
+void SystemManager::checkAuthor(int author)
+{
+
 }
 
 void SystemManager::on_pushButton_update_clicked()
@@ -126,7 +137,7 @@ void SystemManager::on_pushButton__about_system_clicked()
 {
     QMessageBox msgBox;
     msgBox.setWindowTitle("关于系统");
-    msgBox.setText("本系统由mp开发\n系统版本 v0.1\n");
+    msgBox.setText("系统版本 v1.0\n如出现问题,请联系运维人员！");
     msgBox.exec();
 }
 
@@ -143,12 +154,20 @@ void SystemManager::on_pushButton_department_manage_clicked()
 
 void SystemManager::on_pushButton_author_manage_clicked()
 {
-    author.initData();
-    author.showNormal();
+    //    author.initData();
+    //    author.showNormal();
+    QString qtManulFile="权限说明.pdf";
+    QDesktopServices::openUrl(QUrl::fromLocalFile(qtManulFile));
 }
 
 void SystemManager::on_pushButton_plating_clicked()
 {
     DialogPlatingManage e;
     e.exec();
+}
+
+void SystemManager::on_pushButton_out_print_clicked()
+{
+    DialogPrintOutTable print;
+    print.exec();
 }

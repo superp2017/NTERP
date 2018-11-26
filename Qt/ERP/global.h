@@ -39,10 +39,18 @@ struct SysSetting{
     QString Host_name;
     QString Host_port;
     QString Account;
+    QString Code;
     QStringList MaterielColor;
     QStringList MaterielType;
     bool isExportOpen;
 };
+
+
+const int  AUTHOR_Productor = 0; //操作工
+const int  AUTHOR_Store = 1;//仓库管理员
+const int  AUTHOR_Finace = 2;//财务
+const int  Author_Admin = 3;//管理员
+const int  Author_SuperAdmin = 4;//超级管理员
 
 
 

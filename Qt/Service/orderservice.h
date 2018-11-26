@@ -18,10 +18,11 @@ public:
     static Order delOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QVector<Order> getAllOrders(bool &ok,QString hostname, QString hostport);
     static QVector<Order> updatePrintNum(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static QString setPrintNumber(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QJsonObject toJsonObject(Order order);
     static Order fromJsonObject(QJsonObject obj);
 
-    static bool exportOrders(QString curstatus, QVector<Order> list, QString filepath, bool isOpen=false);
+    static bool exportOrders(QString curstatus, QVector<Order> list, QString filepath, int author,bool isOpen=false);
 
     static bool exportOrdersEx(QVector<Order>list,QString filepath,bool isOpen = false);
 private:

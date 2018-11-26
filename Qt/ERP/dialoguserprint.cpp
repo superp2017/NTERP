@@ -61,7 +61,9 @@ void DialogUserPrint::on_pushButton_cancle_clicked()
 
 void DialogUserPrint::doExport(QVector<User> ls,QString filepath)
 {
-    bool ok = UserService::exportUser(ls,filepath,true);
+    bool ok = UserService::exportUser(ls,filepath,\
+                                      dataCenter::instance()->pub_CurUser().Author,\
+                                      dataCenter::instance()->CurSettings().isExportOpen);
     emit sig_exportCb(ok);
 
 }

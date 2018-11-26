@@ -27,7 +27,7 @@ class SystemManager : public QWidget
 public:
     explicit SystemManager(QWidget *parent = 0);
     ~SystemManager();
-
+ void checkAuthor(int author);
 private slots:
     void on_pushButton_update_clicked();
     void on_pushButton_supplier_manage_clicked();
@@ -45,6 +45,8 @@ private slots:
 
     void on_pushButton_plating_clicked();
 
+    void on_pushButton_out_print_clicked();
+
 signals:
     void newOrder();
 
@@ -58,7 +60,7 @@ private:
     FormGoodsTypeManage  typeMange;  //分类管理
     FormUnitManage       Unit;       //单位管理
     FormDepartmentManage department; //部门管理
-    FormAuthorManage     author;     //权限管理
+   // FormAuthorManage     author;     //权限管理
 };
 
 #endif // SYSTEMMANAGER_H

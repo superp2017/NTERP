@@ -6,6 +6,7 @@
 #include <QDebug>
 
 
+
 FormCenter::FormCenter(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FormCenter)
@@ -58,6 +59,8 @@ FormCenter::FormCenter(QWidget *parent) :
     connect(m_timer,SIGNAL(timeout()),this,SLOT(timeoutslot()));//timeoutslot()为自定义槽
     connect(&m_sys,SIGNAL(newOrder()),&m_order,SLOT(new_order()));
     ui->label__curuser_name->setText("当前用户: "+dataCenter::instance()->pub_CurUser().Name);
+
+    checkAuthor(dataCenter::instance()->pub_CurUser().Author);
 }
 
 FormCenter::~FormCenter()
@@ -67,14 +70,54 @@ FormCenter::~FormCenter()
 
 
 
+void FormCenter::checkAuthor(int author)
+{
+    switch (author) {
+    case 0:
+    case 1:
+        ui->finance_btn->hide();
+        ui->set_Btn->hide();
+        break;
+    case 2:
+        ui->set_Btn->hide();
+    default:
+        break;
+    }
+}
 
+
+
+
+
+void FormCenter::reset(int index)
+{
+    switch (index) {
+    case 0:
+        ui->order_btn->setChecked(false);
+        break;
+    case 1:
+        ui->store_btn->setChecked(false);
+        break;
+    case 2:
+        ui->person_btn->setChecked(false);
+        break;
+    case 3:
+        ui->finance_btn->setChecked(false);
+        break;
+    case 4:
+        ui->set_Btn->setChecked(false);
+        break;
+    default:
+        break;
+    }
+}
 
 void FormCenter::on_order_btn_clicked()
 {
     ui->person_btn->setChecked(false);
     ui->store_btn->setChecked(false);
     ui->set_Btn->setChecked(false);
-        ui->finance_btn->setChecked(false);
+    ui->finance_btn->setChecked(false);
     ui->stackedWidget->setCurrentWidget(&m_order);
 
 }
@@ -115,7 +158,6 @@ void FormCenter::on_finance_btn_clicked()
     ui->stackedWidget->setCurrentWidget(&m_finance);
 
 }
-
 
 
 void FormCenter::timeoutslot()

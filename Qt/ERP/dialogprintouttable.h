@@ -35,6 +35,7 @@ private slots:
 private:
     void setRowData(Order para, int row);
     QVector<Order> getSelectOrder();
+    void clearSelect();
 
 private:
     Ui::DialogPrintOutTable *ui;

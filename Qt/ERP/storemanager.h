@@ -20,6 +20,7 @@ class StoreManager : public QWidget
 public:
     explicit StoreManager(QWidget *parent = 0);
     ~StoreManager();
+    void checkAuthor(int author);
 
 private slots:
     void on_pushButton_new_clicked();
@@ -37,6 +38,7 @@ private slots:
     void getAllGoodsRecordCb(bool ok);
     void changeCol();
     void clearSelectSection();
+
 private:
     void initData();
     void setBtnEnable(bool mod, bool in, bool out, bool del);

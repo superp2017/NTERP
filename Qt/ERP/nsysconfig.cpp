@@ -8,6 +8,7 @@ nSysConfig::nSysConfig()
     m_set.Host_name  = m_settings.value("HOST_NAME").toString();
     m_set.Host_port  = m_settings.value("HOST_PORT").toString();
     m_set.Account = m_settings.value("Account").toString();
+    m_set.Code = m_settings.value("Code").toString();
     m_settings.endGroup();
 
     m_settings.beginGroup("Setting");
@@ -17,6 +18,9 @@ nSysConfig::nSysConfig()
     }else{
         m_set.isExportOpen = false;
     }
+    m_settings.endGroup();
+    m_settings.beginGroup("Accounts");
+    m_accounts = m_settings.value("Lists").toStringList().toSet();
     m_settings.endGroup();
 }
 
@@ -47,6 +51,20 @@ void nSysConfig::setSetting(SysSetting set)
     m_settings.setValue("HOST_NAME",set.Host_name);
     m_settings.setValue("HOST_PORT",set.Host_port);
     m_settings.setValue("Account",set.Account);
+    m_settings.setValue("Code",set.Code);
+    m_settings.endGroup();
+    m_settings.beginGroup("Accounts");
+//    QString list;
+//    QList<QString> l = m_accounts.toList();
+
+    QStringList list = QStringList::fromSet(m_accounts);
+//    for(int i =0;i<l.size();++i){
+//        list+=l.at(i);
+//        if(i!=l.size()-1){
+//            list+=",";
+//        }
+//    }
+    m_settings.setValue("Lists",list);
     m_settings.endGroup();
 }
 
@@ -55,12 +73,19 @@ SysSetting nSysConfig::Setting() const
     return m_set;
 }
 
-void nSysConfig::setAccount(QString acc)
+void nSysConfig::setAccount(QString acc, QString code)
 {
     m_set.Account = acc;
+    m_set.Code = code;
+    m_accounts.insert(acc);
 }
 
 void nSysConfig::reSave()
 {
     setSetting(m_set);
+}
+
+QSet<QString> nSysConfig::accounts() const
+{
+    return m_accounts;
 }

@@ -15,7 +15,7 @@ type Employee struct {
 	CID          string //公司ID
 	CommpanyName string //公司名称
 	Department   string //部门
-	Author       string //用户权限
+	Author       int    //用户权限
 	InTime       string //入职时间
 	OutTime      string //离职时间
 	CreatTime    string //创建时间
@@ -40,9 +40,6 @@ func NewEmployee(session *JHttp.Session) {
 	}
 	st.UID = getEmployeeID()
 	st.CreatTime = CurTime()
-	if st.Author == "" {
-		st.Author = "0"
-	}
 	st.Status = "0"
 	if st.Account != "" && st.Code != "" {
 		if exist, e := JRedis.Redis_hexists(Hash_Account, st.Account); e == nil && exist {
@@ -71,7 +68,7 @@ func ModEmployee(session *JHttp.Session) {
 		Sex        string //性别
 		Cell       string //联系方式
 		Department string //部门
-		Author     string //用户权限
+		Author     int    //用户权限
 		Account    string //账号
 		Code       string //密码
 		Age        int    //年龄
@@ -110,9 +107,6 @@ func ModEmployee(session *JHttp.Session) {
 	data.Account = st.Account
 	data.Code = st.Code
 	data.Author = st.Author
-	if data.Author == "" {
-		data.Author = "0"
-	}
 	if err := JRedis.Redis_hset(Hash_Employee, st.UID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
@@ -196,74 +190,74 @@ func GetAllEmployeess(session *JHttp.Session) {
 }
 
 //添加一个部门
-func NewDepartMent(session *JHttp.Session)  {
-	type Para struct{
-		Department string
-	}
-	st:=&Para{}
-	if err:=session.GetPara(st);err!=nil{
-		JLogger.Error(err.Error())
-		session.Forward("1",err.Error(),nil)
-		return
-	}
-	if st.Department==""{
-		JLogger.Error("Department is empty\n")
-		session.Forward("1","Department is empty\n",nil)
-		return
-	}
-	if err:=appendDepartment(st.Department);err!=nil{
-		JLogger.Error(err.Error())
-		session.Forward("1",err.Error(),nil)
-		return
-	}
-	session.Forward("0","NewDepartMent success\n",st.Department)
-}
-
-func RemoveDepartment(session *JHttp.Session)  {
+func NewDepartMent(session *JHttp.Session) {
 	type Para struct {
 		Department string
 	}
-	st:=&Para{}
-	if err:=session.GetPara(st);err!=nil{
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
 		JLogger.Error(err.Error())
-		session.Forward("1",err.Error(),nil)
+		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if st.Department==""{
+	if st.Department == "" {
 		JLogger.Error("Department is empty\n")
-		session.Forward("1","Department is empty\n",nil)
+		session.Forward("1", "Department is empty\n", nil)
 		return
 	}
-	if err:=delDepartment(st.Department);err!=nil{
+	if err := appendDepartment(st.Department); err != nil {
 		JLogger.Error(err.Error())
-		session.Forward("1",err.Error(),nil)
+		session.Forward("1", err.Error(), nil)
 		return
 	}
-	session.Forward("0","RemoveDepartment success\n",st.Department)
+	session.Forward("0", "NewDepartMent success\n", st.Department)
+}
+
+func RemoveDepartment(session *JHttp.Session) {
+	type Para struct {
+		Department string
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.Department == "" {
+		JLogger.Error("Department is empty\n")
+		session.Forward("1", "Department is empty\n", nil)
+		return
+	}
+	if err := delDepartment(st.Department); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	session.Forward("0", "RemoveDepartment success\n", st.Department)
 }
 
 //获取所有的部门
-func GetAllDepartment(session *JHttp.Session)  {
-	list,err:=getDepartment()
-	if err!=nil{
-		session.Forward("1",err.Error(),nil)
+func GetAllDepartment(session *JHttp.Session) {
+	list, err := getDepartment()
+	if err != nil {
+		session.Forward("1", err.Error(), nil)
 		return
 	}
-	session.Forward("0","GetAllDepartment success",list)
+	session.Forward("0", "GetAllDepartment success", list)
 }
 
 //追加一个部门
-func appendDepartment(depart string)error  {
+func appendDepartment(depart string) error {
 	return JRedis.Redis_Sset(Key_Department, depart)
 }
 
 //删除一个部门
-func delDepartment(depart string)error  {
+func delDepartment(depart string) error {
 	return JRedis.Redis_Sdel(Key_Department, depart)
 }
 
 //获取部门
-func getDepartment()([]string,error)  {
+func getDepartment() ([]string, error) {
 	data := []string{}
 	d, err := JRedis.Redis_Sget(Key_Department)
 	for _, v := range d {
@@ -271,4 +265,3 @@ func getDepartment()([]string,error)  {
 	}
 	return data, err
 }
-

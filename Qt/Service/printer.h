@@ -15,7 +15,7 @@ public:
     printer(bool isTwoTtile =true, \
             QString firstTitle=QString("海门市江淤电镀有限公司"), \
             QString secTtile=QString("南通江淤新材料有限公司"), QObject *w=0);
-    printer(QVector<Order> d,bool isTwoTtile =true,\
+    printer(QVector<Order> d,QString printNum,bool isTwoTtile =true,\
             QString firstTitle=QString("海门市江淤电镀有限公司"),\
             QString secTtile=QString("南通江淤新材料有限公司"),QObject *w=0);
     void doPreview(QWidget *w);
@@ -27,7 +27,7 @@ public:
 
     void setSecTtile(const QString &secTtile);
 
-    void setData(const QVector<Order> &data);
+    void setData(const QVector<Order> &data,QString printNum);
 private slots:
     void printDocument(QPrinter *printer);
 
@@ -44,6 +44,7 @@ private:
     bool m_isTwoTtile;
     QString m_fistTitle;
     QString m_secTtile;
+    QString m_printNum;
 };
 
 #endif // PRINTER_H

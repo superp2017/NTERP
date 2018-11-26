@@ -194,6 +194,25 @@ QVector<Order> OrderService::updatePrintNum(const QJsonObject para, bool &ok, QS
     return list;
 }
 
+QString OrderService::setPrintNumber(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    QString num =0;
+    std::string url = Net_SetPrintNum;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isString()){
+            num = ret.data.toString();
+        }
+        ok = true;
+        return  num;
+    }
+    if(!ret.ret)
+        qDebug()<<"modOrderPrice ret is not 0"<<endl;
+    ok = false;
+    return "20189999";
+}
+
 
 QJsonObject OrderService::toJsonObject(Order order)
 {
@@ -244,6 +263,18 @@ QJsonObject OrderService::toJsonObject(Order order)
     cur.insert("Action",order.Current.Action);
     cur.insert("Status",order.Current.Status);
     obj.insert("Current",cur);
+
+    QJsonArray print;
+    for (PrintDetail s: order.Print) {
+        QJsonObject m;
+        m.insert("UserName",s.UserName);
+        m.insert("UserID",s.UserID);
+        m.insert("PrintDate",s.PrintDate);
+        flow.append(m);
+    }
+    obj.insert("Print",print);
+
+
     return obj;
 }
 
@@ -472,12 +503,43 @@ Order OrderService::fromJsonObject(QJsonObject obj)
         }
     }
 
+
+    if(obj.contains("Print")){
+        QJsonValue value = obj.value("Print");
+        if(value.isArray()){
+            QJsonArray array = value.toArray();
+            for(QJsonValue v:array){
+                PrintDetail detail;
+                if(v.isObject()){
+                    QJsonObject o = v.toObject();
+                    if(o.contains("UserName")){
+                        QJsonValue s = o.value("UserName");
+                        if(s.isString())
+                            detail.UserName = s.toString();
+                    }
+                    if(o.contains("UserID")){
+                        QJsonValue s = o.value("UserID");
+                        if(s.isString())
+                            detail.UserID = s.toString();
+                    }
+                    if(o.contains("PrintDate")){
+                        QJsonValue s = o.value("PrintDate");
+                        if(s.isString())
+                            detail.PrintDate = s.toString();
+                    }
+                    order.Print.append(detail);
+                }
+            }
+        }
+    }
+
+
     return order;
 }
 
 
 
-bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString filepath, bool isOpen)
+bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString filepath, int author, bool isOpen)
 {
     QVector<QVariant> datalist;
     datalist<<"分厂名称"<<"产线名称"<<"生产批号"<<"订单类型"<<"客户名称"<<"物料描述"<<"订单数量"<<"单位";
@@ -494,7 +556,10 @@ bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString f
         datalist<<"未成品"<<"已成品"<<"未出库"<<"已出库";
     }
 
-    datalist<<"客户批次"<<"客户备注"<<"未税单价(元)"<<"未税总价(元)"<<"状态"<<"创建时间";
+    datalist<<"客户批次"<<"客户备注";
+    if(author>1)
+        datalist<<"未税单价(元)"<<"未税总价(元)";
+    datalist<<"状态"<<"创建时间";
 
     QVector<QVector<QVariant>> data;
     for(int i=0;i<list.size();++i){
@@ -564,10 +629,11 @@ bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString f
             datalist<<"'"+QString("%1").arg(order.SuccessNum);
         }
 
-        datalist<<"'"+order.CustomBatch<<"'"+order.CustomNote\
-               <<"'"+QString("%1").arg(order.Money)\
-              <<"'"+QString("%1").arg(order.TotleMoney)<<status\
-             <<"'"+QDateTime::fromString(order.CreatTime,"yyyy-MM-dd HH:mm:ss").toString("yyyy-MM-dd");
+        datalist<<"'"+order.CustomBatch<<"'"+order.CustomNote;
+        if(author>=2){
+            datalist<<"'"+QString("%1").arg(order.Money)<<"'"+QString("%1").arg(order.TotleMoney);
+        }
+        datalist<<status <<"'"+QDateTime::fromString(order.CreatTime,"yyyy-MM-dd HH:mm:ss").toString("yyyy-MM-dd");
         data.push_back(datalist);
     }
     return  ExcelService::dataExport(filepath,datalist,data,isOpen);

@@ -27,6 +27,7 @@ const std::string  Net_CancelOrder="/cancleorder";          //取消订单
 const std::string  Net_SuccessOrder="/successorder";        //完成订单
 const std::string  Net_ModOrderPrice="/modorderprice";      //修改订单价格
 const std::string  Net_ModPrintNum="/updateprintnum";      //修改订单打印次数
+const std::string  Net_SetPrintNum="/getprintnumber";      //获取设置总的打印次数
 const std::string  Net_GlobalOrders="/getglobalorders";     //获取所有订单
 
 
@@ -109,6 +110,13 @@ struct OderFlow{
     QString Status;     //状态
 };
 
+struct PrintDetail{
+    QString UserName;   //用户姓名
+    QString UserID;//用户ID
+    QString PrintDate;//打印时间
+};
+
+
 
 struct Order{
     QString           UID;            //用户id
@@ -143,6 +151,7 @@ struct Order{
     double            Money;          //价格
     double            TotleMoney;     //总价
     int               PrintNum;       //打印次数
+    QVector<PrintDetail> Print;       //打印记录
 };
 
 struct User {
@@ -153,7 +162,7 @@ struct User {
     QString CID;            //公司ID
     QString CommpanyName;   //公司名称
     QString Department;     //部门
-    QString Author;         //用户权限
+    int     Author;         //用户权限
     QString InTime;         //入职时间
     QString OutTime;        //离职时间
     QString CreatTime;      //创建时间

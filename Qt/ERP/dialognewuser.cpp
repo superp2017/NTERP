@@ -32,8 +32,6 @@ DialogNewUser::DialogNewUser(QWidget *parent) :
 
 
 
-    initComBox(dataCenter::instance()->pub_getDepartments(),dataCenter::instance()->pub_getAuthors());
-
     connect(dataCenter::instance(),SIGNAL(sig_newEmployee(User,bool)),this,SLOT(creatUserCb(User,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_modEmployee(User,bool)),this,SLOT(modUserCb(User,bool)));
 }
@@ -64,7 +62,6 @@ void DialogNewUser::initUI(User user)
 {
     ui->lineEdit_name->setText(user.Name);
     ui->lineEdit_cell->setText(user.Cell);
-    ui->comboBox_department->setCurrentText(user.Author);
     ui->comboBox_department->setCurrentText(user.Department);
     ui->comboBox_sex->setCurrentText(user.Sex);
     ui->spinBox_age->setValue(user.Age);
@@ -72,7 +69,7 @@ void DialogNewUser::initUI(User user)
     ui->dateEdit_in_time->setDate(QDate::fromString(user.InTime,"yyyy-MM-dd"));
     ui->lineEdit_accout->setText(user.Account);
     ui->lineEdit_code->setText(user.Code);
-
+    ui->comboBox_author->setCurrentIndex(user.Author);
     m_curUser = user;
 }
 
@@ -81,7 +78,6 @@ void DialogNewUser::clearUI()
     ui->lineEdit_name->setText("");
     ui->lineEdit_cell->setText("");
     ui->comboBox_department->setCurrentIndex(0);
-    ui->comboBox_department->setCurrentIndex(0);
     ui->comboBox_sex->setCurrentIndex(0);
     ui->spinBox_age->setValue(18);
     ui->spinBox_salary->setValue(0);
@@ -89,6 +85,7 @@ void DialogNewUser::clearUI()
     ui->lineEdit_accout->setText("");
     ui->lineEdit_code->setText("");
 }
+
 
 void DialogNewUser::setModel(bool isNew)
 {
@@ -100,15 +97,18 @@ void DialogNewUser::setModel(bool isNew)
         this->setWindowTitle("员工修改");
         ui->pushButton_creat->setText("修改");
     }
+    initComBox(dataCenter::instance()->pub_getDepartments(),dataCenter::instance()->pub_getAuthors());
+
 }
 
 void DialogNewUser::on_pushButton_creat_clicked()
 {
+
     User user = m_curUser;
     user.Name        = ui->lineEdit_name->text().trimmed();
     user.Cell        = ui->lineEdit_cell->text().trimmed();
     user.Department  = ui->comboBox_department->currentText().trimmed();
-    user.Author      = ui->comboBox_author->currentText().trimmed();
+    user.Author      = ui->comboBox_author->currentData().toInt();
     user.Sex         = ui->comboBox_sex->currentText().trimmed();
     user.InTime      = ui->dateEdit_in_time->text().trimmed();
     user.Salary      = ui->spinBox_salary->value();
@@ -139,6 +139,15 @@ void DialogNewUser::on_pushButton_creat_clicked()
         QToolTip::showText(ui->lineEdit_code->mapToGlobal(QPoint(100, 0)), "密码不能为空!");
         return ;
     }
+
+
+    if(m_curUser.Author==4){
+        AUTHOR_Limit(4);
+    }
+    if(user.Author==4){
+        AUTHOR_Limit(4);
+    }
+
 
     QJsonObject para = UserService::toJsonObject(user);
     if(m_isNewMode){
@@ -201,7 +210,15 @@ void DialogNewUser::initComBox(QVector<QString>department,QVector<QString>autor)
     ui->comboBox_department->addItems(department.toList());
 
     ui->comboBox_author->clear();
-    ui->comboBox_author->addItems(autor.toList());
+    for(int i=0;i<autor.size();++i){
+        if(i==4&&m_isNewMode){
+            if(dataCenter::instance()->pub_CurUser().Author<4){
+                continue;
+            }
+        }
+        ui->comboBox_author->addItem(autor.at(i),i);
+    }
+
     //     ui->comboBox_author->addItem(ItemNewAuthor);
 
     ui->comboBox_department->blockSignals(false);

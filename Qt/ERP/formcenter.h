@@ -8,6 +8,7 @@
 #include "systemmanager.h"
 #include "formfinance.h"
 #include <QTimer>
+#include "global.h"
 
 #pragma execution_character_set("utf-8")
 namespace Ui {
@@ -47,6 +48,9 @@ private slots:
     void on_pushButton_mini_clicked();
 
     void on_finance_btn_clicked();
+
+    void checkAuthor(int author);
+    void reset(int index);
 
 private:
     Ui::FormCenter *ui;

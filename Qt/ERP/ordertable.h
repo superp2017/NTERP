@@ -23,6 +23,7 @@ public:
     void removeOrder(Order para);
     void showAllRow();
     int  getTimeColNum();
+    void checkAuthor(int author);
 signals:
     void orderClick(QString orderID);
     void newOrder();

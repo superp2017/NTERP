@@ -9,40 +9,7 @@
 #include <QMessageBox>
 #pragma execution_character_set("utf-8")
 
-#define AUTHOR_Return(x) if(x==dataCenter::instance()->pub_CurUser().Author){\
-    return;\
-    }
-
-#define AUTHOR_Equal(x) if(x==dataCenter::instance()->pub_CurUser().Author){\
-    QMessageBox::information(NULL,"提示","您没有操作权限！");\
-    return;\
-    }
-
-#define AUTHOR_Equal_Ex_1(x,f) if(x==dataCenter::instance()->pub_CurUser().Author){\
-    f();\
-    QMessageBox::information(NULL,"提示","您没有操作权限！");\
-    return;\
-    }
-
-#define AUTHOR_Equal_Ex_2(x,f,v) if(x==dataCenter::instance()->pub_CurUser().Author){\
-    f(v);\
-    QMessageBox::information(NULL,"提示","您没有操作权限！");\
-    return;\
-    }
-
-#define AUTHOR_Limit(x) if(x>dataCenter::instance()->pub_CurUser().Author){\
-    QMessageBox::information(NULL,"提示","您没有操作权限！");\
-    return;\
-    }
-
-#define AUTHOR_Limit_Ex_1(x,f) if(x>dataCenter::instance()->pub_CurUser().Author){\
-    f();\
-    QMessageBox::information(NULL,"提示","您没有操作权限！");\
-    return;\
-    }
-
-#define AUTHOR_Limit_Ex_2(x,f,v) if(x>dataCenter::instance()->pub_CurUser().Author){\
-    f(v);\
+#define AUTHOR(x) if(x==dataCenter::instance()->pub_CurUser().Author){\
     QMessageBox::information(NULL,"提示","您没有操作权限！");\
     return;\
     }
@@ -80,7 +47,6 @@ public:
     void net_finishOrder(const QJsonObject para);
     void net_modOrderPrice(const QJsonObject para);
     void net_updatePrintNum(const QJsonObject para);
-    void net_getPrintNumber();
     void net_getglobalOrders();
     /////////////////////////////////////////////////////
     void net_newCustomer(const QJsonObject para);
@@ -133,7 +99,6 @@ public:
     QVector<Order> pub_StatusOrders(QString status);
     QVector<Order> pub_orders();
     Order pub_getOrder(QString OrderID,bool &ok);
-    QString put_getPrintNumber();
     ////////////////////////////////////////////////////
     QVector<QString> pub_Units();
     bool pub_checkUnitExist(QString unit);
@@ -174,7 +139,6 @@ public:
     QVector<GoodsOutRecord>pub_AllOutRecord();
     ////////////////////////////////////////////////////
     SysSetting CurSettings();
-    QSet<QString>Accounts();
     void setCurSettings(SysSetting set);
     //////////////////////////////////////////////////
 
@@ -263,7 +227,6 @@ private:
     QVector<GoodsOutRecord> m_goodsRecords;//所有商品出库记录
     Loadding                m_load;       //加载动画
     nSysConfig              m_Config;     //保存系统配置
-    QString                 m_print_number;
 };
 
 #endif // DATACENTER_H

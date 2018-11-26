@@ -5,6 +5,8 @@ import (
 	"JGo/JLogger"
 	"JGo/JStore/JRedis"
 	"fmt"
+	"strconv"
+	"time"
 )
 
 type OderFlow struct {
@@ -13,40 +15,46 @@ type OderFlow struct {
 	Action     string //动作
 	Status     string //状态
 }
+type PrintDetail struct {
+	UserID    string //用户ID
+	UserName  string //用户姓名
+	PrintDate string //打印时间
+}
 
 type Order struct {
-	UID             string     //用户id
-	UserName        string     //用户姓名
-	OrderID         string     //订单id
-	OrderType       string     //订单类型（普通订单、试样订单、返工订单）
-	Factory         string     //分厂名称
-	FactoryNumber   string     //分厂号
-	ProductionLine  string     //产线名称
-	MaterielID      string     //材料id
-	MaterielDes     string     //材料描述
-	Plating         string     //镀种
-	Friction        string     //摩擦系数
-	Thickness       string     //厚度
-	Salt            string     //盐度
-	ComponentSolid  string     //零件固号
-	ComponentFormat string     //零件规格
-	Unit            string     //单位
-	CustomID        string     //客户ID
-	CustomName      string     //客户姓名
-	CustomBatch     string     //客户批次
-	CustomNote      string     //客户备注
-	ProduceID       string     //生产编号
-	CreatTime       string     //创建时间
-	ProduceTime     string     //出货时间
-	SuccessTime     string     //完成时间
-	Current         OderFlow   //当前状态
-	Flow            []OderFlow //订单流程
-	OrderNum        float64    //订单数量
-	ProduceNum      float64    //生产完成数量
-	SuccessNum      float64    //出库数量
-	TotleMoney      float64    //总价
-	Money           float64    //单价
-	PrintNum        int        //打印次数
+	UID             string        //用户id
+	UserName        string        //用户姓名
+	OrderID         string        //订单id
+	OrderType       string        //订单类型（普通订单、试样订单、返工订单）
+	Factory         string        //分厂名称
+	FactoryNumber   string        //分厂号
+	ProductionLine  string        //产线名称
+	MaterielID      string        //材料id
+	MaterielDes     string        //材料描述
+	Plating         string        //镀种
+	Friction        string        //摩擦系数
+	Thickness       string        //厚度
+	Salt            string        //盐度
+	ComponentSolid  string        //零件固号
+	ComponentFormat string        //零件规格
+	Unit            string        //单位
+	CustomID        string        //客户ID
+	CustomName      string        //客户姓名
+	CustomBatch     string        //客户批次
+	CustomNote      string        //客户备注
+	ProduceID       string        //生产编号
+	CreatTime       string        //创建时间
+	ProduceTime     string        //出货时间
+	SuccessTime     string        //完成时间
+	Current         OderFlow      //当前状态
+	Flow            []OderFlow    //订单流程
+	OrderNum        float64       //订单数量
+	ProduceNum      float64       //生产完成数量
+	SuccessNum      float64       //出库数量
+	TotleMoney      float64       //总价
+	Money           float64       //单价
+	PrintNum        int           //打印次数
+	Print           []PrintDetail //打印记录
 }
 
 //新建订单
@@ -108,7 +116,9 @@ func NewOrder(session *JHttp.Session) {
 }
 func UpdatePrintNum(session *JHttp.Session) {
 	type Para struct {
-		Orders []string
+		Orders   []string
+		UserID   string
+		UserName string
 	}
 	st := &Para{}
 	if err := session.GetPara(&st); err != nil {
@@ -121,12 +131,42 @@ func UpdatePrintNum(session *JHttp.Session) {
 		data := &Order{}
 		if err := JRedis.Redis_hget(Hash_Order, v, data); err == nil {
 			data.PrintNum++
+			data.Print = append(data.Print, PrintDetail{
+				UserID:    st.UserID,
+				UserName:  st.UserName,
+				PrintDate: CurTime(),
+			})
 			if e := JRedis.Redis_hset(Hash_Order, v, data); e == nil {
 				list = append(list, data)
 			}
 		}
 	}
+	go setPrintNumber(true)
 	session.Forward("0", "success", list)
+}
+
+func GetPrintNum(session *JHttp.Session) {
+	err, num := setPrintNumber(false)
+	if err != nil {
+		session.Forward("0", "failed", num)
+		return
+	}
+	session.Forward("0", "success", num)
+}
+
+func setPrintNumber(isSet bool) (error, string) {
+	num := 0
+	if err := JRedis.Redis_get("PrintNumber", &num); err != nil {
+		return err, time.Unix(time.Now().Unix(), 0).Format("2006") + strconv.Itoa(8888)
+	}
+	if !isSet {
+		return nil, time.Unix(time.Now().Unix(), 0).Format("2006") + strconv.Itoa(num)
+	}
+	num++
+	if err := JRedis.Redis_set("PrintNumber", &num); err != nil {
+		return err, time.Unix(time.Now().Unix(), 0).Format("2006") + strconv.Itoa(8888)
+	}
+	return nil, time.Unix(time.Now().Unix(), 0).Format("2006") + strconv.Itoa(num)
 }
 
 ////修改订单

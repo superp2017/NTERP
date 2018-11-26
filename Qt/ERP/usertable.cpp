@@ -17,20 +17,60 @@ userTable::userTable(QWidget *w):M_TableWidget(w)
 
     connect(this,SIGNAL(cellPressed(int,int)),this,SLOT(clickRow(int,int)));
 
-    m_menu = new QMenu();
+    m_menu      = new QMenu();
+    m_new       = new  QAction("新增");
+    m_mod       = new QAction("修改");
+    m_out       = new QAction("离职");
+    m_del       = new QAction("删除");
+    m_giveup    = new QAction("放弃");
 
-    m_new      = m_menu->addAction("新增");
-    m_mod      = m_menu->addAction("修改");
-    m_out      = m_menu->addAction("离职");
-    m_del      = m_menu->addAction("删除");
-    m_menu->addAction("放弃");
 
     connect(m_new,SIGNAL(triggered(bool)),this,SIGNAL(newUser()));
     connect(m_mod,SIGNAL(triggered(bool)),this,SIGNAL(modUser()));
     connect(m_out,SIGNAL(triggered(bool)),this,SIGNAL(outUser()));
     connect(m_del,SIGNAL(triggered(bool)),this,SIGNAL(delUser()));
+    checkAuthor(dataCenter::instance()->pub_CurUser().Author);
 
 }
+
+
+void userTable::checkAuthor(int author)
+{
+    switch (author) {
+    case 0:
+        this->hideColumn(5);
+        this->hideColumn(6);
+        this->hideColumn(9);
+        m_new->setEnabled(false);
+        m_mod->setEnabled(false);
+        m_out->setEnabled(false);
+        m_del->setEnabled(false);
+        m_giveup->setEnabled(false);
+        break;
+    case 1:
+        this->hideColumn(5);
+        this->hideColumn(6);
+        this->hideColumn(9);
+        m_new->setEnabled(false);
+        m_mod->setEnabled(false);
+        m_out->setEnabled(false);
+        m_del->setEnabled(false);
+        m_giveup->setEnabled(false);
+        break;
+    case 2:
+        this->hideColumn(5);
+        this->hideColumn(6);
+        m_new->setEnabled(false);
+        m_mod->setEnabled(false);
+        m_out->setEnabled(false);
+        m_del->setEnabled(false);
+        m_giveup->setEnabled(false);
+        break;
+    default:
+        break;
+    }
+}
+
 
 void userTable::initUser(QVector<User> list)
 {
@@ -80,6 +120,7 @@ void userTable::removeUser(QString para)
 }
 
 
+
 void userTable::mousePressEvent(QMouseEvent *e)
 {
     QTableWidget::mousePressEvent(e);
@@ -102,25 +143,49 @@ void userTable::mousePressEvent(QMouseEvent *e)
                     if(!exist){
                         return;
                     }
-                    if(user.Status=="-1"){
-                        m_new->setEnabled(false);
-                        m_mod->setEnabled(false);
-                        m_out->setEnabled(false);
-                        m_del->setEnabled(false);
-                    }
+                    m_menu->clear();
+                    //                    if(user.Status=="-1"){
+                    //                        if(m_new->isEnabled()){
+                    //                            m_menu->addAction(m_new);
+                    //                        }
+
+                    //                        m_new->setEnabled(false);
+                    //                        m_mod->setEnabled(false);
+                    //                        m_out->setEnabled(false);
+                    //                        m_del->setEnabled(false);
+                    //                    }
                     if(user.Status=="0"){
-                        m_new->setEnabled(true);
-                        m_mod->setEnabled(true);
-                        m_out->setEnabled(true);
-                        m_del->setEnabled(true);
+                        //                        m_new->setEnabled(true);
+                        //                        m_mod->setEnabled(true);
+                        //                        m_out->setEnabled(true);
+                        //                        m_del->setEnabled(true);
+                        if(m_new->isEnabled()){
+                            m_menu->addAction(m_new);
+                        }
+                        if(m_mod->isEnabled()){
+                            m_menu->addAction(m_mod);
+                        }
+                        if(m_out->isEnabled()){
+                            m_menu->addAction(m_out);
+                        }
+                        if(m_del->isEnabled()){
+                            m_menu->addAction(m_del);
+                        }
                     }
                     if(user.Status=="1"){
-                        m_new->setEnabled(true);
-                        m_mod->setEnabled(false);
-                        m_out->setEnabled(false);
-                        m_del->setEnabled(true);
+                        //                        m_new->setEnabled(true);
+                        //                        m_mod->setEnabled(false);
+                        //                        m_out->setEnabled(false);
+                        //                        m_del->setEnabled(true);
+                        if(m_new->isEnabled()){
+                            m_menu->addAction(m_new);
+                        }
+                        if(m_del->isEnabled()){
+                            m_menu->addAction(m_del);
+                        }
                     }
-                    m_menu->exec(e->globalPos());
+                    if(m_menu->actions().size()>0)
+                        m_menu->exec(e->globalPos());
                 }
             }
         }

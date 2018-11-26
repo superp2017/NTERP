@@ -57,6 +57,11 @@ FormFinance::~FormFinance()
     delete ui;
 }
 
+void FormFinance::checkAuthor(int author)
+{
+
+}
+
 void FormFinance::initUI()
 {
 

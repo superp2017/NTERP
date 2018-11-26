@@ -52,8 +52,10 @@ StoreManager::StoreManager(QWidget *parent) :
 
 
     changeCol();
-    setBtnEnable(false,false,false,false);
+
     initData();
+    checkAuthor(dataCenter::instance()->pub_CurUser().Author);
+    setBtnEnable(false,false,false,false);
 }
 
 StoreManager::~StoreManager()
@@ -61,8 +63,27 @@ StoreManager::~StoreManager()
     delete ui;
 }
 
+void StoreManager::checkAuthor(int author)
+{
+    switch (author) {
+    case 0:
+        ui->pushButton_new->setEnabled(false);
+        ui->pushButton_in_store->setEnabled(false);
+        ui->pushButton_out_store->setEnabled(false);
+        break;
+    case 2:
+        ui->pushButton_new->setEnabled(false);
+        ui->pushButton_in_store->setEnabled(false);
+        ui->pushButton_out_store->setEnabled(false);
+    default:
+        break;
+    }
+}
+
 void StoreManager::initData()
 {  
+    m_goods_Table.clearSelection();
+    m_record_Table.clearSelection();
     m_goods_Table.checkSelect();
     m_record_Table.checkSelect();
 }
@@ -71,6 +92,8 @@ void StoreManager::clearSelectSection()
 {
     m_goods_Table.clearSelection();
     m_record_Table.clearSelection();
+    m_goods_Table.checkSelect();
+    m_record_Table.checkSelect();
     setBtnEnable(false,false,false,false);
 }
 
@@ -141,6 +164,9 @@ void StoreManager::on_pushButton_out_store_clicked()
 {
     outGoods(cur_Goods,false);
 }
+
+
+
 
 //void StoreManager::on_pushButton_del_clicked()
 //{
@@ -266,8 +292,38 @@ void StoreManager::setBtnEnable(bool mod,bool in, bool out, bool del)
 {
     mod = in = out = del = true;
     //    ui->pushButton_mod->setVisible(mod);
-    ui->pushButton_in_store->setEnabled(in);
-    ui->pushButton_out_store->setEnabled(out);
+
+
+    if(!ui->pushButton_new->isEnabled()){
+        ui->pushButton_new->setVisible(false);
+    }
+
+    if(ui->pushButton_in_store->isEnabled()){
+        ui->pushButton_in_store->setVisible(in);
+        if(in){
+            ui->pushButton_in_store->setStyleSheet("QPushButton{border-image: url(:/icon/instroe-red.png);}"
+                                                   "QPushButton:hover{border-image: url(:/icon/instroe.png);}"
+                                                   "QPushButton:pressed{border-image: url(:/icon/instroe.png);}"
+                                                   "QPushButton:checked{border-image: url(:/icon/instroe.png);}");
+        }else{
+            ui->pushButton_in_store->setStyleSheet("QPushButton{border-image: url(:/icon/instroe.png);}");
+        }
+    }else{
+        ui->pushButton_in_store->setVisible(false);
+    }
+    if(ui->pushButton_out_store->isEnabled()){
+        ui->pushButton_out_store->setVisible(out);
+        if(out){
+            ui->pushButton_out_store->setStyleSheet("QPushButton{border-image: url(:/icon/out-red.png);}"
+                                                    "QPushButton:hover{border-image: url(:/icon/out.png);}"
+                                                    "QPushButton:pressed{border-image: url(:/icon/out.png);}"
+                                                    "QPushButton:checked{border-image: url(:/icon/out.png);}");
+        }else{
+            ui->pushButton_out_store->setStyleSheet("QPushButton{border-image: url(:/icon/out.png);}");
+        }
+    }else{
+        ui->pushButton_out_store->setVisible(false);
+    }
     //    ui->pushButton_del->setVisible(del);
     //    if(mod){
     //        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify-red.png);}"
@@ -278,23 +334,7 @@ void StoreManager::setBtnEnable(bool mod,bool in, bool out, bool del)
     //        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify.png);}");
     //    }
 
-    if(in){
-        ui->pushButton_in_store->setStyleSheet("QPushButton{border-image: url(:/icon/instroe-red.png);}"
-                                               "QPushButton:hover{border-image: url(:/icon/instroe.png);}"
-                                               "QPushButton:pressed{border-image: url(:/icon/instroe.png);}"
-                                               "QPushButton:checked{border-image: url(:/icon/instroe.png);}");
-    }else{
-        ui->pushButton_in_store->setStyleSheet("QPushButton{border-image: url(:/icon/modify.png);}");
-    }
 
-    if(out){
-        ui->pushButton_out_store->setStyleSheet("QPushButton{border-image: url(:/icon/out-red.png);}"
-                                                "QPushButton:hover{border-image: url(:/icon/out.png);}"
-                                                "QPushButton:pressed{border-image: url(:/icon/out.png);}"
-                                                "QPushButton:checked{border-image: url(:/icon/out.png);}");
-    }else{
-        ui->pushButton_out_store->setStyleSheet("QPushButton{border-image: url(:/icon/out.png);}");
-    }
 
     //    if(del){
     //        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete-red.png);}"
@@ -305,4 +345,5 @@ void StoreManager::setBtnEnable(bool mod,bool in, bool out, bool del)
     //        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete.png);}");
     //    }
 }
+
 

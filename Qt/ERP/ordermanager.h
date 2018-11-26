@@ -22,7 +22,7 @@ public:
     explicit OrderManager(QWidget *parent = 0);
     ~OrderManager();
     void updataData();
-
+     void checkAuthor(int author);
 public slots:
     void new_order();
 private slots:

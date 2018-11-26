@@ -15,17 +15,37 @@ goodsTable::goodsTable(QWidget *w):M_TableWidget(w)
     this->setHorizontalHeaderLabels(header);
 
     m_menu = new QMenu();
-    m_mod  = m_menu->addAction("修改");
-    m_del  = m_menu->addAction("删除");
-    m_in   = m_menu->addAction("入库");
-    m_out  = m_menu->addAction("出库");
+
+    m_mod=new QAction("修改");
+    m_del=new QAction("删除");
+    m_in =new QAction("入库");
+    m_out=new QAction("出库");
     connect(m_mod,SIGNAL(triggered(bool)),this,SLOT(modGoods()));
     connect(m_del,SIGNAL(triggered(bool)),this,SLOT(delGoods()));
     connect(m_in,SIGNAL(triggered(bool)),this,SLOT(inGoods()));
     connect(m_out,SIGNAL(triggered(bool)),this,SLOT(outGoods()));
     connect(dataCenter::instance(),SIGNAL(sig_delGoods(QString,bool)),this,SLOT(delGoodsCb(QString,bool)));
     initGoods(dataCenter::instance()->pub_goods());
+    checkAuthor(dataCenter::instance()->pub_CurUser().Author);
 }
+
+void goodsTable::checkAuthor(int index)
+{
+    switch (index) {
+    case 0:
+    case 2:
+        return;
+        break;
+    default:
+        m_menu->addAction(m_mod);
+        m_menu->addAction(m_in);
+        m_menu->addAction(m_out);
+        m_menu->addAction(m_del);
+        break;
+    }
+}
+
+
 
 void goodsTable::updateData()
 {
@@ -80,6 +100,8 @@ void goodsTable::removeGoods(QString g)
     }
 }
 
+
+
 void goodsTable::mousePressEvent(QMouseEvent *e)
 {
     QTableWidget::mousePressEvent(e);
@@ -96,7 +118,8 @@ void goodsTable::mousePressEvent(QMouseEvent *e)
                     QTableWidgetItem* item = this->item(row,0);
                     if(item==NULL||item->text()=="")
                         return;
-                    m_menu->exec(e->globalPos());
+                    if(m_menu->actions().size()>0)
+                        m_menu->exec(e->globalPos());
                 }
             }
         }

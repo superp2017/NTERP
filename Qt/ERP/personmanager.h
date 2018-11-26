@@ -20,7 +20,7 @@ class PersonManager : public QWidget
 public:
     explicit PersonManager(QWidget *parent = 0);
     ~PersonManager();
-
+     void checkAuthor(int author);
 public slots:
     void new_employee();
 
