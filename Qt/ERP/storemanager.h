@@ -5,6 +5,7 @@
 #include "goodsService.h"
 #include "goodstable.h"
 #include "goodsoutrecord.h"
+#include "formsuppliermanage.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -32,12 +33,14 @@ private slots:
     void outGoods(Goods g,bool e);
     void queryGoods(Goods g);
 
-//  void GoodsClick(QString id);
-//  void delGoodsCb(QString ID,bool ok);
+    //  void GoodsClick(QString id);
+    //  void delGoodsCb(QString ID,bool ok);
     void getGlobalGoodsCb(bool ok);
     void getAllGoodsRecordCb(bool ok);
     void changeCol();
     void clearSelectSection();
+
+    void on_pushButton_supply_manager_clicked();
 
 private:
     void initData();
@@ -46,6 +49,7 @@ private:
     goodsTable  m_goods_Table;
     Tab_GoodsOutRecord m_record_Table;
     Goods   cur_Goods;
+    FormSupplierManage supplier;
 };
 
 #endif // STOREMANAGER_H

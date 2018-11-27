@@ -351,6 +351,9 @@
          <height>35</height>
         </size>
        </property>
+       <property name="maximum">
+        <double>99999999.989999994635582</double>
+       </property>
       </widget>
      </item>
     </layout>

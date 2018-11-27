@@ -36,6 +36,8 @@ StoreManager::StoreManager(QWidget *parent) :
                                           "QPushButton:hover{border-image: url(:/icon/reflash-a.png);}"
                                           "QPushButton:pressed{border-image: url(:/icon/reflash-a.png);}"
                                           "QPushButton:checked{border-image: url(:/icon/reflash-a.png);}");
+
+
     connect(ui->tabWidget,SIGNAL(currentChanged(int)),this,SLOT(clearSelectSection()));
 
 
@@ -67,14 +69,11 @@ void StoreManager::checkAuthor(int author)
 {
     switch (author) {
     case 0:
-        ui->pushButton_new->setEnabled(false);
-        ui->pushButton_in_store->setEnabled(false);
-        ui->pushButton_out_store->setEnabled(false);
-        break;
     case 2:
         ui->pushButton_new->setEnabled(false);
         ui->pushButton_in_store->setEnabled(false);
         ui->pushButton_out_store->setEnabled(false);
+        ui->pushButton_supply_manager->setEnabled(false);
     default:
         break;
     }
@@ -288,6 +287,13 @@ void StoreManager::changeCol()
 }
 
 
+void StoreManager::on_pushButton_supply_manager_clicked()
+{
+    supplier.initData();
+    supplier.showNormal();
+}
+
+
 void StoreManager::setBtnEnable(bool mod,bool in, bool out, bool del)
 {
     mod = in = out = del = true;
@@ -324,6 +330,18 @@ void StoreManager::setBtnEnable(bool mod,bool in, bool out, bool del)
     }else{
         ui->pushButton_out_store->setVisible(false);
     }
+
+
+    if(ui->pushButton_supply_manager->isEnabled()){
+        ui->pushButton_supply_manager->setStyleSheet("QPushButton{border-image: url(:/icon/Supply-red.png);}"
+                                                     "QPushButton:hover{border-image: url(:/icon/Supply.png);}"
+                                                     "QPushButton:pressed{border-image: url(:/icon/Supply.png);}"
+                                                     "QPushButton:checked{border-image: url(:/icon/Supply.png);}");
+    }else{
+        ui->pushButton_supply_manager->setVisible(false);
+    }
+
+
     //    ui->pushButton_del->setVisible(del);
     //    if(mod){
     //        ui->pushButton_mod->setStyleSheet("QPushButton{border-image: url(:/icon/modify-red.png);}"
@@ -345,5 +363,6 @@ void StoreManager::setBtnEnable(bool mod,bool in, bool out, bool del)
     //        ui->pushButton_del->setStyleSheet("QPushButton{border-image: url(:/icon/delete.png);}");
     //    }
 }
+
 
 

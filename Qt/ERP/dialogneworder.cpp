@@ -27,7 +27,7 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
 
     connect(ui->comboBox_mater_number,SIGNAL(currentIndexChanged(int)),this,SLOT(materielIDChange(int)));
 
-    QRegExp regx("[a-zA-Z0-9]+$");
+    QRegExp regx("[a-zA-Z0-9-]+$");
     QValidator *validator = new QRegExpValidator(regx, this );
     ui->lineEdit_custombatch->setValidator(validator);
 }
