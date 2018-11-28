@@ -17,6 +17,8 @@ type Goods struct {
 	SID          string  //供应商id
 	SupplierName string  //供应商名称
 	CreatTime    string  //创建时间
+	CreatStamp		int64 //创建的时间戳
+	LastTime 		int64  //最后更新时间
 }
 
 //新建商品
@@ -28,6 +30,7 @@ func newGoods(session *JHttp.Session) {
 		return
 	}
 	st.ID = getGoodsID()
+
 	if st.Name == "" || st.Type == "" {
 		str := fmt.Sprintf("NewGoods failed,Name=%s,Type=%s\n", st.Name, st.Type)
 		JLogger.Error(str)
@@ -35,6 +38,8 @@ func newGoods(session *JHttp.Session) {
 		return
 	}
 	st.CreatTime = CurTime()
+	st.CreatStamp = CurStamp()
+	st.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Goods, st.ID, st); err != nil {
 		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
@@ -118,6 +123,7 @@ func modGoods(session *JHttp.Session) {
 	data.Format = st.Format
 	data.SID = st.SID
 	data.SupplierName = st.SupplierName
+	data.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Goods, data.ID, data); err != nil {
 		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
@@ -186,6 +192,7 @@ func inoutGoodsNum(ID string, Num float64, isAdd bool) (*Goods, error) {
 	} else {
 		data.Num -= Num
 	}
+	data.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Goods, ID, data); err != nil {
 		JLogger.Error(err.Error())
 		return data, err
@@ -216,7 +223,7 @@ func delGoods(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-
+	data.LastTime = CurStamp()
 	if err := JRedis.Redis_hdel(Hash_Goods, st.ID); err != nil {
 		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)

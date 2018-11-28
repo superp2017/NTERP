@@ -23,6 +23,8 @@ type Customer struct {
 	Note            string //备注
 	Status          string //状态 0:正常 1:删除
 	CreatTime       string //创建时间
+	CreatStamp		int64 //创建的时间戳
+	LastTime 		int64  //最后更新时间
 }
 
 //新建一个客户
@@ -41,6 +43,8 @@ func NewCustomer(session *JHttp.Session) {
 	}
 	st.CID = getCustomerID()
 	st.CreatTime = CurTime()
+	st.CreatStamp = CurStamp()
+	st.LastTime = CurStamp()
 	st.Status = "0"
 	if err := JRedis.Redis_hset(Hash_Customer, st.CID, st); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -95,6 +99,7 @@ func ModCustomer(session *JHttp.Session) {
 	data.CertificatesNum = st.CertificatesNum
 	data.Certificates = st.Certificates
 	data.Note = st.Note
+	data.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Customer, st.CID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
@@ -124,6 +129,7 @@ func UpDownCustomer(session *JHttp.Session) {
 	} else {
 		data.Status = "1"
 	}
+	data.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Customer, st.CID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return

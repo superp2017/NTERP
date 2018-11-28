@@ -44,6 +44,8 @@ type Order struct {
 	CustomNote      string        //客户备注
 	ProduceID       string        //生产编号
 	CreatTime       string        //创建时间
+	CreatStamp		int64  		  //创建的时间戳
+	LastTime 		int64  		  //最后更新时间
 	ProduceTime     string        //出货时间
 	SuccessTime     string        //完成时间
 	Current         OderFlow      //当前状态
@@ -101,6 +103,8 @@ func NewOrder(session *JHttp.Session) {
 	}
 	st.OrderID = id
 	st.CreatTime = CurTime()
+	st.CreatStamp = CurStamp()
+	st.LastTime = CurStamp()
 	st.TotleMoney = Decimal(st.OrderNum * st.Money)
 	go setLastOrderDate(curMon)
 	////////////////添加状态///////////////////////////////
@@ -136,6 +140,7 @@ func UpdatePrintNum(session *JHttp.Session) {
 				UserName:  st.UserName,
 				PrintDate: CurTime(),
 			})
+			data.LastTime = CurStamp()
 			if e := JRedis.Redis_hset(Hash_Order, v, data); e == nil {
 				list = append(list, data)
 			}
@@ -294,6 +299,7 @@ func ModOrder(session *JHttp.Session) {
 	data.CustomNote = st.CustomNote
 	data.OrderNum = st.OrderNum
 	data.TotleMoney = Decimal(data.OrderNum * data.Money)
+	data.LastTime = CurStamp()
 
 	////////////////添加状态///////////////////////////////
 	appendStatus(data, data.UserName, CurTime(), "修改订单", getStatus(data.OrderNum, data.ProduceNum, data.SuccessNum))
@@ -338,6 +344,7 @@ func ModOrderPrice(session *JHttp.Session) {
 
 	data.Money = st.Money
 	data.TotleMoney = Decimal(data.OrderNum * st.Money)
+	data.LastTime = CurStamp()
 	////////////////添加状态///////////////////////////////
 	appendStatus(data, data.UserName, CurTime(), "修改订单价格", getStatus(data.OrderNum, data.ProduceNum, data.SuccessNum))
 
@@ -377,7 +384,7 @@ func CancelOrder(session *JHttp.Session) {
 		session.Forward("1", str, nil)
 		return
 	}
-
+	data.LastTime = CurStamp()
 	////////////////添加状态///////////////////////////////
 	appendStatus(data, data.UserName, CurTime(), "订单取消", Status_Cancle)
 
@@ -419,7 +426,7 @@ func DelOrder(session *JHttp.Session) {
 		return
 	}
 	appendStatus(data, data.UserName, CurTime(), "订单标记删除", Status_Del)
-
+	data.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
@@ -480,6 +487,7 @@ func PorduceOrder(session *JHttp.Session) {
 		appendStatus(data, data.UserName, CurTime(), "订单完成部分生产", getStatus(data.OrderNum, data.ProduceNum, data.SuccessNum))
 	}
 	data.ProduceTime = CurTime()
+	data.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
@@ -530,7 +538,7 @@ func SuccessOrder(session *JHttp.Session) {
 		appendStatus(data, data.UserName, CurTime(), "订单部分出库", getStatus(data.OrderNum, data.ProduceNum, data.SuccessNum))
 	}
 	data.SuccessTime = CurTime()
-
+	data.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return

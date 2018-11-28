@@ -11,6 +11,7 @@ type Account struct {
 	Name    string //用户姓名
 	Account string //账号
 	Code    string //密码
+	LastTime int64//最后更新时间
 }
 
 func Login(session *JHttp.Session) {
@@ -50,6 +51,7 @@ func newAccount(uid, name, account, code string) error {
 		Name:    name,
 		Account: account,
 		Code:    code,
+		LastTime:CurStamp(),
 	}
 	return JRedis.Redis_hset(Hash_Account, account, st)
 }
@@ -66,6 +68,7 @@ func modAccount(account, code, uid, name string) error {
 		Name:    name,
 		Account: account,
 		Code:    code,
+		LastTime:CurStamp(),
 	}
 	return JRedis.Redis_hset(Hash_Account, account, st)
 }

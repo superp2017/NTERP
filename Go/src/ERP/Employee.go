@@ -19,6 +19,8 @@ type Employee struct {
 	InTime       string //入职时间
 	OutTime      string //离职时间
 	CreatTime    string //创建时间
+	CreatStamp		int64 //创建的时间戳
+	LastTime 		int64  //最后更新时间
 	Status       string //状态
 	Account      string //账号
 	Code         string //密码
@@ -40,6 +42,8 @@ func NewEmployee(session *JHttp.Session) {
 	}
 	st.UID = getEmployeeID()
 	st.CreatTime = CurTime()
+	st.CreatStamp = CurStamp()
+	st.LastTime = CurStamp()
 	st.Status = "0"
 	if st.Account != "" && st.Code != "" {
 		if exist, e := JRedis.Redis_hexists(Hash_Account, st.Account); e == nil && exist {
@@ -107,6 +111,7 @@ func ModEmployee(session *JHttp.Session) {
 	data.Account = st.Account
 	data.Code = st.Code
 	data.Author = st.Author
+	data.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Employee, st.UID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
@@ -136,6 +141,7 @@ func OutEmployee(session *JHttp.Session) {
 	}
 	data.OutTime = CurTime()
 	data.Status = "1"
+	data.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Employee, st.UID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return

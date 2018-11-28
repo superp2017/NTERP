@@ -24,6 +24,8 @@ type MaterialInfo struct {
 	Unit            string  //单位
 	Money           float64 //未税单价
 	CreatTime       string  //创建时间
+	CreatStamp		int64 //创建的时间戳
+	LastTime 		int64  //最后更新时间
 }
 
 func NewMaterial(session *JHttp.Session) {
@@ -41,6 +43,8 @@ func NewMaterial(session *JHttp.Session) {
 	}
 	st.MaterID = getMaterialID()
 	st.CreatTime = CurTime()
+	st.CreatStamp = CurStamp()
+	st.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Material, st.MaterID, st); err != nil {
 		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
@@ -87,6 +91,7 @@ func ModMaterial(session *JHttp.Session) {
 		session.Forward("1", str, nil)
 		return
 	}
+	st.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Material, st.MaterID, st); err != nil {
 		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
@@ -105,6 +110,7 @@ func modMaterialPrice(MaterID string, Money float64) error {
 		return err
 	}
 	st.Money = Money
+	st.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Material, st.MaterID, st); err != nil {
 		JLogger.Error(err.Error())
 		return err

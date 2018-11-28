@@ -12,6 +12,8 @@ type StorageOutRecord struct {
 	Factory      string  //分厂名称
 	Department   string  //部门名称
 	CreatDate    string  //领用时间
+	CreatStamp   int64   //创建的时间戳
+	LastTime     int64   //最后更新时间
 	GoodsID      string  //商品ID
 	GoodsName    string  //商品名称
 	Type         string  //类别
@@ -37,11 +39,13 @@ func NewOutRecord(session *JHttp.Session) {
 	}
 	st.OutID = time.Unix(time.Now().Unix(), 0).Format("20060102150405")
 	st.CreatDate = CurDate()
-
+	st.LastTime = CurStamp()
+	st.CreatStamp = CurStamp()
 	if _, e := inoutGoodsNum(st.GoodsID, st.Nums, false); e != nil {
 		session.Forward("1", "NewOutRecord failed:"+e.Error(), nil)
 		return
 	}
+
 	if err := JRedis.Redis_hset(Hash_StorageOutRecord, st.OutID, st); err != nil {
 		session.Forward("1", err.Error(), nil)
 		go inoutGoodsNum(st.GoodsID, st.Nums, true)

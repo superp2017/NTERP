@@ -24,6 +24,8 @@ type Supplier struct {
 	Goods           string //商品列表
 	Status          string //状态 0:正常 1:删除
 	CreatTime       string //创建时间
+	CreatStamp   int64   //创建的时间戳
+	LastTime     int64   //最后更新时间
 }
 
 //新建一个客户
@@ -42,6 +44,8 @@ func NewSupplier(session *JHttp.Session) {
 	}
 	st.SID = getSupplierID()
 	st.CreatTime = CurTime()
+	st.LastTime = CurStamp()
+	st.CreatStamp = CurStamp()
 	st.Status = "0"
 	if err := JRedis.Redis_hset(Hash_Supplier, st.SID, st); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -96,6 +100,7 @@ func ModSupplier(session *JHttp.Session) {
 	data.CertificatesNum = st.CertificatesNum
 	data.Certificates = st.Certificates
 	data.Note = st.Note
+	data.CreatStamp = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Supplier, st.SID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
@@ -125,6 +130,7 @@ func UpDownSupplier(session *JHttp.Session) {
 	} else {
 		data.Status = "1"
 	}
+	data.CreatStamp = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Supplier, st.SID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
