@@ -74,6 +74,7 @@ void StoreManager::checkAuthor(int author)
         ui->pushButton_in_store->setEnabled(false);
         ui->pushButton_out_store->setEnabled(false);
         ui->pushButton_supply_manager->setEnabled(false);
+        ui->widget_control->hide();
     default:
         break;
     }

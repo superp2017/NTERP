@@ -47,6 +47,8 @@ private slots:
 
     void on_pushButton_out_print_clicked();
 
+
+
 signals:
     void newOrder();
 

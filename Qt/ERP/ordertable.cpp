@@ -443,7 +443,7 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                             cur_order.Current.Status==Status_Part_Part;
                     bool mod = cur_order.Current.Status==Status_New;
                     bool cancel = cur_order.Current.Status== Status_Cancle;
-                    setEnable(mod,mod,produce,out,mod,cancel);
+                    setEnable(mod,mod,produce,out,true,cancel);
                     //      }
                     //                    }
                     if(m_menu->actions().size()>0)
