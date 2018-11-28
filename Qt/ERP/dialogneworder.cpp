@@ -73,7 +73,7 @@ void DialogNewOrder::initOrder(Order order)
     if(order.OrderType=="3"){
         ui->comboBox_orderType->setCurrentIndex(2);
     }
-    ui->comboBox_mater_number->setCurrentText(order.MaterielID);
+    ui->comboBox_mater_number->setCurrentText(order.ComponentSolid);
     materielIDChange(0);
 
     ui->doubleSpinBox_num->setValue(order.OrderNum);
