@@ -61,11 +61,14 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(m_tab_produce,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
     connect(m_tab_produce,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
+    connect(m_tab_produce,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
 
     connect(m_tab_success,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_success,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
     connect(m_tab_success,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
+
+        connect(m_tab_success,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
 
     connect(m_tab_all,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_all,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
@@ -159,7 +162,7 @@ void OrderManager::checkAuthor(int author)
         ui->pushButton_success->setEnabled(false);
         ui->pushButton_del->setEnabled(false);
         ui->pushButton_produce->setEnabled(false);
-        ui->widget_control->hide();
+
         break;
     default:
         break;

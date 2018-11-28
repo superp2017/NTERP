@@ -43,7 +43,7 @@ protected:
     void mousePressEvent(QMouseEvent *e);
 private:
     QMenu   *m_menu;
-    QAction *m_new;
+//    QAction *m_new;
     QAction *m_mod;
     QAction *m_cancle;
     QAction *m_produce;
