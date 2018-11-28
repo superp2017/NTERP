@@ -44,8 +44,8 @@ type Order struct {
 	CustomNote      string        //客户备注
 	ProduceID       string        //生产编号
 	CreatTime       string        //创建时间
-	CreatStamp		int64  		  //创建的时间戳
-	LastTime 		int64  		  //最后更新时间
+	CreatStamp      int64         //创建的时间戳
+	LastTime        int64         //最后更新时间
 	ProduceTime     string        //出货时间
 	SuccessTime     string        //完成时间
 	Current         OderFlow      //当前状态
@@ -270,8 +270,8 @@ func ModOrder(session *JHttp.Session) {
 		session.Forward("1", "ModOrder faild,OrderID is empty\n", nil)
 		return
 	}
-	if st.MaterielID == "" || st.CustomBatch == "" || st.OrderNum <= 0 {
-		str := fmt.Sprintf("ModOrder faild,MaterielID =%s,CustomBatch=%s,OrderNum=%d\n", st.MaterielID, st.CustomBatch, st.OrderNum)
+	if st.MaterielID == "" || st.OrderNum <= 0 {
+		str := fmt.Sprintf("ModOrder faild,MaterielID =%s,CustomBatch=%s,OrderNum=%g\n", st.MaterielID, st.CustomBatch, st.OrderNum)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
