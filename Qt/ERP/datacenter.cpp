@@ -53,7 +53,7 @@ void dataCenter::initData()
     //////////////初始化所有商品的分类//////////////////
     boost::thread(boost::bind(&dataCenter::net_getGlobalGoodsType,dataCenter::instance())).detach();
 
-    //////////////初始化所有商品的分类//////////////////
+    //////////////初始化所有镀种的分类//////////////////
     boost::thread(boost::bind(&dataCenter::net_getglobalPlating,dataCenter::instance())).detach();
 
     //////////////获取所有商品的出库记录//////////////////////////////

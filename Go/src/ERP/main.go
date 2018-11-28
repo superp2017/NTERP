@@ -77,6 +77,9 @@ func initRoute() {
 	JHttp.WhiteHttp("/delplating", DelPlating)       //删除一个镀种
 	JHttp.WhiteHttp("/getallplating", GetAllPlating) //获取所有的镀种
 
+	JHttp.WhiteHttp("/heartbeat", HeartBeat) //客户端心跳
+
+
 	//JHttp.WhiteHttp("/updateallmaterial", updateAllMaterial) //更新所有物料
 
 }
