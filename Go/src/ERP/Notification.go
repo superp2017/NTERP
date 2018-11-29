@@ -98,6 +98,7 @@ type NoticeInfo struct{
 var (
 	clients = make(map[string]*ClientInfo)
 	clientsMutex sync.RWMutex
+	IsNotice = false//是否开启通知
 )
 
 //通知类型
@@ -121,6 +122,10 @@ const(
 	STRUCT_PLANTING 	= 10//镀种
 )
 
+func startNotice( isStart bool){
+	IsNotice = isStart
+}
+
 
 func HeartBeat(session *JHttp.Session)  {
 	ip:=strings.Split(session.Req.RemoteAddr,":")[0]
@@ -129,7 +134,11 @@ func HeartBeat(session *JHttp.Session)  {
 }
 
 
+///通知
 func Notice(data *NoticeInfo)  {
+	if !IsNotice {
+		return
+	}
 	clientsMutex.RLock()
 	for _,v:= range clients{
 		clientsMutex.RUnlock()

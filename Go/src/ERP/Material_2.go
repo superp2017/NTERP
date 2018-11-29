@@ -51,6 +51,14 @@ func NewMaterial(session *JHttp.Session) {
 		return
 	}
 	go appendCustomerMaterial(st.CID, st.MaterID)
+
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_NEW,
+		DataType:STRUCT_MATERIAL,
+		Data:st,
+	})
+
 	session.Forward("0", "success", st)
 }
 
@@ -97,6 +105,13 @@ func ModMaterial(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Modify,
+		DataType:STRUCT_MATERIAL,
+		Data:st,
+	})
+
 	session.Forward("0", "success", st)
 }
 func modMaterialPrice(MaterID string, Money float64) error {
@@ -155,6 +170,12 @@ func DelMaterial(session *JHttp.Session) {
 		return
 	}
 	go delFromCustomerMaterial(st.CID, st.MaterID)
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Del,
+		DataType:STRUCT_MATERIAL,
+		Data:st.MaterID,
+	})
 	session.Forward("0", "success\n", st.MaterID)
 }
 

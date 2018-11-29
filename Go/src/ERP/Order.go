@@ -116,6 +116,12 @@ func NewOrder(session *JHttp.Session) {
 	if st.CustomID != "" && st.OrderID != "" {
 		go appendCustomerOrderID(st.CustomID, st.OrderID)
 	}
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_NEW,
+		DataType:STRTUCT_ORDER,
+		Data:st,
+	})
 	session.Forward("0", "success", st)
 }
 func UpdatePrintNum(session *JHttp.Session) {
@@ -147,6 +153,12 @@ func UpdatePrintNum(session *JHttp.Session) {
 		}
 	}
 	go setPrintNumber(true)
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Modify,
+		DataType:STRTUCT_ORDER,
+		Data:list,
+	})
 	session.Forward("0", "success", list)
 }
 
@@ -308,6 +320,12 @@ func ModOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Modify,
+		DataType:STRTUCT_ORDER,
+		Data:data,
+	})
 	session.Forward("0", "success", data)
 }
 
@@ -352,8 +370,12 @@ func ModOrderPrice(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//////修改物料
-	//go modMaterialPrice(data.MaterielID, st.Money)
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Modify,
+		DataType:STRTUCT_ORDER,
+		Data:data,
+	})
 	session.Forward("0", "success", data)
 }
 
@@ -396,6 +418,12 @@ func CancelOrder(session *JHttp.Session) {
 	if data.CustomID != "" && data.OrderID != "" {
 		go removefromCustomerOrderID(data.CustomID, data.OrderID)
 	}
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Modify,
+		DataType:STRTUCT_ORDER,
+		Data:data,
+	})
 	session.Forward("0", "success", data)
 }
 
@@ -440,6 +468,12 @@ func DelOrder(session *JHttp.Session) {
 	if data.CustomID != "" && data.OrderID != "" {
 		go removefromCustomerOrderID(data.CustomID, data.OrderID)
 	}
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Del,
+		DataType:STRTUCT_ORDER,
+		Data:data,
+	})
 	session.Forward("0", "success", data)
 }
 
@@ -492,6 +526,12 @@ func PorduceOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Modify,
+		DataType:STRTUCT_ORDER,
+		Data:data,
+	})
 	session.Forward("0", "success", data)
 }
 
@@ -543,6 +583,12 @@ func SuccessOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Modify,
+		DataType:STRTUCT_ORDER,
+		Data:data,
+	})
 	session.Forward("0", "success", data)
 }
 

@@ -50,6 +50,14 @@ func NewCustomer(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+
+	///通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_NEW,
+		DataType:STRUCT_CUSTOMER,
+		Data:st,
+	})
+
 	session.Forward("0", "success", st)
 }
 
@@ -104,6 +112,12 @@ func ModCustomer(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	///通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Modify,
+		DataType:STRUCT_CUSTOMER,
+		Data:data,
+	})
 	session.Forward("0", "success", data)
 }
 
@@ -134,6 +148,12 @@ func UpDownCustomer(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	///通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Modify,
+		DataType:STRUCT_CUSTOMER,
+		Data:data,
+	})
 	session.Forward("0", "success", data)
 }
 
@@ -158,6 +178,12 @@ func DelCustomer(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	///通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Del,
+		DataType:STRUCT_CUSTOMER,
+		Data:st.CID,
+	})
 	go delCustomerOrderID(st.CID)
 	session.Forward("0", "success", st.CID)
 }

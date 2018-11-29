@@ -51,6 +51,12 @@ func NewSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_NEW,
+		DataType:STRUCT_SUPPLIER,
+		Data:st,
+	})
 	session.Forward("0", "success", st)
 }
 
@@ -105,6 +111,12 @@ func ModSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Modify,
+		DataType:STRUCT_SUPPLIER,
+		Data:st,
+	})
 	session.Forward("0", "success", data)
 }
 
@@ -135,6 +147,12 @@ func UpDownSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Modify,
+		DataType:STRUCT_SUPPLIER,
+		Data:st,
+	})
 	session.Forward("0", "success", data)
 }
 
@@ -159,6 +177,12 @@ func DelSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	//通知
+	go	Notice(&NoticeInfo{
+		NoticeType:NoticeType_Del,
+		DataType:STRUCT_SUPPLIER,
+		Data:st,
+	})
 	session.Forward("0", "success", st.SID)
 }
 
