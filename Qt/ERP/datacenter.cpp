@@ -968,6 +968,7 @@ Goods dataCenter::pub_getGoods(QString id, bool &ok)
             return g;
         }
     }
+    ok = false;
     return  s;
 }
 

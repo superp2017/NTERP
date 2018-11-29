@@ -50,12 +50,14 @@ private slots:
 
     void on_pushButton_out_print_clicked();
 
+    void tabChange();
+
 protected:
     void mousePressEvent(QMouseEvent *e);
 
 private:
     void clearCurOrder();
-    void setBtnEnable(bool mod, bool cancel, bool produce, bool out, bool change, bool del);
+    void setBtnEnable(bool mod, bool cancel, bool produce, bool out, bool change, bool del,bool isnew = true);
     void checkSelect();
 private:
     Ui::OrderManager  *ui;

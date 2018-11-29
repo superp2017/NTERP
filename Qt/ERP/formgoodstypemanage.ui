@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>分类管理</string>
+   <string>仓库商品分类管理</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">

@@ -12,7 +12,8 @@ DialogGoodsIn::DialogGoodsIn(QWidget *parent) :
     ui->setupUi(this);
     connect(dataCenter::instance(),SIGNAL(sig_inGoods(Goods,bool)),this,SLOT(intGoodsCb(Goods,bool)));
     initCombox();
-    connect(ui->comboBox_goodID,SIGNAL(currentIndexChanged(QString)),this,SLOT(GoodsChange()));
+    connect(ui->comboBox_goodID,SIGNAL(currentTextChanged(QString)),this,SLOT(GoodsChange()));
+    GoodsChange();
 }
 
 void DialogGoodsIn::initCombox()

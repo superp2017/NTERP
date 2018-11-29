@@ -30,7 +30,7 @@ private slots:
     void materielIDChange(int index);
 private:
     void initCombox(QSet<QString> batch,QVector<Materiel>mater);
-    bool checkOrder(Order curorder);
+    bool checkOrder(Order curorder, bool ismod);
     void changeModel();
 
     Ui::DialogNewOrder *ui;

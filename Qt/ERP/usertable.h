@@ -39,7 +39,7 @@ private:
     void setRowData(User para, int row);
 
     QMenu *m_menu;
-    QAction *m_new;
+//    QAction *m_new;
     QAction *m_mod;
     QAction *m_out;
     QAction *m_del;

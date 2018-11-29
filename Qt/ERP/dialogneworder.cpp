@@ -27,9 +27,9 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
 
     connect(ui->comboBox_mater_number,SIGNAL(currentIndexChanged(int)),this,SLOT(materielIDChange(int)));
 
-    QRegExp regx("[a-zA-Z0-9-]+$");
-    QValidator *validator = new QRegExpValidator(regx, this );
-    ui->lineEdit_custombatch->setValidator(validator);
+//    QRegExp regx("[a-zA-Z0-9-~!@#$%^&*\(\)_+=;:,.<>]+$");
+//    QValidator *validator = new QRegExpValidator(regx, this );
+//    ui->lineEdit_custombatch->setValidator(validator);
 }
 
 DialogNewOrder::~DialogNewOrder()
@@ -73,7 +73,7 @@ void DialogNewOrder::initOrder(Order order)
     if(order.OrderType=="3"){
         ui->comboBox_orderType->setCurrentIndex(2);
     }
-    ui->comboBox_mater_number->setCurrentText(order.MaterielID);
+    ui->comboBox_mater_number->setCurrentText(order.ComponentSolid);
     materielIDChange(0);
 
     ui->doubleSpinBox_num->setValue(order.OrderNum);
@@ -142,7 +142,7 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     order.OrderNum          = ui->doubleSpinBox_num->value();
 
 
-    if(!checkOrder(order)){
+    if(!checkOrder(order,!m_isNewMode)){
         return;
     }
     QJsonObject para = OrderService::toJsonObject(order);
@@ -185,7 +185,7 @@ void DialogNewOrder::modOrderCb(Order order,bool ok)
 }
 
 
-bool DialogNewOrder::checkOrder(Order order)
+bool DialogNewOrder::checkOrder(Order order,bool ismod)
 {
     if(order.MaterielID==""||order.MaterielDes==""){
         QToolTip::showText(ui->comboBox_mater_number->mapToGlobal(QPoint(100, 0)), "物料编号不能为空!");
@@ -196,9 +196,18 @@ bool DialogNewOrder::checkOrder(Order order)
         QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "订单数量填写不正确!");
         return false;
     }
-    if(order.OrderNum<order.ProduceNum||order.OrderNum<order.SuccessNum){
-        QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "订单数量不能少于已经成品或者已经出库的数量!");
-        return false;
+    if(ismod){
+        if(order.OrderNum<order.ProduceNum){
+            QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "修改后的订单数量不能少于已经成品的数量!");
+            return false;
+        }if(order.OrderNum<order.SuccessNum){
+            QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "修改后的订单数量不能少于已经出库的数量!");
+            return false;
+        }
+        if(order.OrderNum<order.ProduceNum+order.SuccessNum){
+            QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "修改后的订单数量不能少于已经成品和已经出库的数量之和!");
+            return false;
+        }
     }
     double confirm_num = ui->doubleSpinBox_num_confirm->value();
     if (order.OrderNum!=confirm_num){

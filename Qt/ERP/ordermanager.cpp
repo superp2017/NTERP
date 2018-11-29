@@ -61,11 +61,14 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(m_tab_produce,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
     connect(m_tab_produce,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
+    connect(m_tab_produce,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
 
     connect(m_tab_success,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_success,SIGNAL(produceOrder()),this,SLOT(on_pushButton_produce_clicked()));
     connect(m_tab_success,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
+
+        connect(m_tab_success,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
 
     connect(m_tab_all,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_all,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
@@ -101,6 +104,7 @@ OrderManager::OrderManager(QWidget *parent) :
     setBtnEnable(false,false,false,false,false,false);
     changeCol();
     updataData();
+    connect(ui->tabWidget,SIGNAL(currentChanged(int)),this,SLOT(tabChange()));
 
 }
 
@@ -110,6 +114,17 @@ OrderManager::~OrderManager()
 }
 
 
+void OrderManager::tabChange()
+{
+    if(ui->tabWidget->currentWidget()== m_tab_new){
+        ui->pushButton_new->setEnabled(true);
+        ui->pushButton_new->setVisible(true);
+    }else{
+        ui->pushButton_new->setEnabled(false);
+        ui->pushButton_new->setVisible(false);
+    }
+    ui->pushButton_change_price->setVisible(false);
+}
 
 
 void OrderManager::updataData()
@@ -137,6 +152,7 @@ void OrderManager::checkAuthor(int author)
         ui->pushButton_success->setEnabled(false);
         ui->pushButton_del->setEnabled(false);
         ui->pushButton_produce->setEnabled(false);
+        ui->widget_control->hide();
         break;
     case 2:
         ui->pushButton_new->setEnabled(false);
@@ -146,6 +162,7 @@ void OrderManager::checkAuthor(int author)
         ui->pushButton_success->setEnabled(false);
         ui->pushButton_del->setEnabled(false);
         ui->pushButton_produce->setEnabled(false);
+
         break;
     default:
         break;
@@ -173,7 +190,7 @@ void OrderManager::orderClick(QString orderID)
             cur_order.Current.Status==Status_Part_Part;
     bool mod = cur_order.Current.Status==Status_New;
     bool cancel = cur_order.Current.Status== Status_Cancle;
-    setBtnEnable(mod,mod,produce,out,mod,cancel);
+    setBtnEnable(mod,mod,produce,out,true,cancel);
     //    }
 
 
@@ -258,6 +275,7 @@ void OrderManager::on_pushButton_mod_clicked()
     neworer.initOrder(cur_order);
     if(neworer.exec()==123){
         Order order = neworer.getCurorder();
+        cur_order = order;
         m_tab_new->modOrder(order);
         m_tab_all->modOrder(order);
     }
@@ -426,6 +444,7 @@ void OrderManager::on_pushButton_out_print_clicked()
 
 
 
+
 void OrderManager::cancleOrderCb(Order order, bool ok)
 {
     dataCenter::instance()->pub_hideLoadding();
@@ -528,10 +547,13 @@ void OrderManager::clearCurOrder()
     cur_order.Money=0;
 }
 
-void OrderManager::setBtnEnable(bool mod, bool cancel, bool produce, bool out,  bool change,bool del)
+void OrderManager::setBtnEnable(bool mod, bool cancel, bool produce, bool out,  bool change, bool del, bool isnew)
 {
-    if(!ui->pushButton_new->isEnabled())
+    if(ui->pushButton_new->isEnabled()){
+        ui->pushButton_new->setVisible(isnew);
+    }else{
         ui->pushButton_new->setVisible(false);
+    }
 
     if(!ui->pushButton_out_print->isEnabled())
         ui->pushButton_out_print->setVisible(false);

@@ -13,11 +13,13 @@ DialogOutGoods::DialogOutGoods(QWidget *parent) :
 {
     ui->setupUi(this);
     initCombox();
-    connect(ui->comboBox_goods_id,SIGNAL(currentIndexChanged(QString)),this,SLOT(GoodIDChange()));
+
     ui->textEdit_des->setEnabled(false);
     ui->lineEdit_type->setEnabled(false);
     ui->comboBox_unit->setEditable(false);
     connect(dataCenter::instance(),SIGNAL(sig_newGoodsRecord(GoodsOutRecord,bool)),this,SLOT(NewOutCb(GoodsOutRecord,bool)));
+    connect(ui->comboBox_goods_id,SIGNAL(currentTextChanged(QString)),this,SLOT(GoodIDChange()));
+    GoodIDChange();
 }
 
 DialogOutGoods::~DialogOutGoods()

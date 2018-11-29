@@ -60,6 +60,7 @@ void PersonManager::checkAuthor(int author)
         ui->pushButton_mod->setEnabled(false);
         ui->pushButton_newUser->setEnabled(false);
         ui->pushButton_out->setEnabled(false);
+        ui->widget_control->hide();
         break;
     default:
         break;

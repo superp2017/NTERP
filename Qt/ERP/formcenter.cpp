@@ -76,10 +76,10 @@ void FormCenter::checkAuthor(int author)
     case 0:
     case 1:
         ui->finance_btn->hide();
-        ui->set_Btn->hide();
+//        ui->set_Btn->hide();
         break;
     case 2:
-        ui->set_Btn->hide();
+//        ui->set_Btn->hide();
     default:
         break;
     }
