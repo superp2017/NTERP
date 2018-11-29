@@ -19,8 +19,13 @@ nSysConfig::nSysConfig()
         m_set.isExportOpen = false;
     }
     m_settings.endGroup();
+
     m_settings.beginGroup("Accounts");
     m_accounts = m_settings.value("Lists").toStringList().toSet();
+    m_settings.endGroup();
+
+    m_settings.beginGroup("NOTICE");
+    m_notice_port = m_settings.value("PORT").toInt();
     m_settings.endGroup();
 }
 
@@ -54,17 +59,12 @@ void nSysConfig::setSetting(SysSetting set)
     m_settings.setValue("Code",set.Code);
     m_settings.endGroup();
     m_settings.beginGroup("Accounts");
-//    QString list;
-//    QList<QString> l = m_accounts.toList();
-
     QStringList list = QStringList::fromSet(m_accounts);
-//    for(int i =0;i<l.size();++i){
-//        list+=l.at(i);
-//        if(i!=l.size()-1){
-//            list+=",";
-//        }
-//    }
     m_settings.setValue("Lists",list);
+    m_settings.endGroup();
+
+    m_settings.beginGroup("NOTICE");
+    m_settings.setValue("PORT",m_notice_port);
     m_settings.endGroup();
 }
 
@@ -88,4 +88,9 @@ void nSysConfig::reSave()
 QSet<QString> nSysConfig::accounts() const
 {
     return m_accounts;
+}
+
+qint16 nSysConfig::noticePort() const
+{
+    return m_notice_port;
 }

@@ -7,6 +7,7 @@
 #include "nsysconfig.h"
 #include <QMap>
 #include <QMessageBox>
+#include "notification.h"
 #pragma execution_character_set("utf-8")
 
 #define AUTHOR_Return(x) if(x==dataCenter::instance()->pub_CurUser().Author){\
@@ -60,6 +61,7 @@ public:
         return u;
     }
     void initData();
+    void ListenNotice();
     void net_login(const QJsonObject para);
     ///////////////////////////////////////////////////////
     void net_newUser(const QJsonObject para);
@@ -178,6 +180,9 @@ public:
     void setCurSettings(SysSetting set);
     //////////////////////////////////////////////////
 
+private slots:
+    void newNotice(QJsonObject &obj);
+
 signals:
     void sig_showStatusMessage(QString msg,int sec);
     ///////////////////////////////////////////
@@ -263,7 +268,8 @@ private:
     QVector<GoodsOutRecord> m_goodsRecords;//所有商品出库记录
     Loadding                m_load;       //加载动画
     nSysConfig              m_Config;     //保存系统配置
-    QString                 m_print_number;
+    QString                 m_print_number;//
+    Notification            m_notice;       //通知模块
 };
 
 #endif // DATACENTER_H
