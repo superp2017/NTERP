@@ -100,7 +100,7 @@ func ModSupplier(session *JHttp.Session) {
 	data.CertificatesNum = st.CertificatesNum
 	data.Certificates = st.Certificates
 	data.Note = st.Note
-	data.CreatStamp = CurStamp()
+	data.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Supplier, st.SID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
@@ -130,7 +130,7 @@ func UpDownSupplier(session *JHttp.Session) {
 	} else {
 		data.Status = "1"
 	}
-	data.CreatStamp = CurStamp()
+	data.LastTime = CurStamp()
 	if err := JRedis.Redis_hset(Hash_Supplier, st.SID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
