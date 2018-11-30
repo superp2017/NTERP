@@ -618,6 +618,15 @@ func GetGlobalOrders(session *JHttp.Session) {
 	session.Forward("0", "success", data)
 }
 
+func GetPageGlobalOrder(session *JHttp.Session)  {
+	type Param struct{
+		Start int
+		Size int
+		Status string
+	}
+}
+
+
 func initOrderMaterial(data *Order, mater *MaterialInfo) {
 	data.MaterielID = mater.MaterID
 	data.MaterielDes = mater.MaterDes
