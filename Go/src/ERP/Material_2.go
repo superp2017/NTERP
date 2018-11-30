@@ -24,8 +24,8 @@ type MaterialInfo struct {
 	Unit            string  //单位
 	Money           float64 //未税单价
 	CreatTime       string  //创建时间
-	CreatStamp		int64 //创建的时间戳
-	LastTime 		int64  //最后更新时间
+	CreatStamp      int64   //创建的时间戳
+	LastTime        int64   //最后更新时间
 }
 
 func NewMaterial(session *JHttp.Session) {
@@ -52,12 +52,12 @@ func NewMaterial(session *JHttp.Session) {
 	}
 	go appendCustomerMaterial(st.CID, st.MaterID)
 
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_NEW,
-		DataType:STRUCT_MATERIAL,
-		Data:st,
-	})
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_NEW,
+	//	DataType:STRUCT_MATERIAL,
+	//	Data:st,
+	//})
 
 	session.Forward("0", "success", st)
 }
@@ -105,12 +105,12 @@ func ModMaterial(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRUCT_MATERIAL,
-		Data:st,
-	})
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_Modify,
+	//	DataType:STRUCT_MATERIAL,
+	//	Data:st,
+	//})
 
 	session.Forward("0", "success", st)
 }
@@ -171,11 +171,11 @@ func DelMaterial(session *JHttp.Session) {
 	}
 	go delFromCustomerMaterial(st.CID, st.MaterID)
 	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Del,
-		DataType:STRUCT_MATERIAL,
-		Data:st.MaterID,
-	})
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_Del,
+	//	DataType:STRUCT_MATERIAL,
+	//	Data:st.MaterID,
+	//})
 	session.Forward("0", "success\n", st.MaterID)
 }
 

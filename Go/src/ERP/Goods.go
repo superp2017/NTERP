@@ -17,8 +17,8 @@ type Goods struct {
 	SID          string  //供应商id
 	SupplierName string  //供应商名称
 	CreatTime    string  //创建时间
-	CreatStamp		int64 //创建的时间戳
-	LastTime 		int64  //最后更新时间
+	CreatStamp   int64   //创建的时间戳
+	LastTime     int64   //最后更新时间
 }
 
 //新建商品
@@ -51,12 +51,12 @@ func newGoods(session *JHttp.Session) {
 	if st.Type != "" {
 		go appendGoodsType(st.Type)
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_NEW,
-		DataType:STRUCT_GOODS,
-		Data:st,
-	})
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_NEW,
+	//	DataType:STRUCT_GOODS,
+	//	Data:st,
+	//})
 	session.Forward("0", "NewGoods success", st)
 }
 
@@ -144,12 +144,12 @@ func modGoods(session *JHttp.Session) {
 	if newType && data.Type != "" {
 		go appendGoodsType(data.Type)
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRUCT_GOODS,
-		Data:data,
-	})
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_Modify,
+	//	DataType:STRUCT_GOODS,
+	//	Data:data,
+	//})
 	session.Forward("0", "modify success", data)
 }
 
@@ -177,25 +177,13 @@ func addGoodsNum(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//data := &Goods{}
-	//if err := JRedis.Redis_hget(Hash_Goods, st.ID, data); err != nil {
-	//	JLogger.Error(err.Error())
-	//	session.Forward("1", err.Error(), nil)
-	//	return
-	//}
-	//data.Num += st.Num
-	//if err := JRedis.Redis_hset(Hash_Goods, st.ID, data); err != nil {
-	//	JLogger.Error(err.Error())
-	//	session.Forward("1", err.Error(), nil)
-	//	return
-	//}
 
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRUCT_GOODS,
-		Data:data,
-	})
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_Modify,
+	//	DataType:STRUCT_GOODS,
+	//	Data:data,
+	//})
 	session.Forward("0", "mod success\n", data)
 }
 
@@ -251,12 +239,12 @@ func delGoods(session *JHttp.Session) {
 	if data.SID != "" && data.ID != "" {
 		go removeSupplierGoods(data.SID, data.ID)
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Del,
-		DataType:STRUCT_GOODS,
-		Data:st.ID,
-	})
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_Del,
+	//	DataType:STRUCT_GOODS,
+	//	Data:st.ID,
+	//})
 	session.Forward("0", "del success\n", st.ID)
 }
 
@@ -319,10 +307,10 @@ func RemoveGoodsType(session *JHttp.Session) {
 		return
 	}
 	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Del,
-		DataType:STRUCT_GOODS_TYPE,
-		Data:st.Type,
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Del,
+		DataType:   STRUCT_GOODS_TYPE,
+		Data:       st.Type,
 	})
 	session.Forward("0", "RemoveGoodsType success\n", st.Type)
 }
@@ -342,12 +330,12 @@ func AddGoodsType(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_NEW,
-		DataType:STRUCT_GOODS_TYPE,
-		Data:st.Type,
-	})
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_NEW,
+	//	DataType:STRUCT_GOODS_TYPE,
+	//	Data:st.Type,
+	//})
 	session.Forward("0", "AddGoodsType success\n", st.Type)
 }
 

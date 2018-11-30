@@ -14,7 +14,7 @@
 #include "goodsoutrecordservice.h"
 
 
-dataCenter::dataCenter(QObject *parent) : QObject(parent),m_notice(parent)
+dataCenter::dataCenter(QObject *parent) : QObject(parent)//,m_notice(parent)
 {
     m_authors.push_back("操作员");
     m_authors.push_back("仓库");
@@ -22,7 +22,7 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent),m_notice(parent)
     m_authors.push_back("管理员");
     m_authors.push_back("超级管理员");
 
-    connect(&m_notice,SIGNAL(newNOtice(QJsonObject&)),this,SLOT(newNotice(QJsonObject&)));
+   // connect(&m_notice,SIGNAL(newNOtice(QJsonObject&)),this,SLOT(newNotice(QJsonObject&)));
 }
 
 void dataCenter::ListenNotice()
@@ -952,20 +952,20 @@ void dataCenter::update_first()
     //////////////初始化所有订单///////////////////
     boost::thread (boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance())).detach();
 
-    //////////////初始化所有单位///////////////////
-    boost::thread (boost::bind(&dataCenter::net_getglobalUnits,dataCenter::instance())).detach();
-
-    //////////////获取打印数量/////////////////////////////
-    boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
     m_first_timer->start(1000*60*1);
 }
 
 void dataCenter::update_second()
 {
+    //////////////初始化所有单位///////////////////
+    boost::thread (boost::bind(&dataCenter::net_getglobalUnits,dataCenter::instance())).detach();
+
     //////////////初始化所有物料//////////////////
     boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance())).detach();
     //////////////获取所有商品的出库记录//////////////////////////////
     boost::thread(boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance())).detach();
+    //////////////获取打印数量/////////////////////////////
+    boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
 
     m_second_timer->start(1000*60*10);
 }

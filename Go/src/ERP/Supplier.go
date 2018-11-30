@@ -24,8 +24,8 @@ type Supplier struct {
 	Goods           string //商品列表
 	Status          string //状态 0:正常 1:删除
 	CreatTime       string //创建时间
-	CreatStamp   int64   //创建的时间戳
-	LastTime     int64   //最后更新时间
+	CreatStamp      int64  //创建的时间戳
+	LastTime        int64  //最后更新时间
 }
 
 //新建一个客户
@@ -51,12 +51,12 @@ func NewSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_NEW,
-		DataType:STRUCT_SUPPLIER,
-		Data:st,
-	})
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_NEW,
+	//	DataType:STRUCT_SUPPLIER,
+	//	Data:st,
+	//})
 	session.Forward("0", "success", st)
 }
 
@@ -111,12 +111,12 @@ func ModSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRUCT_SUPPLIER,
-		Data:st,
-	})
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_Modify,
+	//	DataType:STRUCT_SUPPLIER,
+	//	Data:st,
+	//})
 	session.Forward("0", "success", data)
 }
 
@@ -147,12 +147,12 @@ func UpDownSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRUCT_SUPPLIER,
-		Data:st,
-	})
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_Modify,
+	//	DataType:STRUCT_SUPPLIER,
+	//	Data:st,
+	//})
 	session.Forward("0", "success", data)
 }
 
@@ -177,12 +177,12 @@ func DelSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Del,
-		DataType:STRUCT_SUPPLIER,
-		Data:st,
-	})
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_Del,
+	//	DataType:STRUCT_SUPPLIER,
+	//	Data:st,
+	//})
 	session.Forward("0", "success", st.SID)
 }
 

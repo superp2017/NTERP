@@ -277,7 +277,7 @@ private:
     Loadding                m_load;       //加载动画
     nSysConfig              m_Config;     //保存系统配置
     QString                 m_print_number;//
-    Notification            m_notice;       //通知模块
+//    Notification            m_notice;       //通知模块
     QTimer                  *m_first_timer;   //订单定时器
     QTimer                  *m_second_timer;//第二定时器
     QTimer                  *m_third_timer;//第三定时器

@@ -29,12 +29,12 @@ func NewUnit(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_NEW,
-		DataType:STRUCT_UNIT,
-		Data:st.Unit,
-	})
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_NEW,
+	//	DataType:STRUCT_UNIT,
+	//	Data:st.Unit,
+	//})
 	session.Forward("0", "success", st.Unit)
 }
 
@@ -57,12 +57,12 @@ func DelUnit(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Del,
-		DataType:STRUCT_UNIT,
-		Data:st.Unit,
-	})
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_Del,
+	//	DataType:STRUCT_UNIT,
+	//	Data:st.Unit,
+	//})
 	session.Forward("0", "success", st.Unit)
 }
 
