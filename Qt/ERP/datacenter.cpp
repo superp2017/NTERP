@@ -22,7 +22,7 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)//,m_notice(parent)
     m_authors.push_back("管理员");
     m_authors.push_back("超级管理员");
 
-   // connect(&m_notice,SIGNAL(newNOtice(QJsonObject&)),this,SLOT(newNotice(QJsonObject&)));
+    // connect(&m_notice,SIGNAL(newNOtice(QJsonObject&)),this,SLOT(newNotice(QJsonObject&)));
 }
 
 void dataCenter::ListenNotice()
@@ -936,7 +936,7 @@ void dataCenter::TimerUpdate()
 {
     m_first_timer = new QTimer(this);
     connect(m_first_timer, SIGNAL(timeout()), this, SLOT(update_first()));
-    m_first_timer->start(1000*60*1);
+    m_first_timer->start(1000*60*2);
 
     m_second_timer = new QTimer(this);
     connect(m_second_timer, SIGNAL(timeout()), this, SLOT(update_second()));
@@ -951,8 +951,9 @@ void dataCenter::update_first()
 {
     //////////////初始化所有订单///////////////////
     boost::thread (boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance())).detach();
-
-    m_first_timer->start(1000*60*1);
+    //////////////获取打印数量/////////////////////////////
+    boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
+    m_first_timer->start(1000*60*2);
 }
 
 void dataCenter::update_second()
@@ -964,8 +965,9 @@ void dataCenter::update_second()
     boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance())).detach();
     //////////////获取所有商品的出库记录//////////////////////////////
     boost::thread(boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance())).detach();
-    //////////////获取打印数量/////////////////////////////
-    boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
+
+    //////////////初始化所有镀种的分类//////////////////
+    boost::thread(boost::bind(&dataCenter::net_getglobalPlating,dataCenter::instance())).detach();
 
     m_second_timer->start(1000*60*10);
 }
@@ -991,8 +993,7 @@ void dataCenter::update_third()
     //////////////初始化所有商品的分类//////////////////
     boost::thread(boost::bind(&dataCenter::net_getGlobalGoodsType,dataCenter::instance())).detach();
 
-    //////////////初始化所有镀种的分类//////////////////
-    boost::thread(boost::bind(&dataCenter::net_getglobalPlating,dataCenter::instance())).detach();
+
 
     m_third_timer->start(1000*60*20);
 }
