@@ -63,7 +63,8 @@ public:
         return u;
     }
     void initData();
-    void TimerUpdate();
+    void clearData();
+    void TimerUpdate(bool isstop=false);
     void ListenNotice();
     void net_login(const QJsonObject para);
     ///////////////////////////////////////////////////////

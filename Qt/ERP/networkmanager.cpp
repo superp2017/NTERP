@@ -18,13 +18,12 @@ void NetworkManager::checkNetWork(QString hostName)
 void NetworkManager::onLookupHost(QHostInfo host)
 {
 
-
     if (host.error() != QHostInfo::NoError) {
-          qDebug() <<host.hostName()<< "Lookup failed:" << host.errorString();
-          //网络未连接，发送信号通知
-          emit sigLookUpHostResult(host.hostName(),false);
-      }
-      else{
-          emit sigLookUpHostResult(host.hostName(),true);
-      }
+        qDebug() <<host.hostName()<< "Lookup failed:" << host.errorString();
+        //网络未连接，发送信号通知
+        emit sigLookUpHostResult(host.hostName(),false);
+    }
+    else{
+        emit sigLookUpHostResult(host.hostName(),true);
+    }
 }

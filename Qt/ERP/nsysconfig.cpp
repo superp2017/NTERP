@@ -29,6 +29,11 @@ nSysConfig::nSysConfig()
     m_settings.endGroup();
 }
 
+void nSysConfig::clear()
+{
+    m_accounts.clear();
+}
+
 QString nSysConfig::HOST_NAME()
 {
     return  m_set.Host_name;
