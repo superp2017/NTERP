@@ -173,9 +173,9 @@ void OrderTable::checkAuthor(int author)
 
 void OrderTable::checkOrder(Order order)
 {
-    QString status = order.Current.Status;
-    int last = order.
-    if()
+//    QString status = order.Current.Status;
+//    int last = order.
+
 }
 
 

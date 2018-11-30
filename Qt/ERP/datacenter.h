@@ -8,6 +8,8 @@
 #include <QMap>
 #include <QMessageBox>
 #include "notification.h"
+#include <QTimer>
+
 #pragma execution_character_set("utf-8")
 
 #define AUTHOR_Return(x) if(x==dataCenter::instance()->pub_CurUser().Author){\
@@ -61,6 +63,7 @@ public:
         return u;
     }
     void initData();
+    void TimerUpdate();
     void ListenNotice();
     void net_login(const QJsonObject para);
     ///////////////////////////////////////////////////////
@@ -182,7 +185,9 @@ public:
 
 private slots:
     void newNotice(QJsonObject &obj);
-
+    void update_first();
+    void update_second();
+    void update_third();
 signals:
     void sig_showStatusMessage(QString msg,int sec);
     ///////////////////////////////////////////
@@ -251,6 +256,8 @@ private:
     void pri_removeCustomerMaterial(QString cid,QString materialID);
     void pri_addCustomerMaterial(QString cid,QString materialID);
     void pri_opt_Order(bool ok,Order &order,enum_NoticeType noticeType);
+
+
 private:
     User                    cur_user;     //当前登录的账号
     QVector<User>           m_employee;   //所有的员工
@@ -271,6 +278,9 @@ private:
     nSysConfig              m_Config;     //保存系统配置
     QString                 m_print_number;//
     Notification            m_notice;       //通知模块
+    QTimer                  *m_first_timer;   //订单定时器
+    QTimer                  *m_second_timer;//第二定时器
+    QTimer                  *m_third_timer;//第三定时器
 };
 
 #endif // DATACENTER_H

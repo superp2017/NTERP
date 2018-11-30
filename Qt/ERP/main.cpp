@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
         MainWindow w;
         w.setMinimumSize(800,800);
 //        dataCenter::instance()->ListenNotice();
+        dataCenter::instance()->TimerUpdate();
         w.showMaximized();
         return a.exec();
     }
