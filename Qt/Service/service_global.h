@@ -266,6 +266,11 @@ struct GoodsOutRecord{
 
 
 
+struct NoticeInfo {
+    int  NoticeType ;
+    int  DataType;
+    QJsonValue Data;
+};
 
 
 

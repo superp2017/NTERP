@@ -14,7 +14,7 @@
 #include "goodsoutrecordservice.h"
 
 
-dataCenter::dataCenter(QObject *parent) : QObject(parent)
+dataCenter::dataCenter(QObject *parent) : QObject(parent),m_notice(parent)
 {
     m_authors.push_back("操作员");
     m_authors.push_back("仓库");
@@ -22,7 +22,15 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)
     m_authors.push_back("管理员");
     m_authors.push_back("超级管理员");
 
+    connect(&m_notice,SIGNAL(newNOtice(QJsonObject&)),this,SLOT(newNotice(QJsonObject&)));
 }
+
+void dataCenter::ListenNotice()
+{
+    //开始监听通知
+    m_notice.Listen(m_Config.noticePort());
+}
+
 
 void dataCenter::initData()
 {
@@ -64,6 +72,7 @@ void dataCenter::initData()
 
 
 }
+
 
 void dataCenter::net_login(const QJsonObject para)
 {
@@ -889,6 +898,18 @@ QSet<QString> dataCenter::Accounts()
 void dataCenter::setCurSettings(SysSetting set)
 {
     m_Config.setSetting(set);
+}
+
+void dataCenter::newNotice(QJsonObject &obj)
+{
+    NoticeInfo info = Notification::NoticeformJson(obj);
+    switch (info.DataType) {
+    case 0:
+
+        break;
+    default:
+        break;
+    }
 }
 
 void dataCenter::pri_initBath()

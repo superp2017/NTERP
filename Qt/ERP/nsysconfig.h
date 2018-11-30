@@ -20,9 +20,12 @@ public:
 
     QSet<QString> accounts() const;
 
+    qint16 noticePort() const;
+
 private:
     SysSetting m_set;
     QSet<QString> m_accounts;
+    qint16  m_notice_port;
 
 };
 
