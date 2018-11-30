@@ -117,10 +117,10 @@ func NewOrder(session *JHttp.Session) {
 		go appendCustomerOrderID(st.CustomID, st.OrderID)
 	}
 	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_NEW,
-		DataType:STRTUCT_ORDER,
-		Data:st,
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_NEW,
+		DataType:   STRTUCT_ORDER,
+		Data:       st,
 	})
 	session.Forward("0", "success", st)
 }
@@ -154,10 +154,10 @@ func UpdatePrintNum(session *JHttp.Session) {
 	}
 	go setPrintNumber(true)
 	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRTUCT_ORDER,
-		Data:list,
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Modify,
+		DataType:   STRTUCT_ORDER,
+		Data:       list,
 	})
 	session.Forward("0", "success", list)
 }
@@ -321,10 +321,10 @@ func ModOrder(session *JHttp.Session) {
 		return
 	}
 	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRTUCT_ORDER,
-		Data:data,
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Modify,
+		DataType:   STRTUCT_ORDER,
+		Data:       data,
 	})
 	session.Forward("0", "success", data)
 }
@@ -371,10 +371,10 @@ func ModOrderPrice(session *JHttp.Session) {
 		return
 	}
 	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRTUCT_ORDER,
-		Data:data,
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Modify,
+		DataType:   STRTUCT_ORDER,
+		Data:       data,
 	})
 	session.Forward("0", "success", data)
 }
@@ -419,10 +419,10 @@ func CancelOrder(session *JHttp.Session) {
 		go removefromCustomerOrderID(data.CustomID, data.OrderID)
 	}
 	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRTUCT_ORDER,
-		Data:data,
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Modify,
+		DataType:   STRTUCT_ORDER,
+		Data:       data,
 	})
 	session.Forward("0", "success", data)
 }
@@ -469,10 +469,10 @@ func DelOrder(session *JHttp.Session) {
 		go removefromCustomerOrderID(data.CustomID, data.OrderID)
 	}
 	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Del,
-		DataType:STRTUCT_ORDER,
-		Data:data,
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Del,
+		DataType:   STRTUCT_ORDER,
+		Data:       data,
 	})
 	session.Forward("0", "success", data)
 }
@@ -527,10 +527,10 @@ func PorduceOrder(session *JHttp.Session) {
 		return
 	}
 	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRTUCT_ORDER,
-		Data:data,
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Modify,
+		DataType:   STRTUCT_ORDER,
+		Data:       data,
 	})
 	session.Forward("0", "success", data)
 }
@@ -584,10 +584,10 @@ func SuccessOrder(session *JHttp.Session) {
 		return
 	}
 	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRTUCT_ORDER,
-		Data:data,
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Modify,
+		DataType:   STRTUCT_ORDER,
+		Data:       data,
 	})
 	session.Forward("0", "success", data)
 }
@@ -618,14 +618,13 @@ func GetGlobalOrders(session *JHttp.Session) {
 	session.Forward("0", "success", data)
 }
 
-func GetPageGlobalOrder(session *JHttp.Session)  {
-	type Param struct{
-		Start int
-		Size int
-		Status string
-	}
-}
-
+//func GetPageGlobalOrder(session *JHttp.Session)  {
+//	type Param struct{
+//		Start int
+//		Size int
+//		Status string
+//	}
+//}
 
 func initOrderMaterial(data *Order, mater *MaterialInfo) {
 	data.MaterielID = mater.MaterID

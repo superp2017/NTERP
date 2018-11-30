@@ -250,6 +250,7 @@ private:
     void pri_checkGoodType(QString type);
     void pri_removeCustomerMaterial(QString cid,QString materialID);
     void pri_addCustomerMaterial(QString cid,QString materialID);
+    void pri_opt_Order(bool ok,Order &order,enum_NoticeType noticeType);
 private:
     User                    cur_user;     //当前登录的账号
     QVector<User>           m_employee;   //所有的员工

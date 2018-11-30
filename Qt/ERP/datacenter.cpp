@@ -28,7 +28,7 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent),m_notice(parent)
 void dataCenter::ListenNotice()
 {
     //开始监听通知
-    m_notice.Listen(m_Config.noticePort());
+  //  m_notice.Listen(m_Config.noticePort());
 }
 
 
@@ -169,6 +169,30 @@ void dataCenter::net_getGlobalDepartment()
     m_departments = UserService::getAllDepartment(QJsonObject(),ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     emit sig_globalDepartment(ok);
 }
+
+void dataCenter::pri_opt_Order(bool ok, Order &order, enum_NoticeType noticeType)
+{
+    switch (noticeType) {
+    case NoticeType_NEW:
+        if(ok){
+            m_orders.append(order);
+            m_batch.insert(order.CustomBatch);
+            //////////////初始化所有物料//////////////////
+            boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance())).detach();
+        }
+        emit sig_newOrder(order,isOK);
+        break;
+    case NoticeType_Modify:
+
+        break;
+    case NoticeType_Del:
+
+        break;
+    default:
+        break;
+    }
+}
+
 
 void dataCenter::net_newOrder(const QJsonObject para)
 {
@@ -947,6 +971,7 @@ void dataCenter::pri_addCustomerMaterial(QString cid, QString materialID)
         m_hashMaterials[cid] = ls;
     }
 }
+
 
 
 QVector<QString> dataCenter::pub_goodsType() const
