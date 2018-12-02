@@ -45,15 +45,15 @@ Materiel MaterialService::modMaterial(const QJsonObject para, bool &ok, QString 
     return c;
 }
 
-QString MaterialService::delMaterial(const QJsonObject para, bool &ok,QString hostname, QString hostport)
+Materiel MaterialService::delMaterial(const QJsonObject para, bool &ok,QString hostname, QString hostport)
 {
     std::string url = Net_DelMaterial;
-    QString c;
+    Materiel c;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
-        if(ret.data.isString()){
-            c = ret.data.toString();
+        if(ret.data.isObject()){
+            c = fromJsonObject(ret.data.toObject());
         }
         ok = true;
         return c;

@@ -51,12 +51,12 @@ func NewCustomer(session *JHttp.Session) {
 		return
 	}
 
-	///通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_NEW,
-	//	DataType:STRUCT_CUSTOMER,
-	//	Data:st,
-	//})
+	//通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_NEW,
+		DataType:   STRUCT_CUSTOMER,
+		Data:       st,
+	})
 
 	session.Forward("0", "success", st)
 }
@@ -112,12 +112,12 @@ func ModCustomer(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	/////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_Modify,
-	//	DataType:STRUCT_CUSTOMER,
-	//	Data:data,
-	//})
+	///通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Modify,
+		DataType:   STRUCT_CUSTOMER,
+		Data:       data,
+	})
 	session.Forward("0", "success", data)
 }
 
@@ -148,12 +148,12 @@ func UpDownCustomer(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	/////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_Modify,
-	//	DataType:STRUCT_CUSTOMER,
-	//	Data:data,
-	//})
+	///通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Modify,
+		DataType:   STRUCT_CUSTOMER,
+		Data:       data,
+	})
 	session.Forward("0", "success", data)
 }
 
@@ -174,18 +174,23 @@ func DelCustomer(session *JHttp.Session) {
 		session.Forward("1", str, nil)
 		return
 	}
+	data := &Customer{}
+	if err := JRedis.Redis_hget(Hash_Customer, st.CID, data); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
 	if err := JRedis.Redis_hdel(Hash_Customer, st.CID); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	/////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_Del,
-	//	DataType:STRUCT_CUSTOMER,
-	//	Data:st.CID,
-	//})
+	///通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Del,
+		DataType:   STRUCT_CUSTOMER,
+		Data:       data,
+	})
 	go delCustomerOrderID(st.CID)
-	session.Forward("0", "success", st.CID)
+	session.Forward("0", "success", data)
 }
 
 //获取所有客户列表

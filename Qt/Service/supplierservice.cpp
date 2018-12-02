@@ -48,15 +48,15 @@ Supplier SupplierService::modSupplier(const QJsonObject para, bool &ok, QString 
     return sup;
 }
 
-QString SupplierService::delSupplier(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+Supplier SupplierService::delSupplier(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-    QString sup;
+    Supplier sup;
     std::string url = Net_DelSupplier;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
-        if(ret.data.isString()){
-            sup = ret.data.toString();
+        if(ret.data.isObject()){
+            sup = fromJsonObject(ret.data.toObject());
             ok = true;
             return  sup;
         }

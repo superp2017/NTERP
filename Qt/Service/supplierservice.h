@@ -10,7 +10,7 @@ public:
     SupplierService();
     static Supplier newSupplier(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static Supplier modSupplier(const QJsonObject para, bool &ok, QString hostname, QString hostport);
-    static QString delSupplier(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static Supplier delSupplier(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QVector<Supplier> getAllSupplierls(bool &ok, QString hostname, QString hostport);
 
     static QJsonObject toJsonObject(Supplier super);

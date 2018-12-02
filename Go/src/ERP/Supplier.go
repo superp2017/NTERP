@@ -51,12 +51,12 @@ func NewSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_NEW,
-	//	DataType:STRUCT_SUPPLIER,
-	//	Data:st,
-	//})
+	//通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_NEW,
+		DataType:   STRUCT_SUPPLIER,
+		Data:       st,
+	})
 	session.Forward("0", "success", st)
 }
 
@@ -111,12 +111,12 @@ func ModSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_Modify,
-	//	DataType:STRUCT_SUPPLIER,
-	//	Data:st,
-	//})
+	//通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Modify,
+		DataType:   STRUCT_SUPPLIER,
+		Data:       st,
+	})
 	session.Forward("0", "success", data)
 }
 
@@ -147,12 +147,12 @@ func UpDownSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_Modify,
-	//	DataType:STRUCT_SUPPLIER,
-	//	Data:st,
-	//})
+	//通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Modify,
+		DataType:   STRUCT_SUPPLIER,
+		Data:       st,
+	})
 	session.Forward("0", "success", data)
 }
 
@@ -173,17 +173,23 @@ func DelSupplier(session *JHttp.Session) {
 		session.Forward("1", str, nil)
 		return
 	}
+	sup := &Supplier{}
+	if err := JRedis.Redis_hget(Hash_Supplier, st.SID, sup); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+
 	if err := JRedis.Redis_hdel(Hash_Supplier, st.SID); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_Del,
-	//	DataType:STRUCT_SUPPLIER,
-	//	Data:st,
-	//})
-	session.Forward("0", "success", st.SID)
+	//通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Del,
+		DataType:   STRUCT_SUPPLIER,
+		Data:       sup,
+	})
+	session.Forward("0", "success", sup)
 }
 
 //获取所有供应商列表

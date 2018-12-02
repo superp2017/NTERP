@@ -77,15 +77,15 @@ User UserService::outUser(const QJsonObject para, bool &ok, QString hostname, QS
 #endif
 }
 
-QString UserService::delUser(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+User UserService::delUser(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-    QString user;
+    User user;
     std::string url = Net_DelEmployee;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
-        if(ret.data.isString()){
-            user = ret.data.toString();
+        if(ret.data.isObject()){
+            user = fromJsonObject(ret.data.toObject());
             ok = true;
             return  user;
         }

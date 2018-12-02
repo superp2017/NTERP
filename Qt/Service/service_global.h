@@ -267,6 +267,19 @@ struct GoodsOutRecord{
 };
 
 
+//通知类型
+enum enum_NoticeType{NoticeType_NEW=0,\
+                     NoticeType_Modify,NoticeType_Del};
+
+//通知的数据类型
+enum enum_DaType{STRTUCT_ORDER=0,STRUCT_MATERIAL,\
+                 STRUCT_GOODS,STRUCT_OUTRECORD,\
+                 STRUCT_USER,STRUCT_CUSTOMER,\
+                 STRUCT_SUPPLIER,STRUCT_UNIT,\
+                 STRUCT_DEPARTMENT,STRUCT_GOODS_TYPE,\
+                 STRUCT_PLANTING};
+
+
 
 struct NoticeInfo {
     int  NoticeType ;

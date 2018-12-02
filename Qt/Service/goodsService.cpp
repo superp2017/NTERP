@@ -84,15 +84,15 @@ Goods GoodsService::addOutGoodsNum(const QJsonObject para, bool &ok, QString hos
     return goods;
 }
 
-QString GoodsService::delGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+Goods GoodsService::delGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-    QString goods;
+    Goods goods;
     std::string url = Net_DelGoods;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
-        if(ret.data.isString()){
-            goods = ret.data.toString();
+        if(ret.data.isObject()){
+            goods = fromJsonObject(ret.data.toObject());
             ok = true;
             return  goods;
         }

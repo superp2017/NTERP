@@ -63,15 +63,15 @@ Customer CustomerService::modCustomer(const QJsonObject para, bool &ok, QString 
 #endif
 }
 
-QString CustomerService::delCustomer(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+Customer CustomerService::delCustomer(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-    QString cus;
+    Customer cus;
     std::string url = Net_DelCustomer;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r && ret.ret){
-        if(ret.data.isString()){
-            cus = ret.data.toString();
+        if(ret.data.isObject()){
+            cus = fromJsonObject(ret.data.toObject());
             ok = true;
             return  cus;
         }

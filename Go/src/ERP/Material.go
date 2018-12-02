@@ -52,12 +52,12 @@ func NewMaterial(session *JHttp.Session) {
 	}
 	go appendCustomerMaterial(st.CID, st.MaterID)
 
-	////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_NEW,
-	//	DataType:STRUCT_MATERIAL,
-	//	Data:st,
-	//})
+	//通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_NEW,
+		DataType:   STRUCT_MATERIAL,
+		Data:       st,
+	})
 
 	session.Forward("0", "success", st)
 }
@@ -105,12 +105,12 @@ func ModMaterial(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_Modify,
-	//	DataType:STRUCT_MATERIAL,
-	//	Data:st,
-	//})
+	//通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Modify,
+		DataType:   STRUCT_MATERIAL,
+		Data:       st,
+	})
 
 	session.Forward("0", "success", st)
 }
@@ -164,6 +164,13 @@ func DelMaterial(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	mater := &MaterialInfo{}
+	if err := JRedis.Redis_hget(Hash_Material, st.MaterID, mater); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), st.MaterID)
+		return
+	}
+
 	if err := JRedis.Redis_hdel(Hash_Material, st.MaterID); err != nil {
 		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), st.MaterID)
@@ -171,12 +178,12 @@ func DelMaterial(session *JHttp.Session) {
 	}
 	go delFromCustomerMaterial(st.CID, st.MaterID)
 	//通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_Del,
-	//	DataType:STRUCT_MATERIAL,
-	//	Data:st.MaterID,
-	//})
-	session.Forward("0", "success\n", st.MaterID)
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Del,
+		DataType:   STRUCT_MATERIAL,
+		Data:       mater,
+	})
+	session.Forward("0", "success\n", mater)
 }
 
 //添加一个物料标号

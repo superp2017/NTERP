@@ -51,12 +51,12 @@ func newGoods(session *JHttp.Session) {
 	if st.Type != "" {
 		go appendGoodsType(st.Type)
 	}
-	////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_NEW,
-	//	DataType:STRUCT_GOODS,
-	//	Data:st,
-	//})
+	//通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_NEW,
+		DataType:   STRUCT_GOODS,
+		Data:       st,
+	})
 	session.Forward("0", "NewGoods success", st)
 }
 
@@ -144,12 +144,12 @@ func modGoods(session *JHttp.Session) {
 	if newType && data.Type != "" {
 		go appendGoodsType(data.Type)
 	}
-	////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_Modify,
-	//	DataType:STRUCT_GOODS,
-	//	Data:data,
-	//})
+	//通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Modify,
+		DataType:   STRUCT_GOODS,
+		Data:       data,
+	})
 	session.Forward("0", "modify success", data)
 }
 
@@ -178,12 +178,12 @@ func addGoodsNum(session *JHttp.Session) {
 		return
 	}
 
-	////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_Modify,
-	//	DataType:STRUCT_GOODS,
-	//	Data:data,
-	//})
+	//通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Modify,
+		DataType:   STRUCT_GOODS,
+		Data:       data,
+	})
 	session.Forward("0", "mod success\n", data)
 }
 
@@ -239,13 +239,13 @@ func delGoods(session *JHttp.Session) {
 	if data.SID != "" && data.ID != "" {
 		go removeSupplierGoods(data.SID, data.ID)
 	}
-	////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_Del,
-	//	DataType:STRUCT_GOODS,
-	//	Data:st.ID,
-	//})
-	session.Forward("0", "del success\n", st.ID)
+	//通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_Del,
+		DataType:   STRUCT_GOODS,
+		Data:       data,
+	})
+	session.Forward("0", "del success\n", data)
 }
 
 //获取供应商的商品列表
@@ -330,12 +330,12 @@ func AddGoodsType(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	////通知
-	//go	Notice(&NoticeInfo{
-	//	NoticeType:NoticeType_NEW,
-	//	DataType:STRUCT_GOODS_TYPE,
-	//	Data:st.Type,
-	//})
+	//通知
+	go Notice(&NoticeInfo{
+		NoticeType: NoticeType_NEW,
+		DataType:   STRUCT_GOODS_TYPE,
+		Data:       st.Type,
+	})
 	session.Forward("0", "AddGoodsType success\n", st.Type)
 }
 

@@ -256,9 +256,18 @@ private:
     void pri_checkGoodType(QString type);
     void pri_removeCustomerMaterial(QString cid,QString materialID);
     void pri_addCustomerMaterial(QString cid,QString materialID);
+    /////////////////////////////////////////////////////////////////////
     void pri_opt_Order(bool ok,Order &order,enum_NoticeType noticeType);
-
-
+    void pri_opt_User(bool ok,User &user,enum_NoticeType noticeType);
+    void pri_opt_Material(bool ok,Materiel &mater,enum_NoticeType noticeType);
+    void pri_opt_Unit(bool ok,QString &unit,enum_NoticeType noticeType);
+    void pri_opt_Goods(bool ok,Goods &goods,enum_NoticeType noticeType);
+    void pri_opt_OutRecord(bool ok,GoodsOutRecord &record,enum_NoticeType noticeType);
+    void pri_opt_Customer(bool ok, Customer &cus, enum_NoticeType noticeType);
+    void pri_opt_supplier(bool ok, Supplier &sup, enum_NoticeType noticeType);
+    void pri_opt_Platting(bool ok, QString &platting, enum_NoticeType noticeType);
+    void pri_opt_GoodsType(bool ok, QString &type, enum_NoticeType noticeType);
+    void pri_opt_DepartMent(bool ok, QString &type, enum_NoticeType noticeType);
 private:
     User                    cur_user;     //当前登录的账号
     QVector<User>           m_employee;   //所有的员工
@@ -278,7 +287,7 @@ private:
     Loadding                m_load;       //加载动画
     nSysConfig              m_Config;     //保存系统配置
     QString                 m_print_number;//
-//    Notification            m_notice;       //通知模块
+    Notification            m_notice;       //通知模块
     QTimer                  *m_first_timer;   //订单定时器
     QTimer                  *m_second_timer;//第二定时器
     QTimer                  *m_third_timer;//第三定时器

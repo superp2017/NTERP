@@ -9,6 +9,7 @@
 DialogNewUnit::DialogNewUnit(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogNewUnit)
+
 {
     ui->setupUi(this);
     connect(dataCenter::instance(),SIGNAL(sig_newUnit(QString,bool)),this,SLOT(newUnitCb(QString,bool)));

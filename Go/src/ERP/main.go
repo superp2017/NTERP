@@ -79,7 +79,6 @@ func initRoute() {
 
 	JHttp.WhiteHttp("/heartbeat", HeartBeat) //客户端心跳
 
-
 	//JHttp.WhiteHttp("/updateallmaterial", updateAllMaterial) //更新所有物料
 
 }
@@ -87,6 +86,6 @@ func initRoute() {
 func main() {
 	JExit.RegisterExitCb(exit)
 	initRoute()
-	startNotice(false)
+	startNotice(true)
 	JHttp.Run()
 }
