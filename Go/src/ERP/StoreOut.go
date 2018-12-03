@@ -56,6 +56,7 @@ func NewOutRecord(session *JHttp.Session) {
 		NoticeType: NoticeType_NEW,
 		DataType:   STRUCT_OUTRECORD,
 		Data:       st,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success!\n", st)
 }

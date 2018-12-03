@@ -5,7 +5,9 @@ import (
 	"JGo/JUuid"
 	"fmt"
 	"log"
+	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -125,4 +127,9 @@ func IDer(db string) string {
 func Decimal(value float64) float64 {
 	value, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", value), 64)
 	return value
+}
+
+//返回请求Ip
+func RequestAddr(r *http.Request) string {
+	return strings.Split(r.RemoteAddr, ":")[0]
 }

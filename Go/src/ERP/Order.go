@@ -121,6 +121,7 @@ func NewOrder(session *JHttp.Session) {
 		NoticeType: NoticeType_NEW,
 		DataType:   STRTUCT_ORDER,
 		Data:       st,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", st)
 }
@@ -158,6 +159,7 @@ func UpdatePrintNum(session *JHttp.Session) {
 		NoticeType: NoticeType_Modify,
 		DataType:   STRTUCT_ORDER,
 		Data:       list,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", list)
 }
@@ -247,6 +249,7 @@ func ModOrder(session *JHttp.Session) {
 		NoticeType: NoticeType_Modify,
 		DataType:   STRTUCT_ORDER,
 		Data:       data,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", data)
 }
@@ -297,6 +300,7 @@ func ModOrderPrice(session *JHttp.Session) {
 		NoticeType: NoticeType_Modify,
 		DataType:   STRTUCT_ORDER,
 		Data:       data,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", data)
 }
@@ -345,6 +349,7 @@ func CancelOrder(session *JHttp.Session) {
 		NoticeType: NoticeType_Modify,
 		DataType:   STRTUCT_ORDER,
 		Data:       data,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", data)
 }
@@ -395,6 +400,7 @@ func DelOrder(session *JHttp.Session) {
 		NoticeType: NoticeType_Del,
 		DataType:   STRTUCT_ORDER,
 		Data:       data,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", data)
 }
@@ -453,6 +459,7 @@ func PorduceOrder(session *JHttp.Session) {
 		NoticeType: NoticeType_Modify,
 		DataType:   STRTUCT_ORDER,
 		Data:       data,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", data)
 }
@@ -510,6 +517,7 @@ func SuccessOrder(session *JHttp.Session) {
 		NoticeType: NoticeType_Modify,
 		DataType:   STRTUCT_ORDER,
 		Data:       data,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", data)
 }

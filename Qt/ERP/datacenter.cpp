@@ -24,6 +24,7 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)//,m_notice(parent)
     m_first_timer=NULL;
     m_second_timer=NULL;
     m_third_timer=NULL;
+    m_heartbeat_timer =NULL;
     connect(&m_notice,SIGNAL(newNOtice(QJsonObject&)),this,SLOT(newNotice(QJsonObject&)));
 }
 
@@ -31,6 +32,9 @@ void dataCenter::ListenNotice()
 {
     //开始监听通知
     m_notice.Listen(m_Config.noticePort());
+    m_heartbeat_timer = new QTimer(this);
+    connect(m_heartbeat_timer, SIGNAL(timeout()), this, SLOT(heartbeat()));
+    m_heartbeat_timer->start(1000*3*1);
 }
 
 
@@ -79,6 +83,8 @@ void dataCenter::clearData()
 {
     qDebug()<<"dataCenter clear";
     TimerUpdate(true);
+
+    if(m_heartbeat_timer!=NULL&&m_heartbeat_timer->isActive()) m_heartbeat_timer->stop();
     m_employee.clear();   //所有的员工
     m_orders.clear();     //所有订单
     m_units.clear();      //所有计量单位
@@ -98,6 +104,7 @@ void dataCenter::clearData()
     m_first_timer =NULL;   //订单定时器
     m_second_timer=NULL;    //第二定时器
     m_third_timer=NULL; //第三定时器
+    m_heartbeat_timer=NULL;
 }
 
 
@@ -1093,6 +1100,14 @@ void dataCenter::net_getglobalPlating()
 }
 
 
+void dataCenter::net_HeartBeat()
+{
+    bool ok;
+    Notification::HeartBeat(QJsonObject(),ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    qDebug()<<"HeartBeat:"<<ok;
+}
+
+
 void dataCenter::pub_showMessage(QString msg, int sec)
 {
     emit sig_showStatusMessage(msg,sec);
@@ -1423,6 +1438,8 @@ void dataCenter::TimerUpdate(bool isstop)
         m_third_timer = new QTimer(this);
         connect(m_third_timer, SIGNAL(timeout()), this, SLOT(update_third()));
         m_third_timer->start(1000*60*20);
+
+
     }
 }
 
@@ -1475,6 +1492,13 @@ void dataCenter::update_third()
 
 
     m_third_timer->start(1000*60*20);
+}
+
+void dataCenter::heartbeat()
+{
+    //////////////心跳//////////////////
+    boost::thread(boost::bind(&dataCenter::net_HeartBeat,dataCenter::instance())).detach();
+    m_heartbeat_timer->start(1000*60);
 }
 
 void dataCenter::pri_initBath()

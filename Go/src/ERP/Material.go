@@ -57,6 +57,7 @@ func NewMaterial(session *JHttp.Session) {
 		NoticeType: NoticeType_NEW,
 		DataType:   STRUCT_MATERIAL,
 		Data:       st,
+		Addr:       RequestAddr(session.Req),
 	})
 
 	session.Forward("0", "success", st)
@@ -110,6 +111,7 @@ func ModMaterial(session *JHttp.Session) {
 		NoticeType: NoticeType_Modify,
 		DataType:   STRUCT_MATERIAL,
 		Data:       st,
+		Addr:       RequestAddr(session.Req),
 	})
 
 	session.Forward("0", "success", st)
@@ -182,6 +184,7 @@ func DelMaterial(session *JHttp.Session) {
 		NoticeType: NoticeType_Del,
 		DataType:   STRUCT_MATERIAL,
 		Data:       mater,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success\n", mater)
 }

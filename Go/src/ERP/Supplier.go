@@ -56,6 +56,7 @@ func NewSupplier(session *JHttp.Session) {
 		NoticeType: NoticeType_NEW,
 		DataType:   STRUCT_SUPPLIER,
 		Data:       st,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", st)
 }
@@ -116,6 +117,7 @@ func ModSupplier(session *JHttp.Session) {
 		NoticeType: NoticeType_Modify,
 		DataType:   STRUCT_SUPPLIER,
 		Data:       st,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", data)
 }
@@ -152,6 +154,7 @@ func UpDownSupplier(session *JHttp.Session) {
 		NoticeType: NoticeType_Modify,
 		DataType:   STRUCT_SUPPLIER,
 		Data:       st,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", data)
 }
@@ -188,6 +191,7 @@ func DelSupplier(session *JHttp.Session) {
 		NoticeType: NoticeType_Del,
 		DataType:   STRUCT_SUPPLIER,
 		Data:       sup,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", sup)
 }

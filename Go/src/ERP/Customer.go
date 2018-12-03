@@ -56,6 +56,7 @@ func NewCustomer(session *JHttp.Session) {
 		NoticeType: NoticeType_NEW,
 		DataType:   STRUCT_CUSTOMER,
 		Data:       st,
+		Addr:       RequestAddr(session.Req),
 	})
 
 	session.Forward("0", "success", st)
@@ -117,6 +118,7 @@ func ModCustomer(session *JHttp.Session) {
 		NoticeType: NoticeType_Modify,
 		DataType:   STRUCT_CUSTOMER,
 		Data:       data,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", data)
 }
@@ -153,6 +155,7 @@ func UpDownCustomer(session *JHttp.Session) {
 		NoticeType: NoticeType_Modify,
 		DataType:   STRUCT_CUSTOMER,
 		Data:       data,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", data)
 }
@@ -188,6 +191,7 @@ func DelCustomer(session *JHttp.Session) {
 		NoticeType: NoticeType_Del,
 		DataType:   STRUCT_CUSTOMER,
 		Data:       data,
+		Addr:       RequestAddr(session.Req),
 	})
 	go delCustomerOrderID(st.CID)
 	session.Forward("0", "success", data)

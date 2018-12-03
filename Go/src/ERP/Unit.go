@@ -34,6 +34,7 @@ func NewUnit(session *JHttp.Session) {
 		NoticeType: NoticeType_NEW,
 		DataType:   STRUCT_UNIT,
 		Data:       st.Unit,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", st.Unit)
 }
@@ -62,6 +63,7 @@ func DelUnit(session *JHttp.Session) {
 		NoticeType: NoticeType_Del,
 		DataType:   STRUCT_UNIT,
 		Data:       st.Unit,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", st.Unit)
 }

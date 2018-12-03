@@ -67,6 +67,7 @@ func NewEmployee(session *JHttp.Session) {
 		NoticeType: NoticeType_NEW,
 		DataType:   STRUCT_USER,
 		Data:       st,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", st)
 }
@@ -128,6 +129,7 @@ func ModEmployee(session *JHttp.Session) {
 		NoticeType: NoticeType_Modify,
 		DataType:   STRUCT_USER,
 		Data:       data,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", data)
 }
@@ -164,6 +166,7 @@ func OutEmployee(session *JHttp.Session) {
 		NoticeType: NoticeType_Modify,
 		DataType:   STRUCT_USER,
 		Data:       data,
+		Addr:       RequestAddr(session.Req),
 	})
 	go delAccount(data.Account)
 	session.Forward("0", "success", data)
@@ -198,6 +201,7 @@ func DelEmployee(session *JHttp.Session) {
 		NoticeType: NoticeType_Del,
 		DataType:   STRUCT_USER,
 		Data:       data,
+		Addr:       RequestAddr(session.Req),
 	})
 	go delAccount(data.Account)
 	session.Forward("0", "success", data)
@@ -245,6 +249,7 @@ func NewDepartMent(session *JHttp.Session) {
 		NoticeType: NoticeType_NEW,
 		DataType:   STRUCT_DEPARTMENT,
 		Data:       st.Department,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "NewDepartMent success\n", st.Department)
 }
@@ -274,6 +279,7 @@ func RemoveDepartment(session *JHttp.Session) {
 		NoticeType: NoticeType_Del,
 		DataType:   STRUCT_DEPARTMENT,
 		Data:       st.Department,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "RemoveDepartment success\n", st.Department)
 }

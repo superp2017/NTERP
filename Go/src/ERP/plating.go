@@ -30,6 +30,7 @@ func NewPlating(session *JHttp.Session) {
 		NoticeType: NoticeType_NEW,
 		DataType:   STRUCT_PLANTING,
 		Data:       st.Plating,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", st.Plating)
 }
@@ -58,6 +59,7 @@ func DelPlating(session *JHttp.Session) {
 		NoticeType: NoticeType_Del,
 		DataType:   STRUCT_PLANTING,
 		Data:       st.Plating,
+		Addr:       RequestAddr(session.Req),
 	})
 	session.Forward("0", "success", st.Plating)
 }

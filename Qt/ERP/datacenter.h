@@ -126,6 +126,8 @@ public:
     void net_newPlating(const QJsonObject para);
     void net_delPlating(const QJsonObject para);
     void net_getglobalPlating();
+    ////////////////////////////////
+    void net_HeartBeat();
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,6 +191,7 @@ private slots:
     void update_first();
     void update_second();
     void update_third();
+    void heartbeat();
 signals:
     void sig_showStatusMessage(QString msg,int sec);
     ///////////////////////////////////////////
@@ -291,6 +294,7 @@ private:
     QTimer                  *m_first_timer;   //订单定时器
     QTimer                  *m_second_timer;//第二定时器
     QTimer                  *m_third_timer;//第三定时器
+      QTimer                *m_heartbeat_timer;//心跳定时
 };
 
 #endif // DATACENTER_H

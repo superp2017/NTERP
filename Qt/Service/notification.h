@@ -11,6 +11,7 @@ public:
     explicit Notification(QObject *parent = 0);
     void Listen(quint16 prot);
     static NoticeInfo NoticeformJson(QJsonObject obj);
+    static void HeartBeat(const QJsonObject para, bool &ok, QString hostname, QString hostport);
 signals:
     void newNOtice(QJsonObject &obj);
 public slots:

@@ -28,7 +28,7 @@ type ClientInfo struct {
 //检查是否超时
 func (client *ClientInfo) checkTime() bool {
 	diff := time.Now().Sub(time.Unix(client.LastTime, 0))
-	if diff > time.Hour || diff < -time.Hour {
+	if diff > 3*time.Minute || diff < -3*time.Minute {
 		return false
 	}
 	return true
@@ -63,28 +63,31 @@ func timeout(d interface{}) {
 }
 
 func delIP(ip string) {
+	JLogger.Error("delIP=%s, \n", ip)
 	clientsMutex.Lock()
 	defer clientsMutex.Unlock()
 	delete(clients, ip)
 }
 
 func addIP(ip string) {
+	JLogger.Error("addip=%s\n", ip)
 	clientsMutex.RLock()
 	c, ok := clients[ip]
+	clientsMutex.RUnlock()
 	if !ok {
-		clientsMutex.RUnlock()
+		JLogger.Error("addip=%s, not   exist\n", ip)
 		info := &ClientInfo{
 			Addr:     ip,
 			Port:     "6543",
 			LastTime: CurStamp(),
 		}
 		clientsMutex.Lock()
-		info.Timer = JUtil.NewTimer(time.Duration(1)*time.Hour, timeout, info.Addr)
+		info.Timer = JUtil.NewTimer(time.Duration(3)*time.Minute, timeout, info.Addr)
 		clients[ip] = info
 		clientsMutex.Unlock()
 	} else {
-		clientsMutex.RUnlock()
-		c.Timer.Reset(time.Duration(1) * time.Hour)
+		JLogger.Error("addip=%s,exist\n", ip)
+		c.Timer.Reset(time.Duration(3) * time.Minute)
 	}
 }
 
@@ -92,6 +95,7 @@ type NoticeInfo struct {
 	NoticeType int         //012增改删
 	DataType   int         //数据类型
 	Data       interface{} //更新的数据
+	Addr       string      //发送者的IP
 }
 
 var (
@@ -134,19 +138,29 @@ func HeartBeat(session *JHttp.Session) {
 
 ///通知
 func Notice(data *NoticeInfo) {
+	JLogger.Error("1111111111111111111111111")
 	if !IsNotice {
+		JLogger.Error("2222222222")
 		return
 	}
-	clientsMutex.RLock()
+	JLogger.Error("33333333333333")
+
 	if len(clients) == 0 {
-		clientsMutex.RUnlock()
+		JLogger.Error("44444444444444444")
 		return
 	}
+	JLogger.Error("client=%d", len(clients))
 	for _, v := range clients {
-		clientsMutex.RUnlock()
+		JLogger.Error("addr=%s\n", v)
+		//if v.Addr == data.Addr {
+		//	JLogger.Error("v.Addr=%s,data.Addr=%s\n", v.Addr, data.Addr)
+		//	continue
+		//}
 		if ok := v.checkTime(); ok {
+			JLogger.Error("55555555555")
 			go v.notice(data)
 		} else {
+			JLogger.Error("6666666666666666")
 			go delIP(v.Addr)
 		}
 	}

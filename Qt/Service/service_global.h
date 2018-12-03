@@ -58,6 +58,7 @@ const std::string Net_DelMaterial="/delmaterial";           //"删除材料"
 const std::string Net_GetCustomerMaterial="/getcustomermaterial";//获取某个用户的所有物料
 const std::string Net_GetAllMateril="/getallmaterials";    //获取所有材料
 
+const std::string Net_HeartBeat="/heartbeat";//心跳服务
 
 const std::string  Net_NewUnit="/newunit";                  //新建单位
 const std::string  Net_DelUnit="/delunit";                  //删除单位
