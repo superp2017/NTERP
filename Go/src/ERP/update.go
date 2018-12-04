@@ -13,9 +13,11 @@ type Cache struct {
 type DataCache struct {
 	Data      map[string]*Cache //具体数据
 	StampID   map[int64]string  //时间戳和ID的映射
+	IDStamp   map[string]int64  //ID和时间戳的映射
 	Stamps    []int64           //时间戳的列表
 	LastStamp int64             //最后更新的时间
 	Mutex     sync.Mutex        //数据锁
+
 }
 
 func (da *DataCache) updateCache(id string, data interface{}) {
