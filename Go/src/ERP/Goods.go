@@ -51,13 +51,6 @@ func newGoods(session *JHttp.Session) {
 	if st.Type != "" {
 		go appendGoodsType(st.Type)
 	}
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_NEW,
-		DataType:   STRUCT_GOODS,
-		Data:       st,
-		Addr:       RequestAddr(session.Req),
-	})
 
 	//更新
 	go newUpdate(STRUCT_GOODS, st.ID, NoticeType_NEW, st)
