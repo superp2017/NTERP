@@ -53,5 +53,23 @@ const int  Author_Admin = 3;//管理员
 const int  Author_SuperAdmin = 4;//超级管理员
 
 
+//通知类型
+enum enum_NoticeType{NoticeType_NEW=0,\
+                     NoticeType_Modify,NoticeType_Del};
+
+//通知的数据类型
+enum enum_DaType{STRTUCT_ORDER=0,STRUCT_MATERIAL,\
+                 STRUCT_GOODS,STRUCT_OUTRECORD,\
+                 STRUCT_USER,STRUCT_CUSTOMER,\
+                 STRUCT_SUPPLIER,STRUCT_UNIT,\
+                 STRUCT_DEPARTMENT,STRUCT_GOODS_TYPE,\
+                 STRUCT_PLANTING};
+
+
+
+
+
+
+
 
 #endif // STRUCT_H

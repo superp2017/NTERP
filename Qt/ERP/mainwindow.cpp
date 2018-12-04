@@ -24,8 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_center,SIGNAL(show_mini()),this,SLOT(showMini()));
     connect(&m_center,SIGNAL(exitApp()),this,SLOT(on_exitAppAction()));
 
-//    mSysTrayIcon = NULL;
-//    mMenu= NULL;
+    //    mSysTrayIcon = NULL;
+    //    mMenu= NULL;
 }
 
 MainWindow::~MainWindow()
@@ -35,8 +35,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent *e)
 {
-//    if(mSysTrayIcon!=NULL)
-//        mSysTrayIcon->hide();
+    //    if(mSysTrayIcon!=NULL)
+    //        mSysTrayIcon->hide();
     e->accept();
 }
 
@@ -74,16 +74,16 @@ void MainWindow::closeEvent(QCloseEvent *e)
 void MainWindow::showMini()
 {
     //隐藏主窗口
-//    this->hide();
-//    //在系统托盘显示此对象
-//    if(mSysTrayIcon==NULL){
-//        newIcon();
-//    }
-//    if(mMenu == NULL){
-//        newMenu();
-//    }
-//    mSysTrayIcon->show();
-     this->showMinimized();
+    //    this->hide();
+    //    //在系统托盘显示此对象
+    //    if(mSysTrayIcon==NULL){
+    //        newIcon();
+    //    }
+    //    if(mMenu == NULL){
+    //        newMenu();
+    //    }
+    //    mSysTrayIcon->show();
+    this->showMinimized();
 }
 
 
@@ -122,8 +122,9 @@ void MainWindow::showMini()
 
 void MainWindow::on_exitAppAction()
 {
-//    if(mSysTrayIcon!=NULL)
-//        mSysTrayIcon->hide();
+    //    if(mSysTrayIcon!=NULL)
+    //        mSysTrayIcon->hide();
+    dataCenter::instance()->clearData();
     exit(0);
 }
 

@@ -29,14 +29,14 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     registerMetaType();
-
+    dataCenter::instance()->initData();
     NLogin login;
     login.showFullScreen();
     if (login.exec()==123){
         MainWindow w;
         w.setMinimumSize(800,800);
-        dataCenter::instance()->initData();
-        dataCenter::instance()->ListenNotice();
+        //        dataCenter::instance()->ListenNotice();
+        dataCenter::instance()->TimerUpdate();
         w.showMaximized();
         return a.exec();
     }

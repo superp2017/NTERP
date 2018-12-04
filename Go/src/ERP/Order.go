@@ -116,12 +116,12 @@ func NewOrder(session *JHttp.Session) {
 	if st.CustomID != "" && st.OrderID != "" {
 		go appendCustomerOrderID(st.CustomID, st.OrderID)
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_NEW,
-		DataType:STRTUCT_ORDER,
-		Data:st,
-	})
+	////通知
+	//go Notice(&NoticeInfo{
+	//	NoticeType: NoticeType_NEW,
+	//	DataType:   STRTUCT_ORDER,
+	//	Data:       st,
+	//})
 	session.Forward("0", "success", st)
 }
 func UpdatePrintNum(session *JHttp.Session) {
@@ -153,12 +153,12 @@ func UpdatePrintNum(session *JHttp.Session) {
 		}
 	}
 	go setPrintNumber(true)
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRTUCT_ORDER,
-		Data:list,
-	})
+	////通知
+	//go Notice(&NoticeInfo{
+	//	NoticeType: NoticeType_Modify,
+	//	DataType:   STRTUCT_ORDER,
+	//	Data:       list,
+	//})
 	session.Forward("0", "success", list)
 }
 
@@ -185,84 +185,6 @@ func setPrintNumber(isSet bool) (error, string) {
 	}
 	return nil, time.Unix(time.Now().Unix(), 0).Format("2006") + strconv.Itoa(num)
 }
-
-////修改订单
-//func ModOrder(session *JHttp.Session) {
-//	type Para struct {
-//		OrderID         string //订单id
-//		MaterielID      string //材料id
-//		MaterielDes     string //材料描述
-//		Plating         string //镀种
-//		Friction        string //摩擦系数
-//		Thickness       string //厚度
-//		Salt            string //盐度
-//		ComponentSolid  string //组件固号
-//		ComponentFormat string //组件规格
-//		OrderNum        int    //订单数量
-//		Unit            string //单位
-//		CustomID        string //客户ID
-//		CustomName      string //客户姓名
-//		CustomBatch     string //客户批次
-//		CustomNote      string //客户备注
-//		ProductionLine  string //产线
-//	}
-//	st := &Para{}
-//	if err := session.GetPara(st); err != nil {
-//		JLogger.Error(err.Error())
-//		session.Forward("1", err.Error(), nil)
-//		return
-//	}
-//	if st.OrderID == "" {
-//		session.Forward("1", "ModOrder faild,OrderID is empty\n", nil)
-//		return
-//	}
-//	if st.MaterielID == "" || st.MaterielDes == "" {
-//		str := fmt.Sprintf("ModOrder faild,MaterielID =%s,MaterielDes=%s\n", st.MaterielID, st.MaterielDes)
-//		JLogger.Error(str)
-//		session.Forward("1", str, nil)
-//		return
-//	}
-//
-//	data := &Order{}
-//	if err := JRedis.Redis_hget(Hash_Order, st.OrderID, data); err != nil {
-//		session.Forward("1", err.Error(), nil)
-//		return
-//	}
-//	if data.Current.Status == Status_Cancle || data.Current.Status == Status_Success {
-//		str := fmt.Sprintf("ModOrder faild,Current.Status=%s not support modify\n", data.Current.Status)
-//		JLogger.Error(str)
-//		session.Forward("1", str, nil)
-//		return
-//	}
-//	data.MaterielID = st.MaterielID
-//	data.MaterielDes = st.MaterielDes
-//	data.Plating = st.Plating
-//	data.Friction = st.Friction
-//	data.Thickness = st.Thickness
-//	data.Salt = st.Salt
-//	data.ComponentSolid = st.ComponentSolid
-//	data.ComponentFormat = st.ComponentFormat
-//	data.OrderNum = st.OrderNum
-//	data.Unit = st.Unit
-//	data.CustomID = st.CustomID
-//	data.CustomName = st.CustomName
-//	data.CustomBatch = st.CustomBatch
-//	data.CustomNote = st.CustomNote
-//
-//	data.TotleMoney = data.OrderNum * data.Money / 100
-//
-//	////////////////添加状态///////////////////////////////
-//	appendStatus(data, data.UserName, CurTime(), "修改订单", getStatus(data.OrderNum, data.ProduceNum, data.SuccessNum))
-//
-//	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
-//		session.Forward("1", err.Error(), nil)
-//		return
-//	}
-//	//go modMaterial(st.MaterielID, st.MaterielDes, st.Plating, st.Friction,
-//	//	st.Thickness, st.Salt, st.ComponentSolid, st.ComponentFormat,
-//	//	st.CustomID, st.CustomName, st.ProductionLine, st.Unit, st.OrderNum, data.Money)
-//	session.Forward("0", "success", data)
-//}
 
 func ModOrder(session *JHttp.Session) {
 	type Para struct {
@@ -320,12 +242,12 @@ func ModOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRTUCT_ORDER,
-		Data:data,
-	})
+	////通知
+	//go Notice(&NoticeInfo{
+	//	NoticeType: NoticeType_Modify,
+	//	DataType:   STRTUCT_ORDER,
+	//	Data:       data,
+	//})
 	session.Forward("0", "success", data)
 }
 
@@ -370,12 +292,12 @@ func ModOrderPrice(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRTUCT_ORDER,
-		Data:data,
-	})
+	////通知
+	//go Notice(&NoticeInfo{
+	//	NoticeType: NoticeType_Modify,
+	//	DataType:   STRTUCT_ORDER,
+	//	Data:       data,
+	//})
 	session.Forward("0", "success", data)
 }
 
@@ -419,11 +341,11 @@ func CancelOrder(session *JHttp.Session) {
 		go removefromCustomerOrderID(data.CustomID, data.OrderID)
 	}
 	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRTUCT_ORDER,
-		Data:data,
-	})
+	//go Notice(&NoticeInfo{
+	//	NoticeType: NoticeType_Modify,
+	//	DataType:   STRTUCT_ORDER,
+	//	Data:       data,
+	//})
 	session.Forward("0", "success", data)
 }
 
@@ -468,12 +390,12 @@ func DelOrder(session *JHttp.Session) {
 	if data.CustomID != "" && data.OrderID != "" {
 		go removefromCustomerOrderID(data.CustomID, data.OrderID)
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Del,
-		DataType:STRTUCT_ORDER,
-		Data:data,
-	})
+	////通知
+	//go Notice(&NoticeInfo{
+	//	NoticeType: NoticeType_Del,
+	//	DataType:   STRTUCT_ORDER,
+	//	Data:       data,
+	//})
 	session.Forward("0", "success", data)
 }
 
@@ -526,12 +448,12 @@ func PorduceOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRTUCT_ORDER,
-		Data:data,
-	})
+	////通知
+	//go Notice(&NoticeInfo{
+	//	NoticeType: NoticeType_Modify,
+	//	DataType:   STRTUCT_ORDER,
+	//	Data:       data,
+	//})
 	session.Forward("0", "success", data)
 }
 
@@ -583,12 +505,12 @@ func SuccessOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go	Notice(&NoticeInfo{
-		NoticeType:NoticeType_Modify,
-		DataType:STRTUCT_ORDER,
-		Data:data,
-	})
+	////通知
+	//go Notice(&NoticeInfo{
+	//	NoticeType: NoticeType_Modify,
+	//	DataType:   STRTUCT_ORDER,
+	//	Data:       data,
+	//})
 	session.Forward("0", "success", data)
 }
 
@@ -618,14 +540,13 @@ func GetGlobalOrders(session *JHttp.Session) {
 	session.Forward("0", "success", data)
 }
 
-func GetPageGlobalOrder(session *JHttp.Session)  {
-	type Param struct{
-		Start int
-		Size int
-		Status string
-	}
-}
-
+//func GetPageGlobalOrder(session *JHttp.Session)  {
+//	type Param struct{
+//		Start int
+//		Size int
+//		Status string
+//	}
+//}
 
 func initOrderMaterial(data *Order, mater *MaterialInfo) {
 	data.MaterielID = mater.MaterID

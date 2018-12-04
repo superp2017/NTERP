@@ -152,6 +152,8 @@ struct Order{
     double            TotleMoney;     //总价
     int               PrintNum;       //打印次数
     QVector<PrintDetail> Print;       //打印记录
+//    int                 CreatStamp;   //创建的时间戳
+//    int                 LastTime;     //最后更新的时间戳
 };
 
 struct User {

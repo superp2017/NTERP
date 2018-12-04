@@ -24,6 +24,7 @@ public:
     void showAllRow();
     int  getTimeColNum();
     void checkAuthor(int author);
+    void checkOrder(Order order);
 signals:
     void orderClick(QString orderID);
     void newOrder();

@@ -58,7 +58,27 @@ FormCenter::FormCenter(QWidget *parent) :
     m_timer = new QTimer(this);
     connect(m_timer,SIGNAL(timeout()),this,SLOT(timeoutslot()));//timeoutslot()为自定义槽
     connect(&m_sys,SIGNAL(newOrder()),&m_order,SLOT(new_order()));
-    ui->label__curuser_name->setText("当前用户: "+dataCenter::instance()->pub_CurUser().Name);
+    QString au;
+    switch (dataCenter::instance()->pub_CurUser().Author) {
+    case 0:
+        au = "操作员";
+        break;
+    case 1:
+        au = "仓库管理员";
+        break;
+    case 2:
+        au = "财务";
+        break;
+    case 3:
+        au = "系统管理员";
+        break;
+    case 4:
+        au = "超级管理员";
+        break;
+    default:
+        break;
+    }
+    ui->label__curuser_name->setText(QString("当前用户：%1(%2)").arg(dataCenter::instance()->pub_CurUser().Name).arg(au));
 
     checkAuthor(dataCenter::instance()->pub_CurUser().Author);
 }
@@ -76,10 +96,10 @@ void FormCenter::checkAuthor(int author)
     case 0:
     case 1:
         ui->finance_btn->hide();
-//        ui->set_Btn->hide();
+        //        ui->set_Btn->hide();
         break;
     case 2:
-//        ui->set_Btn->hide();
+        //        ui->set_Btn->hide();
     default:
         break;
     }
@@ -184,6 +204,7 @@ void FormCenter::on_exit_clicked()
     int ret = msg.exec();
     switch (ret) {
     case QMessageBox::Ok:
+
         emit exitApp();
         break;
     case QMessageBox::Cancel:

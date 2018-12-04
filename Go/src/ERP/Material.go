@@ -1,188 +1,226 @@
 package main
 
-//
-//import (
-//	"JGo/JHttp"
-//	"JGo/JLogger"
-//	"JGo/JStore/JRedis"
-//)
-//
-//type Material struct {
-//	MaterID         string //物料编号
-//	MaterDes        string //物料描述
-//	Plating         string //镀种
-//	Friction        string //摩擦系数
-//	Thickness       string //厚度
-//	Salt            string //盐度
-//	ComponentSolid  string //零件固号
-//	ComponentFormat string //零件规格
-//	Factory         string //分厂名称
-//	FactoryNumber   string //分厂号
-//	ProductionLine  string //产线名称
-//	OrderNum        int    //订单数量
-//	Unit            string //单位
-//	Money           int    //价格
-//	TotleMoney      int    //总价
-//	CID             string //客户ID
-//	CustomName      string //客户姓名
-//	Status          string //状态
-//	CreatTime       string //创建时间
-//}
-//
-//func newMaterial(des, plating, friction, thickness, salt, solid, format,
-//	cid, customer, factory, factorynumber, productionline, unit string, ordernum, money int) (*Material, error) {
-//	id := getMaterialID()
-//	st := &Material{
-//		MaterID:         id,
-//		MaterDes:        des,
-//		Plating:         plating,
-//		Friction:        friction,
-//		Thickness:       thickness,
-//		Salt:            salt,
-//		ComponentSolid:  solid,
-//		ComponentFormat: format,
-//		Factory:         factory,
-//		FactoryNumber:   factorynumber,
-//		ProductionLine:  productionline,
-//		Unit:            unit,
-//		OrderNum:        ordernum,
-//		Money:           money,
-//		CID:             cid,
-//		CustomName:      customer,
-//		Status:          "0",
-//		CreatTime:       CurTime(),
-//	}
-//	st.TotleMoney = st.OrderNum * st.Money / 100
-//	err := JRedis.Redis_hset(Hash_Material, id, st)
-//	return st, err
-//}
-//
-////修改物料
-//func modMaterial(id, des, plating, friction, thickness, salt, solid, format, cid, name, productionline, unit string, ordernum, money int) error {
-//	st := &Material{}
-//	if err := JRedis.Redis_hget(Hash_Material, id, st); err != nil {
-//		return err
-//	}
-//	st.MaterDes = des
-//	st.Plating = plating
-//	st.Friction = friction
-//	st.Thickness = thickness
-//	st.Salt = salt
-//	st.ComponentSolid = solid
-//	st.ComponentFormat = format
-//	st.CID = cid
-//	st.CustomName = name
-//	st.ProductionLine = productionline
-//	st.Unit = unit
-//	st.OrderNum = ordernum
-//	st.Money = money
-//	st.TotleMoney = st.OrderNum * st.Money / 100
-//	if err := JRedis.Redis_hset(Hash_Material, id, st); err != nil {
-//		return err
-//	}
-//	return nil
-//}
-//
-////完成物料
-//func successMaterial(id string) error {
-//	st := &Material{}
-//	if err := JRedis.Redis_hget(Hash_Material, id, st); err != nil {
-//		return err
-//	}
-//	st.Status = "1"
-//	if err := JRedis.Redis_hset(Hash_Material, id, st); err != nil {
-//		return err
-//	}
-//	return nil
-//}
-//
-////取消物料
-//func cancleMaterial(id string) error {
-//	st := &Material{}
-//	if err := JRedis.Redis_hget(Hash_Material, id, st); err != nil {
-//		return err
-//	}
-//	st.Status = "-1"
-//	if err := JRedis.Redis_hset(Hash_Material, id, st); err != nil {
-//		return err
-//	}
-//	return nil
-//}
-//
-////删除物料
-//func delMaterial(id string) error {
-//	return JRedis.Redis_hdel(Hash_Material, id)
-//}
-//
-////获取所有供应商列表
-//func GetAllMaterial(session *JHttp.Session) {
-//	list, err := JRedis.Redis_hkeys(Hash_Material)
-//	data := []*Material{}
-//	if err == nil {
-//		for _, v := range list {
-//			d := &Material{}
-//			if e := JRedis.Redis_hget(Hash_Material, v, d); e == nil {
-//				data = append(data, d)
-//			}
-//		}
-//	}
-//	session.Forward("0", "success", data)
-//}
-//
-//func updateAllMaterial(session *JHttp.Session) {
-//	if err := updateallAaterial(); err != nil {
-//		session.Forward("1", err.Error(), nil)
-//		return
-//	}
-//	session.Forward("0", "success!", nil)
-//}
-//
-//func updateallAaterial() error {
-//	list, err := JRedis.Redis_hkeys(Hash_Order)
-//	if err != nil {
-//		return err
-//	}
-//	for _, v := range list {
-//		if v == Key_LastOrderDate {
-//			continue
-//		}
-//		d := &Order{}
-//		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
-//			if d.Current.Status != Status_Del {
-//				go modMa(d.MaterielID, d.MaterielDes, d.Plating, d.Friction,
-//					d.Thickness, d.Salt, d.ComponentSolid, d.ComponentFormat,
-//					d.Factory, d.FactoryNumber, d.ProductionLine, d.CustomID, d.CustomName,
-//					d.Unit, d.OrderNum, d.Money, d.TotleMoney)
-//			}
-//		}
-//	}
-//	return nil
-//}
-//
-//func modMa(mid, des, plat, fric, thick, salt, solid, format, factory, factorynumber, productionline, cid, custommer, unit string, ordernum, money, totlemoney int) error {
-//	st := &Material{}
-//	if err := JRedis.Redis_hget(Hash_Material, mid, st); err != nil {
-//		return err
-//	}
-//	JLogger.Error(mid)
-//	st.MaterDes = des
-//	st.Plating = plat
-//	st.Friction = fric
-//	st.Thickness = thick
-//	st.Salt = salt
-//	st.ComponentSolid = solid
-//	st.ComponentFormat = format
-//	st.Factory = factory
-//	st.FactoryNumber = factorynumber
-//	st.ProductionLine = productionline
-//	st.CID = cid
-//	st.CustomName = custommer
-//	st.Unit = unit
-//	st.OrderNum = ordernum
-//	st.Money = money
-//	st.TotleMoney = totlemoney
-//	if err := JRedis.Redis_hset(Hash_Material, mid, st); err != nil {
-//		return err
-//	}
-//	return nil
-//}
+import (
+	"JGo/JHttp"
+	"JGo/JLogger"
+	"JGo/JStore/JRedis"
+	"fmt"
+)
+
+type MaterialInfo struct {
+	MaterID         string  //物料编号
+	MaterDes        string  //物料描述
+	CID             string  //客户ID
+	CustomName      string  //客户姓名
+	Plating         string  //镀种
+	Friction        string  //摩擦系数
+	Thickness       string  //厚度
+	Salt            string  //盐度
+	ComponentSolid  string  //零件固号
+	ComponentFormat string  //零件规格
+	Factory         string  //分厂名称
+	FactoryNumber   string  //分厂号
+	ProductionLine  string  //产线名称
+	Unit            string  //单位
+	Money           float64 //未税单价
+	CreatTime       string  //创建时间
+	CreatStamp      int64   //创建的时间戳
+	LastTime        int64   //最后更新时间
+}
+
+func NewMaterial(session *JHttp.Session) {
+	st := &MaterialInfo{}
+	if err := session.GetPara(st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.CID == "" || st.CustomName == "" || st.MaterDes == "" {
+		str := fmt.Sprintf("NewMaterial MaterialInfo 部分参数为空：%v", st)
+		JLogger.Error(str)
+		session.Forward("1", str, nil)
+		return
+	}
+	st.MaterID = getMaterialID()
+	st.CreatTime = CurTime()
+	st.CreatStamp = CurStamp()
+	st.LastTime = CurStamp()
+	if err := JRedis.Redis_hset(Hash_Material, st.MaterID, st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	go appendCustomerMaterial(st.CID, st.MaterID)
+
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_NEW,
+	//	DataType:STRUCT_MATERIAL,
+	//	Data:st,
+	//})
+
+	session.Forward("0", "success", st)
+}
+
+//查询单个物料
+func QuertyMaterial(session *JHttp.Session) {
+	type Para struct {
+		MaterID string
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.MaterID == "" {
+		JLogger.Error("QuertyMaterial,MaterID is empty!\n")
+		session.Forward("1", "QuertyMaterial,MaterID is empty!\n", nil)
+		return
+	}
+	data, err := getMaterial(st.MaterID)
+	if err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	session.Forward("0", "success!\n", data)
+}
+func ModMaterial(session *JHttp.Session) {
+	st := &MaterialInfo{}
+	if err := session.GetPara(st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.CID == "" || st.CustomName == "" || st.MaterDes == "" {
+		str := fmt.Sprintf("ModMaterial ,MaterialInfo 部分参数为空：%v", st)
+		JLogger.Error(str)
+		session.Forward("1", str, nil)
+		return
+	}
+	st.LastTime = CurStamp()
+	if err := JRedis.Redis_hset(Hash_Material, st.MaterID, st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	////通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_Modify,
+	//	DataType:STRUCT_MATERIAL,
+	//	Data:st,
+	//})
+
+	session.Forward("0", "success", st)
+}
+func modMaterialPrice(MaterID string, Money float64) error {
+	if MaterID == "" || Money < 0 {
+		str := fmt.Sprintf("modMaterialPrice ,MaterID=%s, Money=%d\n", MaterID, Money)
+		return JLogger.ErrorLog(str)
+	}
+	st := &MaterialInfo{}
+	if err := JRedis.Redis_hget(Hash_Material, MaterID, st); err != nil {
+		JLogger.Error(err.Error())
+		return err
+	}
+	st.Money = Money
+	st.LastTime = CurStamp()
+	if err := JRedis.Redis_hset(Hash_Material, st.MaterID, st); err != nil {
+		JLogger.Error(err.Error())
+		return err
+	}
+	return nil
+}
+func GetCustomerMaterial(session *JHttp.Session) {
+	type Para struct {
+		CID string //客户ID
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.CID == "" {
+		JLogger.Error("CID is empty!\n")
+		session.Forward("1", "CID is empty!\n", nil)
+		return
+	}
+	list := []string{}
+	JRedis.Redis_hget(Hash_CustomerMaterial, st.CID, &list)
+	session.Forward("0", "success\n", list)
+}
+
+//删除物料
+func DelMaterial(session *JHttp.Session) {
+	type Para struct {
+		CID     string
+		MaterID string
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if err := JRedis.Redis_hdel(Hash_Material, st.MaterID); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), st.MaterID)
+		return
+	}
+	go delFromCustomerMaterial(st.CID, st.MaterID)
+	//通知
+	//go	Notice(&NoticeInfo{
+	//	NoticeType:NoticeType_Del,
+	//	DataType:STRUCT_MATERIAL,
+	//	Data:st.MaterID,
+	//})
+	session.Forward("0", "success\n", st.MaterID)
+}
+
+//添加一个物料标号
+func appendCustomerMaterial(CID, MaterID string) error {
+	list := []string{}
+	JRedis.Redis_hget(Hash_CustomerMaterial, CID, &list)
+	list = append(list, MaterID)
+	err := JRedis.Redis_hset(Hash_CustomerMaterial, CID, &list)
+	return err
+}
+func delFromCustomerMaterial(CID, MaterID string) error {
+	list := []string{}
+	JRedis.Redis_hget(Hash_CustomerMaterial, CID, &list)
+	index := -1
+	for i, v := range list {
+		if v == MaterID {
+			index = i
+			break
+		}
+	}
+	if index != -1 {
+		list = append(list[:index], list[index+1:]...)
+	}
+	return nil
+}
+
+//查询单个物料
+func getMaterial(MID string) (*MaterialInfo, error) {
+	data := &MaterialInfo{}
+	err := JRedis.Redis_hget(Hash_Material, MID, data)
+	return data, err
+}
+
+//获取所有材料
+func GetAllMaterial(session *JHttp.Session) {
+	list, err := JRedis.Redis_hkeys(Hash_Material)
+	data := []*MaterialInfo{}
+	if err == nil {
+		for _, v := range list {
+			d := &MaterialInfo{}
+			if e := JRedis.Redis_hget(Hash_Material, v, d); e == nil {
+				data = append(data, d)
+			}
+		}
+	}
+	session.Forward("0", "success", data)
+}

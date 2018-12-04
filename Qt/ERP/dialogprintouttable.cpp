@@ -24,6 +24,7 @@ DialogPrintOutTable::DialogPrintOutTable(QWidget *parent) :
     for(Order o:dataCenter::instance()->pub_StatusOrders(Status_Success)){
         appendOrder(o);
     }
+    dataCenter::instance()->net_getPrintNumber();
 }
 
 DialogPrintOutTable::~DialogPrintOutTable()

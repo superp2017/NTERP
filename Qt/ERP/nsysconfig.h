@@ -11,6 +11,7 @@ class nSysConfig
 {
 public:
     nSysConfig();
+    void clear();
     QString HOST_NAME();
     QString  HOST_PORT();
     void setSetting(SysSetting set);
