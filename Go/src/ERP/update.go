@@ -4,18 +4,30 @@ import (
 	"sync"
 )
 
-type DataCache struct {
-	Data      map[int64]interface{} //具体数据
-	Stamps    []int64               //时间戳的列表
-	LastStamp int64                 //最后更新的时间
-	Mutex     sync.Mutex            //数据锁
+type Cache struct {
+	Data      interface{}
+	TimeStamp int64
+	ID        string
 }
 
-func (da *DataCache) newCache(data interface{}) {
+type DataCache struct {
+	Data      map[string]*Cache //具体数据
+	StampID   map[int64]string  //时间戳和ID的映射
+	Stamps    []int64           //时间戳的列表
+	LastStamp int64             //最后更新的时间
+	Mutex     sync.Mutex        //数据锁
+}
+
+func (da *DataCache) updateCache(id string, data interface{}) {
 	da.Mutex.Lock()
 	defer da.Mutex.Unlock()
 	da.LastStamp = CurStamp()
-	da.Data[da.LastStamp] = data
+	if _, ok := da.Data[id]; ok {
+		delete(da.StampID, da.Data[id].TimeStamp)
+		da.Data[id].TimeStamp = da.LastStamp
+		da.Stamps = append(da.Stamps, da.LastStamp)
+		da.StampID[da.LastStamp] = id
+	}
 }
 
 func (da *DataCache) modCache(data interface{}) {
