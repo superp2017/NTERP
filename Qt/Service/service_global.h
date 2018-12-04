@@ -288,6 +288,14 @@ struct NoticeInfo {
     QJsonValue Data;
 };
 
+struct CacheInfo{
+    QJsonValue  Data;
+    int TimeStamp;
+    QString ID;
+    int UpDateType;
+    int DataType;
+};
+
 
 
 

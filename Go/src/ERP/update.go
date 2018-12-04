@@ -35,10 +35,12 @@ type CacheInfo struct {
 	TimeStamp  int64
 	ID         string
 	UpDateType int
+	DataType   int
 }
 
 type DataCache struct {
 	Data      []*CacheInfo //具体数据
+	DataType  int          //数据类型
 	LastStamp int64        //最后更新的时间
 	Mutex     sync.Mutex   //数据锁
 	Timer     *JUtil.Timer //定时删除
@@ -92,6 +94,7 @@ func (da *DataCache) updateCache(id string, ut int, data interface{}) {
 			TimeStamp:  da.LastStamp,
 			ID:         id,
 			UpDateType: ut,
+			DataType:   da.DataType,
 		})
 	} else {
 		sort.Slice(da.Data, func(i, j int) bool {
@@ -124,6 +127,7 @@ func startCache() {
 	mCache = make(map[int]*DataCache)
 	for i := 0; i < 7; i++ {
 		ca := &DataCache{}
+		ca.DataType = i
 		ca.Timer = JUtil.NewTimer(time.Duration(30)*time.Minute, ca.timeout, 0)
 		mCache[i] = ca
 	}
@@ -145,6 +149,7 @@ func HeartBeat(session *JHttp.Session) {
 	}
 
 	list := GetUpdate(st.DataType, st.TimStamp)
+
 	if len(list) > 0 {
 		session.Forward("0", "success", list)
 		return

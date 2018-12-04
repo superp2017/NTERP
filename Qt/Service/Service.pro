@@ -53,7 +53,8 @@ SOURCES += service.cpp \
     platingservice.cpp \
     goodsoutrecordservice.cpp \
     printer.cpp \
-    notification.cpp
+    notification.cpp \
+    update.cpp
 
 HEADERS += service.h\
         service_global.h \
@@ -70,7 +71,8 @@ HEADERS += service.h\
     platingservice.h \
     goodsoutrecordservice.h \
     printer.h \
-    notification.h
+    notification.h \
+    update.h
 
 unix {
     target.path = /usr/lib
