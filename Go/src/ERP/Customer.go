@@ -51,14 +51,8 @@ func NewCustomer(session *JHttp.Session) {
 		return
 	}
 
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_NEW,
-		DataType:   STRUCT_CUSTOMER,
-		Data:       st,
-		Addr:       RequestAddr(session.Req),
-	})
-
+	//更新
+	go newUpdate(STRUCT_CUSTOMER, st.CID, NoticeType_NEW, st)
 	session.Forward("0", "success", st)
 }
 
@@ -113,13 +107,9 @@ func ModCustomer(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	///通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Modify,
-		DataType:   STRUCT_CUSTOMER,
-		Data:       data,
-		Addr:       RequestAddr(session.Req),
-	})
+
+	//更新
+	go newUpdate(STRUCT_CUSTOMER, data.CID, NoticeType_Modify, data)
 	session.Forward("0", "success", data)
 }
 
@@ -150,13 +140,9 @@ func UpDownCustomer(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	///通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Modify,
-		DataType:   STRUCT_CUSTOMER,
-		Data:       data,
-		Addr:       RequestAddr(session.Req),
-	})
+
+	//更新
+	go newUpdate(STRUCT_CUSTOMER, data.CID, NoticeType_Modify, data)
 	session.Forward("0", "success", data)
 }
 
@@ -186,14 +172,11 @@ func DelCustomer(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	///通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Del,
-		DataType:   STRUCT_CUSTOMER,
-		Data:       data,
-		Addr:       RequestAddr(session.Req),
-	})
+
 	go delCustomerOrderID(st.CID)
+
+	//更新
+	go newUpdate(STRUCT_CUSTOMER, data.CID, NoticeType_Del, data)
 	session.Forward("0", "success", data)
 }
 

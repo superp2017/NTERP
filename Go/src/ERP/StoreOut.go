@@ -51,13 +51,10 @@ func NewOutRecord(session *JHttp.Session) {
 		go inoutGoodsNum(st.GoodsID, st.Nums, true)
 		return
 	}
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_NEW,
-		DataType:   STRUCT_OUTRECORD,
-		Data:       st,
-		Addr:       RequestAddr(session.Req),
-	})
+
+	//更新
+	go newUpdate(STRUCT_OUTRECORD, st.OutID, NoticeType_NEW, st)
+
 	session.Forward("0", "success!\n", st)
 }
 

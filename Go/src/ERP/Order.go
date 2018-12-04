@@ -116,13 +116,9 @@ func NewOrder(session *JHttp.Session) {
 	if st.CustomID != "" && st.OrderID != "" {
 		go appendCustomerOrderID(st.CustomID, st.OrderID)
 	}
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_NEW,
-		DataType:   STRTUCT_ORDER,
-		Data:       st,
-		Addr:       RequestAddr(session.Req),
-	})
+
+	//更新
+	go newUpdate(STRTUCT_ORDER, st.OrderID, NoticeType_NEW, st)
 	session.Forward("0", "success", st)
 }
 func UpdatePrintNum(session *JHttp.Session) {
@@ -154,13 +150,11 @@ func UpdatePrintNum(session *JHttp.Session) {
 		}
 	}
 	go setPrintNumber(true)
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Modify,
-		DataType:   STRTUCT_ORDER,
-		Data:       list,
-		Addr:       RequestAddr(session.Req),
-	})
+
+	//更新
+	for _, v := range list {
+		go newUpdate(STRTUCT_ORDER, v.OrderID, NoticeType_Modify, v)
+	}
 	session.Forward("0", "success", list)
 }
 
@@ -244,13 +238,8 @@ func ModOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Modify,
-		DataType:   STRTUCT_ORDER,
-		Data:       data,
-		Addr:       RequestAddr(session.Req),
-	})
+	//更新
+	go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
 	session.Forward("0", "success", data)
 }
 
@@ -295,13 +284,9 @@ func ModOrderPrice(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Modify,
-		DataType:   STRTUCT_ORDER,
-		Data:       data,
-		Addr:       RequestAddr(session.Req),
-	})
+
+	//更新
+	go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
 	session.Forward("0", "success", data)
 }
 
@@ -344,13 +329,9 @@ func CancelOrder(session *JHttp.Session) {
 	if data.CustomID != "" && data.OrderID != "" {
 		go removefromCustomerOrderID(data.CustomID, data.OrderID)
 	}
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Modify,
-		DataType:   STRTUCT_ORDER,
-		Data:       data,
-		Addr:       RequestAddr(session.Req),
-	})
+
+	//更新
+	go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
 	session.Forward("0", "success", data)
 }
 
@@ -395,13 +376,9 @@ func DelOrder(session *JHttp.Session) {
 	if data.CustomID != "" && data.OrderID != "" {
 		go removefromCustomerOrderID(data.CustomID, data.OrderID)
 	}
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Del,
-		DataType:   STRTUCT_ORDER,
-		Data:       data,
-		Addr:       RequestAddr(session.Req),
-	})
+
+	//更新
+	go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Del, data)
 	session.Forward("0", "success", data)
 }
 
@@ -454,13 +431,9 @@ func PorduceOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Modify,
-		DataType:   STRTUCT_ORDER,
-		Data:       data,
-		Addr:       RequestAddr(session.Req),
-	})
+
+	//更新
+	go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
 	session.Forward("0", "success", data)
 }
 
@@ -512,13 +485,8 @@ func SuccessOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Modify,
-		DataType:   STRTUCT_ORDER,
-		Data:       data,
-		Addr:       RequestAddr(session.Req),
-	})
+	//更新
+	go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
 	session.Forward("0", "success", data)
 }
 

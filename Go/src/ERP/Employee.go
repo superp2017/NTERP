@@ -62,13 +62,8 @@ func NewEmployee(session *JHttp.Session) {
 		return
 	}
 
-	///通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_NEW,
-		DataType:   STRUCT_USER,
-		Data:       st,
-		Addr:       RequestAddr(session.Req),
-	})
+	//更新
+	go newUpdate(STRUCT_USER, st.UID, NoticeType_NEW, st)
 	session.Forward("0", "success", st)
 }
 
@@ -124,13 +119,9 @@ func ModEmployee(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	///通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Modify,
-		DataType:   STRUCT_USER,
-		Data:       data,
-		Addr:       RequestAddr(session.Req),
-	})
+
+	//更新
+	go newUpdate(STRUCT_USER, data.UID, NoticeType_Modify, data)
 	session.Forward("0", "success", data)
 }
 
@@ -161,14 +152,10 @@ func OutEmployee(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	///通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Modify,
-		DataType:   STRUCT_USER,
-		Data:       data,
-		Addr:       RequestAddr(session.Req),
-	})
 	go delAccount(data.Account)
+
+	//更新
+	go newUpdate(STRUCT_USER, data.UID, NoticeType_Modify, data)
 	session.Forward("0", "success", data)
 }
 
@@ -196,14 +183,11 @@ func DelEmployee(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	///通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Del,
-		DataType:   STRUCT_USER,
-		Data:       data,
-		Addr:       RequestAddr(session.Req),
-	})
+
 	go delAccount(data.Account)
+
+	//更新
+	go newUpdate(STRUCT_USER, data.UID, NoticeType_Del, data)
 	session.Forward("0", "success", data)
 }
 
@@ -245,12 +229,10 @@ func NewDepartMent(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_NEW,
-		DataType:   STRUCT_DEPARTMENT,
-		Data:       st.Department,
-		Addr:       RequestAddr(session.Req),
-	})
+
+	//更新
+	//go newUpdate(STRUCT_DEPARTMENT, st.Department, NoticeType_NEW, st.Department)
+
 	session.Forward("0", "NewDepartMent success\n", st.Department)
 }
 
@@ -274,13 +256,10 @@ func RemoveDepartment(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Del,
-		DataType:   STRUCT_DEPARTMENT,
-		Data:       st.Department,
-		Addr:       RequestAddr(session.Req),
-	})
+
+	//更新
+	//go newUpdate(STRUCT_DEPARTMENT, st.Department, NoticeType_Del, st.Department)
+
 	session.Forward("0", "RemoveDepartment success\n", st.Department)
 }
 

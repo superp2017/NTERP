@@ -25,13 +25,8 @@ func NewPlating(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_NEW,
-		DataType:   STRUCT_PLANTING,
-		Data:       st.Plating,
-		Addr:       RequestAddr(session.Req),
-	})
+	//更新
+	//go newUpdate(STRUCT_PLANTING, st.Plating, NoticeType_NEW, st.Plating)
 	session.Forward("0", "success", st.Plating)
 }
 
@@ -54,13 +49,9 @@ func DelPlating(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//通知
-	go Notice(&NoticeInfo{
-		NoticeType: NoticeType_Del,
-		DataType:   STRUCT_PLANTING,
-		Data:       st.Plating,
-		Addr:       RequestAddr(session.Req),
-	})
+
+	//更新
+	//go newUpdate(STRUCT_PLANTING, st.Plating, NoticeType_Del, st.Plating)
 	session.Forward("0", "success", st.Plating)
 }
 
