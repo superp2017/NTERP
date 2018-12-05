@@ -269,8 +269,7 @@ void PersonManager::on_pushButton_export_clicked()
 void PersonManager::on_pushButton_reflash_clicked()
 {
     curUser.UID = "";
-    boost::thread t(boost::bind(&dataCenter::net_getGlobalUsers,dataCenter::instance()));
-    t.detach();
+    dataCenter::instance()->pub_getAllEmployee(1);
     dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
 

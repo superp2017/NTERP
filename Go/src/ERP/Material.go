@@ -236,5 +236,7 @@ func GetAllMaterial(session *JHttp.Session) {
 			}
 		}
 	}
+	JLogger.Error("GetAllMaterial:type=%d,num=%d,start=%d,stamp=%d,data=%v\n", st.Type, st.Num, st.Start, st.Stamp, data)
+
 	session.Forward("0", "success", data)
 }
