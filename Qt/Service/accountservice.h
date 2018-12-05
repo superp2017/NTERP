@@ -7,7 +7,7 @@ class SERVICESHARED_EXPORT accountService
 {
 public:
     accountService();
-     static User login(const QJsonObject para,bool &ok, QString hostname, QString hostport);
+     static User login(const QJsonObject para, bool &ok, QString hostname, QString hostport);
 };
 
 #endif // ACCOUNTSERVICE_H

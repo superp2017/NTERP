@@ -12,6 +12,7 @@
 #include "platingservice.h"
 #include "boost/thread.hpp"
 #include "goodsoutrecordservice.h"
+#include "update.h"
 
 
 dataCenter::dataCenter(QObject *parent) : QObject(parent)//,m_notice(parent)
@@ -21,11 +22,18 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)//,m_notice(parent)
     m_authors.push_back("财务");
     m_authors.push_back("管理员");
     m_authors.push_back("超级管理员");
-    m_first_timer=NULL;
-    m_second_timer=NULL;
-    m_third_timer=NULL;
+//    m_first_timer=NULL;
+//    m_second_timer=NULL;
+//    m_third_timer=NULL;
     //m_heartbeat_timer =NULL;
     // connect(&m_notice,SIGNAL(newNOtice(QJsonObject&)),this,SLOT(newNotice(QJsonObject&)));
+    m_first_block.t_timer = NULL;
+    m_second_block.t_timer = NULL;
+    m_thrid_block.t_timer = NULL;
+
+    m_first_block.t_timeout = 1000*60*2;
+    m_second_block.t_timeout = 1000*60*5;
+    m_thrid_block.t_timeout = 1000*60*15;
 }
 
 //void dataCenter::ListenNotice()
@@ -40,42 +48,76 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)//,m_notice(parent)
 
 void dataCenter::initData()
 {
-//    //////////////初始化所有订单///////////////////
-//    QJsonObject order_obj;
-//    boost::thread (boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance(),order_obj)).detach();
+    //////////////初始化所有订单///////////////////
+    QJsonObject order_obj;
+    order_obj.insert("Type",0);
+    order_obj.insert("Start",0);
+    order_obj.insert("Num",0);
+    order_obj.insert("Stamp",0);
+    boost::thread (boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance(),order_obj)).detach();
 
-//    //////////////初始化所有单位///////////////////
-//    boost::thread (boost::bind(&dataCenter::net_getglobalUnits,dataCenter::instance())).detach();
-//    QJsonObject user_obj;
-//    //////////////初始化所有员工///////////////////
-//    boost::thread (boost::bind(&dataCenter::net_getGlobalUsers,dataCenter::instance(),user_obj)).detach();
-//    QJsonObject cus_obj;
-//    //////////////初始化所有客户///////////////////
-//    boost::thread (boost::bind(&dataCenter::net_getGlobalCustomers,dataCenter::instance(),cus_obj)).detach();
+    //////////////初始化所有单位///////////////////
+    boost::thread (boost::bind(&dataCenter::net_getglobalUnits,dataCenter::instance())).detach();
 
-//    //////////////初始化所有部门///////////////////
-//    boost::thread (boost::bind(&dataCenter::net_getGlobalDepartment,dataCenter::instance())).detach();
-//    QJsonObject sup_obj;
-//    //////////////初始化所有供应商///////////////////
-//    boost::thread (boost::bind(&dataCenter::net_getglobalSuppliers,dataCenter::instance(),sup_obj)).detach();
-//    QJsonObject mater_obj;
-//    //////////////初始化所有物料//////////////////
-//    boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance(),mater_obj)).detach();
-//    QJsonObject goods_obj;
-//    //////////////初始化所有商品//////////////////
-//    boost::thread(boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance(),goods_obj)).detach();
+    //////////////初始化所有员工///////////////////
+    QJsonObject user_obj;
+    user_obj.insert("Type",0);
+    user_obj.insert("Start",0);
+    user_obj.insert("Num",0);
+    user_obj.insert("Stamp",0);
+    boost::thread (boost::bind(&dataCenter::net_getGlobalUsers,dataCenter::instance(),user_obj)).detach();
 
-//    //////////////初始化所有商品的分类//////////////////
-//    boost::thread(boost::bind(&dataCenter::net_getGlobalGoodsType,dataCenter::instance())).detach();
+    //////////////初始化所有客户///////////////////
+    QJsonObject cus_obj;
+    cus_obj.insert("Type",0);
+    cus_obj.insert("Start",0);
+    cus_obj.insert("Num",0);
+    cus_obj.insert("Stamp",0);
+    boost::thread (boost::bind(&dataCenter::net_getGlobalCustomers,dataCenter::instance(),cus_obj)).detach();
 
-//    //////////////初始化所有镀种的分类//////////////////
-//    boost::thread(boost::bind(&dataCenter::net_getglobalPlating,dataCenter::instance())).detach();
-//    QJsonObject out_obj;
-//    //////////////获取所有商品的出库记录//////////////////////////////
-//    boost::thread(boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance(),out_obj)).detach();
+    //////////////初始化所有部门///////////////////
+    boost::thread (boost::bind(&dataCenter::net_getGlobalDepartment,dataCenter::instance())).detach();
 
-//    //////////////获取打印数量/////////////////////////////
-//    boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
+    //////////////初始化所有供应商///////////////////
+    QJsonObject sup_obj;
+    sup_obj.insert("Type",0);
+    sup_obj.insert("Start",0);
+    sup_obj.insert("Num",0);
+    sup_obj.insert("Stamp",0);
+    boost::thread (boost::bind(&dataCenter::net_getglobalSuppliers,dataCenter::instance(),sup_obj)).detach();
+
+    //////////////初始化所有物料//////////////////
+    QJsonObject mater_obj;
+    mater_obj.insert("Type",0);
+    mater_obj.insert("Start",0);
+    mater_obj.insert("Num",0);
+    mater_obj.insert("Stamp",0);
+    boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance(),mater_obj)).detach();
+
+    //////////////初始化所有商品//////////////////
+    QJsonObject goods_obj;
+    goods_obj.insert("Type",0);
+    goods_obj.insert("Start",0);
+    goods_obj.insert("Num",0);
+    goods_obj.insert("Stamp",0);
+    boost::thread(boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance(),goods_obj)).detach();
+
+    //////////////初始化所有商品的分类//////////////////
+    boost::thread(boost::bind(&dataCenter::net_getGlobalGoodsType,dataCenter::instance())).detach();
+
+    //////////////初始化所有镀种的分类//////////////////
+    boost::thread(boost::bind(&dataCenter::net_getglobalPlating,dataCenter::instance())).detach();
+
+    //////////////获取所有商品的出库记录//////////////////////////////
+    QJsonObject out_obj;
+    out_obj.insert("Type",0);
+    out_obj.insert("Start",0);
+    out_obj.insert("Num",0);
+    out_obj.insert("Stamp",0);
+    boost::thread(boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance(),out_obj)).detach();
+
+    //////////////获取打印数量/////////////////////////////
+    boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
 
 
 }
@@ -102,9 +144,9 @@ void dataCenter::clearData()
     m_goodsRecords.clear();//所有商品出库记录
     m_load.showOver();       //加载动画
     m_Config.clear();     //保存系统配置
-    m_first_timer =NULL;   //订单定时器
-    m_second_timer=NULL;    //第二定时器
-    m_third_timer=NULL; //第三定时器
+//    m_first_timer =NULL;   //订单定时器
+//    m_second_timer=NULL;    //第二定时器
+//    m_third_timer=NULL; //第三定时器
     //m_heartbeat_timer=NULL;
 }
 
@@ -122,44 +164,44 @@ void dataCenter::net_login(const QJsonObject para)
 }
 
 
-void dataCenter::pri_opt_User(bool ok, User &user, enum_NoticeType noticeType)
-{
-    switch (noticeType) {
-    case NoticeType_NEW:
-        if(ok){
-            m_employee.append(user);
-        }
-        emit sig_newEmployee(user,ok);
-        break;
-    case NoticeType_Modify:
-        if(ok){
-            bool exist =false;
-            for(int i=0;i<m_employee.size();++i){
-                if(m_employee[i].UID==user.UID){
-                    m_employee[i] = user;
-                    exist = true;
-                    break;
-                }
-            }
-            if(!exist) m_employee.push_back(user);
-        }
-        emit sig_modEmployee(user,ok);
-        break;
-    case NoticeType_Del:
-        if(ok){
-            for(int i=0;i<m_employee.size();++i){
-                if(m_employee[i].UID==user.UID){
-                    m_employee.remove(i);
-                    break;
-                }
-            }
-        }
-        emit sig_delEmployee(user.UID,ok);
-        break;
-    default:
-        break;
-    }
-}
+//void dataCenter::pri_opt_User(bool ok, User &user, enum_NoticeType noticeType)
+//{
+//    switch (noticeType) {
+//    case NoticeType_NEW:
+//        if(ok){
+//            m_employee.append(user);
+//        }
+//        emit sig_newEmployee(user,ok);
+//        break;
+//    case NoticeType_Modify:
+//        if(ok){
+//            bool exist =false;
+//            for(int i=0;i<m_employee.size();++i){
+//                if(m_employee[i].UID==user.UID){
+//                    m_employee[i] = user;
+//                    exist = true;
+//                    break;
+//                }
+//            }
+//            if(!exist) m_employee.push_back(user);
+//        }
+//        emit sig_modEmployee(user,ok);
+//        break;
+//    case NoticeType_Del:
+//        if(ok){
+//            for(int i=0;i<m_employee.size();++i){
+//                if(m_employee[i].UID==user.UID){
+//                    m_employee.remove(i);
+//                    break;
+//                }
+//            }
+//        }
+//        emit sig_delEmployee(user.UID,ok);
+//        break;
+//    default:
+//        break;
+//    }
+//}
 
 
 
@@ -168,59 +210,59 @@ void dataCenter::net_newUser(const QJsonObject para)
 {
     bool isOK   = false;
     User user = UserService::newUser(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        m_employee.append(user);
-    //    }
-    //    emit sig_newEmployee(user,isOK);
-    pri_opt_User(isOK,user,NoticeType_NEW);
+    if(isOK){
+        m_employee.append(user);
+    }
+    emit sig_newEmployee(user,isOK);
+    //    pri_opt_User(isOK,user,NoticeType_NEW);
 }
 
 void dataCenter::net_modUser(const QJsonObject para)
 {
     bool isOK   = false;
     User user = UserService::modUser(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        for(int i=0;i<m_employee.size();++i){
-    //            if(m_employee[i].UID==user.UID){
-    //                m_employee[i] = user;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_modEmployee(user,isOK);
-    pri_opt_User(isOK,user,NoticeType_Modify);
+    if(isOK){
+        for(int i=0;i<m_employee.size();++i){
+            if(m_employee[i].UID==user.UID){
+                m_employee[i] = user;
+                break;
+            }
+        }
+    }
+    emit sig_modEmployee(user,isOK);
+    //    pri_opt_User(isOK,user,NoticeType_Modify);
 }
 
 void dataCenter::net_outUser(const QJsonObject para)
 {
     bool isOK   = false;
     User user = UserService::outUser(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        for(int i=0;i<m_employee.size();++i){
-    //            if(m_employee[i].UID==user.UID){
-    //                m_employee[i] = user;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_outEmployee(user,isOK);
-    pri_opt_User(isOK,user,NoticeType_Modify);
+    if(isOK){
+        for(int i=0;i<m_employee.size();++i){
+            if(m_employee[i].UID==user.UID){
+                m_employee[i] = user;
+                break;
+            }
+        }
+    }
+    emit sig_outEmployee(user,isOK);
+    //    pri_opt_User(isOK,user,NoticeType_Modify);
 }
 
 void dataCenter::net_delUser(const QJsonObject para)
 {
     bool isOK   = false;
     User user = UserService::delUser(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        for(int i=0;i<m_employee.size();++i){
-    //            if(m_employee[i].UID==user){
-    //                m_employee.remove(i);
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_delEmployee(user,isOK);
-    pri_opt_User(isOK,user,NoticeType_Del);
+    if(isOK){
+        for(int i=0;i<m_employee.size();++i){
+            if(m_employee[i].UID==user.UID){
+                m_employee.remove(i);
+                break;
+            }
+        }
+    }
+    emit sig_delEmployee(user.UID,isOK);
+    //    pri_opt_User(isOK,user,NoticeType_Del);
 }
 
 void dataCenter::net_getGlobalUsers(const QJsonObject para)
@@ -230,26 +272,26 @@ void dataCenter::net_getGlobalUsers(const QJsonObject para)
     emit sig_globalEmployees(ok);
 }
 
-void dataCenter::pri_opt_DepartMent(bool ok, QString &type, enum_NoticeType noticeType)
-{
-    switch (noticeType) {
-    case NoticeType_NEW:
-        break;
-    case NoticeType_Del:
-    default:
-        break;
-    }
+//void dataCenter::pri_opt_DepartMent(bool ok, QString &type, enum_NoticeType noticeType)
+//{
+//    switch (noticeType) {
+//    case NoticeType_NEW:
+//        break;
+//    case NoticeType_Del:
+//    default:
+//        break;
+//    }
 
-}
+//}
 
 void dataCenter::net_newDepartment(const QJsonObject para)
 {
     bool ok = false;
     QString de = UserService::newDepartment(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    m_departments.push_back(de);
-    //    emit sig_newDepartment(de,ok);
+    m_departments.push_back(de);
+    emit sig_newDepartment(de,ok);
 
-    pri_opt_DepartMent(ok,de,NoticeType_NEW);
+    //    pri_opt_DepartMent(ok,de,NoticeType_NEW);
 
 }
 
@@ -257,10 +299,10 @@ void dataCenter::net_delDepartment(const QJsonObject para)
 {
     bool ok = false;
     QString de = UserService::delDepartment(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    m_departments.removeOne(de);
-    //    emit sig_delDepartment(de,ok);
+    m_departments.removeOne(de);
+    emit sig_delDepartment(de,ok);
 
-    pri_opt_DepartMent(ok,de,NoticeType_Del);
+    //    pri_opt_DepartMent(ok,de,NoticeType_Del);
 }
 
 void dataCenter::net_getGlobalDepartment()
@@ -270,45 +312,45 @@ void dataCenter::net_getGlobalDepartment()
     emit sig_globalDepartment(ok);
 }
 
-void dataCenter::pri_opt_Order(bool ok, Order &order, enum_NoticeType noticeType)
-{
-    switch (noticeType) {
-    case NoticeType_NEW:
-        if(ok){
-            m_orders.append(order);
-            m_batch.insert(order.CustomBatch);
-        }
-        emit sig_newOrder(order,ok);
-        break;
-    case NoticeType_Modify:
-        if(ok){
-            bool exist = false;
-            for(int i=0;i<m_orders.size();++i){
-                if(m_orders[i].OrderID==order.OrderID){
-                    m_orders[i] = order;
-                    exist = true;
-                    break;
-                }
-            }
-            if(!exist) m_orders.push_back(order);
-        }
-        emit sig_modOrder(order,ok);
-        break;
-    case NoticeType_Del:
-        if(ok){
-            for(int i=0;i<m_orders.size();++i){
-                if(m_orders[i].OrderID==order.OrderID){
-                    m_orders.remove(i);
-                    break;
-                }
-            }
-        }
-        emit sig_delOrder(order,ok);
-        break;
-    default:
-        break;
-    }
-}
+//void dataCenter::pri_opt_Order(bool ok, Order &order, enum_NoticeType noticeType)
+//{
+//    switch (noticeType) {
+//    case NoticeType_NEW:
+//        if(ok){
+//            m_orders.append(order);
+//            m_batch.insert(order.CustomBatch);
+//        }
+//        emit sig_newOrder(order,ok);
+//        break;
+//    case NoticeType_Modify:
+//        if(ok){
+//            bool exist = false;
+//            for(int i=0;i<m_orders.size();++i){
+//                if(m_orders[i].OrderID==order.OrderID){
+//                    m_orders[i] = order;
+//                    exist = true;
+//                    break;
+//                }
+//            }
+//            if(!exist) m_orders.push_back(order);
+//        }
+//        emit sig_modOrder(order,ok);
+//        break;
+//    case NoticeType_Del:
+//        if(ok){
+//            for(int i=0;i<m_orders.size();++i){
+//                if(m_orders[i].OrderID==order.OrderID){
+//                    m_orders.remove(i);
+//                    break;
+//                }
+//            }
+//        }
+//        emit sig_delOrder(order,ok);
+//        break;
+//    default:
+//        break;
+//    }
+//}
 
 
 
@@ -316,131 +358,131 @@ void dataCenter::net_newOrder(const QJsonObject para)
 {
     bool isOK   = false;
     Order order = OrderService::newOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        m_orders.append(order);
-    //        m_batch.insert(order.CustomBatch);
-    //    }
-    //    emit sig_newOrder(order,isOK);
-    pri_opt_Order(isOK,order,NoticeType_NEW);
+    if(isOK){
+        m_orders.append(order);
+        m_batch.insert(order.CustomBatch);
+    }
+    emit sig_newOrder(order,isOK);
+    //    pri_opt_Order(isOK,order,NoticeType_NEW);
 }
 
 void dataCenter::net_modOrder(const QJsonObject para)
 {
     bool isOK   = false;
     Order order = OrderService::modOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        for(int i=0;i<m_orders.size();++i){
-    //            if(m_orders[i].OrderID==order.OrderID){
-    //                m_orders[i] = order;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_modOrder(order,isOK);
-    pri_opt_Order(isOK,order,NoticeType_Modify);
+    if(isOK){
+        for(int i=0;i<m_orders.size();++i){
+            if(m_orders[i].OrderID==order.OrderID){
+                m_orders[i] = order;
+                break;
+            }
+        }
+    }
+    emit sig_modOrder(order,isOK);
+    //    pri_opt_Order(isOK,order,NoticeType_Modify);
 }
 
 void dataCenter::net_cancleOrder(const QJsonObject para)
 {
     bool isOK   = false;
     Order order = OrderService::cancleOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        for(int i=0;i<m_orders.size();++i){
-    //            if(m_orders[i].OrderID==order.OrderID){
-    //                m_orders[i] = order;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_cancleOrder(order,isOK);
-    pri_opt_Order(isOK,order,NoticeType_Modify);
+    if(isOK){
+        for(int i=0;i<m_orders.size();++i){
+            if(m_orders[i].OrderID==order.OrderID){
+                m_orders[i] = order;
+                break;
+            }
+        }
+    }
+    emit sig_cancleOrder(order,isOK);
+    //    pri_opt_Order(isOK,order,NoticeType_Modify);
 }
 
 void dataCenter::net_delOrder(const QJsonObject para)
 {
     bool isOK   = false;
     Order order = OrderService::delOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        for(int i=0;i<m_orders.size();++i){
-    //            if(m_orders[i].OrderID==order.OrderID){
-    //                m_orders.remove(i);
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_delOrder(order,isOK);
-    pri_opt_Order(isOK,order,NoticeType_Del);
+    if(isOK){
+        for(int i=0;i<m_orders.size();++i){
+            if(m_orders[i].OrderID==order.OrderID){
+                m_orders.remove(i);
+                break;
+            }
+        }
+    }
+    emit sig_delOrder(order,isOK);
+    //    pri_opt_Order(isOK,order,NoticeType_Del);
 }
 
 void dataCenter::net_produceOrder(const QJsonObject para)
 {
     bool isOK   = false;
     Order order = OrderService::produceOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        for(int i=0;i<m_orders.size();++i){
-    //            if(m_orders[i].OrderID==order.OrderID){
-    //                m_orders[i] = order;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_produceOrder(order,isOK);
-    pri_opt_Order(isOK,order,NoticeType_Modify);
+    if(isOK){
+        for(int i=0;i<m_orders.size();++i){
+            if(m_orders[i].OrderID==order.OrderID){
+                m_orders[i] = order;
+                break;
+            }
+        }
+    }
+    emit sig_produceOrder(order,isOK);
+    //    pri_opt_Order(isOK,order,NoticeType_Modify);
 }
 
 void dataCenter::net_finishOrder(const QJsonObject para)
 {
     bool isOK   = false;
     Order order = OrderService::finishOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        for(int i=0;i<m_orders.size();++i){
-    //            if(m_orders[i].OrderID==order.OrderID){
-    //                m_orders[i] = order;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_finishOrder(order,isOK);
+    if(isOK){
+        for(int i=0;i<m_orders.size();++i){
+            if(m_orders[i].OrderID==order.OrderID){
+                m_orders[i] = order;
+                break;
+            }
+        }
+    }
+    emit sig_finishOrder(order,isOK);
 
-    pri_opt_Order(isOK,order,NoticeType_Modify);
+    //    pri_opt_Order(isOK,order,NoticeType_Modify);
 }
 
 void dataCenter::net_modOrderPrice(const QJsonObject para)
 {
     bool isOK   = false;
     Order order = OrderService::modOrderPrice(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        for(int i=0;i<m_orders.size();++i){
-    //            if(m_orders[i].OrderID==order.OrderID){
-    //                m_orders[i] = order;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_modOrderPrice(order,isOK);
-    pri_opt_Order(isOK,order,NoticeType_Modify);
+    if(isOK){
+        for(int i=0;i<m_orders.size();++i){
+            if(m_orders[i].OrderID==order.OrderID){
+                m_orders[i] = order;
+                break;
+            }
+        }
+    }
+    emit sig_modOrderPrice(order,isOK);
+    //    pri_opt_Order(isOK,order,NoticeType_Modify);
 }
 
 void dataCenter::net_updatePrintNum(const QJsonObject para)
 {
     bool isOK   = false;
     QVector<Order> list = OrderService::updatePrintNum(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        for (Order o:list){
-    //            for(int i=0;i<m_orders.size();++i){
-    //                if(m_orders[i].OrderID==o.OrderID){
-    //                    m_orders[i] = o;
-    //                    break;
-    //                }
-    //            }
-    //        }
-    //        //////////////获取打印数量/////////////////////////////
-    //        boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
-    //    }
-    //    emit sig_updatePrintNum(list,isOK);
-    for(Order o:list){
-        pri_opt_Order(isOK,o,NoticeType_Modify);
+    if(isOK){
+        for (Order o:list){
+            for(int i=0;i<m_orders.size();++i){
+                if(m_orders[i].OrderID==o.OrderID){
+                    m_orders[i] = o;
+                    break;
+                }
+            }
+        }
+        //////////////获取打印数量/////////////////////////////
+        boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
     }
+    emit sig_updatePrintNum(list,isOK);
+    //    for(Order o:list){
+    //        pri_opt_Order(isOK,o,NoticeType_Modify);
+    //    }
 }
 
 
@@ -467,46 +509,46 @@ void dataCenter::net_getglobalOrders(const QJsonObject para)
     emit sig_globalOrders(ok);
 }
 
-void dataCenter::pri_opt_Customer(bool ok, Customer &cus, enum_NoticeType noticeType)
-{
-    switch (noticeType) {
-    case NoticeType_NEW:
-        if(ok){
-            m_customers.append(cus);
-        }
-        emit sig_newCustomer(cus,ok);
-        break;
-    case NoticeType_Modify:
-        if(ok){
-            bool exist = false;
-            for(int i=0;i<m_customers.size();++i){
-                if(m_customers[i].CID==cus.CID){
-                    m_customers[i] = cus;
-                    exist = true;
-                    break;
-                }
-            }
-            if(!exist){
-                m_customers.push_back(cus);
-            }
-        }
-        emit sig_modCustomer(cus,ok);
-        break;
-    case NoticeType_Del:
-        if(ok){
-            for(int i=0;i<m_customers.size();++i){
-                if(m_customers[i].CID==cus.CID){
-                    m_customers.remove(i);
-                    break;
-                }
-            }
-        }
-        emit sig_delCustomer(cus.CID,ok);
-        break;
-    default:
-        break;
-    }
-}
+//void dataCenter::pri_opt_Customer(bool ok, Customer &cus, enum_NoticeType noticeType)
+//{
+//    switch (noticeType) {
+//    case NoticeType_NEW:
+//        if(ok){
+//            m_customers.append(cus);
+//        }
+//        emit sig_newCustomer(cus,ok);
+//        break;
+//    case NoticeType_Modify:
+//        if(ok){
+//            bool exist = false;
+//            for(int i=0;i<m_customers.size();++i){
+//                if(m_customers[i].CID==cus.CID){
+//                    m_customers[i] = cus;
+//                    exist = true;
+//                    break;
+//                }
+//            }
+//            if(!exist){
+//                m_customers.push_back(cus);
+//            }
+//        }
+//        emit sig_modCustomer(cus,ok);
+//        break;
+//    case NoticeType_Del:
+//        if(ok){
+//            for(int i=0;i<m_customers.size();++i){
+//                if(m_customers[i].CID==cus.CID){
+//                    m_customers.remove(i);
+//                    break;
+//                }
+//            }
+//        }
+//        emit sig_delCustomer(cus.CID,ok);
+//        break;
+//    default:
+//        break;
+//    }
+//}
 
 
 
@@ -515,43 +557,43 @@ void dataCenter::net_newCustomer(const QJsonObject para)
 {
     bool isOK    = false;
     Customer cus = CustomerService::newCustomer(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        m_customers.append(cus);
-    //    }
-    //    emit sig_newCustomer(cus,isOK);
-    pri_opt_Customer(isOK,cus,NoticeType_NEW);
+    if(isOK){
+        m_customers.append(cus);
+    }
+    emit sig_newCustomer(cus,isOK);
+    //    pri_opt_Customer(isOK,cus,NoticeType_NEW);
 }
 
 void dataCenter::net_modCustomer(const QJsonObject para)
 {
     bool isOK    = false;
     Customer cus = CustomerService::modCustomer(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        for(int i=0;i<m_customers.size();++i){
-    //            if(m_customers[i].CID==cus.CID){
-    //                m_customers[i] = cus;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_modCustomer(cus,isOK);
-    pri_opt_Customer(isOK,cus,NoticeType_Modify);
+    if(isOK){
+        for(int i=0;i<m_customers.size();++i){
+            if(m_customers[i].CID==cus.CID){
+                m_customers[i] = cus;
+                break;
+            }
+        }
+    }
+    emit sig_modCustomer(cus,isOK);
+    //    pri_opt_Customer(isOK,cus,NoticeType_Modify);
 }
 
 void dataCenter::net_delCustomer(const QJsonObject para)
 {
     bool isOK    = false;
     Customer  cus =CustomerService::delCustomer(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(isOK){
-    //        for(int i=0;i<m_customers.size();++i){
-    //            if(m_customers[i].CID==cus){
-    //                m_customers.remove(i);
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_delCustomer(cus,isOK);
-    pri_opt_Customer(isOK,cus,NoticeType_Del);
+    if(isOK){
+        for(int i=0;i<m_customers.size();++i){
+            if(m_customers[i].CID==cus.CID){
+                m_customers.remove(i);
+                break;
+            }
+        }
+    }
+    emit sig_delCustomer(cus.CID,isOK);
+    //    pri_opt_Customer(isOK,cus,NoticeType_Del);
 }
 
 void dataCenter::net_getGlobalCustomers(const QJsonObject para)
@@ -561,50 +603,50 @@ void dataCenter::net_getGlobalCustomers(const QJsonObject para)
     emit sig_globalcustomers(ok);
 }
 
-void dataCenter::pri_opt_Unit(bool ok, QString &unit, enum_NoticeType noticeType)
-{
-    switch (noticeType) {
-    case NoticeType_NEW:
-        if(ok){
-            m_units.append(unit);
-        }
-        emit sig_newUnit(unit,ok);
-        break;
-    case NoticeType_Modify:
+//void dataCenter::pri_opt_Unit(bool ok, QString &unit, enum_NoticeType noticeType)
+//{
+//    switch (noticeType) {
+//    case NoticeType_NEW:
+//        if(ok){
+//            m_units.append(unit);
+//        }
+//        emit sig_newUnit(unit,ok);
+//        break;
+//    case NoticeType_Modify:
 
-        break;
-    case NoticeType_Del:
-        if(ok){
-            m_units.removeOne(unit);
-        }
-        emit sig_delUnit(unit,ok);
-        break;
-    default:
-        break;
-    }
-}
+//        break;
+//    case NoticeType_Del:
+//        if(ok){
+//            m_units.removeOne(unit);
+//        }
+//        emit sig_delUnit(unit,ok);
+//        break;
+//    default:
+//        break;
+//    }
+//}
 
 
 void dataCenter::net_newUnit(const QJsonObject para)
 {
     bool ok = false;
     QString unit =  UnitService::newUnit(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        m_units.append(unit);
-    //    }
-    //    emit sig_newUnit(unit,ok);
-    pri_opt_Unit(ok,unit,NoticeType_NEW);
+    if(ok){
+        m_units.append(unit);
+    }
+    emit sig_newUnit(unit,ok);
+    //    pri_opt_Unit(ok,unit,NoticeType_NEW);
 }
 
 void dataCenter::net_delUnit(const QJsonObject para)
 {
     bool ok = false;
     QString unit = UnitService::delUnit(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        m_units.removeOne(unit);
-    //    }
-    //    emit sig_delUnit(unit,ok);
-    pri_opt_Unit(ok,unit,NoticeType_Del);
+    if(ok){
+        m_units.removeOne(unit);
+    }
+    emit sig_delUnit(unit,ok);
+    //    pri_opt_Unit(ok,unit,NoticeType_Del);
 }
 
 void dataCenter::net_getglobalUnits()
@@ -614,88 +656,88 @@ void dataCenter::net_getglobalUnits()
     emit sig_globalUnits(ok);
 }
 
-void dataCenter::pri_opt_supplier(bool ok, Supplier &sup, enum_NoticeType noticeType)
-{
-    switch (noticeType) {
-    case NoticeType_NEW:
-        if(ok){
-            m_suppliers.push_back(sup);
-        }
-        emit sig_newSupplier(sup,ok);
-        break;
-    case NoticeType_Modify:
-        if(ok){
-            bool exist = false;
-            for(int i=0;i<m_suppliers.size();++i){
-                if(m_suppliers[i].SID==sup.SID){
-                    m_suppliers[i] = sup;
-                    exist = true;
-                    break;
-                }
-            }
-            if(!exist){
-                m_suppliers.push_back(sup);
-            }
-        }
-        emit sig_modSUpplier(sup,ok);
-        break;
-    case NoticeType_Del:
-        if(ok){
-            for(int i=0;i<m_suppliers.size();++i){
-                if(m_suppliers[i].SID==sup.SID){
-                    m_suppliers.remove(i);
-                    break;
-                }
-            }
-        }
-        emit sig_delSUpplier(sup.SID,ok);
-        break;
-    default:
-        break;
-    }
-}
+//void dataCenter::pri_opt_supplier(bool ok, Supplier &sup, enum_NoticeType noticeType)
+//{
+//    switch (noticeType) {
+//    case NoticeType_NEW:
+//        if(ok){
+//            m_suppliers.push_back(sup);
+//        }
+//        emit sig_newSupplier(sup,ok);
+//        break;
+//    case NoticeType_Modify:
+//        if(ok){
+//            bool exist = false;
+//            for(int i=0;i<m_suppliers.size();++i){
+//                if(m_suppliers[i].SID==sup.SID){
+//                    m_suppliers[i] = sup;
+//                    exist = true;
+//                    break;
+//                }
+//            }
+//            if(!exist){
+//                m_suppliers.push_back(sup);
+//            }
+//        }
+//        emit sig_modSUpplier(sup,ok);
+//        break;
+//    case NoticeType_Del:
+//        if(ok){
+//            for(int i=0;i<m_suppliers.size();++i){
+//                if(m_suppliers[i].SID==sup.SID){
+//                    m_suppliers.remove(i);
+//                    break;
+//                }
+//            }
+//        }
+//        emit sig_delSUpplier(sup.SID,ok);
+//        break;
+//    default:
+//        break;
+//    }
+//}
 
 void dataCenter::net_newSupplier(const QJsonObject para)
 {
     bool ok =false;
     Supplier sup = SupplierService::newSupplier(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        m_suppliers.push_back(sup);
-    //    }
-    //    emit sig_newSupplier(sup,ok);
-    pri_opt_supplier(ok,sup,NoticeType_NEW);
+    if(ok){
+        m_suppliers.push_back(sup);
+    }
+    emit sig_newSupplier(sup,ok);
+    //    pri_opt_supplier(ok,sup,NoticeType_NEW);
 }
 
 void dataCenter::net_modSupplier(const QJsonObject para)
 {
     bool ok = false;
     Supplier sup =SupplierService::modSupplier(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        for(int i=0;i<m_suppliers.size();++i){
-    //            if(m_suppliers[i].SID==cus.SID){
-    //                m_suppliers[i] = sup;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_modSUpplier(sup,ok);
-    pri_opt_supplier(ok,sup,NoticeType_Modify);
+    if(ok){
+        for(int i=0;i<m_suppliers.size();++i){
+            if(m_suppliers[i].SID==sup.SID){
+                m_suppliers[i] = sup;
+                break;
+            }
+        }
+    }
+    emit sig_modSUpplier(sup,ok);
+    //    pri_opt_supplier(ok,sup,NoticeType_Modify);
 }
 
 void dataCenter::net_delSupplier(const QJsonObject para)
 {
     bool ok = false;
     Supplier sup = SupplierService::delSupplier(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        for(int i=0;i<m_suppliers.size();++i){
-    //            if(m_suppliers[i].SID==cus){
-    //                m_suppliers.remove(i);
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_delSUpplier(cus,ok);
-    pri_opt_supplier(ok,sup,NoticeType_Del);
+    if(ok){
+        for(int i=0;i<m_suppliers.size();++i){
+            if(m_suppliers[i].SID==sup.SID){
+                m_suppliers.remove(i);
+                break;
+            }
+        }
+    }
+    emit sig_delSUpplier(sup.SID,ok);
+    //    pri_opt_supplier(ok,sup,NoticeType_Del);
 }
 
 void dataCenter::net_getglobalSuppliers(const QJsonObject para)
@@ -705,48 +747,48 @@ void dataCenter::net_getglobalSuppliers(const QJsonObject para)
     emit sig_globalSUppliers(ok);
 }
 
-void dataCenter::pri_opt_Material(bool ok, Materiel &mater, enum_NoticeType noticeType)
-{
-    switch (noticeType) {
-    case NoticeType_NEW:
-        if(ok){
-            m_maters.push_back(mater);
-            pri_addCustomerMaterial(mater.CID,mater.MaterID);
-        }
-        emit sig_newMaterial(mater,ok);
-        break;
-    case NoticeType_Modify:
-        if(ok){
-            bool exist=false;
-            for(int i=0;i<m_maters.size();++i){
-                if(m_maters[i].MaterID==mater.MaterID){
-                    m_maters[i] = mater;
-                    exist = true;
-                    break;
-                }
-            }
-            if(!exist){
-                m_maters.push_back(mater);
-            }
-        }
-        emit sig_modMaterial(mater,ok);
-        break;
-    case NoticeType_Del:
-        if(ok){
-            for(int i=0;i<m_maters.size();++i){
-                if(m_maters[i].MaterID==mater.MaterID){
-                    pri_removeCustomerMaterial(m_maters[i].CID,m_maters[i].MaterID);
-                    m_maters.remove(i);
-                    break;
-                }
-            }
-        }
-        emit sig_delMaterial(mater.MaterID,ok);
-        break;
-    default:
-        break;
-    }
-}
+//void dataCenter::pri_opt_Material(bool ok, Materiel &mater, enum_NoticeType noticeType)
+//{
+//    switch (noticeType) {
+//    case NoticeType_NEW:
+//        if(ok){
+//            m_maters.push_back(mater);
+//            pri_addCustomerMaterial(mater.CID,mater.MaterID);
+//        }
+//        emit sig_newMaterial(mater,ok);
+//        break;
+//    case NoticeType_Modify:
+//        if(ok){
+//            bool exist=false;
+//            for(int i=0;i<m_maters.size();++i){
+//                if(m_maters[i].MaterID==mater.MaterID){
+//                    m_maters[i] = mater;
+//                    exist = true;
+//                    break;
+//                }
+//            }
+//            if(!exist){
+//                m_maters.push_back(mater);
+//            }
+//        }
+//        emit sig_modMaterial(mater,ok);
+//        break;
+//    case NoticeType_Del:
+//        if(ok){
+//            for(int i=0;i<m_maters.size();++i){
+//                if(m_maters[i].MaterID==mater.MaterID){
+//                    pri_removeCustomerMaterial(m_maters[i].CID,m_maters[i].MaterID);
+//                    m_maters.remove(i);
+//                    break;
+//                }
+//            }
+//        }
+//        emit sig_delMaterial(mater.MaterID,ok);
+//        break;
+//    default:
+//        break;
+//    }
+//}
 
 
 
@@ -755,45 +797,45 @@ void dataCenter::net_newMaterial(const QJsonObject para)
 {
     bool ok = false;
     Materiel ma = MaterialService::newMaterial(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        m_maters.push_back(ma);
-    //        pri_addCustomerMaterial(ma.CID,ma.MaterID);
-    //    }
-    //    emit sig_newMaterial(ma,ok);
-    pri_opt_Material(ok,ma,NoticeType_NEW);
+    if(ok){
+        m_maters.push_back(ma);
+        pri_addCustomerMaterial(ma.CID,ma.MaterID);
+    }
+    emit sig_newMaterial(ma,ok);
+    //    pri_opt_Material(ok,ma,NoticeType_NEW);
 }
 
 void dataCenter::net_modMaterial(const QJsonObject para)
 {
     bool ok = false;
     Materiel mater =MaterialService::modMaterial(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        for(int i=0;i<m_maters.size();++i){
-    //            if(m_maters[i].MaterID==mater.MaterID){
-    //                m_maters[i] = mater;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_modMaterial(mater,ok);
-    pri_opt_Material(ok,mater,NoticeType_Modify);
+    if(ok){
+        for(int i=0;i<m_maters.size();++i){
+            if(m_maters[i].MaterID==mater.MaterID){
+                m_maters[i] = mater;
+                break;
+            }
+        }
+    }
+    emit sig_modMaterial(mater,ok);
+    //    pri_opt_Material(ok,mater,NoticeType_Modify);
 }
 
 void dataCenter::net_delMaterial(const QJsonObject para)
 {
     bool ok = false;
     Materiel mater = MaterialService::delMaterial(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        for(int i=0;i<m_maters.size();++i){
-    //            if(m_maters[i].MaterID==mater.MID){
-    //                m_maters.remove(i);
-    //               pri_removeCustomerMaterial(mater.CID,mater.MID);
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_delMaterial(mater.MID,ok);
-    pri_opt_Material(ok,mater,NoticeType_Modify);
+    if(ok){
+        for(int i=0;i<m_maters.size();++i){
+            if(m_maters[i].MaterID==mater.MaterID){
+                m_maters.remove(i);
+                pri_removeCustomerMaterial(mater.CID,mater.MaterID);
+                break;
+            }
+        }
+    }
+    emit sig_delMaterial(mater.MaterID,ok);
+    //    pri_opt_Material(ok,mater,NoticeType_Modify);
 }
 
 void dataCenter::net_queryMaterial(const QJsonObject para)
@@ -821,46 +863,46 @@ void dataCenter::net_getglobalMateriels(const QJsonObject para)
 
 }
 
-void dataCenter::pri_opt_Goods(bool ok, Goods &goods, enum_NoticeType noticeType)
-{
-    switch (noticeType) {
-    case NoticeType_NEW:
-        if (ok){
-            m_goods.push_back(goods);
-            pri_checkGoodType(goods.Type);
-        }
-        emit sig_newGoods(goods,ok);
-        break;
-    case NoticeType_Modify:
-        if(ok){
-            bool ex =false;
-            for(int i=0;i<m_goods.size();++i){
-                if(m_goods[i].ID==goods.ID){
-                    m_goods[i] = goods;
-                    ex = true;
-                    break;
-                }
-            }
-            if(!ex) m_goods.push_back(goods);
-            pri_checkGoodType(goods.Type);
-        }
-        emit sig_modGoods(goods,ok);
-        break;
-    case NoticeType_Del:
-        if(ok){
-            for(int i=0;i<m_goods.size();++i){
-                if(m_goods[i].ID==goods.ID){
-                    m_goods.remove(i);
-                    break;
-                }
-            }
-        }
-        emit sig_delGoods(goods.ID,ok);
-        break;
-    default:
-        break;
-    }
-}
+//void dataCenter::pri_opt_Goods(bool ok, Goods &goods, enum_NoticeType noticeType)
+//{
+//    switch (noticeType) {
+//    case NoticeType_NEW:
+//        if (ok){
+//            m_goods.push_back(goods);
+//            pri_checkGoodType(goods.Type);
+//        }
+//        emit sig_newGoods(goods,ok);
+//        break;
+//    case NoticeType_Modify:
+//        if(ok){
+//            bool ex =false;
+//            for(int i=0;i<m_goods.size();++i){
+//                if(m_goods[i].ID==goods.ID){
+//                    m_goods[i] = goods;
+//                    ex = true;
+//                    break;
+//                }
+//            }
+//            if(!ex) m_goods.push_back(goods);
+//            pri_checkGoodType(goods.Type);
+//        }
+//        emit sig_modGoods(goods,ok);
+//        break;
+//    case NoticeType_Del:
+//        if(ok){
+//            for(int i=0;i<m_goods.size();++i){
+//                if(m_goods[i].ID==goods.ID){
+//                    m_goods.remove(i);
+//                    break;
+//                }
+//            }
+//        }
+//        emit sig_delGoods(goods.ID,ok);
+//        break;
+//    default:
+//        break;
+//    }
+//}
 
 
 
@@ -869,12 +911,12 @@ void dataCenter::net_newGoods(const QJsonObject para)
 {
     bool ok = false;
     Goods goods = GoodsService::newGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if (ok){
-    //        m_goods.push_back(goods);
-    //        pri_checkGoodType(goods.Type);
-    //    }
-    //    emit sig_newGoods(goods,ok);
-    pri_opt_Goods(ok,goods,NoticeType_NEW);
+    if (ok){
+        m_goods.push_back(goods);
+        pri_checkGoodType(goods.Type);
+    }
+    emit sig_newGoods(goods,ok);
+    //    pri_opt_Goods(ok,goods,NoticeType_NEW);
 }
 
 void dataCenter::net_getGoods(const QJsonObject para)
@@ -899,51 +941,51 @@ void dataCenter::net_modGoods(const QJsonObject para)
 {
     bool ok = false;
     Goods goods = GoodsService::modGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        bool ex =false;
-    //        for(int i=0;i<m_goods.size();++i){
-    //            if(m_goods[i].ID==goods.ID){
-    //                m_goods[i] = goods;
-    //                break;
-    //            }
-    //        }
-    //        if(!ex) m_goods.push_back(goods);
-    //        pri_checkGoodType(goods.Type);
-    //    }
-    //    emit sig_modGoods(goods,ok);
-    pri_opt_Goods(ok,goods,NoticeType_Modify);
+    if(ok){
+        bool ex =false;
+        for(int i=0;i<m_goods.size();++i){
+            if(m_goods[i].ID==goods.ID){
+                m_goods[i] = goods;
+                break;
+            }
+        }
+        if(!ex) m_goods.push_back(goods);
+        pri_checkGoodType(goods.Type);
+    }
+    emit sig_modGoods(goods,ok);
+    //    pri_opt_Goods(ok,goods,NoticeType_Modify);
 }
 
 void dataCenter::net_delGoods(const QJsonObject para)
 {
     bool ok = false;
     Goods goods = GoodsService::delGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        for(int i=0;i<m_goods.size();++i){
-    //            if(m_goods[i].ID==id){
-    //                m_goods.remove(i);
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_delGoods(id,ok);
-    pri_opt_Goods(ok,goods,NoticeType_Del);
+    if(ok){
+        for(int i=0;i<m_goods.size();++i){
+            if(m_goods[i].ID==goods.ID){
+                m_goods.remove(i);
+                break;
+            }
+        }
+    }
+    emit sig_delGoods(goods.ID,ok);
+    //    pri_opt_Goods(ok,goods,NoticeType_Del);
 }
 
 void dataCenter::net_addOutGoodsNum(const QJsonObject para)
 {
     bool ok = false;
     Goods goods = GoodsService::addOutGoodsNum(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        for(int i=0;i<m_goods.size();++i){
-    //            if(m_goods[i].ID==goods.ID){
-    //                m_goods[i] = goods;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    emit sig_inGoods(goods,ok);
-    pri_opt_Goods(ok,goods,NoticeType_Modify);
+    if(ok){
+        for(int i=0;i<m_goods.size();++i){
+            if(m_goods[i].ID==goods.ID){
+                m_goods[i] = goods;
+                break;
+            }
+        }
+    }
+    emit sig_inGoods(goods,ok);
+    //    pri_opt_Goods(ok,goods,NoticeType_Modify);
 }
 
 void dataCenter::net_getglobalGoods(const QJsonObject para)
@@ -955,26 +997,26 @@ void dataCenter::net_getglobalGoods(const QJsonObject para)
 
 
 
-void dataCenter::pri_opt_GoodsType(bool ok, QString &type, enum_NoticeType noticeType)
-{
-    switch (noticeType) {
-    case NoticeType_NEW:
-        if(ok){
-            m_goodsType.push_back(type);
-        }
-        emit sig_newGoodsType(type,ok);
-        break;
-    case NoticeType_Modify:
+//void dataCenter::pri_opt_GoodsType(bool ok, QString &type, enum_NoticeType noticeType)
+//{
+//    switch (noticeType) {
+//    case NoticeType_NEW:
+//        if(ok){
+//            m_goodsType.push_back(type);
+//        }
+//        emit sig_newGoodsType(type,ok);
+//        break;
+//    case NoticeType_Modify:
 
-        break;
-    case NoticeType_Del:
-        m_goodsType.removeOne(type);
-        emit sig_delGoodsType(type,ok);
-        break;
-    default:
-        break;
-    }
-}
+//        break;
+//    case NoticeType_Del:
+//        m_goodsType.removeOne(type);
+//        emit sig_delGoodsType(type,ok);
+//        break;
+//    default:
+//        break;
+//    }
+//}
 
 
 
@@ -983,20 +1025,20 @@ void dataCenter::net_newGoodsType(const QJsonObject para)
 {
     bool ok = false;
     QString type = GoodsService::newGoodsType(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        m_goodsType.push_back(type);
-    //    }
-    //    emit sig_newGoodsType(type,ok);
-    pri_opt_GoodsType(ok,type,NoticeType_NEW);
+    if(ok){
+        m_goodsType.push_back(type);
+    }
+    emit sig_newGoodsType(type,ok);
+    //    pri_opt_GoodsType(ok,type,NoticeType_NEW);
 }
 
 void dataCenter::net_delGoodsType(const QJsonObject para)
 {
     bool ok = false;
     QString type = GoodsService::delGoodsType(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    m_goodsType.removeOne(type);
-    //    emit sig_delGoodsType(type,ok);
-    pri_opt_GoodsType(ok,type,NoticeType_Modify);
+    m_goodsType.removeOne(type);
+    emit sig_delGoodsType(type,ok);
+    //    pri_opt_GoodsType(ok,type,NoticeType_Modify);
 }
 
 void dataCenter::net_getGlobalGoodsType()
@@ -1006,25 +1048,25 @@ void dataCenter::net_getGlobalGoodsType()
     emit sig_globalGoodsType(ok);
 }
 
-void dataCenter::pri_opt_OutRecord(bool ok, GoodsOutRecord &record, enum_NoticeType noticeType)
-{
-    switch (noticeType) {
-    case NoticeType_NEW:
-        if (ok){
-            m_goodsRecords.push_back(record);
-        }
-        emit sig_newGoodsRecord(record,ok);
-        break;
-    case NoticeType_Modify:
+//void dataCenter::pri_opt_OutRecord(bool ok, GoodsOutRecord &record, enum_NoticeType noticeType)
+//{
+//    switch (noticeType) {
+//    case NoticeType_NEW:
+//        if (ok){
+//            m_goodsRecords.push_back(record);
+//        }
+//        emit sig_newGoodsRecord(record,ok);
+//        break;
+//    case NoticeType_Modify:
 
-        break;
-    case NoticeType_Del:
+//        break;
+//    case NoticeType_Del:
 
-        break;
-    default:
-        break;
-    }
-}
+//        break;
+//    default:
+//        break;
+//    }
+//}
 
 
 
@@ -1033,11 +1075,11 @@ void dataCenter::net_newGoodsOut(const QJsonObject para)
 {
     bool ok = false;
     GoodsOutRecord record = GoodsOutRecordService::newGoodsRecord(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if (ok){
-    //        m_goodsRecords.push_back(record);
-    //    }
-    //    emit sig_newGoodsRecord(goods,ok);
-    pri_opt_OutRecord(ok,record,NoticeType_NEW);
+    if (ok){
+        m_goodsRecords.push_back(record);
+    }
+    emit sig_newGoodsRecord(record,ok);
+    //    pri_opt_OutRecord(ok,record,NoticeType_NEW);
 }
 
 void dataCenter::net_getAllOutRecords(const QJsonObject para)
@@ -1048,50 +1090,50 @@ void dataCenter::net_getAllOutRecords(const QJsonObject para)
 }
 
 
-void dataCenter::pri_opt_Platting(bool ok, QString &platting, enum_NoticeType noticeType)
-{
-    switch (noticeType) {
-    case NoticeType_NEW:
-        if(ok){
-            m_Platings.append(platting);
-        }
-        emit sig_newPlating(platting,ok);
-        break;
-    case NoticeType_Modify:
+//void dataCenter::pri_opt_Platting(bool ok, QString &platting, enum_NoticeType noticeType)
+//{
+//    switch (noticeType) {
+//    case NoticeType_NEW:
+//        if(ok){
+//            m_Platings.append(platting);
+//        }
+//        emit sig_newPlating(platting,ok);
+//        break;
+//    case NoticeType_Modify:
 
-        break;
-    case NoticeType_Del:
-        if(ok){
-            m_Platings.removeOne(platting);
-        }
-        emit sig_delPlating(platting,ok);
-        break;
-    default:
-        break;
-    }
-}
+//        break;
+//    case NoticeType_Del:
+//        if(ok){
+//            m_Platings.removeOne(platting);
+//        }
+//        emit sig_delPlating(platting,ok);
+//        break;
+//    default:
+//        break;
+//    }
+//}
 
 
 void dataCenter::net_newPlating(const QJsonObject para)
 {
     bool ok = false;
     QString platting =  PlatingService::newPlating(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        m_Platings.append(unit);
-    //    }
-    //    emit sig_newPlating(unit,ok);
-    pri_opt_Platting(ok,platting,NoticeType_NEW);
+    if(ok){
+        m_Platings.append(platting);
+    }
+    emit sig_newPlating(platting,ok);
+    //    pri_opt_Platting(ok,platting,NoticeType_NEW);
 }
 
 void dataCenter::net_delPlating(const QJsonObject para)
 {
     bool ok = false;
     QString platting = PlatingService::delPlating(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    //    if(ok){
-    //        m_Platings.removeOne(unit);
-    //    }
-    //    emit sig_delPlating(unit,ok);
-    pri_opt_Platting(ok,platting,NoticeType_Del);
+    if(ok){
+        m_Platings.removeOne(platting);
+    }
+    emit sig_delPlating(platting,ok);
+    //    pri_opt_Platting(ok,platting,NoticeType_Del);
 }
 
 void dataCenter::net_getglobalPlating()
@@ -1102,12 +1144,31 @@ void dataCenter::net_getglobalPlating()
 }
 
 
-//void dataCenter::net_HeartBeat()
-//{
-//    bool ok;
-//    Notification::HeartBeat(QJsonObject(),ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-//    qDebug()<<"HeartBeat:"<<ok;
-//}
+void dataCenter::net_HeartBeat(int index)
+{
+    bool ok;
+    int time =update::HeartBeat(QJsonObject(),ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    switch (index) {
+    case 1:
+        m_first_block.t_stamp = time;
+        break;
+    case 2:
+        m_second_block.t_stamp = time;
+        break;
+    case 3:
+        m_thrid_block.t_stamp = time;
+        break;
+    case -1:
+         m_first_block.t_stamp = time;
+         m_second_block.t_stamp = time;
+         m_thrid_block.t_stamp = time;
+        break;
+    default:
+
+        break;
+    }
+    qDebug()<<"HeartBeat:"<<ok;
+}
 
 
 void dataCenter::pub_showMessage(QString msg, int sec)
@@ -1427,31 +1488,41 @@ void dataCenter::setCurSettings(SysSetting set)
 void dataCenter::TimerUpdate(bool isstop)
 {
     if(isstop){
-        if(m_first_timer!=NULL&&m_first_timer->isActive()) m_first_timer->stop();
-        if(m_second_timer!=NULL&&m_second_timer->isActive()) m_second_timer->stop();
-        if(m_third_timer!=NULL&&m_third_timer->isActive()) m_third_timer->stop();
+        if(m_first_block.t_timer!=NULL&&m_first_block.t_timer->isActive()) m_first_block.t_timer->stop();
+        if(m_second_block.t_timer!=NULL&&m_second_block.t_timer->isActive()) m_second_block.t_timer->stop();
+        if(m_thrid_block.t_timer!=NULL&&m_thrid_block.t_timer->isActive()) m_thrid_block.t_timer->stop();
     }else{
-        m_first_timer = new QTimer(this);
-        connect(m_first_timer, SIGNAL(timeout()), this, SLOT(update_first()));
-        m_first_timer->start(1000*60*2);
+        m_first_block.t_timer = new QTimer(this);
+        connect(m_first_block.t_timer, SIGNAL(timeout()), this, SLOT(update_first()));
+        m_first_block.t_timer->start(m_first_block.t_timeout);
 
-        m_second_timer = new QTimer(this);
-        connect(m_second_timer, SIGNAL(timeout()), this, SLOT(update_second()));
-        m_second_timer->start(1000*60*10);
+        m_second_block.t_timer = new QTimer(this);
+        connect(m_second_block.t_timer, SIGNAL(timeout()), this, SLOT(update_second()));
+        m_second_block.t_timer->start(m_second_block.t_timeout);
 
-        m_third_timer = new QTimer(this);
-        connect(m_third_timer, SIGNAL(timeout()), this, SLOT(update_third()));
-        m_third_timer->start(1000*60*20);
+        m_thrid_block.t_timer = new QTimer(this);
+        connect(m_thrid_block.t_timer, SIGNAL(timeout()), this, SLOT(update_third()));
+        m_thrid_block.t_timer->start(m_thrid_block.t_timeout);
+        //////////////心跳//////////////////
+        boost::thread(boost::bind(&dataCenter::net_HeartBeat,dataCenter::instance(),-1)).detach();
     }
 }
 
 void dataCenter::update_first()
 {
     //////////////初始化所有订单///////////////////
+    QJsonObject order_obj;
+    order_obj.insert("Type",1);
+    order_obj.insert("Start",0);
+    order_obj.insert("Num",0);
+    order_obj.insert("Stamp",m_first_block.t_stamp);
     boost::thread (boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance())).detach();
     //////////////获取打印数量/////////////////////////////
     boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
-    m_first_timer->start(1000*60*2);
+    m_first_block.t_timer->start(m_first_block.t_timeout);
+    //////////////心跳//////////////////
+
+    boost::thread(boost::bind(&dataCenter::net_HeartBeat,dataCenter::instance(),1)).detach();
 }
 
 void dataCenter::update_second()
@@ -1460,29 +1531,61 @@ void dataCenter::update_second()
     boost::thread (boost::bind(&dataCenter::net_getglobalUnits,dataCenter::instance())).detach();
 
     //////////////初始化所有物料//////////////////
+    QJsonObject mater_obj;
+    mater_obj.insert("Type",1);
+    mater_obj.insert("Start",0);
+    mater_obj.insert("Num",0);
+    mater_obj.insert("Stamp",m_second_block.t_stamp);
     boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance())).detach();
     //////////////获取所有商品的出库记录//////////////////////////////
+    QJsonObject out_obj;
+    out_obj.insert("Type",1);
+    out_obj.insert("Start",0);
+    out_obj.insert("Num",0);
+    out_obj.insert("Stamp",m_second_block.t_stamp);
     boost::thread(boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance())).detach();
 
     //////////////初始化所有镀种的分类//////////////////
     boost::thread(boost::bind(&dataCenter::net_getglobalPlating,dataCenter::instance())).detach();
 
-    m_second_timer->start(1000*60*10);
+    //////////////心跳//////////////////
+    boost::thread(boost::bind(&dataCenter::net_HeartBeat,dataCenter::instance(),2)).detach();
+
+    m_second_block.t_timer->start(m_second_block.t_timeout);
 }
 
 void dataCenter::update_third()
 {
-
     //////////////初始化所有商品//////////////////
+    QJsonObject goods_obj;
+    goods_obj.insert("Type",1);
+    goods_obj.insert("Start",0);
+    goods_obj.insert("Num",0);
+    goods_obj.insert("Stamp",m_thrid_block.t_stamp);
     boost::thread(boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance())).detach();
 
     //////////////初始化所有供应商///////////////////
+    QJsonObject sup_obj;
+    sup_obj.insert("Type",1);
+    sup_obj.insert("Start",0);
+    sup_obj.insert("Num",0);
+    sup_obj.insert("Stamp",m_thrid_block.t_stamp);
     boost::thread (boost::bind(&dataCenter::net_getglobalSuppliers,dataCenter::instance())).detach();
 
     //////////////初始化所有客户///////////////////
+    QJsonObject cus_obj;
+    cus_obj.insert("Type",1);
+    cus_obj.insert("Start",0);
+    cus_obj.insert("Num",0);
+    cus_obj.insert("Stamp",m_thrid_block.t_stamp);
     boost::thread (boost::bind(&dataCenter::net_getGlobalCustomers,dataCenter::instance())).detach();
 
     //////////////初始化所有员工///////////////////
+    QJsonObject user_obj;
+    user_obj.insert("Type",1);
+    user_obj.insert("Start",0);
+    user_obj.insert("Num",0);
+    user_obj.insert("Stamp",m_thrid_block.t_stamp);
     boost::thread (boost::bind(&dataCenter::net_getGlobalUsers,dataCenter::instance())).detach();
 
     //////////////初始化所有部门///////////////////
@@ -1491,9 +1594,10 @@ void dataCenter::update_third()
     //////////////初始化所有商品的分类//////////////////
     boost::thread(boost::bind(&dataCenter::net_getGlobalGoodsType,dataCenter::instance())).detach();
 
+    //////////////心跳//////////////////
+    boost::thread(boost::bind(&dataCenter::net_HeartBeat,dataCenter::instance(),3)).detach();
 
-
-    m_third_timer->start(1000*60*20);
+    m_thrid_block.t_timer->start(m_thrid_block.t_timeout);
 }
 
 //void dataCenter::heartbeat()

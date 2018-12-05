@@ -1,6 +1,7 @@
 package main
 
 import (
+	"JGo/JHttp"
 	"JGo/JStore/JRedis"
 	"JGo/JUuid"
 	"fmt"
@@ -132,4 +133,8 @@ func Decimal(value float64) float64 {
 //返回请求Ip
 func RequestAddr(r *http.Request) string {
 	return strings.Split(r.RemoteAddr, ":")[0]
+}
+
+func HeartBeat(session *JHttp.Session) {
+	session.Forward("0", "success", CurStamp())
 }

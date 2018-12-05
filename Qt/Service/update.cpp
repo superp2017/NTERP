@@ -1,8 +1,27 @@
 ﻿#include "update.h"
-
+#include "http.h"
 update::update(QObject *parent) : QObject(parent)
 {
 
+}
+
+int update::HeartBeat(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    int stamp;
+    std::string url = Net_HeartBeat;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isDouble()){
+            stamp = ret.data.toInt();
+        }
+        ok =true;
+        return stamp;
+    }
+    if(!ret.ret)
+        qDebug()<<"HeartBeat ret is not 0"<<endl;
+    ok = false;
+    return  stamp;
 }
 
 
@@ -45,7 +64,6 @@ update::update(QObject *parent) : QObject(parent)
 //{
 //    QVector<CacheInfo> list;
 //    std::string url = Net_HeartBeat;
-//    Materiel c;
 //    bool r   = false;
 //    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
 //    if(r&&ret.ret){

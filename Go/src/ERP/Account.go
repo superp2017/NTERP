@@ -7,11 +7,11 @@ import (
 )
 
 type Account struct {
-	UID     string //用户id
-	Name    string //用户姓名
-	Account string //账号
-	Code    string //密码
-	LastTime int64//最后更新时间
+	UID      string //用户id
+	Name     string //用户姓名
+	Account  string //账号
+	Code     string //密码
+	LastTime int64  //最后更新时间
 }
 
 func Login(session *JHttp.Session) {
@@ -41,17 +41,17 @@ func Login(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	session.Forward("0", "login success\n", data)
+	session.Forward("0", "success", data)
 }
 
 //新建账号
 func newAccount(uid, name, account, code string) error {
 	st := &Account{
-		UID:     uid,
-		Name:    name,
-		Account: account,
-		Code:    code,
-		LastTime:CurStamp(),
+		UID:      uid,
+		Name:     name,
+		Account:  account,
+		Code:     code,
+		LastTime: CurStamp(),
 	}
 	return JRedis.Redis_hset(Hash_Account, account, st)
 }
@@ -64,11 +64,11 @@ func delAccount(account string) error {
 //修改账号
 func modAccount(account, code, uid, name string) error {
 	st := &Account{
-		UID:     uid,
-		Name:    name,
-		Account: account,
-		Code:    code,
-		LastTime:CurStamp(),
+		UID:      uid,
+		Name:     name,
+		Account:  account,
+		Code:     code,
+		LastTime: CurStamp(),
 	}
 	return JRedis.Redis_hset(Hash_Account, account, st)
 }

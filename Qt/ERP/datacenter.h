@@ -51,6 +51,12 @@
     }
 
 
+struct TimerBlock{
+    QTimer *t_timer;
+    int t_stamp;
+    int t_timeout;
+};
+
 class dataCenter : public QObject
 {
     Q_OBJECT
@@ -65,7 +71,7 @@ public:
     void initData();
     void clearData();
     void TimerUpdate(bool isstop=false);
-   // void ListenNotice();
+    // void ListenNotice();
     void net_login(const QJsonObject para);
     ///////////////////////////////////////////////////////
     void net_newUser(const QJsonObject para);
@@ -127,7 +133,7 @@ public:
     void net_delPlating(const QJsonObject para);
     void net_getglobalPlating();
     ////////////////////////////////
-    //void net_HeartBeat();
+    void net_HeartBeat(int index);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,7 +197,7 @@ private slots:
     void update_first();
     void update_second();
     void update_third();
-   // void heartbeat();
+    // void heartbeat();
 signals:
     void sig_showStatusMessage(QString msg,int sec);
     ///////////////////////////////////////////
@@ -260,17 +266,17 @@ private:
     void pri_removeCustomerMaterial(QString cid,QString materialID);
     void pri_addCustomerMaterial(QString cid,QString materialID);
     /////////////////////////////////////////////////////////////////////
-    void pri_opt_Order(bool ok,Order &order,enum_NoticeType noticeType);
-    void pri_opt_User(bool ok,User &user,enum_NoticeType noticeType);
-    void pri_opt_Material(bool ok,Materiel &mater,enum_NoticeType noticeType);
-    void pri_opt_Unit(bool ok,QString &unit,enum_NoticeType noticeType);
-    void pri_opt_Goods(bool ok,Goods &goods,enum_NoticeType noticeType);
-    void pri_opt_OutRecord(bool ok,GoodsOutRecord &record,enum_NoticeType noticeType);
-    void pri_opt_Customer(bool ok, Customer &cus, enum_NoticeType noticeType);
-    void pri_opt_supplier(bool ok, Supplier &sup, enum_NoticeType noticeType);
-    void pri_opt_Platting(bool ok, QString &platting, enum_NoticeType noticeType);
-    void pri_opt_GoodsType(bool ok, QString &type, enum_NoticeType noticeType);
-    void pri_opt_DepartMent(bool ok, QString &type, enum_NoticeType noticeType);
+    //    void pri_opt_Order(bool ok,Order &order,enum_NoticeType noticeType);
+    //    void pri_opt_User(bool ok,User &user,enum_NoticeType noticeType);
+    //    void pri_opt_Material(bool ok,Materiel &mater,enum_NoticeType noticeType);
+    //    void pri_opt_Unit(bool ok,QString &unit,enum_NoticeType noticeType);
+    //    void pri_opt_Goods(bool ok,Goods &goods,enum_NoticeType noticeType);
+    //    void pri_opt_OutRecord(bool ok,GoodsOutRecord &record,enum_NoticeType noticeType);
+    //    void pri_opt_Customer(bool ok, Customer &cus, enum_NoticeType noticeType);
+    //    void pri_opt_supplier(bool ok, Supplier &sup, enum_NoticeType noticeType);
+    //    void pri_opt_Platting(bool ok, QString &platting, enum_NoticeType noticeType);
+    //    void pri_opt_GoodsType(bool ok, QString &type, enum_NoticeType noticeType);
+    //    void pri_opt_DepartMent(bool ok, QString &type, enum_NoticeType noticeType);
 private:
     User                    cur_user;     //当前登录的账号
     QVector<User>           m_employee;   //所有的员工
@@ -290,11 +296,18 @@ private:
     Loadding                m_load;       //加载动画
     nSysConfig              m_Config;     //保存系统配置
     QString                 m_print_number;//
-   // Notification            m_notice;       //通知模块
-    QTimer                  *m_first_timer;   //订单定时器
-    QTimer                  *m_second_timer;//第二定时器
-    QTimer                  *m_third_timer;//第三定时器
-    //QTimer                *m_heartbeat_timer;//心跳定时
+    // Notification            m_notice;       //通知模块
+//    QTimer                  *m_first_timer;   //订单定时器
+//    QTimer                  *m_second_timer;//第二定时器
+//    QTimer                  *m_third_timer;//第三定时器
+//    //QTimer                *m_heartbeat_timer;//心跳定时
+//    int                     m_first_stamp;
+//    int                     m_second_stamp;
+//    int                     m_third_stamp;
+
+    TimerBlock              m_first_block;
+    TimerBlock              m_second_block;
+    TimerBlock              m_thrid_block;
 };
 
 #endif // DATACENTER_H

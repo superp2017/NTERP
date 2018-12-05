@@ -547,7 +547,7 @@ func GetGlobalOrders(session *JHttp.Session) {
 		})
 	}
 
-	if st.Type == 3 {
+	if st.Type == 2 {
 		if st.Start < 0 {
 			st.Start = 0
 		}
