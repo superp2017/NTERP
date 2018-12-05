@@ -53,7 +53,8 @@ func newGoods(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_GOODS, st.ID, NoticeType_NEW, st)
+	////go newUpdate(STRUCT_GOODS, st.ID, NoticeType_NEW, st)
+	go increaseUpdate(STRUCT_GOODS)
 	session.Forward("0", "NewGoods success", st)
 }
 
@@ -143,7 +144,8 @@ func modGoods(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_GOODS, data.ID, NoticeType_Modify, data)
+	/////go newUpdate(STRUCT_GOODS, data.ID, NoticeType_Modify, data)
+	go increaseUpdate(STRUCT_GOODS)
 	session.Forward("0", "modify success", data)
 }
 
@@ -173,7 +175,8 @@ func addGoodsNum(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_GOODS, data.ID, NoticeType_Modify, data)
+	////go newUpdate(STRUCT_GOODS, data.ID, NoticeType_Modify, data)
+	go increaseUpdate(STRUCT_GOODS)
 	session.Forward("0", "mod success\n", data)
 }
 
@@ -231,7 +234,8 @@ func delGoods(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_GOODS, data.ID, NoticeType_Del, data)
+	/////go newUpdate(STRUCT_GOODS, data.ID, NoticeType_Del, data)
+	go increaseUpdate(STRUCT_GOODS)
 	session.Forward("0", "del success\n", data)
 }
 
@@ -267,12 +271,29 @@ func getSupplierGoods(session *JHttp.Session) {
 
 //获取全部商品
 func getGlobalGoods(session *JHttp.Session) {
+	st := &AllPara{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
 	keys, _ := JRedis.Redis_hkeys(Hash_Goods)
 	data := []*Goods{}
+	if st.Type == 1 {
+		if st.Stamp > getUpdateStamp(STRUCT_GOODS) {
+			session.Forward("0", "success", data)
+			return
+		}
+	}
 	for _, v := range keys {
 		d := &Goods{}
 		if err := JRedis.Redis_hget(Hash_Goods, v, d); err == nil {
-			data = append(data, d)
+			if st.Type == 0 {
+				data = append(data, d)
+			} else {
+				if d.LastTime > st.Stamp {
+					data = append(data, d)
+				}
+			}
 		}
 	}
 	session.Forward("0", "GetGlobalGoods success\n", data)

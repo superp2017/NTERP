@@ -53,7 +53,8 @@ func NewSupplier(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_SUPPLIER, st.SID, NoticeType_NEW, st)
+	/////go newUpdate(STRUCT_SUPPLIER, st.SID, NoticeType_NEW, st)
+	go increaseUpdate(STRUCT_SUPPLIER)
 	session.Forward("0", "success", st)
 }
 
@@ -110,7 +111,8 @@ func ModSupplier(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_SUPPLIER, data.SID, NoticeType_Modify, data)
+	////go newUpdate(STRUCT_SUPPLIER, data.SID, NoticeType_Modify, data)
+	go increaseUpdate(STRUCT_SUPPLIER)
 	session.Forward("0", "success", data)
 }
 
@@ -143,7 +145,8 @@ func UpDownSupplier(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_SUPPLIER, data.SID, NoticeType_Modify, data)
+	////go newUpdate(STRUCT_SUPPLIER, data.SID, NoticeType_Modify, data)
+	go increaseUpdate(STRUCT_SUPPLIER)
 	session.Forward("0", "success", data)
 }
 
@@ -176,19 +179,38 @@ func DelSupplier(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_SUPPLIER, sup.SID, NoticeType_Del, sup)
+	////go newUpdate(STRUCT_SUPPLIER, sup.SID, NoticeType_Del, sup)
+	go increaseUpdate(STRUCT_SUPPLIER)
 	session.Forward("0", "success", sup)
 }
 
 //获取所有供应商列表
 func GetAllSupplier(session *JHttp.Session) {
-	list, err := JRedis.Redis_hkeys(Hash_Supplier)
+	st := &AllPara{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
 	data := []*Supplier{}
+	if st.Type == 1 {
+		if st.Stamp > getUpdateStamp(STRUCT_SUPPLIER) {
+			session.Forward("0", "success", data)
+			return
+		}
+	}
+	list, err := JRedis.Redis_hkeys(Hash_Supplier)
+
 	if err == nil {
 		for _, v := range list {
 			d := &Supplier{}
 			if e := JRedis.Redis_hget(Hash_Supplier, v, d); e == nil {
-				data = append(data, d)
+				if st.Type == 0 {
+					data = append(data, d)
+				} else {
+					if d.LastTime > st.Stamp {
+						data = append(data, d)
+					}
+				}
 			}
 		}
 	}

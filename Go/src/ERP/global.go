@@ -43,3 +43,10 @@ const (
 	Status_Del          string = "Status_Del"         //订单删除
 	Status_All          string = "Status_All"         //所有订单
 )
+
+type AllPara struct {
+	Start int
+	Num   int
+	Type  int //0:全部，1：增量更新
+	Stamp int64
+}

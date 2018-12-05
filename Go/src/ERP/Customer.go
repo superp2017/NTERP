@@ -52,7 +52,8 @@ func NewCustomer(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_CUSTOMER, st.CID, NoticeType_NEW, st)
+	////go newUpdate(STRUCT_CUSTOMER, st.CID, NoticeType_NEW, st)
+	go increaseUpdate(STRUCT_CUSTOMER)
 	session.Forward("0", "success", st)
 }
 
@@ -109,7 +110,8 @@ func ModCustomer(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_CUSTOMER, data.CID, NoticeType_Modify, data)
+	////go newUpdate(STRUCT_CUSTOMER, data.CID, NoticeType_Modify, data)
+	go increaseUpdate(STRUCT_CUSTOMER)
 	session.Forward("0", "success", data)
 }
 
@@ -142,7 +144,8 @@ func UpDownCustomer(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_CUSTOMER, data.CID, NoticeType_Modify, data)
+	////go newUpdate(STRUCT_CUSTOMER, data.CID, NoticeType_Modify, data)
+	go increaseUpdate(STRUCT_CUSTOMER)
 	session.Forward("0", "success", data)
 }
 
@@ -176,22 +179,42 @@ func DelCustomer(session *JHttp.Session) {
 	go delCustomerOrderID(st.CID)
 
 	//更新
-	go newUpdate(STRUCT_CUSTOMER, data.CID, NoticeType_Del, data)
+	////go newUpdate(STRUCT_CUSTOMER, data.CID, NoticeType_Del, data)
+	go increaseUpdate(STRUCT_CUSTOMER)
 	session.Forward("0", "success", data)
 }
 
 //获取所有客户列表
 func GetAllCustomer(session *JHttp.Session) {
-	list, err := JRedis.Redis_hkeys(Hash_Customer)
+	st := &AllPara{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
 	data := []*Customer{}
+	if st.Type == 1 {
+		if st.Stamp > getUpdateStamp(STRUCT_CUSTOMER) {
+			session.Forward("0", "success", data)
+			return
+		}
+	}
+
+	list, err := JRedis.Redis_hkeys(Hash_Customer)
 	if err == nil {
 		for _, v := range list {
 			d := &Customer{}
 			if e := JRedis.Redis_hget(Hash_Customer, v, d); e == nil {
-				data = append(data, d)
+				if st.Type == 0 {
+					data = append(data, d)
+				} else {
+					if d.LastTime > st.Stamp {
+						data = append(data, d)
+					}
+				}
 			}
 		}
 	}
+
 	session.Forward("0", "success", data)
 }
 

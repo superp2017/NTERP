@@ -5,6 +5,7 @@ import (
 	"JGo/JLogger"
 	"JGo/JStore/JRedis"
 	"fmt"
+	"sort"
 	"strconv"
 	"time"
 )
@@ -118,7 +119,8 @@ func NewOrder(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRTUCT_ORDER, st.OrderID, NoticeType_NEW, st)
+	///go newUpdate(STRTUCT_ORDER, st.OrderID, NoticeType_NEW, st)
+	go increaseUpdate(STRTUCT_ORDER)
 	session.Forward("0", "success", st)
 }
 func UpdatePrintNum(session *JHttp.Session) {
@@ -152,9 +154,10 @@ func UpdatePrintNum(session *JHttp.Session) {
 	go setPrintNumber(true)
 
 	//更新
-	for _, v := range list {
-		go newUpdate(STRTUCT_ORDER, v.OrderID, NoticeType_Modify, v)
-	}
+	////for _, v := range list {
+	///go newUpdate(STRTUCT_ORDER, v.OrderID, NoticeType_Modify, v)
+	//}
+	go increaseUpdate(STRTUCT_ORDER)
 	session.Forward("0", "success", list)
 }
 
@@ -239,7 +242,8 @@ func ModOrder(session *JHttp.Session) {
 		return
 	}
 	//更新
-	go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
+	///go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
+	go increaseUpdate(STRTUCT_ORDER)
 	session.Forward("0", "success", data)
 }
 
@@ -286,7 +290,8 @@ func ModOrderPrice(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
+	////go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
+	go increaseUpdate(STRTUCT_ORDER)
 	session.Forward("0", "success", data)
 }
 
@@ -331,7 +336,8 @@ func CancelOrder(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
+	///go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
+	go increaseUpdate(STRTUCT_ORDER)
 	session.Forward("0", "success", data)
 }
 
@@ -378,7 +384,8 @@ func DelOrder(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Del, data)
+	////go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Del, data)
+	go increaseUpdate(STRTUCT_ORDER)
 	session.Forward("0", "success", data)
 }
 
@@ -433,7 +440,8 @@ func PorduceOrder(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
+	/////go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
+	go increaseUpdate(STRTUCT_ORDER)
 	session.Forward("0", "success", data)
 }
 
@@ -486,43 +494,79 @@ func SuccessOrder(session *JHttp.Session) {
 		return
 	}
 	//更新
-	go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
+	////go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
+	go increaseUpdate(STRTUCT_ORDER)
 	session.Forward("0", "success", data)
 }
 
 //获取所有订单列表
 func GetGlobalOrders(session *JHttp.Session) {
+	st := &AllPara{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	if st.Type < 0 || st.Type > 3 || st.Type == 2 && st.Num <= 0 {
+		session.Forward("1", "param error\n", nil)
+		return
+	}
+	data := []*Order{}
+	if st.Type == 1 {
+		if st.Stamp > getUpdateStamp(STRTUCT_ORDER) {
+			session.Forward("0", "success", data)
+			return
+		}
+	}
 	list, err := JRedis.Redis_hkeys(Hash_Order)
 	if err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	data := []*Order{}
-	for _, v := range list {
+
+	for i := len(list) - 1; i >= 0; i-- {
+		v := list[i]
 		if v == Key_LastOrderDate {
 			continue
 		}
 		d := &Order{}
 		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
 			if d.Current.Status != Status_Del {
-				////if mater, e := getMaterial(d.MaterielID); e == nil {
-				////	initOrderMaterial(d, mater)
-				////}
-				////d.TotleMoney = d.OrderNum * d.Money
-				data = append(data, d)
+				if st.Type == 1 {
+					if d.LastTime > st.Stamp {
+						data = append(data, d)
+					}
+				} else {
+					data = append(data, d)
+				}
 			}
 		}
 	}
+	if len(data) > 0 {
+		sort.Slice(data, func(i, j int) bool {
+			return data[i].LastTime > data[j].LastTime
+		})
+	}
+
+	if st.Type == 3 {
+		if st.Start < 0 {
+			st.Start = 0
+		}
+		lenList := len(data)
+		if st.Start > lenList {
+			session.Forward("0", "success", []*Order{})
+			return
+		} else {
+			if (st.Start + st.Num) < lenList {
+				data = data[st.Start : st.Start+st.Num]
+			} else {
+				data = data[st.Start:lenList]
+			}
+		}
+		session.Forward("0", "success", data)
+		return
+	}
 	session.Forward("0", "success", data)
 }
-
-//func GetPageGlobalOrder(session *JHttp.Session)  {
-//	type Param struct{
-//		Start int
-//		Size int
-//		Status string
-//	}
-//}
 
 func initOrderMaterial(data *Order, mater *MaterialInfo) {
 	data.MaterielID = mater.MaterID

@@ -63,7 +63,8 @@ func NewEmployee(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_USER, st.UID, NoticeType_NEW, st)
+	////go newUpdate(STRUCT_USER, st.UID, NoticeType_NEW, st)
+	go increaseUpdate(STRUCT_USER)
 	session.Forward("0", "success", st)
 }
 
@@ -121,7 +122,8 @@ func ModEmployee(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_USER, data.UID, NoticeType_Modify, data)
+	/////go newUpdate(STRUCT_USER, data.UID, NoticeType_Modify, data)
+	go increaseUpdate(STRUCT_USER)
 	session.Forward("0", "success", data)
 }
 
@@ -155,7 +157,8 @@ func OutEmployee(session *JHttp.Session) {
 	go delAccount(data.Account)
 
 	//更新
-	go newUpdate(STRUCT_USER, data.UID, NoticeType_Modify, data)
+	////go newUpdate(STRUCT_USER, data.UID, NoticeType_Modify, data)
+	go increaseUpdate(STRUCT_USER)
 	session.Forward("0", "success", data)
 }
 
@@ -187,22 +190,40 @@ func DelEmployee(session *JHttp.Session) {
 	go delAccount(data.Account)
 
 	//更新
-	go newUpdate(STRUCT_USER, data.UID, NoticeType_Del, data)
+	/////go newUpdate(STRUCT_USER, data.UID, NoticeType_Del, data)
+	go increaseUpdate(STRUCT_USER)
 	session.Forward("0", "success", data)
 }
 
 // 获取所有的员工信息
 func GetAllEmployeess(session *JHttp.Session) {
+	st := &AllPara{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
 	ids, err := JRedis.Redis_hkeys(Hash_Employee)
 	if err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 	data := []*Employee{}
+	if st.Type == 1 {
+		if st.Stamp > getUpdateStamp(STRUCT_USER) {
+			session.Forward("0", "success", data)
+			return
+		}
+	}
 	for _, v := range ids {
 		d := &Employee{}
 		if err := JRedis.Redis_hget(Hash_Employee, v, d); err == nil {
-			data = append(data, d)
+			if st.Type == 0 {
+				data = append(data, d)
+			} else {
+				if d.LastTime > st.Stamp {
+					data = append(data, d)
+				}
+			}
 		}
 	}
 	session.Forward("0", "success", data)

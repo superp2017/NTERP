@@ -53,23 +53,41 @@ func NewOutRecord(session *JHttp.Session) {
 	}
 
 	//更新
-	go newUpdate(STRUCT_OUTRECORD, st.OutID, NoticeType_NEW, st)
-
+	/////go newUpdate(STRUCT_OUTRECORD, st.OutID, NoticeType_NEW, st)
+	go increaseUpdate(STRUCT_OUTRECORD)
 	session.Forward("0", "success!\n", st)
 }
 
 //获取所有出库记录
 func GetAllOutRecord(session *JHttp.Session) {
+	st := &AllPara{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	data := []*StorageOutRecord{}
+	if st.Type == 1 {
+		if st.Stamp > getUpdateStamp(STRUCT_OUTRECORD) {
+			session.Forward("0", "success", data)
+			return
+		}
+	}
 	list, err := JRedis.Redis_hkeys(Hash_StorageOutRecord)
 	if err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	data := []*StorageOutRecord{}
+
 	for _, v := range list {
 		d := &StorageOutRecord{}
 		if err := JRedis.Redis_hget(Hash_StorageOutRecord, v, d); err == nil {
-			data = append(data, d)
+			if st.Type == 0 {
+				data = append(data, d)
+			} else {
+				if d.LastTime > st.Stamp {
+					data = append(data, d)
+				}
+			}
 		}
 	}
 	session.Forward("0", "success!\n", data)

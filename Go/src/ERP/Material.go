@@ -53,7 +53,8 @@ func NewMaterial(session *JHttp.Session) {
 	go appendCustomerMaterial(st.CID, st.MaterID)
 
 	//更新
-	go newUpdate(STRUCT_MATERIAL, st.MaterID, NoticeType_NEW, st)
+	////go newUpdate(STRUCT_MATERIAL, st.MaterID, NoticeType_NEW, st)
+	go increaseUpdate(STRUCT_MATERIAL)
 	session.Forward("0", "success", st)
 }
 
@@ -101,7 +102,8 @@ func ModMaterial(session *JHttp.Session) {
 		return
 	}
 	//更新
-	go newUpdate(STRUCT_MATERIAL, st.MaterID, NoticeType_Modify, st)
+	////go newUpdate(STRUCT_MATERIAL, st.MaterID, NoticeType_Modify, st)
+	go increaseUpdate(STRUCT_MATERIAL)
 	session.Forward("0", "success", st)
 }
 func modMaterialPrice(MaterID string, Money float64) error {
@@ -169,7 +171,8 @@ func DelMaterial(session *JHttp.Session) {
 	go delFromCustomerMaterial(st.CID, st.MaterID)
 
 	//更新
-	go newUpdate(STRUCT_MATERIAL, st.MaterID, NoticeType_Del, mater)
+	////go newUpdate(STRUCT_MATERIAL, st.MaterID, NoticeType_Del, mater)
+	go increaseUpdate(STRUCT_MATERIAL)
 	session.Forward("0", "success\n", mater)
 }
 
@@ -206,13 +209,30 @@ func getMaterial(MID string) (*MaterialInfo, error) {
 
 //获取所有材料
 func GetAllMaterial(session *JHttp.Session) {
+	st := &AllPara{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
 	list, err := JRedis.Redis_hkeys(Hash_Material)
 	data := []*MaterialInfo{}
+	if st.Type == 1 {
+		if st.Stamp > getUpdateStamp(STRUCT_MATERIAL) {
+			session.Forward("0", "success", data)
+			return
+		}
+	}
 	if err == nil {
 		for _, v := range list {
 			d := &MaterialInfo{}
 			if e := JRedis.Redis_hget(Hash_Material, v, d); e == nil {
-				data = append(data, d)
+				if st.Type == 0 {
+					data = append(data, d)
+				} else {
+					if d.LastTime > st.Stamp {
+						data = append(data, d)
+					}
+				}
 			}
 		}
 	}
