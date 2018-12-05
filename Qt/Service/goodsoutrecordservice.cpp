@@ -26,12 +26,12 @@ GoodsOutRecord GoodsOutRecordService::newGoodsRecord(const QJsonObject para, boo
     return goods;
 }
 
-QVector<GoodsOutRecord> GoodsOutRecordService::GetAllRecords(bool &ok, QString hostname, QString hostport)
+QVector<GoodsOutRecord> GoodsOutRecordService::GetAllRecords(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
     QVector<GoodsOutRecord> data;
     std::string url = Net_GetAllGoodsOutRecord;
     bool r   = false;
-    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
         if(ret.data.isArray()){
             QJsonArray arr = ret.data.toArray();

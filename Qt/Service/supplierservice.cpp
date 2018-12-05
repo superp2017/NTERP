@@ -67,12 +67,12 @@ Supplier SupplierService::delSupplier(const QJsonObject para, bool &ok, QString 
     return sup;
 }
 
-QVector<Supplier> SupplierService::getAllSupplierls(bool &ok, QString hostname, QString hostport)
+QVector<Supplier> SupplierService::getAllSupplierls(const QJsonObject para,bool &ok, QString hostname, QString hostport)
 {
     QVector<Supplier> data;
     std::string url = Net_GlobalSuppliers;
     bool r   = false;
-    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
         if(ret.data.isArray()){
             for(QJsonValue v:ret.data.toArray()){

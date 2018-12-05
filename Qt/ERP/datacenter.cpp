@@ -24,57 +24,58 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)//,m_notice(parent)
     m_first_timer=NULL;
     m_second_timer=NULL;
     m_third_timer=NULL;
-    m_heartbeat_timer =NULL;
-    connect(&m_notice,SIGNAL(newNOtice(QJsonObject&)),this,SLOT(newNotice(QJsonObject&)));
+    //m_heartbeat_timer =NULL;
+    // connect(&m_notice,SIGNAL(newNOtice(QJsonObject&)),this,SLOT(newNotice(QJsonObject&)));
 }
 
-void dataCenter::ListenNotice()
-{
-    //开始监听通知
-    m_notice.Listen(m_Config.noticePort());
-    m_heartbeat_timer = new QTimer(this);
-    connect(m_heartbeat_timer, SIGNAL(timeout()), this, SLOT(heartbeat()));
-    m_heartbeat_timer->start(1000*3*1);
-}
+//void dataCenter::ListenNotice()
+//{
+//    //开始监听通知
+//    m_notice.Listen(m_Config.noticePort());
+//    m_heartbeat_timer = new QTimer(this);
+//    connect(m_heartbeat_timer, SIGNAL(timeout()), this, SLOT(heartbeat()));
+//    m_heartbeat_timer->start(1000*3*1);
+//}
 
 
 void dataCenter::initData()
 {
-    //////////////初始化所有订单///////////////////
-    boost::thread (boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance())).detach();
+//    //////////////初始化所有订单///////////////////
+//    QJsonObject order_obj;
+//    boost::thread (boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance(),order_obj)).detach();
 
-    //////////////初始化所有单位///////////////////
-    boost::thread (boost::bind(&dataCenter::net_getglobalUnits,dataCenter::instance())).detach();
+//    //////////////初始化所有单位///////////////////
+//    boost::thread (boost::bind(&dataCenter::net_getglobalUnits,dataCenter::instance())).detach();
+//    QJsonObject user_obj;
+//    //////////////初始化所有员工///////////////////
+//    boost::thread (boost::bind(&dataCenter::net_getGlobalUsers,dataCenter::instance(),user_obj)).detach();
+//    QJsonObject cus_obj;
+//    //////////////初始化所有客户///////////////////
+//    boost::thread (boost::bind(&dataCenter::net_getGlobalCustomers,dataCenter::instance(),cus_obj)).detach();
 
-    //////////////初始化所有员工///////////////////
-    boost::thread (boost::bind(&dataCenter::net_getGlobalUsers,dataCenter::instance())).detach();
+//    //////////////初始化所有部门///////////////////
+//    boost::thread (boost::bind(&dataCenter::net_getGlobalDepartment,dataCenter::instance())).detach();
+//    QJsonObject sup_obj;
+//    //////////////初始化所有供应商///////////////////
+//    boost::thread (boost::bind(&dataCenter::net_getglobalSuppliers,dataCenter::instance(),sup_obj)).detach();
+//    QJsonObject mater_obj;
+//    //////////////初始化所有物料//////////////////
+//    boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance(),mater_obj)).detach();
+//    QJsonObject goods_obj;
+//    //////////////初始化所有商品//////////////////
+//    boost::thread(boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance(),goods_obj)).detach();
 
-    //////////////初始化所有客户///////////////////
-    boost::thread (boost::bind(&dataCenter::net_getGlobalCustomers,dataCenter::instance())).detach();
+//    //////////////初始化所有商品的分类//////////////////
+//    boost::thread(boost::bind(&dataCenter::net_getGlobalGoodsType,dataCenter::instance())).detach();
 
-    //////////////初始化所有部门///////////////////
-    boost::thread (boost::bind(&dataCenter::net_getGlobalDepartment,dataCenter::instance())).detach();
+//    //////////////初始化所有镀种的分类//////////////////
+//    boost::thread(boost::bind(&dataCenter::net_getglobalPlating,dataCenter::instance())).detach();
+//    QJsonObject out_obj;
+//    //////////////获取所有商品的出库记录//////////////////////////////
+//    boost::thread(boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance(),out_obj)).detach();
 
-    //////////////初始化所有供应商///////////////////
-    boost::thread (boost::bind(&dataCenter::net_getglobalSuppliers,dataCenter::instance())).detach();
-
-    //////////////初始化所有物料//////////////////
-    boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance())).detach();
-
-    //////////////初始化所有商品//////////////////
-    boost::thread(boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance())).detach();
-
-    //////////////初始化所有商品的分类//////////////////
-    boost::thread(boost::bind(&dataCenter::net_getGlobalGoodsType,dataCenter::instance())).detach();
-
-    //////////////初始化所有镀种的分类//////////////////
-    boost::thread(boost::bind(&dataCenter::net_getglobalPlating,dataCenter::instance())).detach();
-
-    //////////////获取所有商品的出库记录//////////////////////////////
-    boost::thread(boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance())).detach();
-
-    //////////////获取打印数量/////////////////////////////
-    boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
+//    //////////////获取打印数量/////////////////////////////
+//    boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
 
 
 }
@@ -84,7 +85,7 @@ void dataCenter::clearData()
     qDebug()<<"dataCenter clear";
     TimerUpdate(true);
 
-    if(m_heartbeat_timer!=NULL&&m_heartbeat_timer->isActive()) m_heartbeat_timer->stop();
+    // if(m_heartbeat_timer!=NULL&&m_heartbeat_timer->isActive()) m_heartbeat_timer->stop();
     m_employee.clear();   //所有的员工
     m_orders.clear();     //所有订单
     m_units.clear();      //所有计量单位
@@ -104,7 +105,7 @@ void dataCenter::clearData()
     m_first_timer =NULL;   //订单定时器
     m_second_timer=NULL;    //第二定时器
     m_third_timer=NULL; //第三定时器
-    m_heartbeat_timer=NULL;
+    //m_heartbeat_timer=NULL;
 }
 
 
@@ -222,15 +223,16 @@ void dataCenter::net_delUser(const QJsonObject para)
     pri_opt_User(isOK,user,NoticeType_Del);
 }
 
-void dataCenter::net_getGlobalUsers()
+void dataCenter::net_getGlobalUsers(const QJsonObject para)
 {
     bool ok =false;
-    m_employee = UserService::getAllUsers(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    m_employee = UserService::getAllUsers(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     emit sig_globalEmployees(ok);
 }
 
 void dataCenter::pri_opt_DepartMent(bool ok, QString &type, enum_NoticeType noticeType)
-{    switch (noticeType) {
+{
+    switch (noticeType) {
     case NoticeType_NEW:
         break;
     case NoticeType_Del:
@@ -455,10 +457,10 @@ void dataCenter::net_getPrintNumber()
     }
 }
 
-void dataCenter::net_getglobalOrders()
+void dataCenter::net_getglobalOrders(const QJsonObject para)
 {
     bool ok =false;
-    m_orders = OrderService::getAllOrders(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    m_orders = OrderService::getAllOrders(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(ok){
         pri_initBath();
     }
@@ -552,10 +554,10 @@ void dataCenter::net_delCustomer(const QJsonObject para)
     pri_opt_Customer(isOK,cus,NoticeType_Del);
 }
 
-void dataCenter::net_getGlobalCustomers()
+void dataCenter::net_getGlobalCustomers(const QJsonObject para)
 {
     bool ok = false;
-    m_customers = CustomerService::getAllCustomer(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    m_customers = CustomerService::getAllCustomer(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     emit sig_globalcustomers(ok);
 }
 
@@ -696,10 +698,10 @@ void dataCenter::net_delSupplier(const QJsonObject para)
     pri_opt_supplier(ok,sup,NoticeType_Del);
 }
 
-void dataCenter::net_getglobalSuppliers()
+void dataCenter::net_getglobalSuppliers(const QJsonObject para)
 {
     bool ok = false;
-    m_suppliers = SupplierService::getAllSupplierls(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    m_suppliers = SupplierService::getAllSupplierls(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     emit sig_globalSUppliers(ok);
 }
 
@@ -811,10 +813,10 @@ void dataCenter::net_getCustomerMaterial(const QJsonObject para)
     emit sig_getCustomerMaterial(data,ok);
 }
 
-void dataCenter::net_getglobalMateriels()
+void dataCenter::net_getglobalMateriels(const QJsonObject para)
 {
     bool ok =false;
-    m_maters = MaterialService::getAllMateriels(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    m_maters = MaterialService::getAllMateriels(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     emit sig_globalMateriels(ok);
 
 }
@@ -944,10 +946,10 @@ void dataCenter::net_addOutGoodsNum(const QJsonObject para)
     pri_opt_Goods(ok,goods,NoticeType_Modify);
 }
 
-void dataCenter::net_getglobalGoods()
+void dataCenter::net_getglobalGoods(const QJsonObject para)
 {
     bool ok = false;
-    m_goods = GoodsService::getAllGoods(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    m_goods = GoodsService::getAllGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     emit sig_globalGoods(ok);
 }
 
@@ -1038,10 +1040,10 @@ void dataCenter::net_newGoodsOut(const QJsonObject para)
     pri_opt_OutRecord(ok,record,NoticeType_NEW);
 }
 
-void dataCenter::net_getAllOutRecords()
+void dataCenter::net_getAllOutRecords(const QJsonObject para)
 {
     bool ok = false;
-    m_goodsRecords = GoodsOutRecordService::GetAllRecords(ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    m_goodsRecords = GoodsOutRecordService::GetAllRecords(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     emit sig_getAllOutRecord(ok);
 }
 
@@ -1100,12 +1102,12 @@ void dataCenter::net_getglobalPlating()
 }
 
 
-void dataCenter::net_HeartBeat()
-{
-    bool ok;
-    Notification::HeartBeat(QJsonObject(),ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
-    qDebug()<<"HeartBeat:"<<ok;
-}
+//void dataCenter::net_HeartBeat()
+//{
+//    bool ok;
+//    Notification::HeartBeat(QJsonObject(),ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+//    qDebug()<<"HeartBeat:"<<ok;
+//}
 
 
 void dataCenter::pub_showMessage(QString msg, int sec)
@@ -1349,77 +1351,79 @@ void dataCenter::setCurSettings(SysSetting set)
 
 
 
-void dataCenter::newNotice(QJsonObject &obj)
-{
-    NoticeInfo info = Notification::NoticeformJson(obj);
-    switch (info.DataType) {
-    case STRTUCT_ORDER:
-        if(info.Data.isObject()){
-            Order o = OrderService::fromJsonObject(info.Data.toObject());
-            pri_opt_Order(true,o,(enum_NoticeType)(info.NoticeType));
-        }
-        break;
-    case STRUCT_MATERIAL:
+//void dataCenter::newNotice(QJsonObject &obj)
+//{
+//    NoticeInfo info = Notification::NoticeformJson(obj);
+//    switch (info.DataType) {
+//    case STRTUCT_ORDER:
+//        if(info.Data.isObject()){
+//            Order o = OrderService::fromJsonObject(info.Data.toObject());
+//            pri_opt_Order(true,o,(enum_NoticeType)(info.NoticeType));
+//        }
+//        break;
+//    case STRUCT_MATERIAL:
 
-        break;
-    case STRUCT_GOODS:
-        if(info.Data.isObject()){
-            Goods goods = GoodsService::fromJsonObject(info.Data.toObject());
-            pri_opt_Goods(true,goods,(enum_NoticeType)info.NoticeType);
-        }
-        break;
-    case STRUCT_OUTRECORD:
-        if(info.Data.isObject()){
-            GoodsOutRecord record = GoodsOutRecordService::fromJsonObject(info.Data.toObject());
-            pri_opt_OutRecord(true,record,(enum_NoticeType)info.NoticeType);
-        }
-        break;
-    case STRUCT_USER:
-        if(info.Data.isObject()){
-            User user = UserService::fromJsonObject(info.Data.toObject());
-            pri_opt_User(true,user,(enum_NoticeType)info.NoticeType);
-        }
-        break;
-    case STRUCT_CUSTOMER:
-        if(info.Data.isObject()){
-            Customer cus = CustomerService::fromJsonObject(info.Data.toObject());
-            pri_opt_Customer(true,cus,(enum_NoticeType)info.NoticeType);
-        }
-        break;
-    case STRUCT_SUPPLIER:
-        if(info.Data.isObject()){
-            Supplier sup = SupplierService::fromJsonObject(info.Data.toObject());
-            pri_opt_supplier(true,sup,(enum_NoticeType)info.NoticeType);
-        }
-        break;
-    case STRUCT_UNIT:
-        if(info.Data.isString()){
-            QString unit = info.Data.toString();
-            pri_opt_Unit(true,unit,(enum_NoticeType)info.NoticeType);
-        }
-        break;
-    case STRUCT_DEPARTMENT:
-        if(info.Data.isString()){
-            QString de = info.Data.toString();
-            pri_opt_DepartMent(true,de,(enum_NoticeType)info.NoticeType);
-        }
-        break;
-    case STRUCT_GOODS_TYPE:
-        if(info.Data.isString()){
-            QString ty = info.Data.toString();
-            pri_opt_GoodsType(true,ty,(enum_NoticeType)info.NoticeType);
-        }
-        break;
-    case STRUCT_PLANTING:
-        if(info.Data.isString()){
-            QString platting = info.Data.toString();
-            pri_opt_Platting(true,platting,(enum_NoticeType)info.NoticeType);
-        }
-        break;
-    default:
-        break;
-    }
-}
+//        break;
+//    case STRUCT_GOODS:
+//        if(info.Data.isObject()){
+//            Goods goods = GoodsService::fromJsonObject(info.Data.toObject());
+//            pri_opt_Goods(true,goods,(enum_NoticeType)info.NoticeType);
+//        }
+//        break;
+//    case STRUCT_OUTRECORD:
+//        if(info.Data.isObject()){
+//            GoodsOutRecord record = GoodsOutRecordService::fromJsonObject(info.Data.toObject());
+//            pri_opt_OutRecord(true,record,(enum_NoticeType)info.NoticeType);
+//        }
+//        break;
+//    case STRUCT_USER:
+//        if(info.Data.isObject()){
+//            User user = UserService::fromJsonObject(info.Data.toObject());
+//            pri_opt_User(true,user,(enum_NoticeType)info.NoticeType);
+//        }
+//        break;
+//    case STRUCT_CUSTOMER:
+//        if(info.Data.isObject()){
+//            Customer cus = CustomerService::fromJsonObject(info.Data.toObject());
+//            pri_opt_Customer(true,cus,(enum_NoticeType)info.NoticeType);
+//        }
+//        break;
+//    case STRUCT_SUPPLIER:
+//        if(info.Data.isObject()){
+//            Supplier sup = SupplierService::fromJsonObject(info.Data.toObject());
+//            pri_opt_supplier(true,sup,(enum_NoticeType)info.NoticeType);
+//        }
+//        break;
+//    case STRUCT_UNIT:
+//        if(info.Data.isString()){
+//            QString unit = info.Data.toString();
+//            pri_opt_Unit(true,unit,(enum_NoticeType)info.NoticeType);
+//        }
+//        break;
+//    case STRUCT_DEPARTMENT:
+//        if(info.Data.isString()){
+//            QString de = info.Data.toString();
+//            pri_opt_DepartMent(true,de,(enum_NoticeType)info.NoticeType);
+//        }
+//        break;
+//    case STRUCT_GOODS_TYPE:
+//        if(info.Data.isString()){
+//            QString ty = info.Data.toString();
+//            pri_opt_GoodsType(true,ty,(enum_NoticeType)info.NoticeType);
+//        }
+//        break;
+//    case STRUCT_PLANTING:
+//        if(info.Data.isString()){
+//            QString platting = info.Data.toString();
+//            pri_opt_Platting(true,platting,(enum_NoticeType)info.NoticeType);
+//        }
+//        break;
+//    default:
+//        break;
+//    }
+//}
+
+
 void dataCenter::TimerUpdate(bool isstop)
 {
     if(isstop){
@@ -1438,8 +1442,6 @@ void dataCenter::TimerUpdate(bool isstop)
         m_third_timer = new QTimer(this);
         connect(m_third_timer, SIGNAL(timeout()), this, SLOT(update_third()));
         m_third_timer->start(1000*60*20);
-
-
     }
 }
 
@@ -1494,12 +1496,12 @@ void dataCenter::update_third()
     m_third_timer->start(1000*60*20);
 }
 
-void dataCenter::heartbeat()
-{
-    //////////////心跳//////////////////
-    boost::thread(boost::bind(&dataCenter::net_HeartBeat,dataCenter::instance())).detach();
-    m_heartbeat_timer->start(1000*60);
-}
+//void dataCenter::heartbeat()
+//{
+//    //////////////心跳//////////////////
+//    boost::thread(boost::bind(&dataCenter::net_HeartBeat,dataCenter::instance())).detach();
+//    m_heartbeat_timer->start(1000*60);
+//}
 
 void dataCenter::pri_initBath()
 {

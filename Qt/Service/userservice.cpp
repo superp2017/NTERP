@@ -96,12 +96,12 @@ User UserService::delUser(const QJsonObject para, bool &ok, QString hostname, QS
     return user;
 }
 
-QVector<User> UserService::getAllUsers(bool &ok, QString hostname, QString hostport)
+QVector<User> UserService::getAllUsers(const QJsonObject para,bool &ok, QString hostname, QString hostport)
 {
     QVector<User> data;
     std::string url = Net_GlobalEmployee;
     bool r   = false;
-    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
         if(ret.data.isArray()){
             for(QJsonValue v:ret.data.toArray()){

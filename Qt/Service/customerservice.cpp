@@ -101,12 +101,12 @@ Customer CustomerService::upDownCustomer(const QJsonObject para, bool &ok, QStri
     return cus;
 }
 
-QVector<Customer> CustomerService::getAllCustomer(bool &ok, QString hostname, QString hostport)
+QVector<Customer> CustomerService::getAllCustomer(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
     QVector<Customer> cus;
     std::string url = Net_GlobalCustomers;
     bool r   = false;
-    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
         if(ret.data.isArray()){
             for(QJsonValue v:ret.data.toArray()){

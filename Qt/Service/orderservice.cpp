@@ -148,12 +148,12 @@ Order OrderService::delOrder(const QJsonObject para, bool &ok, QString hostname,
     return order;
 }
 
-QVector<Order> OrderService::getAllOrders(bool &ok,QString hostname, QString hostport)
+QVector<Order> OrderService::getAllOrders(const QJsonObject para, bool &ok,QString hostname, QString hostport)
 {
     QVector<Order> data;
     std::string url = Net_GlobalOrders;
     bool r   = false;
-    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
         if(ret.data.isArray()){
             QJsonArray arr = ret.data.toArray();

@@ -9,7 +9,7 @@ class SERVICESHARED_EXPORT GoodsOutRecordService
 public:
     GoodsOutRecordService();
     static GoodsOutRecord newGoodsRecord(const QJsonObject para, bool &ok, QString hostname, QString hostport);
-    static QVector<GoodsOutRecord>GetAllRecords(bool &ok, QString hostname, QString hostport);
+    static QVector<GoodsOutRecord>GetAllRecords(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QJsonObject toJsonObject(GoodsOutRecord record);
     static GoodsOutRecord fromJsonObject(QJsonObject obj);
     static bool exportGoodsRecord(QVector<GoodsOutRecord>list, QString filepath, bool isOpen=false);

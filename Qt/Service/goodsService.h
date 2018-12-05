@@ -13,7 +13,7 @@ public:
     static Goods modGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static Goods addOutGoodsNum(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static Goods delGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport);
-    static QVector<Goods> getAllGoods(bool &ok, QString hostname, QString hostport);
+    static QVector<Goods> getAllGoods(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QVector<Goods> getSupplierGoods(bool &ok, QString hostname, QString hostport);
     static QString newGoodsType(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QString delGoodsType(const QJsonObject para, bool &ok, QString hostname, QString hostport);

@@ -106,12 +106,12 @@ QVector<QString> MaterialService::getCustomerMaterID(const QJsonObject para, boo
 }
 
 
-QVector<Materiel> MaterialService::getAllMateriels(bool &ok, QString hostname, QString hostport)
+QVector<Materiel> MaterialService::getAllMateriels(const QJsonObject para,bool &ok, QString hostname, QString hostport)
 {
     QVector<Materiel> data;
     std::string url = Net_GetAllMateril;
     bool r   = false;
-    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
         if(ret.data.isArray()){
             for(QJsonValue v:ret.data.toArray()){

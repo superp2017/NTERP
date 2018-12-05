@@ -72,7 +72,7 @@ public:
     void net_modUser(const QJsonObject para);
     void net_outUser(const QJsonObject para);
     void net_delUser(const QJsonObject para);
-    void net_getGlobalUsers(const QJsonObject para);
+    void net_getGlobalUsers(const QJsonObject &para);
     //////////////////////////////////////////////////////
     void net_newDepartment(const QJsonObject para);
     void net_delDepartment(const QJsonObject para);
@@ -87,12 +87,12 @@ public:
     void net_modOrderPrice(const QJsonObject para);
     void net_updatePrintNum(const QJsonObject para);
     void net_getPrintNumber();
-    void net_getglobalOrders(const QJsonObject para);
+    void net_getglobalOrders(const QJsonObject &para);
     /////////////////////////////////////////////////////
     void net_newCustomer(const QJsonObject para);
     void net_modCustomer(const QJsonObject para);
     void net_delCustomer(const QJsonObject para);
-    void net_getGlobalCustomers(const QJsonObject para);
+    void net_getGlobalCustomers(const QJsonObject &para);
     /////////////////////////////////////////////////////
     void net_newUnit(const QJsonObject para);
     void net_delUnit(const QJsonObject para);
@@ -101,27 +101,27 @@ public:
     void net_newSupplier(const QJsonObject para);
     void net_modSupplier(const QJsonObject para);
     void net_delSupplier(const QJsonObject para);
-    void net_getglobalSuppliers(const QJsonObject para);
+    void net_getglobalSuppliers(const QJsonObject &para);
     /////////////////////////////////////////////////////
     void net_newMaterial(const QJsonObject para);
     void net_modMaterial(const QJsonObject para);
     void net_delMaterial(const QJsonObject para);
     void net_queryMaterial(const QJsonObject para);
     void net_getCustomerMaterial(const QJsonObject para);
-    void net_getglobalMateriels(const QJsonObject para);
+    void net_getglobalMateriels(const QJsonObject &para);
     //////////////////////////////////////////////////////
     void net_newGoods(const QJsonObject para);
     void net_getGoods(const QJsonObject para);
     void net_modGoods(const QJsonObject para);
     void net_delGoods(const QJsonObject para);
     void net_addOutGoodsNum(const QJsonObject para);
-    void net_getglobalGoods(const QJsonObject para);
+    void net_getglobalGoods(const QJsonObject &para);
     void net_newGoodsType(const QJsonObject para);
     void net_delGoodsType(const QJsonObject para);
     void net_getGlobalGoodsType();
     /////////////////////////////////////////////////////
     void net_newGoodsOut(const QJsonObject para);
-    void net_getAllOutRecords(const QJsonObject para);
+    void net_getAllOutRecords(const QJsonObject& para);
     /////////////////////////////////////////////////////
     void net_newPlating(const QJsonObject para);
     void net_delPlating(const QJsonObject para);

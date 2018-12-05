@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     if (login.exec()==123){
         MainWindow w;
         w.setMinimumSize(800,800);
-        dataCenter::instance()->ListenNotice();
+       // dataCenter::instance()->ListenNotice();
       //  dataCenter::instance()->TimerUpdate();
         w.showMaximized();
         return a.exec();

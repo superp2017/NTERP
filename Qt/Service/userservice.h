@@ -13,7 +13,7 @@ public:
     static User modUser(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static User outUser(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static User delUser(const QJsonObject para, bool &ok, QString hostname, QString hostport);
-    static QVector<User> getAllUsers(bool &ok, QString hostname, QString hostport);
+    static QVector<User> getAllUsers(const QJsonObject para, bool &ok, QString hostname, QString hostport);
 
     static QString newDepartment(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QString delDepartment(const QJsonObject para, bool &ok, QString hostname, QString hostport);

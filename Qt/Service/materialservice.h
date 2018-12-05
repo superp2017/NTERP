@@ -18,7 +18,7 @@ public:
     static Materiel delMaterial(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static Materiel queryMaterial(const QJsonObject para,bool&ok,QString hostname, QString hostport);
     static QVector<QString>getCustomerMaterID(const QJsonObject para,bool&ok,QString hostname, QString hostport);
-    static QVector<Materiel> getAllMateriels(bool &ok, QString hostname, QString hostport);
+    static QVector<Materiel> getAllMateriels(const QJsonObject para, bool &ok, QString hostname, QString hostport);
 
     static QJsonObject toJsonObject(Materiel ma);
     static Materiel fromJsonObject(QJsonObject obj);

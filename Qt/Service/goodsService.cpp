@@ -103,12 +103,12 @@ Goods GoodsService::delGoods(const QJsonObject para, bool &ok, QString hostname,
     return goods;
 }
 
-QVector<Goods> GoodsService::getAllGoods(bool &ok, QString hostname, QString hostport)
+QVector<Goods> GoodsService::getAllGoods(const QJsonObject para,bool &ok, QString hostname, QString hostport)
 {
     QVector<Goods> data;
     std::string url = Net_GlobalGoods;
     bool r   = false;
-    Ret ret  = Http::fetch(url,QJsonObject(),r,hostname,hostport);
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
         if(ret.data.isArray()){
             QJsonArray arr = ret.data.toArray();
