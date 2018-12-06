@@ -66,7 +66,7 @@ func foreachUser() {
 		d := &Employee{}
 		if err := JRedis.Redis_hget(Hash_Employee, v, d); err == nil {
 			if d.IsDel {
-				if d.LastTime-CurStamp() >= 3600 {
+				if d.LastTime-CurStamp() >= 3600*24 {
 					go JRedis.Redis_hdel(Hash_Employee, v)
 				}
 			}
@@ -83,7 +83,7 @@ func foreachGoods() {
 		d := &Goods{}
 		if err := JRedis.Redis_hget(Hash_Goods, v, d); err == nil {
 			if d.IsDel {
-				if d.LastTime-CurStamp() >= 3600*12 {
+				if d.LastTime-CurStamp() >= 3600*24 {
 					go JRedis.Redis_hdel(Hash_Goods, v)
 				}
 			}

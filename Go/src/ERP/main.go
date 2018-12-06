@@ -69,5 +69,6 @@ func initRoute() {
 func main() {
 	JExit.RegisterExitCb(exit)
 	initRoute()
+	StartTimer()
 	JHttp.Run()
 }
