@@ -453,7 +453,7 @@ func GetGlobalOrders(session *JHttp.Session) {
 		}
 		d := &Order{}
 		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
-			if d.Current.Status != Status_Del || d.IsDel {
+			if d.Current.Status != Status_Del {
 				if st.Type == 1 {
 					if d.LastTime > st.Stamp {
 						data = append(data, d)

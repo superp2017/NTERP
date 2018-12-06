@@ -1,6 +1,9 @@
 package main
 
-import "time"
+import (
+	"JGo/JStore/JRedis"
+	"time"
+)
 
 ////启动定时任务
 func StartTimer() {
@@ -32,30 +35,126 @@ func delReal() {
 	go foreachMaterial()
 }
 
+//默认删除7天内的标记的订单
 func forreachOrder() {
-
+	list, err := JRedis.Redis_hkeys(Hash_Order)
+	if err != nil {
+		return
+	}
+	for i := len(list) - 1; i >= 0; i-- {
+		v := list[i]
+		if v == Key_LastOrderDate {
+			continue
+		}
+		d := &Order{}
+		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
+			if d.Current.Status == Status_Del {
+				if d.LastTime-CurStamp() >= 3600*24*7 {
+					go JRedis.Redis_hdel(Hash_Order, v)
+				}
+			}
+		}
+	}
 }
 
 func foreachUser() {
-
+	list, err := JRedis.Redis_hkeys(Hash_Employee)
+	if err != nil {
+		return
+	}
+	for _, v := range list {
+		d := &Employee{}
+		if err := JRedis.Redis_hget(Hash_Employee, v, d); err == nil {
+			if d.IsDel {
+				if d.LastTime-CurStamp() >= 3600 {
+					go JRedis.Redis_hdel(Hash_Employee, v)
+				}
+			}
+		}
+	}
 }
 
 func foreachGoods() {
-
+	list, err := JRedis.Redis_hkeys(Hash_Goods)
+	if err != nil {
+		return
+	}
+	for _, v := range list {
+		d := &Goods{}
+		if err := JRedis.Redis_hget(Hash_Goods, v, d); err == nil {
+			if d.IsDel {
+				if d.LastTime-CurStamp() >= 3600*12 {
+					go JRedis.Redis_hdel(Hash_Goods, v)
+				}
+			}
+		}
+	}
 }
 
 func foreachGoodsOut() {
-
+	list, err := JRedis.Redis_hkeys(Hash_StorageOutRecord)
+	if err != nil {
+		return
+	}
+	for _, v := range list {
+		d := &StorageOutRecord{}
+		if err := JRedis.Redis_hget(Hash_StorageOutRecord, v, d); err == nil {
+			if d.IsDel {
+				if d.LastTime-CurStamp() >= 3600*24 {
+					go JRedis.Redis_hdel(Hash_StorageOutRecord, v)
+				}
+			}
+		}
+	}
 }
 
 func foreachCustomer() {
-
+	list, err := JRedis.Redis_hkeys(Hash_Customer)
+	if err != nil {
+		return
+	}
+	for _, v := range list {
+		d := &Customer{}
+		if err := JRedis.Redis_hget(Hash_Customer, v, d); err == nil {
+			if d.IsDel {
+				if d.LastTime-CurStamp() >= 3600*24 {
+					go JRedis.Redis_hdel(Hash_Customer, v)
+				}
+			}
+		}
+	}
 }
 
 func foreachSupplier() {
-
+	list, err := JRedis.Redis_hkeys(Hash_Supplier)
+	if err != nil {
+		return
+	}
+	for _, v := range list {
+		d := &Supplier{}
+		if err := JRedis.Redis_hget(Hash_Supplier, v, d); err == nil {
+			if d.IsDel {
+				if d.LastTime-CurStamp() >= 3600*24 {
+					go JRedis.Redis_hdel(Hash_Supplier, v)
+				}
+			}
+		}
+	}
 }
 
 func foreachMaterial() {
-
+	list, err := JRedis.Redis_hkeys(Hash_Material)
+	if err != nil {
+		return
+	}
+	for _, v := range list {
+		d := &MaterialInfo{}
+		if err := JRedis.Redis_hget(Hash_Material, v, d); err == nil {
+			if d.IsDel {
+				if d.LastTime-CurStamp() >= 3600*48 {
+					go JRedis.Redis_hdel(Hash_Material, v)
+				}
+			}
+		}
+	}
 }
