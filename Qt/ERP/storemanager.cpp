@@ -208,12 +208,11 @@ void StoreManager::on_pushButton_export_clicked()
 
 void StoreManager::on_pushButton_reflash_clicked()
 {
-
     cur_Goods.ID = "";
     if(ui->tabWidget->currentWidget()==&m_goods_Table){
-        boost::thread (boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance())).detach();
+        dataCenter::instance()->pub_getAllGoods(0);
     }else{
-        boost::thread (boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance())).detach();
+        dataCenter::instance()->pub_getAllOutRecord(1);
     }
     dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }

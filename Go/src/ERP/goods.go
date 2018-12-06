@@ -263,6 +263,8 @@ func GetGlobalGoods(session *JHttp.Session) {
 			}
 		}
 	}
+	JLogger.Error("getGlobalGoods:type=%d,num=%d,start=%d,stamp=%d,data=%v\n", st.Type, st.Num, st.Start, st.Stamp, data)
+
 	session.Forward("0", "GetGlobalGoods success\n", data)
 }
 

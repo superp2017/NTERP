@@ -345,8 +345,7 @@ void OrderManager::on_pushButton_success_clicked()
 void OrderManager::on_pushButton_reflash_clicked()
 {
     clearCurOrder();
-    boost::thread t(boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance()));
-    t.detach();
+    dataCenter::instance()->pub_getAllOrders(1);
     dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
 

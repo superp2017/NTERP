@@ -12,7 +12,6 @@ class SERVICESHARED_EXPORT MaterialService
 public:
     MaterialService();
 
-
     static Materiel newMaterial(const QJsonObject para,bool&ok,QString hostname, QString hostport);
     static Materiel modMaterial(const QJsonObject para,bool&ok,QString hostname, QString hostport);
     static Materiel delMaterial(const QJsonObject para, bool &ok, QString hostname, QString hostport);

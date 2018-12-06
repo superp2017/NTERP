@@ -7,7 +7,7 @@ update::update(QObject *parent) : QObject(parent)
 
 int update::HeartBeat(const QJsonObject para, bool &ok, QString hostname, QString hostport)
 {
-    int stamp;
+    int stamp = 0;
     std::string url = Net_HeartBeat;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);

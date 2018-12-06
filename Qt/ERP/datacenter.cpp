@@ -22,18 +22,18 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)//,m_notice(parent)
     m_authors.push_back("财务");
     m_authors.push_back("管理员");
     m_authors.push_back("超级管理员");
-//    m_first_timer=NULL;
-//    m_second_timer=NULL;
-//    m_third_timer=NULL;
+    //    m_first_timer=NULL;
+    //    m_second_timer=NULL;
+    //    m_third_timer=NULL;
     //m_heartbeat_timer =NULL;
     // connect(&m_notice,SIGNAL(newNOtice(QJsonObject&)),this,SLOT(newNotice(QJsonObject&)));
     m_first_block.t_timer = NULL;
     m_second_block.t_timer = NULL;
     m_thrid_block.t_timer = NULL;
 
-    m_first_block.t_timeout = 1000*60*2;
-    m_second_block.t_timeout = 1000*60*5;
-    m_thrid_block.t_timeout = 1000*60*15;
+    m_first_block.t_timeout = 1000*60*1;
+    m_second_block.t_timeout = 1000*60*3;
+    m_thrid_block.t_timeout = 1000*60*5;
 }
 
 //void dataCenter::ListenNotice()
@@ -49,58 +49,28 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)//,m_notice(parent)
 void dataCenter::initData()
 {
     //////////////初始化所有订单///////////////////
-    QJsonObject order_obj;
-    order_obj.insert("Type",0);
-    order_obj.insert("Start",0);
-    order_obj.insert("Num",0);
-    order_obj.insert("Stamp",0);
-    boost::thread (boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance(),order_obj)).detach();
+    pub_getAllOrders(0);
 
     //////////////初始化所有单位///////////////////
     boost::thread (boost::bind(&dataCenter::net_getglobalUnits,dataCenter::instance())).detach();
 
     //////////////初始化所有员工///////////////////
-    QJsonObject user_obj;
-    user_obj.insert("Type",0);
-    user_obj.insert("Start",0);
-    user_obj.insert("Num",0);
-    user_obj.insert("Stamp",0);
-    boost::thread (boost::bind(&dataCenter::net_getGlobalUsers,dataCenter::instance(),user_obj)).detach();
+    pub_getAllEmployee(0);
 
     //////////////初始化所有客户///////////////////
-    QJsonObject cus_obj;
-    cus_obj.insert("Type",0);
-    cus_obj.insert("Start",0);
-    cus_obj.insert("Num",0);
-    cus_obj.insert("Stamp",0);
-    boost::thread (boost::bind(&dataCenter::net_getGlobalCustomers,dataCenter::instance(),cus_obj)).detach();
+    pub_GetAllCustomers(0);
 
     //////////////初始化所有部门///////////////////
     boost::thread (boost::bind(&dataCenter::net_getGlobalDepartment,dataCenter::instance())).detach();
 
     //////////////初始化所有供应商///////////////////
-    QJsonObject sup_obj;
-    sup_obj.insert("Type",0);
-    sup_obj.insert("Start",0);
-    sup_obj.insert("Num",0);
-    sup_obj.insert("Stamp",0);
-    boost::thread (boost::bind(&dataCenter::net_getglobalSuppliers,dataCenter::instance(),sup_obj)).detach();
+    pub_getAllSuppliers(0);
 
     //////////////初始化所有物料//////////////////
-    QJsonObject mater_obj;
-    mater_obj.insert("Type",0);
-    mater_obj.insert("Start",0);
-    mater_obj.insert("Num",0);
-    mater_obj.insert("Stamp",0);
-    boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance(),mater_obj)).detach();
+    pub_getAllMateriels(0);
 
     //////////////初始化所有商品//////////////////
-    QJsonObject goods_obj;
-    goods_obj.insert("Type",0);
-    goods_obj.insert("Start",0);
-    goods_obj.insert("Num",0);
-    goods_obj.insert("Stamp",0);
-    boost::thread(boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance(),goods_obj)).detach();
+    pub_getAllGoods(0);
 
     //////////////初始化所有商品的分类//////////////////
     boost::thread(boost::bind(&dataCenter::net_getGlobalGoodsType,dataCenter::instance())).detach();
@@ -109,13 +79,7 @@ void dataCenter::initData()
     boost::thread(boost::bind(&dataCenter::net_getglobalPlating,dataCenter::instance())).detach();
 
     //////////////获取所有商品的出库记录//////////////////////////////
-    QJsonObject out_obj;
-    out_obj.insert("Type",0);
-    out_obj.insert("Start",0);
-    out_obj.insert("Num",0);
-    out_obj.insert("Stamp",0);
-    boost::thread(boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance(),out_obj)).detach();
-
+    pub_getAllOutRecord(0);
     //////////////获取打印数量/////////////////////////////
     boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
 
@@ -144,9 +108,9 @@ void dataCenter::clearData()
     m_goodsRecords.clear();//所有商品出库记录
     m_load.showOver();       //加载动画
     m_Config.clear();     //保存系统配置
-//    m_first_timer =NULL;   //订单定时器
-//    m_second_timer=NULL;    //第二定时器
-//    m_third_timer=NULL; //第三定时器
+    //    m_first_timer =NULL;   //订单定时器
+    //    m_second_timer=NULL;    //第二定时器
+    //    m_third_timer=NULL; //第三定时器
     //m_heartbeat_timer=NULL;
 }
 
@@ -268,7 +232,16 @@ void dataCenter::net_delUser(const QJsonObject para)
 void dataCenter::net_getGlobalUsers(const QJsonObject para)
 {
     bool ok =false;
-    m_employee = UserService::getAllUsers(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    QVector<User>  list = UserService::getAllUsers(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        if(para.value("type")==0){
+            m_employee = list;
+        }else{
+            for(User s:list){
+                m_employee.push_back(s);
+            }
+        }
+    }
     emit sig_globalEmployees(ok);
 }
 
@@ -477,7 +450,7 @@ void dataCenter::net_updatePrintNum(const QJsonObject para)
             }
         }
         //////////////获取打印数量/////////////////////////////
-        boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
+        // boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
     }
     emit sig_updatePrintNum(list,isOK);
     //    for(Order o:list){
@@ -502,9 +475,16 @@ void dataCenter::net_getPrintNumber()
 void dataCenter::net_getglobalOrders(const QJsonObject para)
 {
     bool ok =false;
-    m_orders = OrderService::getAllOrders(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    QVector<Order>  list = OrderService::getAllOrders(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(ok){
         pri_initBath();
+        if(para.value("type")==0){
+            m_orders = list;
+        }else{
+            for(int i=list.size()-1;i>=0;i--){
+                m_orders.push_front(list.at(i));
+            }
+        }
     }
     emit sig_globalOrders(ok);
 }
@@ -599,7 +579,16 @@ void dataCenter::net_delCustomer(const QJsonObject para)
 void dataCenter::net_getGlobalCustomers(const QJsonObject para)
 {
     bool ok = false;
-    m_customers = CustomerService::getAllCustomer(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    QVector<Customer> list = CustomerService::getAllCustomer(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        if(para.value("type")==0){
+            m_customers = list;
+        }else{
+            for(Customer s:list){
+                m_customers.push_back(s);
+            }
+        }
+    }
     emit sig_globalcustomers(ok);
 }
 
@@ -743,7 +732,16 @@ void dataCenter::net_delSupplier(const QJsonObject para)
 void dataCenter::net_getglobalSuppliers(const QJsonObject para)
 {
     bool ok = false;
-    m_suppliers = SupplierService::getAllSupplierls(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    QVector<Supplier>list = SupplierService::getAllSupplierls(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        if(para.value("type")==0){
+            m_suppliers = list;
+        }else{
+            for(Supplier s:list){
+                m_suppliers.push_back(s);
+            }
+        }
+    }
     emit sig_globalSUppliers(ok);
 }
 
@@ -858,7 +856,16 @@ void dataCenter::net_getCustomerMaterial(const QJsonObject para)
 void dataCenter::net_getglobalMateriels(const QJsonObject para)
 {
     bool ok =false;
-    m_maters = MaterialService::getAllMateriels(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    QVector<Materiel>  list = MaterialService::getAllMateriels(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        if(para.value("type")==0){
+            m_maters = list;
+        }else{
+            for(Materiel s:list){
+                m_maters.push_back(s);
+            }
+        }
+    }
     emit sig_globalMateriels(ok);
 
 }
@@ -991,7 +998,16 @@ void dataCenter::net_addOutGoodsNum(const QJsonObject para)
 void dataCenter::net_getglobalGoods(const QJsonObject para)
 {
     bool ok = false;
-    m_goods = GoodsService::getAllGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    QVector<Goods> list = GoodsService::getAllGoods(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        if(para.value("type")==0){
+            m_goods = list;
+        }else{
+            for(Goods s:list){
+                m_goods.push_back(s);
+            }
+        }
+    }
     emit sig_globalGoods(ok);
 }
 
@@ -1085,7 +1101,16 @@ void dataCenter::net_newGoodsOut(const QJsonObject para)
 void dataCenter::net_getAllOutRecords(const QJsonObject para)
 {
     bool ok = false;
-    m_goodsRecords = GoodsOutRecordService::GetAllRecords(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    QVector<GoodsOutRecord>list = GoodsOutRecordService::GetAllRecords(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    if(ok){
+        if(para.value("type")==0){
+            m_goodsRecords = list;
+        }else{
+            for(GoodsOutRecord s:list){
+                m_goodsRecords.push_back(s);
+            }
+        }
+    }
     emit sig_getAllOutRecord(ok);
 }
 
@@ -1159,12 +1184,11 @@ void dataCenter::net_HeartBeat(int index)
         m_thrid_block.t_stamp = time;
         break;
     case -1:
-         m_first_block.t_stamp = time;
-         m_second_block.t_stamp = time;
-         m_thrid_block.t_stamp = time;
+        m_first_block.t_stamp = time;
+        m_second_block.t_stamp = time;
+        m_thrid_block.t_stamp = time;
         break;
     default:
-
         break;
     }
     qDebug()<<"HeartBeat:"<<ok;
@@ -1242,6 +1266,8 @@ QVector<Order> dataCenter::pub_orders()
 {
     return m_orders;
 }
+
+
 
 //获取单个订单
 Order dataCenter::pub_getOrder(QString OrderID, bool &ok)
@@ -1354,6 +1380,8 @@ QVector<User> dataCenter::pub_employees() const
     return m_employee;
 }
 
+
+
 User dataCenter::pub_getUser(QString UID, bool &ok)
 {
     User a;
@@ -1371,6 +1399,8 @@ QVector<Supplier> dataCenter::pub_Suppliers()
 {
     return m_suppliers;
 }
+
+
 
 Supplier dataCenter::pub_getSupplier(QString CID, bool &ok)
 {
@@ -1485,9 +1515,9 @@ void dataCenter::setCurSettings(SysSetting set)
 //}
 
 
-void dataCenter::TimerUpdate(bool isstop)
+void dataCenter::TimerUpdate(bool istart)
 {
-    if(isstop){
+    if(!istart){
         if(m_first_block.t_timer!=NULL&&m_first_block.t_timer->isActive()) m_first_block.t_timer->stop();
         if(m_second_block.t_timer!=NULL&&m_second_block.t_timer->isActive()) m_second_block.t_timer->stop();
         if(m_thrid_block.t_timer!=NULL&&m_thrid_block.t_timer->isActive()) m_thrid_block.t_timer->stop();
@@ -1503,47 +1533,112 @@ void dataCenter::TimerUpdate(bool isstop)
         m_thrid_block.t_timer = new QTimer(this);
         connect(m_thrid_block.t_timer, SIGNAL(timeout()), this, SLOT(update_third()));
         m_thrid_block.t_timer->start(m_thrid_block.t_timeout);
-        //////////////心跳//////////////////
+        ////////////心跳//////////////////
         boost::thread(boost::bind(&dataCenter::net_HeartBeat,dataCenter::instance(),-1)).detach();
     }
 }
 
-void dataCenter::update_first()
+void dataCenter::pub_getAllOrders(int type,int start,int num)
 {
     //////////////初始化所有订单///////////////////
     QJsonObject order_obj;
-    order_obj.insert("Type",1);
-    order_obj.insert("Start",0);
-    order_obj.insert("Num",0);
+    order_obj.insert("Type",type);
+    order_obj.insert("Start",start);
+    order_obj.insert("Num",num);
     order_obj.insert("Stamp",m_first_block.t_stamp);
-    boost::thread (boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance())).detach();
+    boost::thread (boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance(),order_obj)).detach();
+}
+
+void dataCenter::pub_getAllMateriels(int type,int start,int num)
+{
+    //////////////初始化所有物料//////////////////
+    QJsonObject mater_obj;
+    mater_obj.insert("Type",type);
+    mater_obj.insert("Start",start);
+    mater_obj.insert("Num",num);
+    mater_obj.insert("Stamp",m_second_block.t_stamp);
+    boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance(),mater_obj)).detach();
+}
+
+void dataCenter::pub_getAllOutRecord(int type,int start,int num)
+{
+    //////////////获取所有商品的出库记录//////////////////////////////
+    QJsonObject out_obj;
+    out_obj.insert("Type",type);
+    out_obj.insert("Start",start);
+    out_obj.insert("Num",num);
+    out_obj.insert("Stamp",m_second_block.t_stamp);
+    boost::thread(boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance(),out_obj)).detach();
+}
+
+void dataCenter::pub_getAllGoods(int type,int start,int num)
+{
+    //////////////初始化所有商品//////////////////
+    QJsonObject goods_obj;
+    goods_obj.insert("Type",type);
+    goods_obj.insert("Start",start);
+    goods_obj.insert("Num",num);
+    goods_obj.insert("Stamp",m_thrid_block.t_stamp);
+    boost::thread(boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance(),goods_obj)).detach();
+}
+
+void dataCenter::pub_getAllSuppliers(int type,int start,int num)
+{
+    //////////////初始化所有供应商///////////////////
+    QJsonObject sup_obj;
+    sup_obj.insert("Type",type);
+    sup_obj.insert("Start",start);
+    sup_obj.insert("Num",num);
+    sup_obj.insert("Stamp",m_thrid_block.t_stamp);
+    boost::thread (boost::bind(&dataCenter::net_getglobalSuppliers,dataCenter::instance(),sup_obj)).detach();
+}
+
+void dataCenter::pub_GetAllCustomers(int type,int start,int num)
+{
+    //////////////初始化所有客户///////////////////
+    QJsonObject cus_obj;
+    cus_obj.insert("Type",type);
+    cus_obj.insert("Start",start);
+    cus_obj.insert("Num",num);
+    cus_obj.insert("Stamp",m_thrid_block.t_stamp);
+    boost::thread (boost::bind(&dataCenter::net_getGlobalCustomers,dataCenter::instance(),cus_obj)).detach();
+}
+
+void dataCenter::pub_getAllEmployee(int type,int start,int num)
+{
+    //////////////初始化所有员工///////////////////
+    QJsonObject user_obj;
+    user_obj.insert("Type",type);
+    user_obj.insert("Start",start);
+    user_obj.insert("Num",num);
+    user_obj.insert("Stamp",m_thrid_block.t_stamp);
+    boost::thread (boost::bind(&dataCenter::net_getGlobalUsers,dataCenter::instance(),user_obj)).detach();
+}
+
+void dataCenter::update_first()
+{
+    qDebug()<<"update_first";
+    //////////////初始化所有订单///////////////////
+    pub_getAllOrders(1);
     //////////////获取打印数量/////////////////////////////
     boost::thread(boost::bind(&dataCenter::net_getPrintNumber,dataCenter::instance())).detach();
     m_first_block.t_timer->start(m_first_block.t_timeout);
-    //////////////心跳//////////////////
 
+    //////////////心跳//////////////////
     boost::thread(boost::bind(&dataCenter::net_HeartBeat,dataCenter::instance(),1)).detach();
 }
 
 void dataCenter::update_second()
 {
+    qDebug()<<"update_second";
     //////////////初始化所有单位///////////////////
     boost::thread (boost::bind(&dataCenter::net_getglobalUnits,dataCenter::instance())).detach();
 
     //////////////初始化所有物料//////////////////
-    QJsonObject mater_obj;
-    mater_obj.insert("Type",1);
-    mater_obj.insert("Start",0);
-    mater_obj.insert("Num",0);
-    mater_obj.insert("Stamp",m_second_block.t_stamp);
-    boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance())).detach();
+    pub_getAllMateriels(1);
+
     //////////////获取所有商品的出库记录//////////////////////////////
-    QJsonObject out_obj;
-    out_obj.insert("Type",1);
-    out_obj.insert("Start",0);
-    out_obj.insert("Num",0);
-    out_obj.insert("Stamp",m_second_block.t_stamp);
-    boost::thread(boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance())).detach();
+    pub_getAllOutRecord(1);
 
     //////////////初始化所有镀种的分类//////////////////
     boost::thread(boost::bind(&dataCenter::net_getglobalPlating,dataCenter::instance())).detach();
@@ -1556,37 +1651,18 @@ void dataCenter::update_second()
 
 void dataCenter::update_third()
 {
+    qDebug()<<"update_third";
     //////////////初始化所有商品//////////////////
-    QJsonObject goods_obj;
-    goods_obj.insert("Type",1);
-    goods_obj.insert("Start",0);
-    goods_obj.insert("Num",0);
-    goods_obj.insert("Stamp",m_thrid_block.t_stamp);
-    boost::thread(boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance())).detach();
+    pub_getAllGoods(1);
 
     //////////////初始化所有供应商///////////////////
-    QJsonObject sup_obj;
-    sup_obj.insert("Type",1);
-    sup_obj.insert("Start",0);
-    sup_obj.insert("Num",0);
-    sup_obj.insert("Stamp",m_thrid_block.t_stamp);
-    boost::thread (boost::bind(&dataCenter::net_getglobalSuppliers,dataCenter::instance())).detach();
+    pub_getAllSuppliers(1);
 
     //////////////初始化所有客户///////////////////
-    QJsonObject cus_obj;
-    cus_obj.insert("Type",1);
-    cus_obj.insert("Start",0);
-    cus_obj.insert("Num",0);
-    cus_obj.insert("Stamp",m_thrid_block.t_stamp);
-    boost::thread (boost::bind(&dataCenter::net_getGlobalCustomers,dataCenter::instance())).detach();
+    pub_GetAllCustomers(1);
 
     //////////////初始化所有员工///////////////////
-    QJsonObject user_obj;
-    user_obj.insert("Type",1);
-    user_obj.insert("Start",0);
-    user_obj.insert("Num",0);
-    user_obj.insert("Stamp",m_thrid_block.t_stamp);
-    boost::thread (boost::bind(&dataCenter::net_getGlobalUsers,dataCenter::instance())).detach();
+    pub_getAllEmployee(1);
 
     //////////////初始化所有部门///////////////////
     boost::thread (boost::bind(&dataCenter::net_getGlobalDepartment,dataCenter::instance())).detach();
@@ -1671,10 +1747,13 @@ QVector<GoodsOutRecord> dataCenter::pub_AllOutRecord()
     return m_goodsRecords;
 }
 
+
 QVector<Goods> dataCenter::pub_goods() const
 {
     return m_goods;
 }
+
+
 
 Goods dataCenter::pub_getGoods(QString id, bool &ok)
 {
@@ -1704,6 +1783,8 @@ QVector<Customer> dataCenter::pub_Customers()
 {
     return m_customers;
 }
+
+
 
 bool dataCenter::pub_checkCustomerExist(QString name)
 {

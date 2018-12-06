@@ -488,6 +488,7 @@ func GetGlobalOrders(session *JHttp.Session) {
 		session.Forward("0", "success", data)
 		return
 	}
+	JLogger.Error("GetGlobalOrders:type=%d,num=%d,start=%d,stamp=%d,data=%v\n", st.Type, st.Num, st.Start, st.Stamp, data)
 	session.Forward("0", "success", data)
 }
 

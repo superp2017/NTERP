@@ -65,12 +65,12 @@ private:
 
 public:
     static dataCenter* instance(){
-        static dataCenter*u =new dataCenter();
+        static dataCenter*u = new dataCenter();
         return u;
     }
     void initData();
     void clearData();
-    void TimerUpdate(bool isstop=false);
+    void TimerUpdate(bool istart=true);
     // void ListenNotice();
     void net_login(const QJsonObject para);
     ///////////////////////////////////////////////////////
@@ -191,6 +191,13 @@ public:
     QSet<QString>Accounts();
     void setCurSettings(SysSetting set);
     //////////////////////////////////////////////////
+    void pub_getAllSuppliers(int type, int start=0, int num=0);
+    void pub_getAllEmployee(int type, int start=0, int num=0);
+    void pub_getAllOutRecord(int type, int start=0, int num=0);
+    void pub_getAllMateriels(int type, int start=0, int num=0);
+    void pub_GetAllCustomers(int type, int start=0, int num=0);
+    void pub_getAllGoods(int type, int start=0, int num=0);
+    void pub_getAllOrders(int type, int start=0, int num=0);
 
 private slots:
     //void newNotice(QJsonObject &obj);
@@ -297,13 +304,13 @@ private:
     nSysConfig              m_Config;     //保存系统配置
     QString                 m_print_number;//
     // Notification            m_notice;       //通知模块
-//    QTimer                  *m_first_timer;   //订单定时器
-//    QTimer                  *m_second_timer;//第二定时器
-//    QTimer                  *m_third_timer;//第三定时器
-//    //QTimer                *m_heartbeat_timer;//心跳定时
-//    int                     m_first_stamp;
-//    int                     m_second_stamp;
-//    int                     m_third_stamp;
+    //    QTimer                  *m_first_timer;   //订单定时器
+    //    QTimer                  *m_second_timer;//第二定时器
+    //    QTimer                  *m_third_timer;//第三定时器
+    //    //QTimer                *m_heartbeat_timer;//心跳定时
+    //    int                     m_first_stamp;
+    //    int                     m_second_stamp;
+    //    int                     m_third_stamp;
 
     TimerBlock              m_first_block;
     TimerBlock              m_second_block;
