@@ -23,6 +23,7 @@ type StorageOutRecord struct {
 	Note         string  //备注
 	UserName     string  //领用人姓名
 	UserID       string  //领用人工号
+	IsDel        bool    //标记删除
 }
 
 //新的领用记录
@@ -32,15 +33,18 @@ func NewOutRecord(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+
 	if st.GoodsID == "" || st.GoodsName == "" || st.UserName == "" || st.UserID == "" || st.Nums <= 0 {
 		JLogger.Error("NewOutRecord  Parame failed!\n")
 		session.Forward("1", "NewOutRecord  Parame failed!\n", nil)
 		return
 	}
+
 	st.OutID = time.Unix(time.Now().Unix(), 0).Format("20060102150405")
 	st.CreatDate = CurDate()
 	st.LastTime = CurStamp()
 	st.CreatStamp = CurStamp()
+
 	if _, e := inoutGoodsNum(st.GoodsID, st.Nums, false); e != nil {
 		session.Forward("1", "NewOutRecord failed:"+e.Error(), nil)
 		return
@@ -53,8 +57,8 @@ func NewOutRecord(session *JHttp.Session) {
 	}
 
 	//更新
-	/////go newUpdate(STRUCT_OUTRECORD, st.OutID, NoticeType_NEW, st)
-	go increaseUpdate(STRUCT_OUTRECORD)
+	increaseUpdate(STRUCT_OUTRECORD)
+
 	session.Forward("0", "success!\n", st)
 }
 
@@ -81,11 +85,13 @@ func GetAllOutRecord(session *JHttp.Session) {
 	for _, v := range list {
 		d := &StorageOutRecord{}
 		if err := JRedis.Redis_hget(Hash_StorageOutRecord, v, d); err == nil {
-			if st.Type == 0 {
-				data = append(data, d)
-			} else {
-				if d.LastTime > st.Stamp {
+			if !d.IsDel {
+				if st.Type == 0 {
 					data = append(data, d)
+				} else {
+					if d.LastTime > st.Stamp {
+						data = append(data, d)
+					}
 				}
 			}
 		}

@@ -202,6 +202,9 @@ QJsonObject UserService::toJsonObject(User user)
     obj.insert("Code",user.Code);
     obj.insert("Salary",user.Salary);
     obj.insert("Age",user.Age);
+    obj.insert("CreatStamp",user.CreatStamp);
+    obj.insert("LastTime",user.LastTime);
+    obj.insert("IsDel",user.IsDel);
 
     return obj;
 
@@ -290,6 +293,24 @@ User UserService::fromJsonObject(QJsonObject obj)
         if(value.isString())
             user.Code = value.toString();
     }
+
+    if(obj.contains("CreatStamp")){
+        QJsonValue s = obj.value("CreatStamp");
+        if(s.isDouble())
+            user.CreatStamp =s.toInt();
+    }
+    if(obj.contains("LastTime")){
+        QJsonValue s = obj.value("LastTime");
+        if(s.isDouble())
+            user.LastTime =s.toInt();
+    }
+    if(obj.contains("IsDel")){
+        QJsonValue s = obj.value("IsDel");
+        if(s.isBool()){
+            user.IsDel = s.toBool();
+        }
+    }
+
     return user;
 }
 

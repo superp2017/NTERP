@@ -65,6 +65,9 @@ QJsonObject GoodsOutRecordService::toJsonObject(GoodsOutRecord record)
     obj.insert("Note",record.Note);
     obj.insert("UserName",record.UserName);
     obj.insert("UserID",record.UserID);
+    obj.insert("CreatStamp",record.CreatStamp);
+    obj.insert("LastTime",record.LastTime);
+    obj.insert("IsDel",record.IsDel);
     return obj;
 }
 
@@ -135,6 +138,23 @@ GoodsOutRecord GoodsOutRecordService::fromJsonObject(QJsonObject obj)
         QJsonValue value = obj.value("UserID");
         if(value.isString())
             record.UserID = value.toString();
+    }
+
+    if(obj.contains("CreatStamp")){
+        QJsonValue s = obj.value("CreatStamp");
+        if(s.isDouble())
+            record.CreatStamp =s.toInt();
+    }
+    if(obj.contains("LastTime")){
+        QJsonValue s = obj.value("LastTime");
+        if(s.isDouble())
+            record.LastTime =s.toInt();
+    }
+    if(obj.contains("IsDel")){
+        QJsonValue s = obj.value("IsDel");
+        if(s.isBool()){
+            record.IsDel = s.toBool();
+        }
     }
     return record;
 }

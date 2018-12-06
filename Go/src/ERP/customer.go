@@ -7,8 +7,8 @@ import (
 	"fmt"
 )
 
-type Supplier struct {
-	SID             string //客户编号
+type Customer struct {
+	CID             string //客户编号
 	Name            string //客户公司名称
 	Icon            string //客户公司logo
 	Addr            string //客户公司地址
@@ -21,47 +21,48 @@ type Supplier struct {
 	CertificatesNum string //税号
 	Certificates    string //客户证件（营业执照）
 	Note            string //备注
-	Goods           string //商品列表
 	Status          string //状态 0:正常 1:删除
 	CreatTime       string //创建时间
 	CreatStamp      int64  //创建的时间戳
 	LastTime        int64  //最后更新时间
+	IsDel           bool   //标记删除
 }
 
 //新建一个客户
-func NewSupplier(session *JHttp.Session) {
-	st := &Supplier{}
+func NewCustomer(session *JHttp.Session) {
+	st := &Customer{}
 	if err := session.GetPara(st); err != nil {
 		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 	if st.Name == "" {
-		str := fmt.Sprintf("NewSupplier faild,Name = %s\n", st.Name)
+		str := fmt.Sprintf("NewCustomer faild,Name = %s\n", st.Name)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
 	}
-	st.SID = getSupplierID()
+	st.CID = getCustomerID()
 	st.CreatTime = CurTime()
-	st.LastTime = CurStamp()
 	st.CreatStamp = CurStamp()
+	st.LastTime = CurStamp()
 	st.Status = "0"
-	if err := JRedis.Redis_hset(Hash_Supplier, st.SID, st); err != nil {
+
+	if err := JRedis.Redis_hset(Hash_Customer, st.CID, st); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 
 	//更新
-	/////go newUpdate(STRUCT_SUPPLIER, st.SID, NoticeType_NEW, st)
-	go increaseUpdate(STRUCT_SUPPLIER)
+	increaseUpdate(STRUCT_CUSTOMER)
+
 	session.Forward("0", "success", st)
 }
 
 //修改客户信息
-func ModSupplier(session *JHttp.Session) {
+func ModCustomer(session *JHttp.Session) {
 	type Para struct {
-		SID             string //客户编号
+		CID             string //客户编号
 		Name            string //客户公司名称
 		Icon            string //客户公司logo
 		Addr            string //客户公司地址
@@ -82,13 +83,13 @@ func ModSupplier(session *JHttp.Session) {
 		return
 	}
 	if st.Name == "" {
-		str := fmt.Sprintf("ModSupplier faild,Name = %s\n", st.Name)
+		str := fmt.Sprintf("ModCustomer faild,Name = %s\n", st.Name)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
 	}
-	data := &Supplier{}
-	if err := JRedis.Redis_hget(Hash_Supplier, st.SID, data); err != nil {
+	data := &Customer{}
+	if err := JRedis.Redis_hget(Hash_Customer, st.CID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -105,21 +106,21 @@ func ModSupplier(session *JHttp.Session) {
 	data.Certificates = st.Certificates
 	data.Note = st.Note
 	data.LastTime = CurStamp()
-	if err := JRedis.Redis_hset(Hash_Supplier, st.SID, data); err != nil {
+	if err := JRedis.Redis_hset(Hash_Customer, st.CID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 
 	//更新
-	////go newUpdate(STRUCT_SUPPLIER, data.SID, NoticeType_Modify, data)
-	go increaseUpdate(STRUCT_SUPPLIER)
+	increaseUpdate(STRUCT_CUSTOMER)
+
 	session.Forward("0", "success", data)
 }
 
 ///客户的解约和合作
-func UpDownSupplier(session *JHttp.Session) {
+func UpDownCustomer(session *JHttp.Session) {
 	type Para struct {
-		SID  string
+		CID  string
 		IsUp bool
 	}
 	st := &Para{}
@@ -128,8 +129,8 @@ func UpDownSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	data := &Supplier{}
-	if err := JRedis.Redis_hget(Hash_Supplier, st.SID, data); err != nil {
+	data := &Customer{}
+	if err := JRedis.Redis_hget(Hash_Customer, st.CID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
@@ -139,21 +140,21 @@ func UpDownSupplier(session *JHttp.Session) {
 		data.Status = "1"
 	}
 	data.LastTime = CurStamp()
-	if err := JRedis.Redis_hset(Hash_Supplier, st.SID, data); err != nil {
+	if err := JRedis.Redis_hset(Hash_Customer, st.CID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 
 	//更新
-	////go newUpdate(STRUCT_SUPPLIER, data.SID, NoticeType_Modify, data)
-	go increaseUpdate(STRUCT_SUPPLIER)
+	increaseUpdate(STRUCT_CUSTOMER)
+
 	session.Forward("0", "success", data)
 }
 
 //删除一个客户
-func DelSupplier(session *JHttp.Session) {
+func DelCustomer(session *JHttp.Session) {
 	type Para struct {
-		SID string
+		CID string
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
@@ -161,58 +162,66 @@ func DelSupplier(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if st.SID == "" {
-		str := fmt.Sprintf("DelSupplier SID is enpty\n")
+	if st.CID == "" {
+		str := fmt.Sprintf("DelCustomer CID is enpty\n")
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
 		return
 	}
-	sup := &Supplier{}
-	if err := JRedis.Redis_hget(Hash_Supplier, st.SID, sup); err != nil {
+	data := &Customer{}
+	if err := JRedis.Redis_hget(Hash_Customer, st.CID, data); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	data.IsDel = true
+	if err := JRedis.Redis_hset(Hash_Customer, st.CID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 
-	if err := JRedis.Redis_hdel(Hash_Supplier, st.SID); err != nil {
-		session.Forward("1", err.Error(), nil)
-		return
-	}
+	//if err := JRedis.Redis_hdel(Hash_Customer, st.CID); err != nil {
+	//	session.Forward("1", err.Error(), nil)
+	//	return
+	//}
 
 	//更新
-	////go newUpdate(STRUCT_SUPPLIER, sup.SID, NoticeType_Del, sup)
-	go increaseUpdate(STRUCT_SUPPLIER)
-	session.Forward("0", "success", sup)
+	increaseUpdate(STRUCT_CUSTOMER)
+
+	session.Forward("0", "success", data)
 }
 
-//获取所有供应商列表
-func GetAllSupplier(session *JHttp.Session) {
+//获取所有客户列表
+func GetAllCustomer(session *JHttp.Session) {
 	st := &AllPara{}
 	if err := session.GetPara(st); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	data := []*Supplier{}
+	data := []*Customer{}
 	if st.Type == 1 {
-		if st.Stamp > getUpdateStamp(STRUCT_SUPPLIER) {
+		if st.Stamp > getUpdateStamp(STRUCT_CUSTOMER) {
 			session.Forward("0", "success", data)
 			return
 		}
 	}
-	list, err := JRedis.Redis_hkeys(Hash_Supplier)
 
+	list, err := JRedis.Redis_hkeys(Hash_Customer)
 	if err == nil {
 		for _, v := range list {
-			d := &Supplier{}
-			if e := JRedis.Redis_hget(Hash_Supplier, v, d); e == nil {
-				if st.Type == 0 {
-					data = append(data, d)
-				} else {
-					if d.LastTime > st.Stamp {
+			d := &Customer{}
+			if e := JRedis.Redis_hget(Hash_Customer, v, d); e == nil {
+				if !d.IsDel {
+					if st.Type == 0 {
 						data = append(data, d)
+					} else {
+						if d.LastTime > st.Stamp {
+							data = append(data, d)
+						}
 					}
 				}
 			}
 		}
 	}
+
 	session.Forward("0", "success", data)
 }

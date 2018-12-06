@@ -29,9 +29,6 @@ func NewUnit(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-
-	//更新
-	//go newUpdate(STRUCT_UNIT, st.Unit, NoticeType_NEW, st.Unit)
 	session.Forward("0", "success", st.Unit)
 }
 
@@ -55,8 +52,6 @@ func DelUnit(session *JHttp.Session) {
 		return
 	}
 
-	//更新
-	//go newUpdate(STRUCT_UNIT, st.Unit, NoticeType_Del, st.Unit)
 	session.Forward("0", "success", st.Unit)
 }
 

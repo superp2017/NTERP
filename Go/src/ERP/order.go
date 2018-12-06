@@ -114,77 +114,12 @@ func NewOrder(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if st.CustomID != "" && st.OrderID != "" {
-		go appendCustomerOrderID(st.CustomID, st.OrderID)
-	}
 
-	//更新
-	///go newUpdate(STRTUCT_ORDER, st.OrderID, NoticeType_NEW, st)
-	go increaseUpdate(STRTUCT_ORDER)
+	increaseUpdate(STRTUCT_ORDER)
 	session.Forward("0", "success", st)
 }
-func UpdatePrintNum(session *JHttp.Session) {
-	type Para struct {
-		Orders   []string
-		UserID   string
-		UserName string
-	}
-	st := &Para{}
-	if err := session.GetPara(&st); err != nil {
-		JLogger.Error(err.Error())
-		session.Forward("1", err.Error(), nil)
-		return
-	}
-	list := []*Order{}
-	for _, v := range st.Orders {
-		data := &Order{}
-		if err := JRedis.Redis_hget(Hash_Order, v, data); err == nil {
-			data.PrintNum++
-			data.Print = append(data.Print, PrintDetail{
-				UserID:    st.UserID,
-				UserName:  st.UserName,
-				PrintDate: CurTime(),
-			})
-			data.LastTime = CurStamp()
-			if e := JRedis.Redis_hset(Hash_Order, v, data); e == nil {
-				list = append(list, data)
-			}
-		}
-	}
-	go setPrintNumber(true)
 
-	//更新
-	////for _, v := range list {
-	///go newUpdate(STRTUCT_ORDER, v.OrderID, NoticeType_Modify, v)
-	//}
-	go increaseUpdate(STRTUCT_ORDER)
-	session.Forward("0", "success", list)
-}
-
-func GetPrintNum(session *JHttp.Session) {
-	err, num := setPrintNumber(false)
-	if err != nil {
-		session.Forward("0", "failed", num)
-		return
-	}
-	session.Forward("0", "success", num)
-}
-
-func setPrintNumber(isSet bool) (error, string) {
-	num := 0
-	if err := JRedis.Redis_get("PrintNumber", &num); err != nil {
-		return err, time.Unix(time.Now().Unix(), 0).Format("2006") + strconv.Itoa(8888)
-	}
-	if !isSet {
-		return nil, time.Unix(time.Now().Unix(), 0).Format("2006") + strconv.Itoa(num)
-	}
-	num++
-	if err := JRedis.Redis_set("PrintNumber", &num); err != nil {
-		return err, time.Unix(time.Now().Unix(), 0).Format("2006") + strconv.Itoa(8888)
-	}
-	return nil, time.Unix(time.Now().Unix(), 0).Format("2006") + strconv.Itoa(num)
-}
-
+//修改订单
 func ModOrder(session *JHttp.Session) {
 	type Para struct {
 		OrderID     string  //订单id
@@ -223,7 +158,7 @@ func ModOrder(session *JHttp.Session) {
 	}
 	if data.MaterielID != st.MaterielID {
 		if mater, err := getMaterial(st.MaterielID); err == nil {
-			initOrderMaterial(data, mater)
+			copyMaterial2Order(data, mater)
 		} else {
 			JLogger.Error("MaterielID=%s获取材料失败\n", st.MaterielID)
 		}
@@ -242,8 +177,8 @@ func ModOrder(session *JHttp.Session) {
 		return
 	}
 	//更新
-	///go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
-	go increaseUpdate(STRTUCT_ORDER)
+	increaseUpdate(STRTUCT_ORDER)
+
 	session.Forward("0", "success", data)
 }
 
@@ -290,8 +225,8 @@ func ModOrderPrice(session *JHttp.Session) {
 	}
 
 	//更新
-	////go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
-	go increaseUpdate(STRTUCT_ORDER)
+	increaseUpdate(STRTUCT_ORDER)
+
 	session.Forward("0", "success", data)
 }
 
@@ -331,13 +266,9 @@ func CancelOrder(session *JHttp.Session) {
 		return
 	}
 
-	if data.CustomID != "" && data.OrderID != "" {
-		go removefromCustomerOrderID(data.CustomID, data.OrderID)
-	}
-
 	//更新
-	///go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
-	go increaseUpdate(STRTUCT_ORDER)
+	increaseUpdate(STRTUCT_ORDER)
+
 	session.Forward("0", "success", data)
 }
 
@@ -369,23 +300,14 @@ func DelOrder(session *JHttp.Session) {
 	}
 	appendStatus(data, data.UserName, CurTime(), "订单标记删除", Status_Del)
 	data.LastTime = CurStamp()
+
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-
-	//if err := JRedis.Redis_hdel(Hash_Order, st.OrderID); err != nil {
-	//	session.Forward("1", err.Error(), nil)
-	//	return
-	//}
-
-	if data.CustomID != "" && data.OrderID != "" {
-		go removefromCustomerOrderID(data.CustomID, data.OrderID)
-	}
-
 	//更新
-	////go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Del, data)
-	go increaseUpdate(STRTUCT_ORDER)
+	increaseUpdate(STRTUCT_ORDER)
+
 	session.Forward("0", "success", data)
 }
 
@@ -418,7 +340,6 @@ func PorduceOrder(session *JHttp.Session) {
 		session.Forward("1", str, nil)
 		return
 	}
-	//data.ProduceID = time.Unix(time.Now().Unix(), 0).Format("20060102150405")
 
 	data.ProduceNum += st.Num
 	if data.ProduceNum >= data.OrderNum {
@@ -434,14 +355,15 @@ func PorduceOrder(session *JHttp.Session) {
 	}
 	data.ProduceTime = CurTime()
 	data.LastTime = CurStamp()
+
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 
 	//更新
-	/////go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
-	go increaseUpdate(STRTUCT_ORDER)
+	increaseUpdate(STRTUCT_ORDER)
+
 	session.Forward("0", "success", data)
 }
 
@@ -489,13 +411,14 @@ func SuccessOrder(session *JHttp.Session) {
 	}
 	data.SuccessTime = CurTime()
 	data.LastTime = CurStamp()
+
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
 	//更新
-	////go newUpdate(STRTUCT_ORDER, data.OrderID, NoticeType_Modify, data)
-	go increaseUpdate(STRTUCT_ORDER)
+	increaseUpdate(STRTUCT_ORDER)
+
 	session.Forward("0", "success", data)
 }
 
@@ -530,7 +453,7 @@ func GetGlobalOrders(session *JHttp.Session) {
 		}
 		d := &Order{}
 		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
-			if d.Current.Status != Status_Del {
+			if d.Current.Status != Status_Del || d.IsDel {
 				if st.Type == 1 {
 					if d.LastTime > st.Stamp {
 						data = append(data, d)
@@ -568,7 +491,69 @@ func GetGlobalOrders(session *JHttp.Session) {
 	session.Forward("0", "success", data)
 }
 
-func initOrderMaterial(data *Order, mater *MaterialInfo) {
+//获取打印号
+func GetPrintNum(session *JHttp.Session) {
+	err, num := setPrintNumber(false)
+	if err != nil {
+		session.Forward("0", "failed", num)
+		return
+	}
+	session.Forward("0", "success", num)
+}
+
+//更新打印号
+func UpdatePrintNum(session *JHttp.Session) {
+	type Para struct {
+		Orders   []string
+		UserID   string
+		UserName string
+	}
+	st := &Para{}
+	if err := session.GetPara(&st); err != nil {
+		JLogger.Error(err.Error())
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	list := []*Order{}
+	for _, v := range st.Orders {
+		data := &Order{}
+		if err := JRedis.Redis_hget(Hash_Order, v, data); err == nil {
+			data.PrintNum++
+			data.Print = append(data.Print, PrintDetail{
+				UserID:    st.UserID,
+				UserName:  st.UserName,
+				PrintDate: CurTime(),
+			})
+			data.LastTime = CurStamp()
+			if e := JRedis.Redis_hset(Hash_Order, v, data); e == nil {
+				list = append(list, data)
+			}
+		}
+	}
+	go setPrintNumber(true)
+
+	increaseUpdate(STRTUCT_ORDER)
+	session.Forward("0", "success", list)
+}
+
+//设置打印号
+func setPrintNumber(isSet bool) (error, string) {
+	num := 0
+	if err := JRedis.Redis_get("PrintNumber", &num); err != nil {
+		return err, time.Unix(time.Now().Unix(), 0).Format("2006") + strconv.Itoa(8888)
+	}
+	if !isSet {
+		return nil, time.Unix(time.Now().Unix(), 0).Format("2006") + strconv.Itoa(num)
+	}
+	num++
+	if err := JRedis.Redis_set("PrintNumber", &num); err != nil {
+		return err, time.Unix(time.Now().Unix(), 0).Format("2006") + strconv.Itoa(8888)
+	}
+	return nil, time.Unix(time.Now().Unix(), 0).Format("2006") + strconv.Itoa(num)
+}
+
+//复制mater信息到order
+func copyMaterial2Order(data *Order, mater *MaterialInfo) {
 	data.MaterielID = mater.MaterID
 	data.MaterielDes = mater.MaterDes
 	data.Plating = mater.Plating

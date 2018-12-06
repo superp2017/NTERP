@@ -153,8 +153,8 @@ struct Order{
     double            TotleMoney;     //总价
     int               PrintNum;       //打印次数
     QVector<PrintDetail> Print;       //打印记录
-//    int                 CreatStamp;   //创建的时间戳
-//    int                 LastTime;     //最后更新的时间戳
+    int               CreatStamp;     //创建的时间戳
+    int               LastTime;       //最后更新的时间戳
 };
 
 struct User {
@@ -173,8 +173,10 @@ struct User {
     QString Account;        //账号
     QString Code;           //密码
     int     Age;            //年龄
-    int     Salary;          //薪水
-
+    int     Salary;         //薪水
+    int     CreatStamp;     //创建的时间戳
+    int     LastTime;       //最后更新的时间戳
+    bool    IsDel;          //标记删除
 };
 
 
@@ -195,6 +197,10 @@ struct Customer{
     QString Note;                   //备注
     QString Status;                 //状态 0:正常 1:删除
     QString CreatTime;              //创建时间
+    int     CreatStamp;             //创建的时间戳
+    int     LastTime;               //最后更新的时间戳
+    bool    IsDel;                  //标记删除
+
 };
 
 //供应商
@@ -215,6 +221,9 @@ struct Supplier{
     QString Goods;                  //供应的商品列表
     QString Status;                 //状态 0:正常 1:删除
     QString CreatTime;              //创建时间
+    int     CreatStamp;             //创建的时间戳
+    int     LastTime;               //最后更新的时间戳
+    bool    IsDel;                  //标记删除
 };
 
 //物料
@@ -235,6 +244,9 @@ struct Materiel{
     QString Unit;               //单位
     QString CreatTime;          //创建时间
     double  Money;              //价格
+    int     CreatStamp;         //创建的时间戳
+    int     LastTime;           //最后更新的时间戳
+    bool    IsDel;              //标记删除
 };
 
 
@@ -247,7 +259,10 @@ struct Goods{
     QString	SID;            //供应商id
     QString	SupplierName;   //供应商名称
     QString	CreatTime;      //创建时间
-    double   Num;            //库存
+    double   Num;           //库存
+    int     CreatStamp;     //创建的时间戳
+    int     LastTime;       //最后更新的时间戳
+    bool    IsDel;          //标记删除
 };
 
 
@@ -265,6 +280,9 @@ struct GoodsOutRecord{
     QString   Note;           //备注
     QString   UserName;       //领用人姓名
     QString   UserID;         //领用人工号
+    int     CreatStamp;       //创建的时间戳
+    int     LastTime;         //最后更新的时间戳
+    bool    IsDel;            //标记删除
 };
 
 

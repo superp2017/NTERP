@@ -26,6 +26,7 @@ type Employee struct {
 	Code         string //密码
 	Age          int    //年龄
 	Salary       int    //薪水
+	IsDel        bool   //标记删除
 }
 
 //新增一个员工
@@ -63,8 +64,8 @@ func NewEmployee(session *JHttp.Session) {
 	}
 
 	//更新
-	////go newUpdate(STRUCT_USER, st.UID, NoticeType_NEW, st)
-	go increaseUpdate(STRUCT_USER)
+	increaseUpdate(STRUCT_USER)
+
 	session.Forward("0", "success", st)
 }
 
@@ -104,6 +105,7 @@ func ModEmployee(session *JHttp.Session) {
 		go modAccount(st.Account, st.Code, st.UID, st.Name)
 	} else {
 		go delAccount(data.Account)
+
 		go newAccount(st.UID, st.Name, st.Account, st.Code)
 	}
 	data.Name = st.Name
@@ -122,8 +124,8 @@ func ModEmployee(session *JHttp.Session) {
 	}
 
 	//更新
-	/////go newUpdate(STRUCT_USER, data.UID, NoticeType_Modify, data)
-	go increaseUpdate(STRUCT_USER)
+	increaseUpdate(STRUCT_USER)
+
 	session.Forward("0", "success", data)
 }
 
@@ -157,8 +159,8 @@ func OutEmployee(session *JHttp.Session) {
 	go delAccount(data.Account)
 
 	//更新
-	////go newUpdate(STRUCT_USER, data.UID, NoticeType_Modify, data)
-	go increaseUpdate(STRUCT_USER)
+	increaseUpdate(STRUCT_USER)
+
 	session.Forward("0", "success", data)
 }
 
@@ -182,21 +184,28 @@ func DelEmployee(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	if err := JRedis.Redis_hdel(Hash_Employee, st.UID); err != nil {
+
+	data.IsDel = true
+
+	if err := JRedis.Redis_hset(Hash_Employee, st.UID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
+	//if err := JRedis.Redis_hdel(Hash_Employee, st.UID); err != nil {
+	//	session.Forward("1", err.Error(), nil)
+	//	return
+	//}
 
 	go delAccount(data.Account)
 
 	//更新
-	/////go newUpdate(STRUCT_USER, data.UID, NoticeType_Del, data)
-	go increaseUpdate(STRUCT_USER)
+	increaseUpdate(STRUCT_USER)
+
 	session.Forward("0", "success", data)
 }
 
 // 获取所有的员工信息
-func GetAllEmployeess(session *JHttp.Session) {
+func GetAllEmployee(session *JHttp.Session) {
 	st := &AllPara{}
 	if err := session.GetPara(st); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -217,11 +226,13 @@ func GetAllEmployeess(session *JHttp.Session) {
 	for _, v := range ids {
 		d := &Employee{}
 		if err := JRedis.Redis_hget(Hash_Employee, v, d); err == nil {
-			if st.Type == 0 {
-				data = append(data, d)
-			} else {
-				if d.LastTime > st.Stamp {
+			if !d.IsDel {
+				if st.Type == 0 {
 					data = append(data, d)
+				} else {
+					if d.LastTime > st.Stamp {
+						data = append(data, d)
+					}
 				}
 			}
 		}
@@ -230,7 +241,7 @@ func GetAllEmployeess(session *JHttp.Session) {
 }
 
 //添加一个部门
-func NewDepartMent(session *JHttp.Session) {
+func NewDepartment(session *JHttp.Session) {
 	type Para struct {
 		Department string
 	}
@@ -251,12 +262,10 @@ func NewDepartMent(session *JHttp.Session) {
 		return
 	}
 
-	//更新
-	//go newUpdate(STRUCT_DEPARTMENT, st.Department, NoticeType_NEW, st.Department)
-
-	session.Forward("0", "NewDepartMent success\n", st.Department)
+	session.Forward("0", "NewDepartment success\n", st.Department)
 }
 
+//删除一个部门
 func RemoveDepartment(session *JHttp.Session) {
 	type Para struct {
 		Department string
@@ -277,9 +286,6 @@ func RemoveDepartment(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-
-	//更新
-	//go newUpdate(STRUCT_DEPARTMENT, st.Department, NoticeType_Del, st.Department)
 
 	session.Forward("0", "RemoveDepartment success\n", st.Department)
 }

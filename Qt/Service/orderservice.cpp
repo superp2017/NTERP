@@ -274,6 +274,8 @@ QJsonObject OrderService::toJsonObject(Order order)
     }
     obj.insert("Print",print);
 
+    obj.insert("CreatStamp",order.CreatStamp);
+    obj.insert("LastTime",order.LastTime);
 
     return obj;
 }
@@ -533,6 +535,17 @@ Order OrderService::fromJsonObject(QJsonObject obj)
         }
     }
 
+
+    if(obj.contains("CreatStamp")){
+        QJsonValue s = obj.value("CreatStamp");
+        if(s.isDouble())
+            order.CreatStamp =s.toInt();
+    }
+    if(obj.contains("LastTime")){
+        QJsonValue s = obj.value("LastTime");
+        if(s.isDouble())
+            order.LastTime =s.toInt();
+    }
 
     return order;
 }

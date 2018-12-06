@@ -108,6 +108,9 @@ QJsonObject SupplierService::toJsonObject(Supplier super)
     obj.insert("Goods",super.Goods);
     obj.insert("Status",super.Status);
     obj.insert("CreatTime",super.CreatTime);
+    obj.insert("CreatStamp",super.CreatStamp);
+    obj.insert("LastTime",super.LastTime);
+    obj.insert("IsDel",super.IsDel);
     return obj;
 }
 
@@ -194,6 +197,23 @@ Supplier SupplierService::fromJsonObject(QJsonObject obj)
         QJsonValue value = obj.value("CreatTime");
         if(value.isString())
             sup.CreatTime = value.toString();
+    }
+
+    if(obj.contains("CreatStamp")){
+        QJsonValue s = obj.value("CreatStamp");
+        if(s.isDouble())
+            sup.CreatStamp =s.toInt();
+    }
+    if(obj.contains("LastTime")){
+        QJsonValue s = obj.value("LastTime");
+        if(s.isDouble())
+            sup.LastTime =s.toInt();
+    }
+    if(obj.contains("IsDel")){
+        QJsonValue s = obj.value("IsDel");
+        if(s.isBool()){
+            sup.IsDel = s.toBool();
+        }
     }
 
     return sup;

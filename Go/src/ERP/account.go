@@ -37,7 +37,7 @@ func Login(session *JHttp.Session) {
 	}
 	data := &Employee{}
 	if err := JRedis.Redis_hget(Hash_Employee, UID, data); err != nil {
-		JLogger.ErrorLog("get Employee filed,UID=%s\n", UID)
+		JLogger.Error("get Employee filed,UID=%s\n", UID)
 		session.Forward("1", err.Error(), nil)
 		return
 	}

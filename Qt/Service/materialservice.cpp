@@ -149,6 +149,9 @@ QJsonObject MaterialService::toJsonObject(Materiel ma)
     obj.insert("ProductionLine",ma.ProductionLine);
     obj.insert("Unit",ma.Unit);
     obj.insert("Money",ma.Money);
+    obj.insert("CreatStamp",ma.CreatStamp);
+    obj.insert("LastTime",ma.LastTime);
+    obj.insert("IsDel",ma.IsDel);
     return obj;
 }
 
@@ -234,6 +237,23 @@ Materiel MaterialService::fromJsonObject(QJsonObject obj)
         QJsonValue value = obj.value("Money");
         if(value.isDouble())
             ma.Money = value.toDouble();
+    }
+
+    if(obj.contains("CreatStamp")){
+        QJsonValue s = obj.value("CreatStamp");
+        if(s.isDouble())
+            ma.CreatStamp =s.toInt();
+    }
+    if(obj.contains("LastTime")){
+        QJsonValue s = obj.value("LastTime");
+        if(s.isDouble())
+            ma.LastTime =s.toInt();
+    }
+    if(obj.contains("IsDel")){
+        QJsonValue s = obj.value("IsDel");
+        if(s.isBool()){
+            ma.IsDel = s.toBool();
+        }
     }
     return ma;
 }

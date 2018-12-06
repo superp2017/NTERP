@@ -141,6 +141,9 @@ QJsonObject CustomerService::toJsonObject(Customer customer)
     obj.insert("Note",customer.Note);
     obj.insert("Status",customer.Status);
     obj.insert("CreatTime",customer.CreatTime);
+    obj.insert("CreatStamp",customer.CreatStamp);
+    obj.insert("LastTime",customer.LastTime);
+    obj.insert("IsDel",customer.IsDel);
     return obj;
 }
 
@@ -222,6 +225,24 @@ Customer CustomerService::fromJsonObject(QJsonObject obj)
         if(value.isString())
             customer.CreatTime = value.toString();
     }
+
+    if(obj.contains("CreatStamp")){
+        QJsonValue s = obj.value("CreatStamp");
+        if(s.isDouble())
+            customer.CreatStamp =s.toInt();
+    }
+    if(obj.contains("LastTime")){
+        QJsonValue s = obj.value("LastTime");
+        if(s.isDouble())
+            customer.LastTime =s.toInt();
+    }
+    if(obj.contains("IsDel")){
+        QJsonValue s = obj.value("IsDel");
+        if(s.isBool()){
+            customer.IsDel = s.toBool();
+        }
+    }
+
     return customer;
 }
 
@@ -237,10 +258,10 @@ bool CustomerService::exportCustomer(QVector<Customer> list, QString filepath,bo
         Customer ma  = list.at(i);
         QVector<QVariant> datalist;
         datalist<<"'"+ma.CID<<ma.Name<<ma.Addr\
-              <<ma.ContactName<<"'"+ma.ContactCell\
-             <<ma.BankName<<"'"+ma.BankNumber\
-            <<ma.Bankbranch<<"'"+ma.CertificatesNum\
-           <<ma.Note;
+               <<ma.ContactName<<"'"+ma.ContactCell\
+              <<ma.BankName<<"'"+ma.BankNumber\
+             <<ma.Bankbranch<<"'"+ma.CertificatesNum\
+            <<ma.Note;
         data.push_back(datalist);
     }
     return  ExcelService::dataExport(filepath,datalist,data,isOpen);

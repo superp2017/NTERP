@@ -6,9 +6,7 @@ import (
 	"JGo/JUuid"
 	"fmt"
 	"log"
-	"net/http"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -130,11 +128,7 @@ func Decimal(value float64) float64 {
 	return value
 }
 
-//返回请求Ip
-func RequestAddr(r *http.Request) string {
-	return strings.Split(r.RemoteAddr, ":")[0]
-}
-
+//心跳，返回当前时间戳
 func HeartBeat(session *JHttp.Session) {
 	session.Forward("0", "success", CurStamp())
 }
