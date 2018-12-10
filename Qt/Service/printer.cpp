@@ -67,7 +67,7 @@ void printer::printDocument(QPrinter *printer)
     double height   = bottom-top;
 
 
-    painter.setFont(QFont("宋体", 22, QFont::Normal));
+    painter.setFont(QFont("宋体", 18, QFont::Normal));
 
     double title_h = printer->height()/14.0;
     if(m_isTwoTtile)
@@ -85,9 +85,11 @@ void printer::printDocument(QPrinter *printer)
 
     painter.drawText(0,secTitle_bottom+10,printer->width(),third_Titile_bottom-secTitle_bottom,Qt::AlignHCenter|Qt::AlignTop,third_Title);
 
+    painter.setFont(QFont("宋体", 14, QFont::Normal));
+
     painter.drawText(left+30,third_Titile_bottom,printer->width()/7.0,top-third_Titile_bottom,Qt::AlignTop|Qt::AlignLeft,"客户名称：");
 
-    painter.setFont(QFont("宋体", 14, QFont::Normal));
+
     QString customerName = m_data.at(0).CustomName;
 
     painter.drawText(left*3,third_Titile_bottom,printer->width()/7.0*3,top-third_Titile_bottom,Qt::AlignTop|Qt::AlignLeft,customerName);
