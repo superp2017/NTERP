@@ -45,7 +45,7 @@ const (
 )
 
 type AllPara struct {
-	Start int
+	Start string
 	Num   int
 	Type  int //0:全部，1：增量更新
 	Stamp int64

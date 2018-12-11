@@ -445,9 +445,9 @@ func GetGlobalOrders(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-
-	for i := len(list) - 1; i >= 0; i-- {
-		v := list[i]
+	startIndex := -1
+	index := -1
+	for _, v := range list {
 		if v == Key_LastOrderDate {
 			continue
 		}
@@ -460,33 +460,33 @@ func GetGlobalOrders(session *JHttp.Session) {
 					}
 				} else {
 					data = append(data, d)
+					index++
+					if st.Type == 2 && st.Start != "" && st.Start == v {
+						startIndex = index
+					}
 				}
 			}
 		}
 	}
-	if len(data) > 0 {
+
+	lenData := len(data)
+	if lenData > 0 {
 		sort.Slice(data, func(i, j int) bool {
-			return data[i].LastTime > data[j].LastTime
+			return data[i].LastTime <= data[j].LastTime
 		})
 	}
 
 	if st.Type == 2 {
-		if st.Start < 0 {
-			st.Start = 0
-		}
-		lenList := len(data)
-		if st.Start > lenList {
+		if startIndex == -1 && st.Start != "" {
 			session.Forward("0", "success", []*Order{})
 			return
-		} else {
-			if (st.Start + st.Num) < lenList {
-				data = data[st.Start : st.Start+st.Num]
-			} else {
-				data = data[st.Start:lenList]
-			}
 		}
-		session.Forward("0", "success", data)
-		return
+		startIndex += 1
+		if (startIndex + st.Num) <= lenData {
+			data = data[startIndex : startIndex+st.Num]
+		} else {
+			data = data[startIndex:lenData]
+		}
 	}
 	JLogger.Error("GetGlobalOrders:type=%d,num=%d,start=%d,stamp=%d,data=%v\n", st.Type, st.Num, st.Start, st.Stamp, data)
 	session.Forward("0", "success", data)

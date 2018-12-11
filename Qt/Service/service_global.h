@@ -60,6 +60,11 @@ const std::string Net_GetAllMateril="/getallmaterials";    //获取所有材料
 
 const std::string Net_HeartBeat="/heartbeat";//心跳服务
 
+const std::string Net_Getversion="/getversion";            //获取版本
+const std::string Net_Setversion="/setversion";            //设置版本
+
+
+
 const std::string  Net_NewUnit="/newunit";                  //新建单位
 const std::string  Net_DelUnit="/delunit";                  //删除单位
 const std::string  Net_GlobalUnit="/getallunits";           //获取所有单位
@@ -314,6 +319,13 @@ struct CacheInfo{
     int DataType;
 };
 
+
+struct VersionInfo{
+    QString Version;
+    int VersionNum ;
+    QString Date;
+    QString Des;
+};
 
 
 

@@ -191,13 +191,13 @@ public:
     QSet<QString>Accounts();
     void setCurSettings(SysSetting set);
     //////////////////////////////////////////////////
-    void pub_getAllSuppliers(int type, int start=0, int num=0);
-    void pub_getAllEmployee(int type, int start=0, int num=0);
-    void pub_getAllOutRecord(int type, int start=0, int num=0);
-    void pub_getAllMateriels(int type, int start=0, int num=0);
-    void pub_GetAllCustomers(int type, int start=0, int num=0);
-    void pub_getAllGoods(int type, int start=0, int num=0);
-    void pub_getAllOrders(int type, int start=0, int num=0);
+    void pub_getAllSuppliers(int type, QString start="", int num=0);
+    void pub_getAllEmployee(int type, QString start="", int num=0);
+    void pub_getAllOutRecord(int type, QString start="", int num=0);
+    void pub_getAllMateriels(int type, QString start="", int num=0);
+    void pub_GetAllCustomers(int type, QString start="", int num=0);
+    void pub_getAllGoods(int type, QString  start="", int num=0);
+    void pub_getAllOrders(int type, QString start="", int num=0);
 
 private slots:
     //void newNotice(QJsonObject &obj);

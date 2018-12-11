@@ -1538,7 +1538,7 @@ void dataCenter::TimerUpdate(bool istart)
     }
 }
 
-void dataCenter::pub_getAllOrders(int type,int start,int num)
+void dataCenter::pub_getAllOrders(int type,QString start,int num)
 {
     //////////////初始化所有订单///////////////////
     QJsonObject order_obj;
@@ -1549,7 +1549,7 @@ void dataCenter::pub_getAllOrders(int type,int start,int num)
     boost::thread (boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance(),order_obj)).detach();
 }
 
-void dataCenter::pub_getAllMateriels(int type,int start,int num)
+void dataCenter::pub_getAllMateriels(int type,QString start,int num)
 {
     //////////////初始化所有物料//////////////////
     QJsonObject mater_obj;
@@ -1560,7 +1560,7 @@ void dataCenter::pub_getAllMateriels(int type,int start,int num)
     boost::thread (boost::bind(&dataCenter::net_getglobalMateriels,dataCenter::instance(),mater_obj)).detach();
 }
 
-void dataCenter::pub_getAllOutRecord(int type,int start,int num)
+void dataCenter::pub_getAllOutRecord(int type,QString start,int num)
 {
     //////////////获取所有商品的出库记录//////////////////////////////
     QJsonObject out_obj;
@@ -1571,7 +1571,7 @@ void dataCenter::pub_getAllOutRecord(int type,int start,int num)
     boost::thread(boost::bind(&dataCenter::net_getAllOutRecords,dataCenter::instance(),out_obj)).detach();
 }
 
-void dataCenter::pub_getAllGoods(int type,int start,int num)
+void dataCenter::pub_getAllGoods(int type, QString start, int num)
 {
     //////////////初始化所有商品//////////////////
     QJsonObject goods_obj;
@@ -1582,7 +1582,7 @@ void dataCenter::pub_getAllGoods(int type,int start,int num)
     boost::thread(boost::bind(&dataCenter::net_getglobalGoods,dataCenter::instance(),goods_obj)).detach();
 }
 
-void dataCenter::pub_getAllSuppliers(int type,int start,int num)
+void dataCenter::pub_getAllSuppliers(int type,QString start,int num)
 {
     //////////////初始化所有供应商///////////////////
     QJsonObject sup_obj;
@@ -1593,7 +1593,7 @@ void dataCenter::pub_getAllSuppliers(int type,int start,int num)
     boost::thread (boost::bind(&dataCenter::net_getglobalSuppliers,dataCenter::instance(),sup_obj)).detach();
 }
 
-void dataCenter::pub_GetAllCustomers(int type,int start,int num)
+void dataCenter::pub_GetAllCustomers(int type,QString start,int num)
 {
     //////////////初始化所有客户///////////////////
     QJsonObject cus_obj;
@@ -1604,7 +1604,7 @@ void dataCenter::pub_GetAllCustomers(int type,int start,int num)
     boost::thread (boost::bind(&dataCenter::net_getGlobalCustomers,dataCenter::instance(),cus_obj)).detach();
 }
 
-void dataCenter::pub_getAllEmployee(int type,int start,int num)
+void dataCenter::pub_getAllEmployee(int type,QString start,int num)
 {
     //////////////初始化所有员工///////////////////
     QJsonObject user_obj;

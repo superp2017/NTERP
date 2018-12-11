@@ -15,6 +15,10 @@ public:
     //    static QVector<CacheInfo> HeartBeat(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     //signals:
     static int HeartBeat(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static VersionInfo GetVersion(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static void SetVersion(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static QJsonObject toJsonObject(VersionInfo v);
+    static VersionInfo fromJsonObject(QJsonObject obj);
 public slots:
 };
 
