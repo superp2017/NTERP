@@ -77,6 +77,9 @@
        <property name="text">
         <string>取消</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item>

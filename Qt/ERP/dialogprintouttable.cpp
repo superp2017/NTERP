@@ -98,7 +98,7 @@ void DialogPrintOutTable::checkboxChecked()
             selected++;
         }
     }
-    if (selected>7){
+    if (selected>9){
         QMessageBox::warning(this,"提示","打印数量上限!");
         b->setChecked(false);
     }

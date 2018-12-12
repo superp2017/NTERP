@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "nsysconfig.h"
-#include "dialogmaterialmanage.h"
+//#include "dialogmaterialmanage.h"
 #include "formcustommanage.h"
 #include "formsuppliermanage.h"
 #include "formunitmanage.h"
@@ -11,6 +11,7 @@
 #include "formgoodstypemanage.h"
 #include "formdepartmentmanage.h"
 #include "formauthormanage.h"
+#include "formmatermanager.h"
 
 
 #pragma execution_character_set("utf-8")
@@ -58,7 +59,7 @@ private:
     SysSetting set;
     FormCustommanage     Custom;     //客户管理
     FormSupplierManage   Supplier;   //供应商管理
-    DialogMaterialManage Material;   //材料管理
+    FormMaterManager     Material;   //材料管理
     FormGoodsTypeManage  typeMange;  //分类管理
     FormUnitManage       Unit;       //单位管理
     FormDepartmentManage department; //部门管理

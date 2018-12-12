@@ -51,6 +51,9 @@
        <property name="text">
         <string>取消</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -76,6 +79,9 @@
        </property>
        <property name="text">
         <string>打印预览</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -103,7 +109,7 @@
   <customwidget>
    <class>M_TableWidget</class>
    <extends>QTableWidget</extends>
-   <header>m_tablewidget.h</header>
+   <header location="global">m_tablewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

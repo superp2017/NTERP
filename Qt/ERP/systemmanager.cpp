@@ -153,7 +153,7 @@ void SystemManager::on_pushButton_mateial_manage_clicked()
     AUTHOR_Equal(1);
     AUTHOR_Equal(2);
     Material.initData();
-    Material.exec();
+    Material.showNormal();
 }
 
 void SystemManager::on_pushButton_unit_manage_clicked()

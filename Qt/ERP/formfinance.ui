@@ -203,7 +203,7 @@
    <item row="0" column="1">
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <property name="spacing">
-      <number>25</number>
+      <number>11</number>
      </property>
      <property name="leftMargin">
       <number>5</number>
@@ -212,10 +212,10 @@
       <number>15</number>
      </property>
      <property name="rightMargin">
-      <number>6</number>
+      <number>9</number>
      </property>
      <property name="bottomMargin">
-      <number>9</number>
+      <number>11</number>
      </property>
      <item>
       <widget class="QGroupBox" name="groupBox_order_type">
@@ -454,13 +454,16 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <property name="spacing">
-        <number>20</number>
+        <number>14</number>
        </property>
        <property name="leftMargin">
         <number>9</number>
        </property>
        <property name="rightMargin">
         <number>9</number>
+       </property>
+       <property name="bottomMargin">
+        <number>10</number>
        </property>
        <item>
         <widget class="QPushButton" name="pushButton_search">

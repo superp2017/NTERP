@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FormCustommanage</class>
- <widget class="QWidget" name="FormCustommanage">
+ <class>FormMaterManager</class>
+ <widget class="QWidget" name="FormMaterManager">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>738</width>
-    <height>460</height>
+    <width>778</width>
+    <height>633</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>客户管理</string>
+   <string>物料管理</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="rightMargin">
-      <number>9</number>
+      <number>15</number>
      </property>
      <item>
       <widget class="QCheckBox" name="checkBox_check_all">
@@ -52,14 +52,17 @@
         <string>平均</string>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QRadioButton" name="radioButton_content">
        <property name="text">
-        <string>按内容</string>
+        <string>内容</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -69,7 +72,7 @@
     <widget class="M_TableWidget" name="tableWidget"/>
    </item>
    <item row="2" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="spacing">
       <number>11</number>
      </property>
@@ -94,7 +97,7 @@
         </size>
        </property>
        <property name="text">
-        <string>新增</string>
+        <string>新建</string>
        </property>
       </widget>
      </item>
@@ -108,8 +111,8 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>80</width>
-         <height>16777215</height>
+         <width>16777215</width>
+         <height>80</height>
         </size>
        </property>
        <property name="text">
@@ -127,8 +130,8 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>80</width>
-         <height>16777215</height>
+         <width>16777215</width>
+         <height>80</height>
         </size>
        </property>
        <property name="text">
@@ -146,8 +149,8 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>16777215</width>
-         <height>80</height>
+         <width>80</width>
+         <height>16777215</height>
         </size>
        </property>
        <property name="text">

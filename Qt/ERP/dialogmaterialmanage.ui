@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>991</width>
-    <height>811</height>
+    <width>753</width>
+    <height>461</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -198,7 +198,7 @@
   <customwidget>
    <class>M_TableWidget</class>
    <extends>QTableWidget</extends>
-   <header>m_tablewidget.h</header>
+   <header location="global">m_tablewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

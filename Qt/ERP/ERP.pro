@@ -121,7 +121,8 @@ SOURCES += main.cpp\
     dialoggoodsin.cpp \
     dialoggoodsoutrecordprint.cpp \
     formfinance.cpp \
-    dialogprintouttable.cpp
+    dialogprintouttable.cpp \
+    formmatermanager.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -204,7 +205,8 @@ HEADERS  += mainwindow.h \
     dialoggoodsin.h \
     dialoggoodsoutrecordprint.h \
     formfinance.h \
-    dialogprintouttable.h
+    dialogprintouttable.h \
+    formmatermanager.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -271,7 +273,8 @@ FORMS    += mainwindow.ui \
     dialoggoodsin.ui \
     dialoggoodsoutrecordprint.ui \
     formfinance.ui \
-    dialogprintouttable.ui
+    dialogprintouttable.ui \
+    formmatermanager.ui
 
 RESOURCES += \
     res.qrc

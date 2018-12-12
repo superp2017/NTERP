@@ -61,7 +61,7 @@ void printer::printDocument(QPrinter *printer)
     painter.save();
     double left     = printer->width()/9.0;
     double right    = left*8;
-    double top      = printer->height()*0.3;
+    double top      = printer->height()*0.20;
     double bottom   = printer->height()/9.0*8;
     double width    = right-left;
     double height   = bottom-top;
@@ -69,47 +69,47 @@ void printer::printDocument(QPrinter *printer)
 
     painter.setFont(QFont("宋体", 18, QFont::Normal));
 
-    double title_h = printer->height()/14.0;
+    double title_h = printer->height()*0.05;
     if(m_isTwoTtile)
         painter.drawText(0,0,printer->width(),title_h,Qt::AlignCenter,m_fistTitle);
     painter.drawText(0,title_h,printer->width(),title_h,Qt::AlignCenter,m_secTtile);
 
 
-    painter.setFont(QFont("宋体", 18, QFont::Normal));
+    painter.setFont(QFont("宋体", 16, QFont::Normal));
     QString third_Title("来料加工送货单");
 
 
-    double secTitle_bottom = printer->height()/7.0;
+    double secTitle_bottom = printer->height()*0.10;
 
-    double third_Titile_bottom = printer->height()*0.24;
+    double third_Titile_bottom = printer->height()*0.14;
 
     painter.drawText(0,secTitle_bottom+10,printer->width(),third_Titile_bottom-secTitle_bottom,Qt::AlignHCenter|Qt::AlignTop,third_Title);
 
     painter.setFont(QFont("宋体", 14, QFont::Normal));
 
-    painter.drawText(left+30,third_Titile_bottom,printer->width()/7.0,top-third_Titile_bottom,Qt::AlignTop|Qt::AlignLeft,"客户名称：");
+    painter.drawText(left+30,third_Titile_bottom,printer->width()/7.0,top-third_Titile_bottom,Qt::AlignVCenter|Qt::AlignLeft,"客户名称：");
 
 
     QString customerName = m_data.at(0).CustomName;
 
-    painter.drawText(left*3,third_Titile_bottom,printer->width()/7.0*3,top-third_Titile_bottom,Qt::AlignTop|Qt::AlignLeft,customerName);
+    painter.drawText(left*3,third_Titile_bottom,printer->width()/7.0*3,top-third_Titile_bottom,Qt::AlignVCenter|Qt::AlignLeft,customerName);
 
     painter.setFont(QFont("宋体", 16, QFont::Normal));
     QString number = QString("N.O ")+m_printNum;
-    painter.drawText(left,third_Titile_bottom,right-left,top-third_Titile_bottom,Qt::AlignTop|Qt::AlignRight,number);
+    painter.drawText(left,third_Titile_bottom,right-left,top-third_Titile_bottom,Qt::AlignVCenter|Qt::AlignRight,number);
 
     painter.setFont(QFont("宋体", 11, QFont::Normal));
     painter.drawRect(left,top,width,height);
 
     double d_w = width/30.0;
-    double d_h = height/9.0;
+    double d_h = height/11.0;
 
     for(int i =1;i<30;i++){
-        if(i==3||i==10||i==21||i==24||i==27)
+        if(i==2||i==8||i==20||i==23||i==25)
             painter.drawLine(left+i*d_w,top,left+i*d_w,bottom);
     }
 
-    for(int i =1;i<9;i++){
+    for(int i =1;i<11;i++){
         painter.drawLine(left,top+i*d_h,right,top+i*d_h);
     }
 
@@ -162,28 +162,28 @@ void printer::printRow(QPainter *print, QVector<QString> &data, int row, double 
             print->setFont(QFont("宋体", 11, QFont::Normal));
         }
         if(i==0) {
-            width =d_w*3;
+            width =d_w*2;
             l =left;
         }
         if(i==1) {
-            width =d_w*7;
-            l =left+d_w*3;
+            width =d_w*6;
+            l =left+d_w*2;
         }
         if(i==2) {
-            width =d_w*11;
-            l =left+d_w*10;
+            width =d_w*12;
+            l =left+d_w*8;
         }
         if(i==3) {
             width =d_w*3;
-            l =left+d_w*21;
+            l =left+d_w*20;
         }
         if(i==4) {
-            width =d_w*3;
-            l =left+d_w*24;
+            width =d_w*2;
+            l =left+d_w*23;
         }
         if(i==5) {
-            width =d_w*3;
-            l =left+d_w*27;
+            width =d_w*5;
+            l =left+d_w*25;
         }
 
         int flag = Qt::TextWrapAnywhere|Qt::AlignCenter;
