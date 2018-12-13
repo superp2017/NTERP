@@ -276,7 +276,7 @@ QJsonObject OrderService::toJsonObject(Order order)
 
     obj.insert("CreatStamp",order.CreatStamp);
     obj.insert("LastTime",order.LastTime);
-
+    obj.insert("IsDel",order.IsDel);
     return obj;
 }
 
@@ -547,6 +547,11 @@ Order OrderService::fromJsonObject(QJsonObject obj)
             order.LastTime =s.toInt();
     }
 
+    if(obj.contains("IsDel")){
+        QJsonValue s = obj.value("IsDel");
+        if(s.isBool())
+            order.IsDel =s.toBool();
+    }
     return order;
 }
 

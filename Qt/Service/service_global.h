@@ -160,6 +160,7 @@ struct Order{
     QVector<PrintDetail> Print;       //打印记录
     int               CreatStamp;     //创建的时间戳
     int               LastTime;       //最后更新的时间戳
+    bool              IsDel;          //标记删除
 };
 
 struct User {
@@ -291,33 +292,7 @@ struct GoodsOutRecord{
 };
 
 
-//通知类型
-enum enum_NoticeType{NoticeType_NEW=0,\
-                     NoticeType_Modify,NoticeType_Del};
 
-//通知的数据类型
-enum enum_DaType{STRTUCT_ORDER=0,STRUCT_MATERIAL,\
-                 STRUCT_GOODS,STRUCT_OUTRECORD,\
-                 STRUCT_USER,STRUCT_CUSTOMER,\
-                 STRUCT_SUPPLIER,STRUCT_UNIT,\
-                 STRUCT_DEPARTMENT,STRUCT_GOODS_TYPE,\
-                 STRUCT_PLANTING};
-
-
-
-struct NoticeInfo {
-    int  NoticeType ;
-    int  DataType;
-    QJsonValue Data;
-};
-
-struct CacheInfo{
-    QJsonValue  Data;
-    int TimeStamp;
-    QString ID;
-    int UpDateType;
-    int DataType;
-};
 
 
 struct VersionInfo{

@@ -24,9 +24,6 @@ nSysConfig::nSysConfig()
     m_accounts = m_settings.value("Lists").toStringList().toSet();
     m_settings.endGroup();
 
-    m_settings.beginGroup("NOTICE");
-    m_notice_port = m_settings.value("PORT").toInt();
-    m_settings.endGroup();
 }
 
 void nSysConfig::clear()
@@ -67,10 +64,6 @@ void nSysConfig::setSetting(SysSetting set)
     QStringList list = QStringList::fromSet(m_accounts);
     m_settings.setValue("Lists",list);
     m_settings.endGroup();
-
-    m_settings.beginGroup("NOTICE");
-    m_settings.setValue("PORT",m_notice_port);
-    m_settings.endGroup();
 }
 
 SysSetting nSysConfig::Setting() const
@@ -95,7 +88,3 @@ QSet<QString> nSysConfig::accounts() const
     return m_accounts;
 }
 
-qint16 nSysConfig::noticePort() const
-{
-    return m_notice_port;
-}

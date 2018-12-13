@@ -47,6 +47,7 @@ type Order struct {
 	CreatTime       string        //创建时间
 	CreatStamp      int64         //创建的时间戳
 	LastTime        int64         //最后更新时间
+	IsDel           bool          //是否删除
 	ProduceTime     string        //出货时间
 	SuccessTime     string        //完成时间
 	Current         OderFlow      //当前状态
@@ -298,9 +299,9 @@ func DelOrder(session *JHttp.Session) {
 		session.Forward("1", str, nil)
 		return
 	}
-	appendStatus(data, data.UserName, CurTime(), "订单标记删除", Status_Del)
+	////appendStatus(data, data.UserName, CurTime(), "订单标记删除", Status_Del)
 	data.LastTime = CurStamp()
-
+	data.IsDel = true
 	if err := JRedis.Redis_hset(Hash_Order, st.OrderID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return
@@ -453,7 +454,7 @@ func GetGlobalOrders(session *JHttp.Session) {
 		}
 		d := &Order{}
 		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
-			if d.Current.Status != Status_Del {
+			if !d.IsDel {
 				if st.Type == 1 {
 					if d.LastTime > st.Stamp {
 						data = append(data, d)

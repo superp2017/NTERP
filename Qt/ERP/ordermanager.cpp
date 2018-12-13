@@ -68,7 +68,7 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(m_tab_success,SIGNAL(outOrder()),this,SLOT(on_pushButton_success_clicked()));
 
 
-        connect(m_tab_success,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
+    connect(m_tab_success,SIGNAL(modPrice()),this,SLOT(on_pushButton_change_price_clicked()));
 
     connect(m_tab_all,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
     connect(m_tab_all,SIGNAL(modOrder()),this,SLOT(on_pushButton_mod_clicked()));
@@ -178,9 +178,6 @@ void OrderManager::orderClick(QString orderID)
         return;
     }
 
-    //    if(cur_order.Current.Status == Status_Cancle){
-    //        setBtnEnable(false,false,false,false,false,true);
-    //    }else{
     bool produce = cur_order.Current.Status==Status_New||\
             cur_order.Current.Status==Status_PartProduce||\
             cur_order.Current.Status==Status_Part_Part;
@@ -191,36 +188,7 @@ void OrderManager::orderClick(QString orderID)
     bool mod = cur_order.Current.Status==Status_New;
     bool cancel = cur_order.Current.Status== Status_Cancle;
     setBtnEnable(mod,mod,produce,out,true,cancel);
-    //    }
 
-
-    //    if(ui->tabWidget->currentWidget()==m_tab_all){
-    //        if(cur_order.Current.Status == Status_Cancle){
-    //            setBtnEnable(false,false,false,false,false,true);
-    //        }else{
-    //            bool produce = cur_order.Current.Status==Status_New||\
-    //                    cur_order.Current.Status==Status_PartProduce||\
-    //                    cur_order.Current.Status==Status_Part_Part;
-    //            bool out = cur_order.Current.Status==Status_Produce||\
-    //                    cur_order.Current.Status==Status_PartSuccess||\
-    //                    cur_order.Current.Status==Status_PartProduce||\
-    //                    cur_order.Current.Status==Status_Part_Part;
-    //            bool mod = cur_order.Current.Status==Status_New;
-    //            bool cancel = cur_order.Current.Status== Status_Cancle;
-    //            setBtnEnable(mod,mod,produce,out,mod,cancel);
-    //        }
-    //    }
-
-    //    if(ui->tabWidget->currentWidget()== m_tab_new){
-    //        setBtnEnable(true,true,true,false,true,false);
-    //    }
-
-    //    if(ui->tabWidget->currentWidget()==m_tab_success){
-    //        setBtnEnable(false,false,false,false,false,false);
-    //    }
-    //    if(ui->tabWidget->currentWidget()==m_tab_produce){
-    //        setBtnEnable(false,false,false,true,false,false);
-    //    }
 }
 
 void OrderManager::changeCol()

@@ -54,6 +54,7 @@ private:
     QAction *m_giveup;
     QString cutStatus;
     int     timecol;
+    int     baravalue;
 };
 
 #endif // ORDERTABLE_H

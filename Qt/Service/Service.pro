@@ -53,7 +53,6 @@ SOURCES += service.cpp \
     platingservice.cpp \
     goodsoutrecordservice.cpp \
     printer.cpp \
-    notification.cpp \
     update.cpp
 
 HEADERS += service.h\
@@ -71,7 +70,6 @@ HEADERS += service.h\
     platingservice.h \
     goodsoutrecordservice.h \
     printer.h \
-    notification.h \
     update.h
 
 unix {

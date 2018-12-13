@@ -52,6 +52,7 @@ NLogin::NLogin(QWidget *parent) :
     ui->n_useNameLine->setText(dataCenter::instance()->CurSettings().Account);
     ui->n_usePwdLine->setText(dataCenter::instance()->CurSettings().Code);
 
+
 }
 
 NLogin::~NLogin()

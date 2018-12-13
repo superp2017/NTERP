@@ -1,6 +1,7 @@
 ﻿#include "ordertable.h"
 #include "datacenter.h"
 #include <QDateTime>
+#include <QScrollBar>
 
 #include "dialogorderdetail.h"
 
@@ -11,7 +12,7 @@ OrderTable::OrderTable(QString status, QWidget *w):
     this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     cutStatus = status;
-
+    baravalue = 0;
     //设置表头内容
     QStringList header;
     header<<tr("分厂名称")<<tr("产线名称")<<tr("生产批号")<<tr("订单类型")<<tr("客户名称")<<tr("物料描述")\
@@ -28,7 +29,7 @@ OrderTable::OrderTable(QString status, QWidget *w):
 
 
     m_menu      = new QMenu();
-//    m_new       = new QAction("新建");
+    //    m_new       = new QAction("新建");
     m_mod       = new QAction("修改");
     m_cancle    = new QAction("取消");
     m_produce   = new QAction("生产");
@@ -38,7 +39,7 @@ OrderTable::OrderTable(QString status, QWidget *w):
     m_giveup    = new QAction("放弃");
 
 
-//    connect(m_new,SIGNAL(triggered(bool)),this,SIGNAL(newOrder()));
+    //    connect(m_new,SIGNAL(triggered(bool)),this,SIGNAL(newOrder()));
     connect(m_mod,SIGNAL(triggered(bool)),this,SIGNAL(modOrder()));
     connect(m_cancle,SIGNAL(triggered(bool)),this,SIGNAL(cancleOrder()));
     connect(m_produce,SIGNAL(triggered(bool)),this,SIGNAL(produceOrder()));
@@ -68,19 +69,23 @@ OrderTable::OrderTable(QString status, QWidget *w):
 //初始化所有数据
 void OrderTable::initOrder(QVector<Order> list)
 {
+    baravalue = this->verticalScrollBar()->value();
     removeAllRow();
     for(Order o:list){
         appendOrder(o);
     }
+    this->verticalScrollBar()->setValue(baravalue);
 }
 
 //更新所有数据
 void OrderTable::updateOrder(QVector<Order> list)
 {
+    baravalue = this->verticalScrollBar()->value();
     this->setRowCount(list.size());
     for(int i=0;i<list.size();++i){
         setRowData(list.at(i),i);
     }
+    this->verticalScrollBar()->setValue(baravalue);
 }
 
 
@@ -147,7 +152,7 @@ void OrderTable::checkAuthor(int author)
         this->hideColumn(15);
         break;
     case 1:
-//        m_new->setEnabled(false);
+        //        m_new->setEnabled(false);
         m_mod->setEnabled(false);
         m_cancle->setEnabled(false);
         m_produce->setEnabled(false);
@@ -159,7 +164,7 @@ void OrderTable::checkAuthor(int author)
         this->hideColumn(15);
         break;
     case 2:
-//        m_new->setEnabled(false);
+        //        m_new->setEnabled(false);
         m_mod->setEnabled(false);
         m_cancle->setEnabled(false);
         m_produce->setEnabled(false);
@@ -173,8 +178,8 @@ void OrderTable::checkAuthor(int author)
 
 void OrderTable::checkOrder(Order order)
 {
-//    QString status = order.Current.Status;
-//    int last = order.
+    //    QString status = order.Current.Status;
+    //    int last = order.
 
 }
 
@@ -373,12 +378,12 @@ void OrderTable::setEnable(bool mod, bool cancel, bool produce,  bool out, bool 
     m_menu->clear();
     int i=0;
 
-//    if(cutStatus==Status_New){
-//        if(m_new->isEnabled()){
-//            m_menu->addAction(m_new);
-//            i++;
-//        }
-//    }
+    //    if(cutStatus==Status_New){
+    //        if(m_new->isEnabled()){
+    //            m_menu->addAction(m_new);
+    //            i++;
+    //        }
+    //    }
     if(m_mod->isEnabled()&&mod){
         m_menu->addAction(m_mod);
         i++;

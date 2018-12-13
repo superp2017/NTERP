@@ -11,9 +11,6 @@ class SERVICESHARED_EXPORT update : public QObject
     Q_OBJECT
 public:
     explicit update(QObject *parent = 0);
-    //    static CacheInfo CacheformJson(QJsonObject obj);
-    //    static QVector<CacheInfo> HeartBeat(const QJsonObject para, bool &ok, QString hostname, QString hostport);
-    //signals:
     static int HeartBeat(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static VersionInfo GetVersion(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static void SetVersion(const QJsonObject para, bool &ok, QString hostname, QString hostport);

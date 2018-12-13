@@ -122,7 +122,8 @@ SOURCES += main.cpp\
     dialoggoodsoutrecordprint.cpp \
     formfinance.cpp \
     dialogprintouttable.cpp \
-    formmatermanager.cpp
+    formmatermanager.cpp \
+    version.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -206,7 +207,8 @@ HEADERS  += mainwindow.h \
     dialoggoodsoutrecordprint.h \
     formfinance.h \
     dialogprintouttable.h \
-    formmatermanager.h
+    formmatermanager.h \
+    version.h
 
 FORMS    += mainwindow.ui \
     login.ui \

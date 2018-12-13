@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QCheckBox>
 #include "service_global.h"
-
+#pragma execution_character_set("utf-8")
 namespace Ui {
 class FormMaterManager;
 }
