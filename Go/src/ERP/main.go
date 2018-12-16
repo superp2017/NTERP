@@ -63,8 +63,11 @@ func initRoute() {
 	JHttp.WhiteHttp("/delplating", DelPlating)                   //删除一个镀种
 	JHttp.WhiteHttp("/getallplating", GetAllPlating)             //获取所有的镀种
 	JHttp.WhiteHttp("/heartbeat", HeartBeat)                     //客户端心跳
-	JHttp.WhiteHttp("/getversion", GetVertion)                   //客户端心跳
-	JHttp.WhiteHttp("/setversion", SetVersion)                   //客户端心跳
+	JHttp.WhiteHttp("/getversion", GetVertion)                   //获取版本
+	JHttp.WhiteHttp("/setversion", SetVersion)                   //设置版本
+	JHttp.WhiteHttp("/searchorder", SearchOrder)                 //订单搜索
+
+	JHttp.WhiteHttp("/updateall", updateAll) //更新所有时间戳
 
 }
 

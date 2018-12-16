@@ -175,11 +175,6 @@ func DelSupplier(session *JHttp.Session) {
 		return
 	}
 
-	//if err := JRedis.Redis_hdel(Hash_Supplier, st.SID); err != nil {
-	//	session.Forward("1", err.Error(), nil)
-	//	return
-	//}
-
 	increaseUpdate(STRUCT_SUPPLIER)
 
 	session.Forward("0", "success", sup)
@@ -217,7 +212,6 @@ func GetAllSupplier(session *JHttp.Session) {
 			}
 		}
 	}
-	JLogger.Error("GetAllSupplier:type=%d,num=%d,start=%d,stamp=%d,data=%v\n", st.Type, st.Num, st.Start, st.Stamp, data)
 
 	session.Forward("0", "success", data)
 }

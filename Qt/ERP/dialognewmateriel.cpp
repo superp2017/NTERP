@@ -190,7 +190,7 @@ void DialogNewMateriel::initCommbox()
     QCompleter *completertype = new QCompleter(type, this);
     ui->comboBox_type->clear();
     ui->comboBox_type->addItems(type);
-    ui->comboBox_type->setEditable(true);
+//    ui->comboBox_type->setEditable(true);
     ui->comboBox_type->setCompleter(completertype);
 
     QStringList friction;

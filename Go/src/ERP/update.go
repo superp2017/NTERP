@@ -1,6 +1,11 @@
 package main
 
-import "sync"
+import (
+	"JGo/JHttp"
+	"JGo/JStore/JRedis"
+	"sync"
+	"time"
+)
 
 ////更新的数据类型
 const (
@@ -45,4 +50,145 @@ func getUpdateStamp(datatype int) int64 {
 		return t
 	}
 	return 0
+}
+
+func updateAll(session *JHttp.Session) {
+	go updateOrder()
+	go updateUser()
+	go updateGoods()
+	go updateGoodsOut()
+	go updateCustomer()
+	go updateSupplier()
+	go updateMaterial()
+	session.Forward("0", "success", nil)
+}
+
+//默认删除7天内的标记的订单
+func updateOrder() {
+	list, err := JRedis.Redis_hkeys(Hash_Order)
+	if err != nil {
+		return
+	}
+	for i := len(list) - 1; i >= 0; i-- {
+		v := list[i]
+		if v == Key_LastOrderDate {
+			continue
+		}
+		d := &Order{}
+		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
+			if t, e := time.Parse("2006-01-02 15:04:05", d.Current.OpreatTime); e == nil {
+				d.LastTime = t.Unix()
+			}
+			if t, e := time.Parse("2006-01-02 15:04:05", d.CreatTime); e == nil {
+				d.CreatStamp = t.Unix()
+			}
+			d.IsDel = false
+			if d.Current.Status == "Status_Del" {
+				d.IsDel = true
+			}
+			JRedis.Redis_hset(Hash_Order, v, d)
+		}
+	}
+}
+
+func updateUser() {
+	list, err := JRedis.Redis_hkeys(Hash_Employee)
+	if err != nil {
+		return
+	}
+	for _, v := range list {
+		d := &Employee{}
+		if err := JRedis.Redis_hget(Hash_Employee, v, d); err == nil {
+			d.LastTime = time.Now().Unix()
+			if t, e := time.Parse("2006-01-02 15:04:05", d.CreatTime); e == nil {
+				d.CreatStamp = t.Unix()
+			}
+			JRedis.Redis_hset(Hash_Employee, v, d)
+		}
+	}
+}
+
+func updateGoods() {
+	list, err := JRedis.Redis_hkeys(Hash_Goods)
+	if err != nil {
+		return
+	}
+	for _, v := range list {
+		d := &Goods{}
+		if err := JRedis.Redis_hget(Hash_Goods, v, d); err == nil {
+			d.LastTime = time.Now().Unix()
+			if t, e := time.Parse("2006-01-02 15:04:05", d.CreatTime); e == nil {
+				d.CreatStamp = t.Unix()
+			}
+			JRedis.Redis_hset(Hash_Goods, v, d)
+		}
+	}
+}
+
+func updateGoodsOut() {
+	list, err := JRedis.Redis_hkeys(Hash_StorageOutRecord)
+	if err != nil {
+		return
+	}
+	for _, v := range list {
+		d := &StorageOutRecord{}
+		if err := JRedis.Redis_hget(Hash_StorageOutRecord, v, d); err == nil {
+			d.LastTime = time.Now().Unix()
+			if t, e := time.Parse("2006-01-02", d.CreatDate); e == nil {
+				d.CreatStamp = t.Unix()
+			}
+			JRedis.Redis_hset(Hash_StorageOutRecord, v, d)
+		}
+	}
+}
+
+func updateCustomer() {
+	list, err := JRedis.Redis_hkeys(Hash_Customer)
+	if err != nil {
+		return
+	}
+	for _, v := range list {
+		d := &Customer{}
+		if err := JRedis.Redis_hget(Hash_Customer, v, d); err == nil {
+			d.LastTime = time.Now().Unix()
+			if t, e := time.Parse("2006-01-02 15:04:05", d.CreatTime); e == nil {
+				d.CreatStamp = t.Unix()
+			}
+			JRedis.Redis_hset(Hash_Customer, v, d)
+		}
+	}
+}
+
+func updateSupplier() {
+	list, err := JRedis.Redis_hkeys(Hash_Supplier)
+	if err != nil {
+		return
+	}
+	for _, v := range list {
+		d := &Supplier{}
+		if err := JRedis.Redis_hget(Hash_Supplier, v, d); err == nil {
+			d.LastTime = time.Now().Unix()
+			if t, e := time.Parse("2006-01-02 15:04:05", d.CreatTime); e == nil {
+				d.CreatStamp = t.Unix()
+			}
+			JRedis.Redis_hset(Hash_Supplier, v, d)
+		}
+	}
+}
+
+func updateMaterial() {
+	list, err := JRedis.Redis_hkeys(Hash_Material)
+	if err != nil {
+		return
+	}
+	for _, v := range list {
+		d := &MaterialInfo{}
+		if err := JRedis.Redis_hget(Hash_Material, v, d); err == nil {
+			d.LastTime = time.Now().Unix()
+			if t, e := time.Parse("2006-01-02 15:04:05", d.CreatTime); e == nil {
+				d.CreatStamp = t.Unix()
+			}
+			JRedis.Redis_hset(Hash_Material, v, d)
+		}
+	}
 }

@@ -27,6 +27,7 @@ OrderTable::OrderTable(QString status, QWidget *w):
 
     connect(this,SIGNAL(cellPressed(int,int)),this,SLOT(clickRow(int,int)));
 
+    connect(this->verticalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(onSliderChanged(int)));
 
     m_menu      = new QMenu();
     //    m_new       = new QAction("新建");
@@ -71,8 +72,8 @@ void OrderTable::initOrder(QVector<Order> list)
 {
     baravalue = this->verticalScrollBar()->value();
     removeAllRow();
-    for(Order o:list){
-        appendOrder(o);
+    for(int i = list.size()-1;i>=0;--i){
+         appendOrder(list.at(i));
     }
     this->verticalScrollBar()->setValue(baravalue);
 }
@@ -82,7 +83,7 @@ void OrderTable::updateOrder(QVector<Order> list)
 {
     baravalue = this->verticalScrollBar()->value();
     this->setRowCount(list.size());
-    for(int i=0;i<list.size();++i){
+    for(int i=list.size()-1;i>=0;--i){
         setRowData(list.at(i),i);
     }
     this->verticalScrollBar()->setValue(baravalue);
@@ -504,6 +505,13 @@ void OrderTable::clickRow(int row, int col)
     QTableWidgetItem* item = this->item(row,2);
     if (item!=NULL){
         emit orderClick(item->text());
+    }
+}
+
+void OrderTable::onSliderChanged(int v)
+{
+    if(this->verticalScrollBar()->isVisible()&&v>=this->verticalScrollBar()->maximum()){
+        dataCenter::instance()->pub_getAllOrders(2);
     }
 }
 

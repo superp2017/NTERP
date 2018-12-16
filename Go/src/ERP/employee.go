@@ -191,10 +191,6 @@ func DelEmployee(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//if err := JRedis.Redis_hdel(Hash_Employee, st.UID); err != nil {
-	//	session.Forward("1", err.Error(), nil)
-	//	return
-	//}
 
 	go delAccount(data.Account)
 
@@ -237,7 +233,6 @@ func GetAllEmployee(session *JHttp.Session) {
 			}
 		}
 	}
-	JLogger.Error("GetAllEmployeess:type=%d,num=%d,start=%d,stamp=%d,data=%v\n", st.Type, st.Num, st.Start, st.Stamp, data)
 	session.Forward("0", "success", data)
 }
 

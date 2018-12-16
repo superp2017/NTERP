@@ -46,6 +46,7 @@ FormFinance::FormFinance(QWidget *parent) :
     ui->tableWidget->setSortingEnabled(true);//允许列排序
 
     connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
+    connect(dataCenter::instance(),SIGNAL(sig_searchOrder(QVector<Order>,bool)),this,SLOT(orderSearchCb(QVector<Order>,bool)));
 
 
     initUI();
@@ -82,6 +83,9 @@ void FormFinance::initUI()
     ui->comboBox_factort->addItem("涂覆分厂","01");
     ui->comboBox_factort->addItem("滚镀分厂","02");
     ui->comboBox_factort->addItem("挂镀分厂","03");
+
+    ui->comboBox_order_status->setCurrentIndex(3);
+    ui->comboBox_factort->setCurrentIndex(1);
 
 }
 
@@ -131,8 +135,8 @@ void FormFinance::on_pushButton_search_clicked()
 {
     qint64 start,end;
     if(ui->groupBox_time->isChecked()){
-        start = ui->dateEdit_start->dateTime().toMSecsSinceEpoch();
-        end = ui->dateEdit_end->dateTime().toMSecsSinceEpoch();
+        start = ui->dateEdit_start->dateTime().toSecsSinceEpoch();
+        end = ui->dateEdit_end->dateTime().toSecsSinceEpoch();
         if(end<start){
             QToolTip::showText(ui->dateEdit_end->mapToGlobal(QPoint(100, 0)), "结束时间不能小于开始时间!");
             return;
@@ -174,19 +178,13 @@ void FormFinance::on_pushButton_export_clicked()
 }
 
 
-void FormFinance::do_search(QString cusName, QString status, QString type, QString fac, \
-                            qint64 start, qint64 end, bool Iscus, bool Isrtype,\
-                            bool IsStatus, bool isFac, bool Istime)
+void FormFinance::searchFromLoal(QString cusName,QString status,QString type,\
+                                 QString fac, qint64 start,qint64 end,\
+                                 bool Iscus ,bool Isrtype ,\
+                                 bool IsStatus ,bool isFac,\
+                                 bool Istime)
 {
-    m_data.clear();
-
-    if(!(Iscus||Isrtype||IsStatus||isFac||Istime)){
-        initOrder(QVector<Order>());
-        QMessageBox::information(this,"提示","请至少选择一种搜索方式!");
-        return;
-    }
-
-
+    qDebug()<<"searchFromLoal";
     QVector<Order> ls;
     if(IsStatus){
         ls = dataCenter::instance()->pub_StatusOrders(status);
@@ -196,8 +194,8 @@ void FormFinance::do_search(QString cusName, QString status, QString type, QStri
 
     for(Order o:ls){
         if(Istime){
-            qint64 t=  QDateTime::fromString(o.CreatTime,"yyyy-MM-dd HH:mm:ss").toMSecsSinceEpoch();
-            if(t<start||t>end) continue;
+            //qint64 t=  QDateTime::fromString(o.CreatTime,"yyyy-MM-dd HH:mm:ss").toMSecsSinceEpoch();
+            if(o.CreatStamp<start||o.CreatStamp>end) continue;
         }
         if(Iscus){
             if(o.CustomName!=cusName) continue;
@@ -210,10 +208,54 @@ void FormFinance::do_search(QString cusName, QString status, QString type, QStri
         }
         m_data.push_back(o);
     }
-
     initOrder(m_data);
+}
+
+
+void FormFinance::do_search(QString cusName, QString status, QString type, QString fac, \
+                            qint64 start, qint64 end, bool Iscus, bool Isrtype,\
+                            bool IsStatus, bool isFac, bool Istime)
+{
+
+    if(!(Iscus||Isrtype||IsStatus||isFac||Istime)){
+        initOrder(QVector<Order>());
+        QMessageBox::information(this,"提示","请至少选择一种搜索方式!");
+        return;
+    }
+
+    m_data.clear();
+    if(dataCenter::instance()->isOrderOver()){
+        searchFromLoal(cusName,status,type,fac,start,end,Iscus,Isrtype,IsStatus,isFac,Istime);
+    }else{
+        QJsonObject para;
+        para.insert("CusName",cusName);
+        para.insert("Status",status);
+        para.insert("OrderType",type);
+        para.insert("Factory",fac);
+        para.insert("StartStamp",start);
+        para.insert("EndStamp",end);
+        para.insert("IsCus",Iscus);
+        para.insert("IsType",Isrtype);
+        para.insert("IsStatus",IsStatus);
+        para.insert("IsFac",isFac);
+        para.insert("IsTime",Istime);
+        boost::thread (boost::bind(&dataCenter::net_searchOrder,dataCenter::instance(),para)).detach();
+        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
+    }
 
 }
+
+void FormFinance::orderSearchCb(QVector<Order> list, bool ok)
+{
+    dataCenter::instance()->pub_hideLoadding();
+    m_data = list;
+    initOrder(m_data);
+    if(!ok){
+        dataCenter::instance()->pub_showMessage("搜索失败!",2000);
+    }
+    qDebug()<<"orderSearchCb"<<ok<<m_data.size();
+}
+
 
 
 void FormFinance::setRowData(Order para, int row)
@@ -342,6 +384,7 @@ void FormFinance::doExport(QVector<Order> ls, QString filepath)
     bool ok = OrderService::exportOrdersEx(ls,filepath,true);
     emit sig_exportCb(ok);
 }
+
 
 
 

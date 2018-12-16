@@ -37,6 +37,7 @@ signals:
 private slots:
     void doubleclickRow(int row,int ool);
     void clickRow(int row,int col);
+    void onSliderChanged(int v);
 private:
     void setRowData(Order para, int row);
     void setEnable(bool produce, bool cancel, bool mod, bool out, bool modPrice, bool del);

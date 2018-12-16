@@ -44,7 +44,7 @@ private slots:
     void produceOrderCb(Order order, bool ok);
     void finishOrderCb(Order order,bool ok);
     void delOrderCb(Order order, bool ok);
-    void GlobalOrdersCb(bool ok);
+    void GlobalOrdersCb(bool ok,int type,bool hasNew);
 
     void showAll();
 

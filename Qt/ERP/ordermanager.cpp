@@ -47,7 +47,7 @@ OrderManager::OrderManager(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_finishOrder(Order,bool)),this,SLOT(finishOrderCb(Order,bool)));
     connect(dataCenter::instance(),SIGNAL(sig_delOrder(Order,bool)),this,SLOT(delOrderCb(Order,bool)));
 
-    connect(dataCenter::instance(),SIGNAL(sig_globalOrders(bool)),this,SLOT(GlobalOrdersCb(bool)));
+    connect(dataCenter::instance(),SIGNAL(sig_globalOrders(bool,int,bool)),this,SLOT(GlobalOrdersCb(bool,int,bool)));
 
 
     connect(m_tab_new,SIGNAL(newOrder()),this,SLOT(on_pushButton_new_clicked()));
@@ -129,6 +129,7 @@ void OrderManager::tabChange()
 
 void OrderManager::updataData()
 {
+    qDebug()<<"updataData";
     m_tab_new->initOrder(dataCenter::instance()->pub_StatusOrders(Status_New));
     m_tab_produce->initOrder(dataCenter::instance()->pub_StatusOrders(Status_Produce));
     m_tab_success->initOrder(dataCenter::instance()->pub_StatusOrders(Status_Success));
@@ -313,18 +314,25 @@ void OrderManager::on_pushButton_success_clicked()
 void OrderManager::on_pushButton_reflash_clicked()
 {
     clearCurOrder();
-    dataCenter::instance()->pub_getAllOrders(1);
-    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
+    if(dataCenter::instance()->isOrderOver()){
+        dataCenter::instance()->pub_showMessage("没有更多订单...",4000);
+    }else{
+        dataCenter::instance()->pub_getAllOrders(2);
+        dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
+    }
 }
 
-void OrderManager::GlobalOrdersCb(bool ok)
+void OrderManager::GlobalOrdersCb(bool ok, int type, bool hasNew)
 {
     dataCenter::instance()->pub_hideLoadding();
     if(ok){
-        dataCenter::instance()->pub_showMessage("刷新订单成功!",4000);
-        updataData();
+        if(type!=1)
+            dataCenter::instance()->pub_showMessage("刷新订单成功!",4000);
+        if(hasNew)
+            updataData();
     }else{
-        dataCenter::instance()->pub_showMessage("刷新订单失败!",4000);
+        if(type!=1)
+            dataCenter::instance()->pub_showMessage("刷新订单失败!",4000);
     }
 }
 

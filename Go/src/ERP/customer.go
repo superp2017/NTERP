@@ -179,11 +179,6 @@ func DelCustomer(session *JHttp.Session) {
 		return
 	}
 
-	//if err := JRedis.Redis_hdel(Hash_Customer, st.CID); err != nil {
-	//	session.Forward("1", err.Error(), nil)
-	//	return
-	//}
-
 	//更新
 	increaseUpdate(STRUCT_CUSTOMER)
 
@@ -222,6 +217,5 @@ func GetAllCustomer(session *JHttp.Session) {
 			}
 		}
 	}
-	JLogger.Error("GetAllCustomer:type=%d,num=%d,start=%d,stamp=%d,data=%v\n", st.Type, st.Num, st.Start, st.Stamp, data)
 	session.Forward("0", "success", data)
 }

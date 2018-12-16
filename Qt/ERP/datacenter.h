@@ -71,7 +71,6 @@ public:
     void initData();
     void clearData();
     void TimerUpdate(bool istart=true);
-    // void ListenNotice();
     void net_login(const QJsonObject para);
     ///////////////////////////////////////////////////////
     void net_newUser(const QJsonObject para);
@@ -79,6 +78,7 @@ public:
     void net_outUser(const QJsonObject para);
     void net_delUser(const QJsonObject para);
     void net_getGlobalUsers(const QJsonObject para);
+    void net_searchOrder(const QJsonObject para);
     //////////////////////////////////////////////////////
     void net_newDepartment(const QJsonObject para);
     void net_delDepartment(const QJsonObject para);
@@ -198,8 +198,10 @@ public:
     void pub_getAllMateriels(int type, QString start="", int num=0);
     void pub_GetAllCustomers(int type, QString start="", int num=0);
     void pub_getAllGoods(int type, QString  start="", int num=0);
-    void pub_getAllOrders(int type, QString start="", int num=0);
+    void pub_getAllOrders(int type, QString start="", int num=50);
     void checkVersion(QWidget *W=0);
+    bool isOrderOver() const;
+
 private slots:
     void update_first();
     void update_second();
@@ -217,7 +219,8 @@ signals:
     void sig_modOrderPrice(Order,bool);
     void sig_updatePrintNum(QVector<Order>,bool);
     void sig_delOrder(Order,bool);
-    void sig_globalOrders(bool);
+    void sig_globalOrders(bool,int,bool);
+    void sig_searchOrder(QVector<Order>,bool);
     //////////////////////////////////////
     void sig_newEmployee(User,bool);
     void sig_modEmployee(User,bool);
@@ -277,6 +280,7 @@ private:
     User                    cur_user;     //当前登录的账号
     QVector<User>           m_employee;   //所有的员工
     QVector<Order>          m_orders;     //所有订单
+    QSet<QString>           m_orders_set;//所有订单的ID
     QVector<QString>        m_units;      //所有计量单位
     QVector<QString>        m_Platings;   //所有镀种
     QSet<QString>           m_batch;      //所有用户批次
@@ -297,6 +301,8 @@ private:
     TimerBlock              m_second_block;
     TimerBlock              m_thrid_block;
     version                 m_version_manager;
+    QString                 m_last_orderID;
+    bool                    m_isOrderOver;
 };
 
 #endif // DATACENTER_H

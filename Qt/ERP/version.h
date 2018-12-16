@@ -11,6 +11,7 @@ class version : public QObject
 public:
     explicit version(QObject *parent = 0);
     void setNetVersion(VersionInfo &info,bool ok);
+
 signals:
 
 public slots:
@@ -23,6 +24,7 @@ private:
     VersionInfo m_cur_ver;//本地版本
     VersionInfo m_net_ver;//网络版本
     bool m_net_ok;
+    QString downurl;
 
 };
 

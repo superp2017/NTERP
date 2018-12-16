@@ -123,7 +123,8 @@ SOURCES += main.cpp\
     formfinance.cpp \
     dialogprintouttable.cpp \
     formmatermanager.cpp \
-    version.cpp
+    version.cpp \
+    dialogversionupdate.cpp
 
 HEADERS  += mainwindow.h \
     login.h \
@@ -208,7 +209,8 @@ HEADERS  += mainwindow.h \
     formfinance.h \
     dialogprintouttable.h \
     formmatermanager.h \
-    version.h
+    version.h \
+    dialogversionupdate.h
 
 FORMS    += mainwindow.ui \
     login.ui \
@@ -276,7 +278,8 @@ FORMS    += mainwindow.ui \
     dialoggoodsoutrecordprint.ui \
     formfinance.ui \
     dialogprintouttable.ui \
-    formmatermanager.ui
+    formmatermanager.ui \
+    dialogversionupdate.ui
 
 RESOURCES += \
     res.qrc

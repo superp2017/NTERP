@@ -29,12 +29,18 @@ private slots:
     void initOrder(QVector<Order>list);
     void changeCol();
     void exportCb(bool ok);
+    void orderSearchCb(QVector<Order>list,bool ok);
 signals:
     void sig_exportCb(bool);
 private:
     void initUI();
     void setRowData(Order para, int row);
     void doExport(QVector<Order> ls, QString filepath);
+    void searchFromLoal(QString cusName,QString status,QString type,\
+                        QString fac, qint64 start,qint64 end,\
+                        bool Iscus ,bool Isrtype ,\
+                        bool IsStatus ,bool isFac,\
+                        bool Istime);
     Ui::FormFinance *ui;
     QVector<Order>m_data;
 };

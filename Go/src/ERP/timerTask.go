@@ -48,7 +48,7 @@ func forreachOrder() {
 		}
 		d := &Order{}
 		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
-			if d.Current.Status == Status_Del {
+			if d.IsDel {
 				if d.LastTime-CurStamp() >= 3600*24*7 {
 					go JRedis.Redis_hdel(Hash_Order, v)
 				}

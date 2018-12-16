@@ -296,6 +296,9 @@
        <property name="checkable">
         <bool>true</bool>
        </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
        <layout class="QGridLayout" name="gridLayout_2" columnstretch="1">
         <property name="rightMargin">
          <number>0</number>
@@ -333,6 +336,9 @@
        <property name="checkable">
         <bool>true</bool>
        </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
        <layout class="QGridLayout" name="gridLayout_3" columnstretch="1">
         <property name="rightMargin">
          <number>0</number>
@@ -369,6 +375,9 @@
        </property>
        <property name="checkable">
         <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
        <layout class="QGridLayout" name="gridLayout" columnstretch="1,3">
         <property name="rightMargin">

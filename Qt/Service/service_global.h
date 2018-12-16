@@ -29,6 +29,7 @@ const std::string  Net_ModOrderPrice="/modorderprice";      //修改订单价格
 const std::string  Net_ModPrintNum="/updateprintnum";      //修改订单打印次数
 const std::string  Net_SetPrintNum="/getprintnumber";      //获取设置总的打印次数
 const std::string  Net_GlobalOrders="/getglobalorders";     //获取所有订单
+const std::string  Net_SearhOrders="/searchorder";        //搜索订单
 
 
 const std::string  Net_NewCustomer="/newcustomer";          //新建客户

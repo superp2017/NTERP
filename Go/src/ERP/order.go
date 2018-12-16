@@ -434,10 +434,18 @@ func GetGlobalOrders(session *JHttp.Session) {
 		session.Forward("1", "param error\n", nil)
 		return
 	}
+	isOver := false
 	data := []*Order{}
+	type Res struct {
+		IsOver bool
+		Data   []*Order
+	}
+	res := &Res{}
 	if st.Type == 1 {
 		if st.Stamp > getUpdateStamp(STRTUCT_ORDER) {
-			session.Forward("0", "success", data)
+			res.Data = data
+			res.IsOver = isOver
+			session.Forward("0", "success", res)
 			return
 		}
 	}
@@ -446,8 +454,7 @@ func GetGlobalOrders(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	startIndex := -1
-	index := -1
+
 	for _, v := range list {
 		if v == Key_LastOrderDate {
 			continue
@@ -461,25 +468,31 @@ func GetGlobalOrders(session *JHttp.Session) {
 					}
 				} else {
 					data = append(data, d)
-					index++
-					if st.Type == 2 && st.Start != "" && st.Start == v {
-						startIndex = index
-					}
 				}
 			}
+		} else {
+			JLogger.Error(" Redis_hget,OrderID=%s,err =%s\n", v, err)
 		}
 	}
 
 	lenData := len(data)
 	if lenData > 0 {
 		sort.Slice(data, func(i, j int) bool {
-			return data[i].LastTime <= data[j].LastTime
+			return data[i].CreatStamp <= data[j].CreatStamp
 		})
 	}
 
 	if st.Type == 2 {
+		startIndex := -1
+		for i, v := range data {
+			if v.OrderID == st.Start {
+				startIndex = i
+			}
+		}
 		if startIndex == -1 && st.Start != "" {
-			session.Forward("0", "success", []*Order{})
+			res.Data = []*Order{}
+			res.IsOver = isOver
+			session.Forward("0", "success", res)
 			return
 		}
 		startIndex += 1
@@ -488,8 +501,72 @@ func GetGlobalOrders(session *JHttp.Session) {
 		} else {
 			data = data[startIndex:lenData]
 		}
+		if startIndex+st.Num >= lenData {
+			isOver = true
+		}
 	}
-	JLogger.Error("GetGlobalOrders:type=%d,num=%d,start=%d,stamp=%d,data=%v\n", st.Type, st.Num, st.Start, st.Stamp, data)
+	res.Data = data
+	res.IsOver = isOver
+	session.Forward("0", "success", res)
+}
+
+func SearchOrder(session *JHttp.Session) {
+	type Para struct {
+		CusName    string
+		Status     string
+		OrderType  string
+		Factory    string
+		StartStamp int64
+		EndStamp   int64
+		IsCus      bool
+		IsType     bool
+		IsStatus   bool
+		IsFac      bool
+		IsTime     bool
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	list, err := JRedis.Redis_hkeys(Hash_Order)
+	if err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	data := []*Order{}
+	for _, v := range list {
+		if v == Key_LastOrderDate {
+			continue
+		}
+		d := &Order{}
+		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
+			if !d.IsDel {
+				if st.IsStatus && st.Status != d.Current.Status && st.Status != Status_All {
+					continue
+				}
+				if st.IsCus && st.CusName != d.CustomName {
+					continue
+				}
+				if st.IsFac && st.Factory != d.Factory && st.Factory != "全部分厂" {
+					continue
+				}
+				if st.IsType && st.OrderType != d.OrderType {
+					continue
+				}
+				if st.IsTime && (d.CreatStamp < st.StartStamp || d.CreatStamp > st.EndStamp) {
+					continue
+				}
+				data = append(data, d)
+			}
+		}
+	}
+	lenData := len(data)
+	if lenData > 0 {
+		sort.Slice(data, func(i, j int) bool {
+			return data[i].CreatStamp <= data[j].CreatStamp
+		})
+	}
 	session.Forward("0", "success", data)
 }
 

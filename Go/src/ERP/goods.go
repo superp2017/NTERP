@@ -222,12 +222,6 @@ func DelGoods(session *JHttp.Session) {
 		session.Forward("1", err.Error(), nil)
 		return
 	}
-	//if err := JRedis.Redis_hdel(Hash_Goods, st.ID); err != nil {
-	//	JLogger.Error(err.Error())
-	//	session.Forward("1", err.Error(), nil)
-	//	return
-	//}
-
 	//更新
 	increaseUpdate(STRUCT_GOODS)
 
@@ -263,8 +257,6 @@ func GetGlobalGoods(session *JHttp.Session) {
 			}
 		}
 	}
-	JLogger.Error("getGlobalGoods:type=%d,num=%d,start=%d,stamp=%d,data=%v\n", st.Type, st.Num, st.Start, st.Stamp, data)
-
 	session.Forward("0", "GetGlobalGoods success\n", data)
 }
 

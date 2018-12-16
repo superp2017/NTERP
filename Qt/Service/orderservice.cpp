@@ -148,20 +148,33 @@ Order OrderService::delOrder(const QJsonObject para, bool &ok, QString hostname,
     return order;
 }
 
-QVector<Order> OrderService::getAllOrders(const QJsonObject para, bool &ok,QString hostname, QString hostport)
+QVector<Order> OrderService::getAllOrders(const QJsonObject para, bool &ok,bool& isOver,QString hostname, QString hostport)
 {
     QVector<Order> data;
     std::string url = Net_GlobalOrders;
     bool r   = false;
     Ret ret  = Http::fetch(url,para,r,hostname,hostport);
     if(r&&ret.ret){
-        if(ret.data.isArray()){
-            QJsonArray arr = ret.data.toArray();
-            for(QJsonValue v:arr){
-                Order r = fromJsonObject(v.toObject());
-                data.push_back(r);
+        if(ret.data.isObject()){
+            QJsonObject obj = ret.data.toObject();
+            if(obj.contains("IsOver")){
+                QJsonValue v = obj.value("IsOver");
+                if(v.isBool()){
+                    isOver = v.toBool();
+                }
+            }
+            if(obj.contains("Data")){
+                QJsonValue vu = obj.value("Data");
+                if(vu.isArray()){
+                    QJsonArray arr = vu.toArray();
+                    for(QJsonValue v:arr){
+                        Order r = fromJsonObject(v.toObject());
+                        data.push_back(r);
+                    }
+                }
             }
         }
+
         ok = true;
         return data;
     }
@@ -189,7 +202,7 @@ QVector<Order> OrderService::updatePrintNum(const QJsonObject para, bool &ok, QS
         return  list;
     }
     if(!ret.ret)
-        qDebug()<<"modOrderPrice ret is not 0"<<endl;
+        qDebug()<<"updatePrintNum ret is not 0"<<endl;
     ok = false;
     return list;
 }
@@ -208,9 +221,32 @@ QString OrderService::setPrintNumber(const QJsonObject para, bool &ok, QString h
         return  num;
     }
     if(!ret.ret)
-        qDebug()<<"modOrderPrice ret is not 0"<<endl;
+        qDebug()<<"setPrintNumber ret is not 0"<<endl;
     ok = false;
     return "20189999";
+}
+
+QVector<Order> OrderService::SearchOrder(const QJsonObject para, bool &ok,  QString hostname, QString hostport)
+{
+    QVector<Order> list;
+    std::string url = Net_SearhOrders;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isArray()){
+            QJsonArray arr = ret.data.toArray();
+            for(QJsonValue v:arr){
+                Order r = fromJsonObject(v.toObject());
+                list.push_back(r);
+            }
+        }
+        ok = true;
+        return  list;
+    }
+    if(!ret.ret)
+        qDebug()<<"SearchOrder ret is not 0"<<endl;
+    ok = false;
+    return list;
 }
 
 

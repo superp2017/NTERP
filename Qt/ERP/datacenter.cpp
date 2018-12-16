@@ -30,9 +30,9 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)//,m_notice(parent)
     m_first_block.t_timeout = 1000*60*1;
     m_second_block.t_timeout = 1000*60*3;
     m_thrid_block.t_timeout = 1000*60*5;
+    m_isOrderOver = false;
 
 }
-
 
 
 void dataCenter::initData()
@@ -43,7 +43,7 @@ void dataCenter::initData()
     boost::thread (boost::bind(&dataCenter::net_getVersion,dataCenter::instance(),obj)).detach();
 
     //////////////初始化所有订单///////////////////
-    pub_getAllOrders(2,"",50);
+    pub_getAllOrders(2);
 
     //////////////初始化所有单位///////////////////
     boost::thread (boost::bind(&dataCenter::net_getglobalUnits,dataCenter::instance())).detach();
@@ -186,6 +186,13 @@ void dataCenter::net_getGlobalUsers(const QJsonObject para)
         }
     }
     emit sig_globalEmployees(ok);
+}
+
+void dataCenter::net_searchOrder(const QJsonObject para)
+{
+    bool ok =false;
+    QVector<Order>  list = OrderService::SearchOrder(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_searchOrder(list,ok);
 }
 
 
@@ -353,18 +360,37 @@ void dataCenter::net_getPrintNumber()
 void dataCenter::net_getglobalOrders(const QJsonObject para)
 {
     bool ok =false;
-    QVector<Order>  list = OrderService::getAllOrders(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    bool isov = false;
+    QVector<Order>  list = OrderService::getAllOrders(para,ok,isov,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    int type = para.value("Type").toInt();
     if(ok){
-        pri_initBath();
-        if(para.value("type")==0){
+        if(type==0){
+            m_orders_set.clear();
             m_orders = list;
+            for(Order s:list){
+                m_orders_set.insert(s.OrderID);
+            }
+            m_isOrderOver = true;
         }else{
-            for(Order o:m_orders){
+            for(Order o:list){
+                if(m_orders_set.contains(o.OrderID)){
+                    continue;
+                }
                 m_orders.push_back(o);
+                m_orders_set.insert(o.OrderID);
+            }
+            if(type==2){
+                m_isOrderOver = isov;
             }
         }
+
+        if(m_orders.size()>0){
+            m_last_orderID = m_orders.at(m_orders.size()-1).OrderID;
+        }
     }
-    emit sig_globalOrders(ok);
+
+    pri_initBath();
+    emit sig_globalOrders(ok,type,list.size()>0);
 }
 
 
@@ -1061,6 +1087,13 @@ void dataCenter::pub_getAllOrders(int type,QString start,int num)
     QJsonObject order_obj;
     order_obj.insert("Type",type);
     order_obj.insert("Start",start);
+    if(type ==2){
+        if(m_isOrderOver) {
+            qDebug()<<"pub_getAllOrders load more is over!";
+            return;
+        }
+        order_obj.insert("Start",m_last_orderID);
+    }
     order_obj.insert("Num",num);
     order_obj.insert("Stamp",m_first_block.t_stamp);
     boost::thread (boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance(),order_obj)).detach();
@@ -1234,6 +1267,11 @@ void dataCenter::pri_addCustomerMaterial(QString cid, QString materialID)
         ls.push_back(materialID);
         m_hashMaterials[cid] = ls;
     }
+}
+
+bool dataCenter::isOrderOver() const
+{
+    return m_isOrderOver;
 }
 
 
