@@ -20,9 +20,18 @@ public:
     void reSave();
 
     QSet<QString> accounts() const;
+    int getFirstTime() const;
+
+    int getSecondTime() const;
+
+    int getThirdTime() const;
+
 private:
     SysSetting m_set;
     QSet<QString> m_accounts;
+    int  firstTime;
+    int  secondTime;
+    int  thirdTime;
 
 };
 

@@ -24,6 +24,12 @@ nSysConfig::nSysConfig()
     m_accounts = m_settings.value("Lists").toStringList().toSet();
     m_settings.endGroup();
 
+    m_settings.beginGroup("Update");
+    firstTime = m_settings.value("FirstTime").toInt();
+    secondTime = m_settings.value("SecondTime").toInt();
+    thirdTime = m_settings.value("ThirdTime").toInt();
+    m_settings.endGroup();
+
 }
 
 void nSysConfig::clear()
@@ -64,6 +70,12 @@ void nSysConfig::setSetting(SysSetting set)
     QStringList list = QStringList::fromSet(m_accounts);
     m_settings.setValue("Lists",list);
     m_settings.endGroup();
+
+    m_settings.beginGroup("Update");
+    m_settings.setValue("FirstTime",firstTime);
+    m_settings.setValue("SecondTime",secondTime);
+    m_settings.setValue("ThirdTime",thirdTime);
+    m_settings.endGroup();
 }
 
 SysSetting nSysConfig::Setting() const
@@ -86,5 +98,20 @@ void nSysConfig::reSave()
 QSet<QString> nSysConfig::accounts() const
 {
     return m_accounts;
+}
+
+int nSysConfig::getFirstTime() const
+{
+    return firstTime;
+}
+
+int nSysConfig::getSecondTime() const
+{
+    return secondTime;
+}
+
+int nSysConfig::getThirdTime() const
+{
+    return thirdTime;
 }
 

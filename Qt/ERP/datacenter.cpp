@@ -27,9 +27,9 @@ dataCenter::dataCenter(QObject *parent) : QObject(parent)//,m_notice(parent)
     m_second_block.t_timer = NULL;
     m_thrid_block.t_timer = NULL;
 
-    m_first_block.t_timeout = 1000*60*1;
-    m_second_block.t_timeout = 1000*60*3;
-    m_thrid_block.t_timeout = 1000*60*5;
+    m_first_block.t_timeout  = 1000*60*m_Config.getFirstTime();
+    m_second_block.t_timeout = 1000*60*m_Config.getSecondTime();
+    m_thrid_block.t_timeout  = 1000*60*m_Config.getThirdTime();
     m_isOrderOver = false;
 
 }
@@ -1182,6 +1182,7 @@ void dataCenter::update_first()
 
     //////////////心跳//////////////////
     boost::thread(boost::bind(&dataCenter::net_HeartBeat,dataCenter::instance(),1)).detach();
+
 }
 
 void dataCenter::update_second()
@@ -1203,6 +1204,8 @@ void dataCenter::update_second()
     boost::thread(boost::bind(&dataCenter::net_HeartBeat,dataCenter::instance(),2)).detach();
 
     m_second_block.t_timer->start(m_second_block.t_timeout);
+
+    pub_getAllOrders(2);
 }
 
 void dataCenter::update_third()
