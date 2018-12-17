@@ -207,7 +207,7 @@ func ModOrderPrice(session *JHttp.Session) {
 		return
 	}
 
-	if data.Current.Status == Status_Cancle || data.Current.Status == Status_Success {
+	if data.IsDel || data.Current.Status == Status_Cancle || data.Current.Status == Status_All || data.Current.Status == "Status_Del" {
 		str := fmt.Sprintf("ModOrderPrice faild,Current.Status=%s not support modify price \n", data.Current.Status)
 		JLogger.Error(str)
 		session.Forward("1", str, nil)
