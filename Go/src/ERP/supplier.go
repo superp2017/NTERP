@@ -48,6 +48,7 @@ func NewSupplier(session *JHttp.Session) {
 	st.LastTime = CurStamp()
 	st.CreatStamp = CurStamp()
 	st.Status = "0"
+	st.IsDel = false
 	if err := JRedis.Redis_hset(Hash_Supplier, st.SID, st); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return

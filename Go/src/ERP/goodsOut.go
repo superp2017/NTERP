@@ -44,7 +44,7 @@ func NewOutRecord(session *JHttp.Session) {
 	st.CreatDate = CurDate()
 	st.LastTime = CurStamp()
 	st.CreatStamp = CurStamp()
-
+	st.IsDel = false
 	if _, e := inoutGoodsNum(st.GoodsID, st.Nums, false); e != nil {
 		session.Forward("1", "NewOutRecord failed:"+e.Error(), nil)
 		return

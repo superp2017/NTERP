@@ -46,6 +46,7 @@ func NewEmployee(session *JHttp.Session) {
 	st.CreatStamp = CurStamp()
 	st.LastTime = CurStamp()
 	st.Status = "0"
+	st.IsDel = false
 	if st.Account != "" && st.Code != "" {
 		if exist, e := JRedis.Redis_hexists(Hash_Account, st.Account); e == nil && exist {
 			str := fmt.Sprintf("NewEmployee faild,Account is exist\n")

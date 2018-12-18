@@ -47,7 +47,7 @@ func NewMaterial(session *JHttp.Session) {
 	st.CreatTime = CurTime()
 	st.CreatStamp = CurStamp()
 	st.LastTime = CurStamp()
-
+	st.IsDel = false
 	if err := JRedis.Redis_hset(Hash_Material, st.MaterID, st); err != nil {
 		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)

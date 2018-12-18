@@ -41,7 +41,7 @@ func NewGoods(session *JHttp.Session) {
 	st.CreatTime = CurTime()
 	st.CreatStamp = CurStamp()
 	st.LastTime = CurStamp()
-
+	st.IsDel = false
 	if err := JRedis.Redis_hset(Hash_Goods, st.ID, st); err != nil {
 		JLogger.Error(err.Error())
 		session.Forward("1", err.Error(), nil)

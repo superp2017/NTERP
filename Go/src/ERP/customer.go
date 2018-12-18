@@ -47,7 +47,7 @@ func NewCustomer(session *JHttp.Session) {
 	st.CreatStamp = CurStamp()
 	st.LastTime = CurStamp()
 	st.Status = "0"
-
+	st.IsDel = false
 	if err := JRedis.Redis_hset(Hash_Customer, st.CID, st); err != nil {
 		session.Forward("1", err.Error(), nil)
 		return

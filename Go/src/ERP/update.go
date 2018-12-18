@@ -100,6 +100,7 @@ func updateUser() {
 		d := &Employee{}
 		if err := JRedis.Redis_hget(Hash_Employee, v, d); err == nil {
 			d.LastTime = time.Now().Unix()
+			d.IsDel = false
 			if t, e := time.Parse("2006-01-02 15:04:05", d.CreatTime); e == nil {
 				d.CreatStamp = t.Unix()
 			}
@@ -117,6 +118,7 @@ func updateGoods() {
 		d := &Goods{}
 		if err := JRedis.Redis_hget(Hash_Goods, v, d); err == nil {
 			d.LastTime = time.Now().Unix()
+			d.IsDel = false
 			if t, e := time.Parse("2006-01-02 15:04:05", d.CreatTime); e == nil {
 				d.CreatStamp = t.Unix()
 			}
@@ -134,6 +136,7 @@ func updateGoodsOut() {
 		d := &StorageOutRecord{}
 		if err := JRedis.Redis_hget(Hash_StorageOutRecord, v, d); err == nil {
 			d.LastTime = time.Now().Unix()
+			d.IsDel = false
 			if t, e := time.Parse("2006-01-02", d.CreatDate); e == nil {
 				d.CreatStamp = t.Unix()
 			}
@@ -151,6 +154,7 @@ func updateCustomer() {
 		d := &Customer{}
 		if err := JRedis.Redis_hget(Hash_Customer, v, d); err == nil {
 			d.LastTime = time.Now().Unix()
+			d.IsDel = false
 			if t, e := time.Parse("2006-01-02 15:04:05", d.CreatTime); e == nil {
 				d.CreatStamp = t.Unix()
 			}
@@ -168,6 +172,7 @@ func updateSupplier() {
 		d := &Supplier{}
 		if err := JRedis.Redis_hget(Hash_Supplier, v, d); err == nil {
 			d.LastTime = time.Now().Unix()
+			d.IsDel = false
 			if t, e := time.Parse("2006-01-02 15:04:05", d.CreatTime); e == nil {
 				d.CreatStamp = t.Unix()
 			}
@@ -185,6 +190,7 @@ func updateMaterial() {
 		d := &MaterialInfo{}
 		if err := JRedis.Redis_hget(Hash_Material, v, d); err == nil {
 			d.LastTime = time.Now().Unix()
+			d.IsDel = false
 			if t, e := time.Parse("2006-01-02 15:04:05", d.CreatTime); e == nil {
 				d.CreatStamp = t.Unix()
 			}

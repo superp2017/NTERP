@@ -108,6 +108,7 @@ func NewOrder(session *JHttp.Session) {
 	st.CreatStamp = CurStamp()
 	st.LastTime = CurStamp()
 	st.TotleMoney = Decimal(st.OrderNum * st.Money)
+	st.IsDel = false
 	go setLastOrderDate(curMon)
 	////////////////添加状态///////////////////////////////
 	appendStatus(st, st.UserName, st.CreatTime, "创建订单", Status_New)
