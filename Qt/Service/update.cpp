@@ -66,6 +66,7 @@ QJsonObject update::toJsonObject(VersionInfo v)
     obj.insert("VersionNum",v.VersionNum);
     obj.insert("Date",v.Date);
     obj.insert("Des",v.Des);
+    obj.insert("Url",v.Url);
     return obj;
 }
 
@@ -91,6 +92,11 @@ VersionInfo update::fromJsonObject(QJsonObject obj)
         QJsonValue va = obj.value("Des");
         if(va.isString())
             v.Des = va.toString();
+    }
+    if(obj.contains("Url")){
+        QJsonValue va = obj.value("Url");
+        if(va.isString())
+            v.Url = va.toString();
     }
     return v;
 }

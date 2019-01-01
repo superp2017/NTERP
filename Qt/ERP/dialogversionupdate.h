@@ -15,7 +15,7 @@ class DialogVersionUpdate : public QDialog
 public:
     explicit DialogVersionUpdate(QWidget *parent = 0);
     ~DialogVersionUpdate();
-    void setVersion(VersionInfo &info,QString url);
+    void setVersion(VersionInfo &info);
 private slots:
     void on_pushButton_2_clicked();
 

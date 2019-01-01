@@ -15,7 +15,7 @@ public:
 signals:
 
 public slots:
-    void checkVersion(QWidget *w=0);
+    int checkVersion(QWidget *w=0);
 private:
      void loadVersion();
      void saveVersion();

@@ -36,7 +36,6 @@ private slots:
     void on_pushButton_del_clicked();
     void on_pushButton_change_price_clicked();
 
-
     void changeCol();
     void orderClick(QString orderID);
     void clearAllSelect();
@@ -45,11 +44,8 @@ private slots:
     void finishOrderCb(Order order,bool ok);
     void delOrderCb(Order order, bool ok);
     void GlobalOrdersCb(bool ok,int type,bool hasNew);
-
     void showAll();
-
     void on_pushButton_out_print_clicked();
-
     void tabChange();
 
 protected:

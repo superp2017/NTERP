@@ -102,6 +102,7 @@ void DialogNewOrder::changeModel()
         this->setWindowTitle("订单修改");
         ui->pushButton_ok->setText("修改");
         ui->comboBox_orderType->setEnabled(false);
+        ui->comboBox_mater_number->setEnabled(false);
     }
 }
 
@@ -145,6 +146,8 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     if(!checkOrder(order,!m_isNewMode)){
         return;
     }
+
+
     QJsonObject para = OrderService::toJsonObject(order);
     if(m_isNewMode){
         boost::thread t(boost::bind(&dataCenter::net_newOrder,dataCenter::instance(),para));
@@ -204,10 +207,10 @@ bool DialogNewOrder::checkOrder(Order order,bool ismod)
             QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "修改后的订单数量不能少于已经出库的数量!");
             return false;
         }
-        if(order.OrderNum<order.ProduceNum+order.SuccessNum){
-            QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "修改后的订单数量不能少于已经成品和已经出库的数量之和!");
-            return false;
-        }
+//        if(order.OrderNum<order.ProduceNum+order.SuccessNum){
+//            QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "修改后的订单数量不能少于已经成品和已经出库的数量之和!");
+//            return false;
+//        }
     }
     double confirm_num = ui->doubleSpinBox_num_confirm->value();
     if (order.OrderNum!=confirm_num){

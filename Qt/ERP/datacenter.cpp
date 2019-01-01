@@ -1099,9 +1099,9 @@ void dataCenter::pub_getAllOrders(int type,QString start,int num)
     boost::thread (boost::bind(&dataCenter::net_getglobalOrders,dataCenter::instance(),order_obj)).detach();
 }
 
-void dataCenter::checkVersion(QWidget *W)
+int dataCenter::checkVersion(QWidget *W)
 {
-    m_version_manager.checkVersion(W);
+  return  m_version_manager.checkVersion(W);
 }
 
 
@@ -1183,6 +1183,7 @@ void dataCenter::update_first()
     //////////////心跳//////////////////
     boost::thread(boost::bind(&dataCenter::net_HeartBeat,dataCenter::instance(),1)).detach();
 
+    pub_getAllOrders(2);
 }
 
 void dataCenter::update_second()
@@ -1204,8 +1205,6 @@ void dataCenter::update_second()
     boost::thread(boost::bind(&dataCenter::net_HeartBeat,dataCenter::instance(),2)).detach();
 
     m_second_block.t_timer->start(m_second_block.t_timeout);
-
-    pub_getAllOrders(2);
 }
 
 void dataCenter::update_third()

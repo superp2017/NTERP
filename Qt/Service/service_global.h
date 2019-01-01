@@ -301,6 +301,7 @@ struct VersionInfo{
     int VersionNum ;
     QString Date;
     QString Des;
+    QString Url;
 };
 
 

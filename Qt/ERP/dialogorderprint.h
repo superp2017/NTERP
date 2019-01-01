@@ -20,16 +20,16 @@ public:
     explicit DialogOrderPrint(QWidget *parent = 0);
     ~DialogOrderPrint();
 
-    void initData(QString status, QString factory);
+   // void initData(QString status, QString factory);
 
 private slots:
     void on_pushButton_export_clicked();
 
     void on_pushButton_cancle_clicked();
 
-    void orderStatusChange(int index);
+//    void orderStatusChange(int index);
 
-    void factoryChange(int index);
+//    void factoryChange(int index);
 
     void selectAll(bool checked);
 
@@ -38,6 +38,12 @@ private slots:
     void exportCb(bool ok);
 
     void checkBox();
+    void onSliderChanged(int v);
+
+
+
+    void on_pushButton_query_clicked();
+
 signals:
     void sig_exportCb(bool);
 
@@ -45,7 +51,7 @@ private:
     void doExport(QVector<Order> ls, QString filepath);
     void removeAllRow();
     void setRowData(Order order, int row);
-    void updateData(QString status,QString factory);
+   // void updateData(QString status,QString factory);
     QVector<Order> getSelectOrders();
 
 
@@ -53,8 +59,8 @@ private:
     Ui::DialogOrderPrint *ui;
     QVector<Order>    m_orders;
     QVector<QCheckBox*> m_checkboxs;
-    QString cur_Status;
-    QString cur_factory;
+//    QString cur_Status;
+//    QString cur_factory;
 };
 
 #endif // DIALOGORDERPRINT_H

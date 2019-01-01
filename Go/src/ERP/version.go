@@ -12,6 +12,7 @@ type Version struct {
 	VersionNum int
 	Date       string
 	Des        string
+	Url        string
 }
 
 //获取版本信息

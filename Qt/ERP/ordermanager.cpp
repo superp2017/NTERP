@@ -186,7 +186,7 @@ void OrderManager::orderClick(QString orderID)
             cur_order.Current.Status==Status_PartSuccess||\
             cur_order.Current.Status==Status_PartProduce||\
             cur_order.Current.Status==Status_Part_Part;
-    bool mod = cur_order.Current.Status==Status_New;
+    bool mod = cur_order.Current.Status==Status_New||dataCenter::instance()->pub_CurUser().Author>2;
     bool cancel = cur_order.Current.Status== Status_Cancle;
     setBtnEnable(mod,mod,produce,out,true,cancel);
 
@@ -239,14 +239,34 @@ void OrderManager::on_pushButton_mod_clicked()
     if(cur_order.OrderID==""){
         return;
     }
-    DialogNewOrder    neworer;
-    neworer.setModel(false);
-    neworer.initOrder(cur_order);
-    if(neworer.exec()==123){
-        Order order = neworer.getCurorder();
-        cur_order = order;
-        m_tab_new->modOrder(order);
-        m_tab_all->modOrder(order);
+    if(cur_order.Current.Status!=Status_New){
+
+        QMessageBox msgBox;
+        msgBox.setText("当前订单已经生产中 !\n修改会有风险 ! ! !");
+        msgBox.setInformativeText("是否继续修改？");
+        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Cancel);
+        int ret = msgBox.exec();
+        switch (ret) {
+        case QMessageBox::Ok:{
+            DialogNewOrder    neworer;
+            neworer.setModel(false);
+            neworer.initOrder(cur_order);
+            if(neworer.exec()==123){
+                Order order = neworer.getCurorder();
+                cur_order = order;
+                m_tab_new->modOrder(order);
+                m_tab_all->modOrder(order);
+            }
+        }
+            break;
+        case QMessageBox::Cancel:
+            // Cancel was clicked
+            break;
+        default:
+            // should never be reached
+            break;
+        }
     }
 }
 
@@ -391,20 +411,20 @@ void OrderManager::on_pushButton_del_clicked()
 void OrderManager::on_pushButton_print_clicked()
 {
     DialogOrderPrint  print;
-    QString status;
-    if(ui->tabWidget->currentWidget()==m_tab_new){
-        status = Status_New;
-    }
-    if(ui->tabWidget->currentWidget()==m_tab_success){
-        status =Status_Success;
-    }
-    if(ui->tabWidget->currentWidget()==m_tab_produce){
-        status =Status_Produce;
-    }
-    if(ui->tabWidget->currentWidget()==m_tab_all){
-        status =Status_All;
-    }
-    print.initData(status,"全部分厂");
+    //    QString status;
+    //    if(ui->tabWidget->currentWidget()==m_tab_new){
+    //        status = Status_New;
+    //    }
+    //    if(ui->tabWidget->currentWidget()==m_tab_success){
+    //        status =Status_Success;
+    //    }
+    //    if(ui->tabWidget->currentWidget()==m_tab_produce){
+    //        status =Status_Produce;
+    //    }
+    //    if(ui->tabWidget->currentWidget()==m_tab_all){
+    //        status =Status_All;
+    //    }
+    //print.initData(status,"全部分厂");
     print.exec();
 }
 

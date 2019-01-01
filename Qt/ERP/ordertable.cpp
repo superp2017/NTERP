@@ -457,7 +457,7 @@ void OrderTable::mousePressEvent(QMouseEvent *e)
                             cur_order.Current.Status==Status_PartProduce||\
                             cur_order.Current.Status==Status_PartSuccess||\
                             cur_order.Current.Status==Status_Part_Part;
-                    bool mod = cur_order.Current.Status==Status_New;
+                    bool mod = cur_order.Current.Status==Status_New||dataCenter::instance()->pub_CurUser().Author>2;
                     bool cancel = cur_order.Current.Status== Status_Cancle;
                     setEnable(mod,mod,produce,out,true,cancel);
                     //      }

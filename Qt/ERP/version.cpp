@@ -29,7 +29,7 @@ void version::loadVersion()
     m_cur_ver.Des = m_settings.value("Des").toString();
     m_settings.endGroup();
     m_settings.beginGroup("DOWNLOAD");
-    downurl = m_settings.value("Url").toString();
+    m_cur_ver.Url = m_settings.value("Url").toString();
     m_settings.endGroup();
 }
 
@@ -42,17 +42,23 @@ void version::saveVersion()
     m_settings.setValue("Date",m_cur_ver.Date);
     m_settings.setValue("Des",m_cur_ver.Des);
     m_settings.endGroup();
+
+    m_settings.beginGroup("DOWNLOAD");
+    m_settings.setValue("Url",m_cur_ver.Url);
+    m_settings.endGroup();
 }
 
 
 
-void version::checkVersion(QWidget *w)
+int version::checkVersion(QWidget *w)
 {
     if(m_net_ok){
         if(m_net_ver.VersionNum>m_cur_ver.VersionNum){
             DialogVersionUpdate v;
-            v.setVersion( m_net_ver,downurl);
-            v.exec();
+            v.setVersion( m_net_ver);
+            int ret = v.exec();
+            return ret;
         }
     }
+    return 123;
 }

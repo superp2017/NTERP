@@ -26,6 +26,7 @@ public:
 
     int getThirdTime() const;
 
+
 private:
     SysSetting m_set;
     QSet<QString> m_accounts;

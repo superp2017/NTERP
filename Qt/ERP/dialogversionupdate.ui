@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>429</width>
-    <height>406</height>
+    <width>545</width>
+    <height>410</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -142,7 +142,7 @@
         </font>
        </property>
        <property name="text">
-        <string>下次再说</string>
+        <string>退出</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
