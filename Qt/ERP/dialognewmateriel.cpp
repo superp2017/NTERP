@@ -26,6 +26,12 @@ DialogNewMateriel::DialogNewMateriel(QWidget *parent) :
     connect(ui->comboBox_factoury,SIGNAL(currentIndexChanged(int)),this,SLOT(factoryChange(int)));
     factoryChange(0);
     DesChange();
+    ////神州专用/////
+    ui->comboBox_factoury->setHidden(true);
+    ui->comboBox_product_line->setHidden(true);
+    ui->label_fac_name->setHidden(true);
+    ui->label_line_name->setHidden(true);
+    ////神州专用/////
 }
 
 DialogNewMateriel::~DialogNewMateriel()
@@ -190,7 +196,7 @@ void DialogNewMateriel::initCommbox()
     QCompleter *completertype = new QCompleter(type, this);
     ui->comboBox_type->clear();
     ui->comboBox_type->addItems(type);
-//    ui->comboBox_type->setEditable(true);
+    //    ui->comboBox_type->setEditable(true);
     ui->comboBox_type->setCompleter(completertype);
 
     QStringList friction;

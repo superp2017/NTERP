@@ -483,14 +483,14 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_18">
+      <widget class="QLabel" name="label_fac_name">
        <property name="text">
         <string>分厂名称</string>
        </property>
       </widget>
      </item>
      <item row="2" column="2">
-      <widget class="QLabel" name="label_19">
+      <widget class="QLabel" name="label_line_name">
        <property name="text">
         <string>产线名称</string>
        </property>

@@ -19,6 +19,13 @@ DialogOrderDetail::DialogOrderDetail(QWidget *parent) :
     ui->tableWidget->setSortingEnabled(true);//允许列排序
     ui->tableWidget->horizontalHeader()->setStyleSheet("QHeaderView::section{background:skyblue;}"); //设置表头背景色
     ui->pushButton_out_table->setVisible(false);
+
+    ////神州专用////
+    ui->label_fac_name->hide();
+    ui->label_line_name->hide();
+    ui->lineEdit_Factory->hide();
+    ui->lineEdit_production_line->hide();
+      ////神州专用////
 }
 
 DialogOrderDetail::~DialogOrderDetail()

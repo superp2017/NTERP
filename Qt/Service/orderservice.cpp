@@ -596,7 +596,10 @@ Order OrderService::fromJsonObject(QJsonObject obj)
 bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString filepath, int author, bool isOpen)
 {
     QVector<QVariant> datalist;
-    datalist<<"分厂名称"<<"产线名称"<<"生产批号"<<"订单类型"<<"客户名称"<<"物料描述"<<"订单数量"<<"单位";
+   //// datalist<<"分厂名称"<<"产线名称"<<"生产批号"<<"订单类型"<<"客户名称"<<"物料描述"<<"订单数量"<<"单位";
+   /////神州专用/////
+    datalist<<"生产批号"<<"订单类型"<<"客户名称"<<"物料描述"<<"订单数量"<<"单位";
+      /////神州专用/////
     if(curstatus=="Status_New") {
         datalist<<"未成品";
     }
@@ -665,7 +668,9 @@ bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString f
         }
 
         QVector<QVariant> datalist;
-        datalist<<order.Factory<<order.ProductionLine<<"'"+order.OrderID<<type<<order.CustomName\
+        ////神州专用//
+////        datalist<<order.Factory<<order.ProductionLine;
+        datalist<<"'"+order.OrderID<<type<<order.CustomName\
                <<"'"+order.MaterielDes<<QString("%1").arg(order.OrderNum)<<order.Unit;
         if(curstatus=="Status_New")
             datalist<<"'"+QString("%1").arg(order.OrderNum-order.ProduceNum);
@@ -696,8 +701,13 @@ bool OrderService::exportOrders(QString curstatus,QVector<Order> list, QString f
 bool OrderService::exportOrdersEx(QVector<Order> list, QString filepath, bool isOpen)
 {
     QVector<QVariant> datalist;
-    datalist<<"生产批号"<<"订单类型"<<"分厂名称"<<"客户名称"<<"物料描述"\
+//    datalist<<"生产批号"<<"订单类型"<<"分厂名称"<<"客户名称"<<"物料描述"\
+//           <<"订单总量"<<"单位"<<"未税单价(元)"<<"未税总价(元)"<<"状态"<<"创建时间";
+
+            ////神州专用//
+    datalist<<"生产批号"<<"订单类型"<<"客户名称"<<"物料描述"\
            <<"订单总量"<<"单位"<<"未税单价(元)"<<"未税总价(元)"<<"状态"<<"创建时间";
+
 
     QVector<QVector<QVariant>> data;
     double money = 0;
@@ -739,7 +749,11 @@ bool OrderService::exportOrdersEx(QVector<Order> list, QString filepath, bool is
         }
 
         QVector<QVariant> datalist;
-        datalist<<"'"+order.OrderID<<type<<order.Factory<<order.CustomName\
+        datalist<<"'"+order.OrderID<<type;
+        ////神州专用///
+//        datalist<<order.Factory;
+                ////神州专用///
+        datalist<<order.CustomName\
                <<"'"+order.MaterielDes<<QString("%1").arg(order.OrderNum)<<order.Unit\
               <<"'"+QString("%1").arg(order.Money)<<"'"+QString("%1").arg(order.TotleMoney)\
              <<status<<order.CreatTime;

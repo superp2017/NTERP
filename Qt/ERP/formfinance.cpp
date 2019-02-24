@@ -51,6 +51,12 @@ FormFinance::FormFinance(QWidget *parent) :
 
     initUI();
 
+
+    ////神州专用///
+    ui->tableWidget->hideColumn(2);
+    ui->groupBox_factory->hide();
+    ////神州专用///
+
 }
 
 FormFinance::~FormFinance()
@@ -100,7 +106,7 @@ void FormFinance::initOrder(QVector<Order> list)
         money += list.at(i).TotleMoney;
     }
     ui->label_order_num->setText(QString("%1").arg(list.size()));
-    ui->label_order_money->setText(QString("%1 元").arg(money));
+    ui->label_order_money->setText(QString("%1 元").arg(money,0,'f',2));
     ui->tableWidget->checkSelect();
 }
 

@@ -63,6 +63,10 @@ OrderTable::OrderTable(QString status, QWidget *w):
         this->hideColumn(9);
     }
     checkAuthor(dataCenter::instance()->pub_CurUser().Author);
+   /////神州专用//////////////////
+    this->hideColumn(0);
+    this->hideColumn(1);
+    //////////////////////
 }
 
 
