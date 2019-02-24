@@ -59,6 +59,7 @@ int version::checkVersion(QWidget *w)
             int ret = v.exec();
             return ret;
         }
+        return -1;
     }
-    return 123;
+    return 111;
 }
