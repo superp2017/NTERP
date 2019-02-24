@@ -231,6 +231,7 @@ void dataCenter::net_newOrder(const QJsonObject para)
     if(isOK){
         m_orders.append(order);
         m_batch.insert(order.CustomBatch);
+        m_orders_set.insert(order.OrderID);
     }
     emit sig_newOrder(order,isOK);
 }
