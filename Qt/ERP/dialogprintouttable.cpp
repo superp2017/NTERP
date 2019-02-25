@@ -6,7 +6,8 @@
 
 DialogPrintOutTable::DialogPrintOutTable(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::DialogPrintOutTable)
+    ui(new Ui::DialogPrintOutTable),
+    m_printer(false,"","南通神州金属涂覆有限公司")
 {
     ui->setupUi(this);
 
