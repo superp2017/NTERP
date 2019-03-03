@@ -140,6 +140,11 @@ void DialogNewUser::on_pushButton_creat_clicked()
         return ;
     }
 
+    if(user.Account=="Admin"){
+        QToolTip::showText(ui->lineEdit_accout->mapToGlobal(QPoint(100, 0)), "不能创建Admin账户!");
+        return ;
+    }
+
 
     if(m_curUser.Author==4){
         AUTHOR_Limit(4);

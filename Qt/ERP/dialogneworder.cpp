@@ -122,6 +122,7 @@ void DialogNewOrder::on_pushButton_ok_clicked()
         order.UserName      = dataCenter::instance()->pub_CurUser().Name;
         order.ProduceNum    = 0;
         order.SuccessNum    = 0;
+        order.PrintNum      = 0;
     }else{
         order = curorder;
         order.ProduceNum        = curorder.ProduceNum;
@@ -148,7 +149,6 @@ void DialogNewOrder::on_pushButton_ok_clicked()
     order.CustomBatch       = ui->lineEdit_custombatch->text();
     order.CustomNote        = ui->textEdit_custom_note->toPlainText();
     order.OrderNum          = ui->doubleSpinBox_num->value();
-
 
     if(!checkOrder(order,!m_isNewMode)){
         return;

@@ -41,6 +41,10 @@ func NewEmployee(session *JHttp.Session) {
 		session.Forward("1", "NewEmployee failed,Name is empty\n", nil)
 		return
 	}
+	if st.Account == "Admin" {
+		session.Forward("1", "Account Admin is exist! \n", nil)
+		return
+	}
 	st.UID = getEmployeeID()
 	st.CreatTime = CurTime()
 	st.CreatStamp = CurStamp()
@@ -97,6 +101,11 @@ func ModEmployee(session *JHttp.Session) {
 		session.Forward("1", str, nil)
 		return
 	}
+	if st.UID == "Admin" || st.Account == "Admin" {
+		JLogger.Error("not allow creat accout Admin !\n")
+		session.Forward("1", "not allow creat accout Admin !\n", nil)
+		return
+	}
 	data := &Employee{}
 	if err := JRedis.Redis_hget(Hash_Employee, st.UID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -145,6 +154,11 @@ func OutEmployee(session *JHttp.Session) {
 		session.Forward("1", "OutEmployee failed,UID is empty\n", nil)
 		return
 	}
+	if st.UID == "Admin" {
+		JLogger.Error("not allow out accout Admin !\n")
+		session.Forward("1", "not allow creat accout Admin !\n", nil)
+		return
+	}
 	data := &Employee{}
 	if err := JRedis.Redis_hget(Hash_Employee, st.UID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
@@ -180,6 +194,12 @@ func DelEmployee(session *JHttp.Session) {
 		session.Forward("1", "DelEmployee failed,UID is empty\n", nil)
 		return
 	}
+	if st.UID == "Admin" {
+		JLogger.Error("not allow del accout Admin !\n")
+		session.Forward("1", "not allow creat accout Admin !\n", nil)
+		return
+	}
+
 	data := &Employee{}
 	if err := JRedis.Redis_hget(Hash_Employee, st.UID, data); err != nil {
 		session.Forward("1", err.Error(), nil)
