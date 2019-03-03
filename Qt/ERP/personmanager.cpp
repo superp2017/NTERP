@@ -117,6 +117,12 @@ void PersonManager::on_pushButton_mod_clicked()
     if(curUser.Author>3){
         AUTHOR_Limit(4);
     }
+
+    if(curUser.Account=="Admin"){
+        QMessageBox::information(NULL,"提示","Admin账户不能修改！");\
+        return;
+    }
+
     DialogNewUser newuser;
     newuser.setModel(false);
     newuser.clearUI();
@@ -153,6 +159,10 @@ void PersonManager::on_pushButton_out_clicked()
     if(curUser.Author>3){
         AUTHOR_Limit(4);
     }
+    if(curUser.Account=="Admin"){
+        QMessageBox::information(NULL,"提示","Admin账户不能离职！");\
+        return;
+    }
     QMessageBox msgBox;
     msgBox.setWindowTitle("提示");
     msgBox.setText("您将离职员工:"+curUser.Name);
@@ -182,6 +192,10 @@ void PersonManager::on_pushButton_del_clicked()
     }
     if(curUser.Author>3){
         AUTHOR_Limit(4);
+    }
+    if(curUser.Account=="Admin"){
+        QMessageBox::information(NULL,"提示","Admin账户不能删除！");\
+        return;
     }
     QMessageBox msgBox;
     msgBox.setWindowTitle("提示");
