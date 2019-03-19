@@ -46,6 +46,8 @@ void FormMaterManager::closeAllStatus()
 
 void FormMaterManager::initData()
 {
+    m_boxs.clear();
+    ui->checkBox_check_all->setChecked(false);
     ui->tableWidget->removeAllRow();
     changeCol();
     QVector<Materiel>ls = dataCenter::instance()->pub_Materiels();

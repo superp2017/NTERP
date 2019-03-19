@@ -211,6 +211,8 @@ void FormSupplierManage::changeCol()
 
 void FormSupplierManage::initData()
 {
+    m_boxs.clear();
+    ui->checkBox_check_all->setChecked(false);
     ui->tableWidget->removeAllRow();
     closeAllStatus();
     QVector<Supplier>ls = dataCenter::instance()->pub_Suppliers();
