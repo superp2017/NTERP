@@ -216,6 +216,8 @@ void FormCustommanage::checkAll()
 
 void FormCustommanage::initData()
 {
+    m_boxs.clear();
+    ui->checkBox_check_all->setChecked(false);
     ui->tableWidget->removeAllRow();
     closeAllStatus();
     QVector<Customer>ls = dataCenter::instance()->pub_Customers();
