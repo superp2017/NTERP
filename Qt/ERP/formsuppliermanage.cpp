@@ -33,7 +33,7 @@ FormSupplierManage::FormSupplierManage(QWidget *parent) :
     connect(ui->radioButton_ave,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_content,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_manu,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
-
+    ui->checkBox_check_all->setEnabled(m_boxs.size()>0);
 }
 
 FormSupplierManage::~FormSupplierManage()
@@ -139,11 +139,11 @@ void FormSupplierManage::on_pushButton_exit_clicked()
 void FormSupplierManage::checkBox()
 {
     bool check = true;
-   // bool check_one = false;
+    // bool check_one = false;
     int checkSize = 0;
     for(QCheckBox* ch:m_boxs){
         check    &= ch->isChecked();
-       // check_one|= ch->isChecked();
+        // check_one|= ch->isChecked();
         if(ch->isChecked()){
             checkSize++;
         }
@@ -151,11 +151,11 @@ void FormSupplierManage::checkBox()
     if(check){
         ui->checkBox_check_all->setCheckState(Qt::Checked);
     }else{
-//        if(check_one)
-//            ui->checkBox_check_all->setCheckState(Qt::PartiallyChecked);
-//        else{
-            ui->checkBox_check_all->setCheckState(Qt::Unchecked);
-   //     }
+        //        if(check_one)
+        //            ui->checkBox_check_all->setCheckState(Qt::PartiallyChecked);
+        //        else{
+        ui->checkBox_check_all->setCheckState(Qt::Unchecked);
+        //     }
     }
 
     ui->pushButton_del->setEnabled(checkSize==1);
@@ -219,6 +219,7 @@ void FormSupplierManage::initData()
     for(Supplier m:ls){
         appendOne(m);
     }
+    ui->checkBox_check_all->setEnabled(m_boxs.size()>0);
 }
 
 

@@ -56,12 +56,13 @@ DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
     m_checkboxs.clear();
     m_orders.clear();
 
-    ui->dateEdit_start_time->setDate(QDate::currentDate().addDays(-365));
+    ui->dateEdit_start_time->setDate(QDate::currentDate().addMonths(-1));
     ui->dateEdit_end_time->setDate(QDate::currentDate());
 
     ui->comboBox_order_factory->setCurrentIndex(1);
     ui->groupBox_fac->hide();
     ui->comboBox_order_status->setCurrentIndex(1);
+    ui->checkBox_check_all->setEnabled(m_checkboxs.size()>0);
 }
 
 DialogOrderPrint::~DialogOrderPrint()
@@ -101,11 +102,12 @@ DialogOrderPrint::~DialogOrderPrint()
 
 void DialogOrderPrint::on_pushButton_query_clicked()
 {
+    ui->checkBox_check_all->setChecked(false);
     QString status  = ui->comboBox_order_status->currentData().toString();
-    QString factory     = ui->comboBox_order_factory->currentText();
+    QString factory = ui->comboBox_order_factory->currentText();
     bool isTime     = ui->groupBox_time->isChecked();
-    int startTime = 0;
-    int endTime = 0;
+    int startTime   = 0;
+    int endTime     = 0;
     if(isTime){
         startTime   = ui->dateEdit_start_time->dateTime().toSecsSinceEpoch();
         endTime     = ui->dateEdit_end_time->dateTime().toSecsSinceEpoch();
@@ -129,6 +131,7 @@ void DialogOrderPrint::on_pushButton_query_clicked()
             setRowData(o,row);
         }
     }
+    ui->checkBox_check_all->setEnabled(m_checkboxs.size()>0);
 }
 
 
@@ -151,11 +154,6 @@ void DialogOrderPrint::on_pushButton_query_clicked()
 QVector<Order> DialogOrderPrint::getSelectOrders()
 {
     QVector<Order> ls;
-    if(m_orders.size()!=m_checkboxs.size()){
-        dataCenter::instance()->pub_showMessage("操作失败!",3000);
-        return ls;
-    }
-
     for(int i =0;i<m_checkboxs.size();++i){
         if(m_checkboxs.at(i)->isChecked()){
             ls.push_back(m_orders.at(i));
@@ -186,19 +184,19 @@ void DialogOrderPrint::on_pushButton_export_clicked()
 void DialogOrderPrint::checkBox()
 {
     bool check = true;
-    bool check_one = false;
+    //  bool check_one = false;
     for(QCheckBox* ch:m_checkboxs){
         check    &= ch->isChecked();
-        check_one|= ch->isChecked();
+        //   check_one|= ch->isChecked();
     }
     if(check){
         ui->checkBox_check_all->setCheckState(Qt::Checked);
     }else{
-        if(check_one)
-            ui->checkBox_check_all->setCheckState(Qt::PartiallyChecked);
-        else{
-            ui->checkBox_check_all->setCheckState(Qt::Unchecked);
-        }
+        //        if(check_one)
+        //        ui->checkBox_check_all->setCheckState(Qt::PartiallyChecked);
+        //    else{
+        ui->checkBox_check_all->setCheckState(Qt::Unchecked);
+        //    }
     }
 }
 

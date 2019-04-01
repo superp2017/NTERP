@@ -43,9 +43,9 @@ void openExcel(QString &fileName)
 
 bool ExcelService::dataExport(QString filepath, QVector<QVariant> title, QVector<QVector<QVariant>> data, bool isOpen)
 {
-    HRESULT r = OleInitialize(0);
-    if (r != S_OK && r != S_FALSE)
-    {qWarning("Qt:初始化Ole失败（error %x）",(unsigned int)r);}
+//    HRESULT r = OleInitialize(0);
+//    if (r != S_OK && r != S_FALSE)
+//    {qWarning("Qt:初始化Ole失败（error %x）",(unsigned int)r);}
 
     QAxObject *excel = new QAxObject();
     excel->setControl("Excel.Application");                             //连接Excel控件
@@ -91,9 +91,11 @@ bool ExcelService::dataExport(QString filepath, QVector<QVariant> title, QVector
     workbook->dynamicCall( "Close(Boolean)", true );//关闭工作簿
     excel->dynamicCall( "Quit(void)" );//关闭excel
 
-    delete excel;
-    excel=NULL;
-    OleUninitialize();
+    if (excel!=NULL){
+        delete excel;
+        excel=NULL;
+    }
+  //  OleUninitialize();
     if(isOpen)
         openExcel(filepath);
     return true;
@@ -102,9 +104,9 @@ bool ExcelService::dataExport(QString filepath, QVector<QVariant> title, QVector
 bool ExcelService::dataExportEx(QString filepath, QVector<QVariant> title,\
                                 QVector<QVector<QVariant> > data, QVector<QVector<QVariant>> exData, bool isOpen)
 {
-    HRESULT r = OleInitialize(0);
-    if (r != S_OK && r != S_FALSE)
-    {qWarning("Qt:初始化Ole失败（error %x）",(unsigned int)r);}
+//    HRESULT r = OleInitialize(0);
+//    if (r != S_OK && r != S_FALSE)
+//    {qWarning("Qt:初始化Ole失败（error %x）",(unsigned int)r);}
 
     QAxObject *excel = new QAxObject();
     excel->setControl("Excel.Application");                             //连接Excel控件
@@ -166,9 +168,11 @@ bool ExcelService::dataExportEx(QString filepath, QVector<QVariant> title,\
     workbook->dynamicCall( "Close(Boolean)", true );//关闭工作簿
     excel->dynamicCall( "Quit(void)" );//关闭excel
 
-    delete excel;
-    excel=NULL;
-    OleUninitialize();
+    if (excel!=NULL){
+        delete excel;
+        excel=NULL;
+    }
+ //   OleUninitialize();
     if(isOpen)
         openExcel(filepath);
     return true;
