@@ -41,12 +41,12 @@ DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
     ui->comboBox_order_status->addItem("已出库",Status_Success);
     ui->comboBox_order_status->addItem("已取消",Status_Cancle);
 
-//    cur_Status="";
-//    cur_factory="";
+    //    cur_Status="";
+    //    cur_factory="";
 
     connect(ui->checkBox_check_all,SIGNAL(clicked(bool)),this,SLOT(selectAll(bool)));
-//    connect(ui->comboBox_order_status,SIGNAL(currentIndexChanged(int)),this,SLOT(orderStatusChange(int)));
-//    connect(ui->comboBox_order_factory,SIGNAL(currentIndexChanged(int)),this,SLOT(factoryChange(int)));
+    //    connect(ui->comboBox_order_status,SIGNAL(currentIndexChanged(int)),this,SLOT(orderStatusChange(int)));
+    //    connect(ui->comboBox_order_factory,SIGNAL(currentIndexChanged(int)),this,SLOT(factoryChange(int)));
     connect(ui->tableWidget,SIGNAL(cellClicked(int,int)),this,SLOT(cellChecked(int,int)));
 
     connect(this,SIGNAL(sig_exportCb(bool)),this,SLOT(exportCb(bool)));
@@ -56,9 +56,9 @@ DialogOrderPrint::DialogOrderPrint(QWidget *parent) :
     m_checkboxs.clear();
     m_orders.clear();
 
-    ui->dateEdit_start_time->setDate(QDate::currentDate().addDays(-365));
+    ui->dateEdit_start_time->setDate(QDate::currentDate().addMonths(-1));
     ui->dateEdit_end_time->setDate(QDate::currentDate());
-
+    ui->checkBox_check_all->setEnabled(m_checkboxs.size()>0);
 }
 
 DialogOrderPrint::~DialogOrderPrint()
@@ -98,6 +98,7 @@ DialogOrderPrint::~DialogOrderPrint()
 
 void DialogOrderPrint::on_pushButton_query_clicked()
 {
+    ui->checkBox_check_all->setChecked(false);
     QString status  = ui->comboBox_order_status->currentData().toString();
     QString factory     = ui->comboBox_order_factory->currentText();
     bool isTime     = ui->groupBox_time->isChecked();
@@ -126,6 +127,7 @@ void DialogOrderPrint::on_pushButton_query_clicked()
             setRowData(o,row);
         }
     }
+    ui->checkBox_check_all->setEnabled(m_checkboxs.size()>0);
 }
 
 
@@ -148,10 +150,10 @@ void DialogOrderPrint::on_pushButton_query_clicked()
 QVector<Order> DialogOrderPrint::getSelectOrders()
 {
     QVector<Order> ls;
-    if(m_orders.size()!=m_checkboxs.size()){
-        dataCenter::instance()->pub_showMessage("操作失败!",3000);
-        return ls;
-    }
+    //    if(m_orders.size()!=m_checkboxs.size()){
+    //        dataCenter::instance()->pub_showMessage("操作失败!",3000);
+    //        return ls;
+    //    }
 
     for(int i =0;i<m_checkboxs.size();++i){
         if(m_checkboxs.at(i)->isChecked()){
@@ -183,19 +185,19 @@ void DialogOrderPrint::on_pushButton_export_clicked()
 void DialogOrderPrint::checkBox()
 {
     bool check = true;
-    bool check_one = false;
+    //  bool check_one = false;
     for(QCheckBox* ch:m_checkboxs){
         check    &= ch->isChecked();
-        check_one|= ch->isChecked();
+        //     check_one|= ch->isChecked();
     }
     if(check){
         ui->checkBox_check_all->setCheckState(Qt::Checked);
     }else{
-        if(check_one)
-            ui->checkBox_check_all->setCheckState(Qt::PartiallyChecked);
-        else{
-            ui->checkBox_check_all->setCheckState(Qt::Unchecked);
-        }
+        //        if(check_one)
+        //            ui->checkBox_check_all->setCheckState(Qt::PartiallyChecked);
+        //        else{
+        ui->checkBox_check_all->setCheckState(Qt::Unchecked);
+        //      }
     }
 }
 

@@ -32,6 +32,7 @@ FormMaterManager::FormMaterManager(QWidget *parent) :
     connect(ui->radioButton_manu,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     ui->pushButton_mod->setEnabled(false);
     ui->pushButton_del->setEnabled(false);
+    ui->checkBox_check_all->setEnabled(m_boxs.size()>0);
 }
 
 FormMaterManager::~FormMaterManager()
@@ -55,6 +56,7 @@ void FormMaterManager::initData()
         appendOne(m);
     }
     ui->tableWidget->checkSelect();
+    ui->checkBox_check_all->setEnabled(m_boxs.size()>0);
 }
 
 void FormMaterManager::on_pushButton_new_clicked()

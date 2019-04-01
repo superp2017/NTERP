@@ -33,6 +33,7 @@ FormSupplierManage::FormSupplierManage(QWidget *parent) :
     connect(ui->radioButton_ave,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_content,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
     connect(ui->radioButton_manu,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
+     ui->checkBox_check_all->setEnabled(m_boxs.size()>0);
 
 }
 
@@ -219,6 +220,8 @@ void FormSupplierManage::initData()
     for(Supplier m:ls){
         appendOne(m);
     }
+        ui->tableWidget->checkSelect();
+     ui->checkBox_check_all->setEnabled(m_boxs.size()>0);
 }
 
 

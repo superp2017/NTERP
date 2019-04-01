@@ -35,6 +35,7 @@ FormCustommanage::FormCustommanage(QWidget *parent) :
     connect(ui->radioButton_manu,SIGNAL(clicked(bool)),this,SLOT(changeCol()));
 
     changeCol();
+    ui->checkBox_check_all->setEnabled(m_boxs.size()>0);
 }
 
 
@@ -224,6 +225,8 @@ void FormCustommanage::initData()
     for(Customer m:ls){
         appendOne(m);
     }
+        ui->tableWidget->checkSelect();
+     ui->checkBox_check_all->setEnabled(m_boxs.size()>0);
 }
 
 
