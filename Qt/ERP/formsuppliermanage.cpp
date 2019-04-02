@@ -219,6 +219,7 @@ void FormSupplierManage::initData()
     for(Supplier m:ls){
         appendOne(m);
     }
+        ui->tableWidget->checkSelect();
     ui->checkBox_check_all->setEnabled(m_boxs.size()>0);
 }
 

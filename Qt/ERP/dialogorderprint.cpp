@@ -122,10 +122,11 @@ void DialogOrderPrint::on_pushButton_query_clicked()
     }
     removeAllRow();
     m_checkboxs.clear();
-    m_orders = dataCenter::instance()->pub_StatusOrders(status);
-    for(Order o:m_orders){
+    m_orders.clear();
+    QVector<Order> ls_order = dataCenter::instance()->pub_StatusOrders(status);
+    for(Order o:ls_order){
         if(o.Factory==factory||factory=="全部分厂"){
-            if(isTime&&(o.CreatStamp<startTime||o.CreatStamp>endTime)) continue;
+            if(isTime&&(o.CreatStamp<startTime||o.CreatStamp>endTime+3600*24)) continue;
             ui->tableWidget->setRowCount(ui->tableWidget->rowCount()+1);
             int row=ui->tableWidget->rowCount()-1;
             setRowData(o,row);
@@ -285,6 +286,7 @@ void DialogOrderPrint::setRowData(Order order, int row)
     ui->tableWidget->setCellWidget(row,0,check1);
     connect(check1,SIGNAL(clicked(bool)),this,SLOT(checkBox()));
     m_checkboxs.push_back(check1);
+    m_orders.push_back(order);
     ui->tableWidget->setItem(row,1,new QTableWidgetItem(order.MaterielDes));
     ui->tableWidget->setItem(row,2,new QTableWidgetItem(order.CreatTime));
 }

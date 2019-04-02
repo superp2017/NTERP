@@ -225,6 +225,7 @@ void FormCustommanage::initData()
     for(Customer m:ls){
         appendOne(m);
     }
+        ui->tableWidget->checkSelect();
      ui->checkBox_check_all->setEnabled(m_boxs.size()>0);
 }
 
