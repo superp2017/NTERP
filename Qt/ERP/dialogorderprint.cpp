@@ -155,6 +155,12 @@ void DialogOrderPrint::on_pushButton_query_clicked()
 QVector<Order> DialogOrderPrint::getSelectOrders()
 {
     QVector<Order> ls;
+    if(m_orders.size()!=m_checkboxs.size()){
+        dataCenter::instance()->pub_showMessage("操作失败!",3000);
+        qDebug()<<"getSelectOrders error!";
+        return ls;
+    }
+
     for(int i =0;i<m_checkboxs.size();++i){
         if(m_checkboxs.at(i)->isChecked()){
             ls.push_back(m_orders.at(i));
