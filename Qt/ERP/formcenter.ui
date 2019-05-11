@@ -252,7 +252,23 @@
          <number>0</number>
         </property>
         <item>
-         <spacer name="horizontalSpacer">
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <family>华文琥珀</family>
+            <pointsize>28</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgb(216, 216, 216);</string>
+          </property>
+          <property name="text">
+           <string> 神 州 涂 覆</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
