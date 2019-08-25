@@ -32,10 +32,10 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
 //    ui->lineEdit_custombatch->setValidator(validator);
 
 /////神州专用//////////////////
-    ui->lineEdit_fatory->setHidden(true);
-    ui->lineEdit_productline->setHidden(true);
-    ui->label_fac_name->setHidden(true);
-    ui->label_line_name->setHidden(true);
+//    ui->lineEdit_fatory->setHidden(true);
+//    ui->lineEdit_productline->setHidden(true);
+//    ui->label_fac_name->setHidden(true);
+//    ui->label_line_name->setHidden(true);
     /////神州专用//////////////////
 }
 
