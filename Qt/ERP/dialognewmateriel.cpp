@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QVector>
 #include <QToolTip>
+#include <QMessageBox>
 
 DialogNewMateriel::DialogNewMateriel(QWidget *parent) :
     QDialog(parent),
@@ -117,9 +118,33 @@ void DialogNewMateriel::on_pushButton_ok_clicked()
         return;
     }
 
-    if(m_Model==0&&dataCenter::instance()->pub_checkComponentSolid(mater.ComponentSolid)){
-        QToolTip::showText(ui->comboBox_solid->mapToGlobal(QPoint(100, 0)), "零件固号已经存在!");
-        return;
+    if(m_Model==0){
+        int r =dataCenter::instance()->pub_checkComponentSolid(mater.ComponentSolid,mater.CID);
+        if (r==-1){
+            QToolTip::showText(ui->comboBox_solid->mapToGlobal(QPoint(100, 0)), "该公司已经存在同样的零件固号!");
+            return;
+        }
+        if(r==1){
+            QMessageBox msgBox;
+            msgBox.setText("其他公司已经存在同样的零件固号");
+            msgBox.setInformativeText("是否继续创建？");
+            msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+            msgBox.setDefaultButton(QMessageBox::Ok);
+            int ret = msgBox.exec();
+
+            switch (ret) {
+            case QMessageBox::Ok:
+                // Save was clicked
+                break;
+            case QMessageBox::Cancel:
+                // Cancel was clicked
+                return;
+                break;
+            default:
+                // should never be reached
+                break;
+            }
+        }
     }
 
 

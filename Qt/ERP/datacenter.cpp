@@ -978,14 +978,18 @@ QSet<QString> dataCenter::pub_Batchs()
     return m_batch;
 }
 
-bool dataCenter::pub_checkComponentSolid(QString solid)
+int dataCenter::pub_checkComponentSolid(QString solid, QString CID)
 {
     for(Materiel m:m_maters){
         if (m.ComponentSolid==solid){
-            return true;
+            if(m.CID==CID){
+                return -1;
+            }else{
+                return 1;
+            }
         }
     }
-    return false;
+    return 100;
 }
 
 
@@ -1102,7 +1106,7 @@ void dataCenter::pub_getAllOrders(int type,QString start,int num)
 
 int dataCenter::checkVersion(QWidget *W)
 {
-  return  m_version_manager.checkVersion(W);
+    return  m_version_manager.checkVersion(W);
 }
 
 

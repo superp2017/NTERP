@@ -52,19 +52,16 @@
      <property name="verticalSpacing">
       <number>11</number>
      </property>
-     <item row="7" column="0">
-      <widget class="QLabel" name="label_4">
+     <item row="8" column="2">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_num_confirm">
        <property name="minimumSize">
         <size>
          <width>0</width>
          <height>35</height>
         </size>
        </property>
-       <property name="text">
-        <string>订单数量</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
+       <property name="maximum">
+        <double>99999999.989999994635582</double>
        </property>
       </widget>
      </item>
@@ -94,16 +91,19 @@
        </property>
       </widget>
      </item>
-     <item row="8" column="2">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_num_confirm">
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_4">
        <property name="minimumSize">
         <size>
          <width>0</width>
          <height>35</height>
         </size>
        </property>
-       <property name="maximum">
-        <double>99999999.989999994635582</double>
+       <property name="text">
+        <string>订单数量</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -142,21 +142,11 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="2">
-      <widget class="QLineEdit" name="lineEdit_cumerName">
+     <item row="9" column="2">
+      <widget class="QLineEdit" name="lineEdit_unit">
        <property name="enabled">
         <bool>false</bool>
        </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="2">
-      <widget class="QComboBox" name="comboBox_orderType">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -175,11 +165,8 @@
        </property>
       </widget>
      </item>
-     <item row="9" column="2">
-      <widget class="QLineEdit" name="lineEdit_unit">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
+     <item row="6" column="2">
+      <widget class="QComboBox" name="comboBox_orderType">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -214,6 +201,38 @@
        </property>
       </widget>
      </item>
+     <item row="3" column="2">
+      <widget class="QTextEdit" name="lineEdit_MaterielDes">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>80</height>
+        </size>
+       </property>
+       <property name="lineWidth">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QComboBox" name="comboBox_mater_number">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+      </widget>
+     </item>
      <item row="9" column="0">
       <widget class="QLabel" name="label_6">
        <property name="minimumSize">
@@ -234,38 +253,6 @@
       <widget class="QLabel" name="label_10">
        <property name="text">
         <string>组件固号</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QComboBox" name="comboBox_mater_number">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QTextEdit" name="lineEdit_MaterielDes">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>35</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>80</height>
-        </size>
-       </property>
-       <property name="lineWidth">
-        <number>0</number>
        </property>
       </widget>
      </item>
@@ -327,19 +314,6 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_line_name">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>产线名称</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="2">
       <widget class="QLineEdit" name="lineEdit_productline">
        <property name="enabled">
@@ -353,6 +327,32 @@
        </property>
        <property name="readOnly">
         <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_line_name">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>产线名称</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QComboBox" name="comboBox_company_name">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
        </property>
       </widget>
      </item>

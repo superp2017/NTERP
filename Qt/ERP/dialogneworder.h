@@ -37,6 +37,7 @@ private:
     Order    curorder;
     bool     m_isNewMode;//是否是新建或者修改
     Materiel curMater;
+    QMap<QString,QVector<QString>> m_company_mater;
 };
 
 #endif // DIALOGNEWORDER_H

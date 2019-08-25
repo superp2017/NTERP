@@ -48,14 +48,20 @@ void DialogNewOrder::initCombox(QSet<QString> batch,QVector<Materiel>mater)
 {
     ui->comboBox_orderType->addItem("普通订单","1");
     ui->comboBox_orderType->addItem("试样订单","2");
-    ui->comboBox_orderType->addItem("返工订单","3");
+    ui->comb.aaoBox_orderType->addItem("返工订单","3");
 
     ui->comboBox_mater_number->blockSignals(true);
 
     ui->comboBox_mater_number->clear();
     QStringList materlist;
+    QSet<QString> mlist;
     for(Materiel ma:mater){
-        materlist<<ma.ComponentSolid;
+        if(m_company_mater.contains(ma.CID)){
+            m_company_mater[ma.CID].push_back(ma.ComponentSolid);
+        }
+      mlist.insert(ma.ComponentSolid);
+      if(!mlist.contains(ma.ComponentSolid))
+          materlist<<ma.ComponentSolid;
     }
     ui->comboBox_mater_number->addItems(materlist);
     ui->comboBox_mater_number->setEditable(true);
