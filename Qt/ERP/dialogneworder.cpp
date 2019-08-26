@@ -26,12 +26,13 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
 
 
     connect(ui->comboBox_mater_number,SIGNAL(currentIndexChanged(int)),this,SLOT(materielIDChange(int)));
+    connect(ui->comboBox_company_name,SIGNAL(currentIndexChanged(int)),this,SLOT(companyNameChange(int)));
 
-//    QRegExp regx("[a-zA-Z0-9-~!@#$%^&*\(\)_+=;:,.<>]+$");
-//    QValidator *validator = new QRegExpValidator(regx, this );
-//    ui->lineEdit_custombatch->setValidator(validator);
+    //    QRegExp regx("[a-zA-Z0-9-~!@#$%^&*\(\)_+=;:,.<>]+$");
+    //    QValidator *validator = new QRegExpValidator(regx, this );
+    //    ui->lineEdit_custombatch->setValidator(validator);
 
-/////神州专用//////////////////
+    /////神州专用//////////////////
     ui->lineEdit_fatory->setHidden(true);
     ui->lineEdit_productline->setHidden(true);
     ui->label_fac_name->setHidden(true);
@@ -46,6 +47,7 @@ DialogNewOrder::~DialogNewOrder()
 
 void DialogNewOrder::initCombox(QSet<QString> batch,QVector<Materiel>mater)
 {
+    m_company_mater.clear();
     ui->comboBox_orderType->addItem("普通订单","1");
     ui->comboBox_orderType->addItem("试样订单","2");
     ui->comb.aaoBox_orderType->addItem("返工订单","3");
@@ -59,9 +61,9 @@ void DialogNewOrder::initCombox(QSet<QString> batch,QVector<Materiel>mater)
         if(m_company_mater.contains(ma.CID)){
             m_company_mater[ma.CID].push_back(ma.ComponentSolid);
         }
-      mlist.insert(ma.ComponentSolid);
-      if(!mlist.contains(ma.ComponentSolid))
-          materlist<<ma.ComponentSolid;
+        mlist.insert(ma.ComponentSolid);
+        if(!mlist.contains(ma.ComponentSolid))
+            materlist<<ma.ComponentSolid;
     }
     ui->comboBox_mater_number->addItems(materlist);
     ui->comboBox_mater_number->setEditable(true);
@@ -101,6 +103,7 @@ void DialogNewOrder::initOrder(Order order)
 void DialogNewOrder::setModel(bool isNew)
 {
     m_isNewMode = isNew;
+
     changeModel();
 }
 void DialogNewOrder::changeModel()
@@ -220,10 +223,10 @@ bool DialogNewOrder::checkOrder(Order order,bool ismod)
             QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "修改后的订单数量不能少于已经出库的数量!");
             return false;
         }
-//        if(order.OrderNum<order.ProduceNum+order.SuccessNum){
-//            QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "修改后的订单数量不能少于已经成品和已经出库的数量之和!");
-//            return false;
-//        }
+        //        if(order.OrderNum<order.ProduceNum+order.SuccessNum){
+        //            QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "修改后的订单数量不能少于已经成品和已经出库的数量之和!");
+        //            return false;
+        //        }
     }
     double confirm_num = ui->doubleSpinBox_num_confirm->value();
     if (order.OrderNum!=confirm_num){
@@ -245,35 +248,90 @@ void DialogNewOrder::on_pushButton_cancel_clicked()
     done(-1);
 }
 
+void DialogNewOrder::clearCurMater()
+{
+    curMater.MaterDes="";
+    curMater.MaterID="";
+    curMater.Factory= "";
+    curMater.ProductionLine="";
+    curMater.Unit="";
+    curMater.CustomName="";
+    curMater.CID="";
+    curMater.Money=0;
+}
+
+void DialogNewOrder::setCurMater()
+{
+    ui->lineEdit_fatory->setText(curMater.Factory);
+    ui->lineEdit_MaterielDes->setText(curMater.MaterDes);
+    ui->lineEdit_productline->setText(curMater.ProductionLine);
+    ui->lineEdit_unit->setText(curMater.Unit);
+    ui->comboBox_company_name->blockSignals(true);
+    ui->comboBox_company_name->clear();
+    ui->comboBox_company_name->blockSignals(false);
+}
+
+
+void DialogNewOrder::companyNameChange(int index)
+{
+    clearCurMater();
+    QString CName = ui->comboBox_company_name->currentText();
+    QString MaterID=ui->comboBox_mater_number->currentText();
+    QVector<Materiel> ls = dataCenter::instance()->pub_getMaterielFromSolidID(id);
+    for(Materiel ma:ls){
+        if(ma.CustomName==CName){
+            curMater = ma;
+            break;
+        }
+    }
+    setCurMater();
+}
+
 
 void DialogNewOrder::materielIDChange(int index)
 {  
-    Materiel ma;
-    if(ui->comboBox_mater_number->currentText()==""){
-        ma.MaterDes="";
-        ma.MaterID="";
-        ma.Factory= "";
-        ma.ProductionLine="";
-        ma.Unit="";
-        ma.CustomName="";
-        ma.CID="";
-        ma.Money=0;
-    }else{
-        QString id = ui->comboBox_mater_number->currentText().trimmed();
-        if(id.isEmpty())
-            return;
-        bool ok = false;
-        ma = dataCenter::instance()->pub_getMaterielFromSolidID(id,ok);
-        if(!ok)
-            return;
+    if(m_company_mater.count(ui->comboBox_mater_number->currentText())==0){
+        clearCurMater();
+        setCurMater();
+        ui->comboBox_company_name->setEnabled(false);
+        return;
     }
+    ui->comboBox_company_name->setEnabled(true);
+    QVector<QString> ls = m_company_mater[ui->comboBox_mater_number->currentText()];
+    ui->comboBox_company_name->blockSignals(true);
+    for(QString m:ls){
+        ui->comboBox_company_name->addItem(m);
+    }
+    ui->comboBox_company_name->blockSignals(false);
+    ui->comboBox_company_name->setCurrentIndex(0);
 
-    ui->lineEdit_fatory->setText(ma.Factory);
-    ui->lineEdit_MaterielDes->setText(ma.MaterDes);
-    ui->lineEdit_productline->setText(ma.ProductionLine);
-    ui->lineEdit_unit->setText(ma.Unit);
-    ui->lineEdit_cumerName->setText(ma.CustomName);
-    curMater = ma;
+    //    Materiel ma;
+    //    if(ui->comboBox_mater_number->currentText()==""){
+    //        ma.MaterDes="";
+    //        ma.MaterID="";
+    //        ma.Factory= "";
+    //        ma.ProductionLine="";
+    //        ma.Unit="";
+    //        ma.CustomName="";
+    //        ma.CID="";
+    //        ma.Money=0;
+    //    }else{
+    //        QString id = ui->comboBox_mater_number->currentText().trimmed();
+    //        if(id.isEmpty())
+    //            return;
+    //        bool ok = false;
+    //            QVector<Materiel> ls = dataCenter::instance()->pub_getMaterielFromSolidID(id);
+    //        if(ls.size()==1){
+
+    //        }
+    //    }
+
+    //    ui->lineEdit_fatory->setText(ma.Factory);
+    //    ui->lineEdit_MaterielDes->setText(ma.MaterDes);
+    //    ui->lineEdit_productline->setText(ma.ProductionLine);
+    //    ui->lineEdit_unit->setText(ma.Unit);
+    //    ui->lineEdit_cumerName->setText(ma.CustomName);
+    //    curMater = ma;
 }
 
 

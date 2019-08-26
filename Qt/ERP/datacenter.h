@@ -159,7 +159,7 @@ public:
     QVector<Materiel>pub_Materiels();
     bool pub_checkMaterielID(QString id);
     Materiel pub_getMateriel(QString MID,bool &ok);
-    Materiel pub_getMaterielFromSolidID(QString sID, bool &ok);
+    QVector<Materiel> pub_getMaterielFromSolidID(QString sID);
     ////////////////////////////////////////////////////
     QSet<QString> pub_Batchs();
     int pub_checkComponentSolid(QString solid,QString CID);

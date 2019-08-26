@@ -28,11 +28,13 @@ private slots:
     void newOrderCb(Order order, bool ok);
     void modOrderCb(Order order,bool ok);
     void materielIDChange(int index);
+    void companyNameChange(int index);
 private:
     void initCombox(QSet<QString> batch,QVector<Materiel>mater);
     bool checkOrder(Order curorder, bool ismod);
     void changeModel();
-
+    void clearCurMater();
+    void setCurMater();
     Ui::DialogNewOrder *ui;
     Order    curorder;
     bool     m_isNewMode;//是否是新建或者修改

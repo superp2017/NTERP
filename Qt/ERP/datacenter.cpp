@@ -958,18 +958,15 @@ Materiel dataCenter::pub_getMateriel(QString MID, bool &ok)
     return s;
 }
 
-Materiel dataCenter::pub_getMaterielFromSolidID(QString sID, bool &ok)
+QVector<Materiel> dataCenter::pub_getMaterielFromSolidID(QString sID)
 {
-    ok = true;
+    QVector<Materiel> ls;
     for(Materiel m:m_maters){
         if (m.ComponentSolid==sID){
-            ok = true;
-            return m;
+           ls.push_back(m);
         }
     }
-    ok = false;
-    Materiel s;
-    return s;
+    return ls;
 }
 
 
