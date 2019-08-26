@@ -50,7 +50,7 @@ void DialogNewOrder::initCombox(QSet<QString> batch,QVector<Materiel>mater)
     m_company_mater.clear();
     ui->comboBox_orderType->addItem("普通订单","1");
     ui->comboBox_orderType->addItem("试样订单","2");
-    ui->comb.aaoBox_orderType->addItem("返工订单","3");
+    ui->comboBox_orderType->addItem("返工订单","3");
 
     ui->comboBox_mater_number->blockSignals(true);
 
@@ -58,12 +58,13 @@ void DialogNewOrder::initCombox(QSet<QString> batch,QVector<Materiel>mater)
     QStringList materlist;
     QSet<QString> mlist;
     for(Materiel ma:mater){
-        if(m_company_mater.contains(ma.CID)){
-            m_company_mater[ma.CID].push_back(ma.ComponentSolid);
-        }
-        mlist.insert(ma.ComponentSolid);
+//        if(!m_company_mater.contains(ma.ComponentSolid)){
+//            m_company_mater[ma.ComponentSolid] =QVector<QString>();
+//        }
+        m_company_mater[ma.ComponentSolid].push_back(ma.CustomName);
         if(!mlist.contains(ma.ComponentSolid))
             materlist<<ma.ComponentSolid;
+        mlist.insert(ma.ComponentSolid);
     }
     ui->comboBox_mater_number->addItems(materlist);
     ui->comboBox_mater_number->setEditable(true);
@@ -266,9 +267,6 @@ void DialogNewOrder::setCurMater()
     ui->lineEdit_MaterielDes->setText(curMater.MaterDes);
     ui->lineEdit_productline->setText(curMater.ProductionLine);
     ui->lineEdit_unit->setText(curMater.Unit);
-    ui->comboBox_company_name->blockSignals(true);
-    ui->comboBox_company_name->clear();
-    ui->comboBox_company_name->blockSignals(false);
 }
 
 
@@ -277,7 +275,7 @@ void DialogNewOrder::companyNameChange(int index)
     clearCurMater();
     QString CName = ui->comboBox_company_name->currentText();
     QString MaterID=ui->comboBox_mater_number->currentText();
-    QVector<Materiel> ls = dataCenter::instance()->pub_getMaterielFromSolidID(id);
+    QVector<Materiel> ls = dataCenter::instance()->pub_getMaterielFromSolidID(MaterID);
     for(Materiel ma:ls){
         if(ma.CustomName==CName){
             curMater = ma;
@@ -293,18 +291,22 @@ void DialogNewOrder::materielIDChange(int index)
     if(m_company_mater.count(ui->comboBox_mater_number->currentText())==0){
         clearCurMater();
         setCurMater();
+
+        ui->comboBox_company_name->blockSignals(true);
+        ui->comboBox_company_name->clear();
+        ui->comboBox_company_name->blockSignals(false);
         ui->comboBox_company_name->setEnabled(false);
         return;
     }
-    ui->comboBox_company_name->setEnabled(true);
     QVector<QString> ls = m_company_mater[ui->comboBox_mater_number->currentText()];
+    ui->comboBox_company_name->setEnabled(ls.size()>0);
     ui->comboBox_company_name->blockSignals(true);
+    ui->comboBox_company_name->clear();
     for(QString m:ls){
         ui->comboBox_company_name->addItem(m);
     }
     ui->comboBox_company_name->blockSignals(false);
-    ui->comboBox_company_name->setCurrentIndex(0);
-
+    companyNameChange(0);
     //    Materiel ma;
     //    if(ui->comboBox_mater_number->currentText()==""){
     //        ma.MaterDes="";

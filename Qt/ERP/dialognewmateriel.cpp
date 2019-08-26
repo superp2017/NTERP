@@ -141,6 +141,7 @@ void DialogNewMateriel::on_pushButton_ok_clicked()
                 return;
                 break;
             default:
+                  return;
                 // should never be reached
                 break;
             }
