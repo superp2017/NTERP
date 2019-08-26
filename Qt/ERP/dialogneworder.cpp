@@ -54,8 +54,12 @@ void DialogNewOrder::initCombox(QSet<QString> batch,QVector<Materiel>mater)
 
     ui->comboBox_mater_number->clear();
     QStringList materlist;
+    QSet<QString> mlist;
     for(Materiel ma:mater){
-        materlist<<ma.ComponentSolid;
+        m_company_mater[ma.ComponentSolid].push_back(ma.CustomName);
+        if(!mlist.contains(ma.ComponentSolid))
+            materlist<<ma.ComponentSolid;
+        mlist.insert(ma.ComponentSolid);
     }
     ui->comboBox_mater_number->addItems(materlist);
     ui->comboBox_mater_number->setEditable(true);
@@ -111,6 +115,26 @@ void DialogNewOrder::changeModel()
         ui->comboBox_orderType->setEnabled(false);
         ui->comboBox_mater_number->setEnabled(false);
     }
+}
+
+void DialogNewOrder::clearCurMater()
+{
+    curMater.MaterDes="";
+    curMater.MaterID="";
+    curMater.Factory= "";
+    curMater.ProductionLine="";
+    curMater.Unit="";
+    curMater.CustomName="";
+    curMater.CID="";
+    curMater.Money=0;
+}
+
+void DialogNewOrder::setCurMater()
+{
+    ui->lineEdit_fatory->setText(curMater.Factory);
+    ui->lineEdit_MaterielDes->setText(curMater.MaterDes);
+    ui->lineEdit_productline->setText(curMater.ProductionLine);
+    ui->lineEdit_unit->setText(curMater.Unit);
 }
 
 
@@ -239,36 +263,44 @@ void DialogNewOrder::on_pushButton_cancel_clicked()
     done(-1);
 }
 
+void DialogNewOrder::companyNameChange(int index)
+{
+    clearCurMater();
+    QString CName = ui->comboBox_company_name->currentText();
+    QString MaterID=ui->comboBox_mater_number->currentText();
+    QVector<Materiel> ls = dataCenter::instance()->pub_getMaterielFromSolidID(MaterID);
+    for(Materiel ma:ls){
+        if(ma.CustomName==CName){
+            curMater = ma;
+            break;
+        }
+    }
+    setCurMater();
+}
 
 void DialogNewOrder::materielIDChange(int index)
 {
-    Materiel ma;
-    if(ui->comboBox_mater_number->currentText()==""){
-        ma.MaterDes="";
-        ma.MaterID="";
-        ma.Factory= "";
-        ma.ProductionLine="";
-        ma.Unit="";
-        ma.CustomName="";
-        ma.CID="";
-        ma.Money=0;
-    }else{
-        QString id = ui->comboBox_mater_number->currentText().trimmed();
-        if(id.isEmpty())
-            return;
-        bool ok = false;
-        ma = dataCenter::instance()->pub_getMaterielFromSolidID(id,ok);
-        if(!ok)
-            return;
-    }
+    if(m_company_mater.count(ui->comboBox_mater_number->currentText())==0){
+            clearCurMater();
+            setCurMater();
 
-    ui->lineEdit_fatory->setText(ma.Factory);
-    ui->lineEdit_MaterielDes->setText(ma.MaterDes);
-    ui->lineEdit_productline->setText(ma.ProductionLine);
-    ui->lineEdit_unit->setText(ma.Unit);
-    ui->lineEdit_cumerName->setText(ma.CustomName);
-    curMater = ma;
+            ui->comboBox_company_name->blockSignals(true);
+            ui->comboBox_company_name->clear();
+            ui->comboBox_company_name->blockSignals(false);
+            ui->comboBox_company_name->setEnabled(false);
+            return;
+        }
+        QVector<QString> ls = m_company_mater[ui->comboBox_mater_number->currentText()];
+        ui->comboBox_company_name->setEnabled(ls.size()>0);
+        ui->comboBox_company_name->blockSignals(true);
+        ui->comboBox_company_name->clear();
+        for(QString m:ls){
+            ui->comboBox_company_name->addItem(m);
+        }
+        ui->comboBox_company_name->blockSignals(false);
+        companyNameChange(0);
 }
+
 
 
 

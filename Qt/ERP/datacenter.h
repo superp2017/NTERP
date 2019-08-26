@@ -159,10 +159,10 @@ public:
     QVector<Materiel>pub_Materiels();
     bool pub_checkMaterielID(QString id);
     Materiel pub_getMateriel(QString MID,bool &ok);
-    Materiel pub_getMaterielFromSolidID(QString sID, bool &ok);
+    QVector<Materiel> pub_getMaterielFromSolidID(QString sID);
     ////////////////////////////////////////////////////
     QSet<QString> pub_Batchs();
-    bool pub_checkComponentSolid(QString solid);
+    int pub_checkComponentSolid(QString solid,QString CID);
     ////////////////////////////////////////////////////
     QVector<Customer>pub_Customers();
     bool pub_checkCustomerExist(QString name);

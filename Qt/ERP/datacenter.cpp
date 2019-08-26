@@ -958,18 +958,15 @@ Materiel dataCenter::pub_getMateriel(QString MID, bool &ok)
     return s;
 }
 
-Materiel dataCenter::pub_getMaterielFromSolidID(QString sID, bool &ok)
+QVector<Materiel> dataCenter::pub_getMaterielFromSolidID(QString sID)
 {
-    ok = true;
+    QVector<Materiel> ls;
     for(Materiel m:m_maters){
         if (m.ComponentSolid==sID){
-            ok = true;
-            return m;
+           ls.push_back(m);
         }
     }
-    ok = false;
-    Materiel s;
-    return s;
+    return ls;
 }
 
 
@@ -978,14 +975,18 @@ QSet<QString> dataCenter::pub_Batchs()
     return m_batch;
 }
 
-bool dataCenter::pub_checkComponentSolid(QString solid)
+int dataCenter::pub_checkComponentSolid(QString solid, QString CID)
 {
     for(Materiel m:m_maters){
         if (m.ComponentSolid==solid){
-            return true;
+            if(m.CID==CID){
+                return -1;
+            }else{
+                return 1;
+            }
         }
     }
-    return false;
+    return 100;
 }
 
 
