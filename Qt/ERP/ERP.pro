@@ -21,9 +21,7 @@ TEMPLATE = app
 include(../pub.pri)
 
 
-UI_DIR = ../../../temp/ui/ERP
-OBJECTS_DIR = ../../../temp/obj/ERP
-MOC_DIR = ../../../temp/moc/ERP
+
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings

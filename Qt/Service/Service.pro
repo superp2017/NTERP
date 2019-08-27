@@ -28,11 +28,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
-UI_DIR = ../../../temp/ui/ERPService
-OBJECTS_DIR = ../../../temp/obj/ERPService
-MOC_DIR = ../../../temp/moc/ERPService
-
-
 
 include(../pub.pri)
 
