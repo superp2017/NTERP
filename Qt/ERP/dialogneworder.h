@@ -28,6 +28,7 @@ private slots:
     void newOrderCb(Order order, bool ok);
     void modOrderCb(Order order,bool ok);
     void materielIDChange(int index);
+    void materielIDChange(QString id);
     void companyNameChange(int index);
 private:
     void initCombox(QSet<QString> batch,QVector<Materiel>mater);
