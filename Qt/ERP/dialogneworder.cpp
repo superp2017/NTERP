@@ -26,16 +26,16 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
 
 
     connect(ui->comboBox_mater_number,SIGNAL(currentIndexChanged(int)),this,SLOT(materielIDChange(int)));
+    connect(ui->comboBox_mater_number,SIGNAL(currentTextChanged(QString)),this,SLOT(materielIDChange(QString)));
+    //    QRegExp regx("[a-zA-Z0-9-~!@#$%^&*\(\)_+=;:,.<>]+$");
+    //    QValidator *validator = new QRegExpValidator(regx, this );
+    //    ui->lineEdit_custombatch->setValidator(validator);
 
-//    QRegExp regx("[a-zA-Z0-9-~!@#$%^&*\(\)_+=;:,.<>]+$");
-//    QValidator *validator = new QRegExpValidator(regx, this );
-//    ui->lineEdit_custombatch->setValidator(validator);
-
-/////神州专用//////////////////
-//    ui->lineEdit_fatory->setHidden(true);
-//    ui->lineEdit_productline->setHidden(true);
-//    ui->label_fac_name->setHidden(true);
-//    ui->label_line_name->setHidden(true);
+    /////神州专用//////////////////
+    //    ui->lineEdit_fatory->setHidden(true);
+    //    ui->lineEdit_productline->setHidden(true);
+    //    ui->label_fac_name->setHidden(true);
+    //    ui->label_line_name->setHidden(true);
     /////神州专用//////////////////
 }
 
@@ -219,6 +219,7 @@ void DialogNewOrder::modOrderCb(Order order,bool ok)
 }
 
 
+
 bool DialogNewOrder::checkOrder(Order order,bool ismod)
 {
     if(order.MaterielID==""||order.MaterielDes==""){
@@ -238,10 +239,10 @@ bool DialogNewOrder::checkOrder(Order order,bool ismod)
             QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "修改后的订单数量不能少于已经出库的数量!");
             return false;
         }
-//        if(order.OrderNum<order.ProduceNum+order.SuccessNum){
-//            QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "修改后的订单数量不能少于已经成品和已经出库的数量之和!");
-//            return false;
-//        }
+        //        if(order.OrderNum<order.ProduceNum+order.SuccessNum){
+        //            QToolTip::showText(ui->doubleSpinBox_num->mapToGlobal(QPoint(100, 0)), "修改后的订单数量不能少于已经成品和已经出库的数量之和!");
+        //            return false;
+        //        }
     }
     double confirm_num = ui->doubleSpinBox_num_confirm->value();
     if (order.OrderNum!=confirm_num){
@@ -281,25 +282,40 @@ void DialogNewOrder::companyNameChange(int index)
 void DialogNewOrder::materielIDChange(int index)
 {
     if(m_company_mater.count(ui->comboBox_mater_number->currentText())==0){
-            clearCurMater();
-            setCurMater();
+        clearCurMater();
+        setCurMater();
 
-            ui->comboBox_company_name->blockSignals(true);
-            ui->comboBox_company_name->clear();
-            ui->comboBox_company_name->blockSignals(false);
-            ui->comboBox_company_name->setEnabled(false);
-            return;
-        }
-        QVector<QString> ls = m_company_mater[ui->comboBox_mater_number->currentText()];
-        ui->comboBox_company_name->setEnabled(ls.size()>0);
         ui->comboBox_company_name->blockSignals(true);
         ui->comboBox_company_name->clear();
-        for(QString m:ls){
-            ui->comboBox_company_name->addItem(m);
-        }
         ui->comboBox_company_name->blockSignals(false);
-        companyNameChange(0);
+        ui->comboBox_company_name->setEnabled(false);
+        return;
+    }
+    QVector<QString> ls = m_company_mater[ui->comboBox_mater_number->currentText()];
+    ui->comboBox_company_name->setEnabled(ls.size()>0);
+    ui->comboBox_company_name->blockSignals(true);
+    ui->comboBox_company_name->clear();
+    for(QString m:ls){
+        ui->comboBox_company_name->addItem(m);
+    }
+    ui->comboBox_company_name->blockSignals(false);
+    companyNameChange(0);
 }
+
+void DialogNewOrder::materielIDChange(QString id)
+{
+    if(m_company_mater.count(ui->comboBox_mater_number->currentText())==0){
+        clearCurMater();
+        setCurMater();
+
+        ui->comboBox_company_name->blockSignals(true);
+        ui->comboBox_company_name->clear();
+        ui->comboBox_company_name->blockSignals(false);
+        ui->comboBox_company_name->setEnabled(false);
+        return;
+    }
+}
+
 
 
 

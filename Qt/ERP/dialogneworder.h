@@ -26,7 +26,8 @@ private slots:
     void on_pushButton_ok_clicked();
     void on_pushButton_cancel_clicked();
     void newOrderCb(Order order, bool ok);
-    void modOrderCb(Order order,bool ok);
+    void modOrderCb(Order order,bool ok); 
+    void materielIDChange(QString id);
     void materielIDChange(int index);
     void companyNameChange(int index);
 private:
