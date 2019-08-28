@@ -1,5 +1,5 @@
 
-ROOT = "E:/workspace/Qt/SimLib/boost_1_59_0"
+ROOT = "D:/workspace/libs/boost_1_59_0"
 
 INCLUDEPATH += $${ROOT}/boost
 QMAKE_INCDIR += $${ROOT}/boost
@@ -21,5 +21,3 @@ QMAKE_CXXFLAGS += -wd4100  -wd4005 -wd4503 -wd4101 -wd4100
 QMAKE_CXXFLAGS += -wd4996  -wd4522 -wd4189 -wd4819
 
 QMAKE_LFLAGS += /MANIFESTUAC:\"level=\'requireAdministrator\' uiAccess=\'false\'\"
-
-#QMAKE_LFLAGS += /MANIFESTUAC:"level='requireAdministrator'uiAccess='false'"
