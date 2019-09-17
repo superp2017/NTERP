@@ -43,6 +43,7 @@ private slots:
 private:
     Ui::DialogNewMateriel *ui;
     Materiel mater;
+    Materiel oldmater;
     QVector<Materiel> mater_list;
     int  m_Model;
 

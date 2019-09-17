@@ -36,6 +36,7 @@ DialogNewMateriel::~DialogNewMateriel()
 
 void DialogNewMateriel::initMater(Materiel ma)
 {
+    oldmater = ma;
     mater = ma;
     ui->comboBox_customer->setCurrentText(ma.CustomName);
     ui->comboBox_format->setCurrentText(ma.ComponentFormat);
@@ -114,8 +115,10 @@ void DialogNewMateriel::on_pushButton_ok_clicked()
 
     int r =dataCenter::instance()->pub_checkComponentSolid(mater.ComponentSolid,mater.CID);
     if (r==-1){
-        QToolTip::showText(ui->comboBox_solid->mapToGlobal(QPoint(100, 0)), "该公司已经存在同样的零件固号!");
-        return;
+        if(m_Model==1&&oldmater.ComponentSolid!=mater.ComponentSolid){
+            QToolTip::showText(ui->comboBox_solid->mapToGlobal(QPoint(100, 0)), "该公司已经存在同样的零件固号!");
+            return;
+        }
     }
     if(r==1){
         QMessageBox msgBox;
