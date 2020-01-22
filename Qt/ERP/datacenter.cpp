@@ -229,7 +229,7 @@ void dataCenter::net_newOrder(const QJsonObject para)
     bool isOK   = false;
     Order order = OrderService::newOrder(para,isOK,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     if(isOK){
-        m_orders.append(order);
+        m_orders.push_front(order);
         m_orders_set.insert(order.OrderID);
         m_batch.insert(order.CustomBatch);
     }

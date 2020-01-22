@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     registerMetaType();
     dataCenter::instance()->initData();
     NLogin login;
-    if (dataCenter::instance()->checkVersion(&login)!=123){
+//    if (dataCenter::instance()->checkVersion(&login)!=123){
         login.showFullScreen();
         if (login.exec()==123){
             MainWindow w;
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
             w.showMaximized();
             return a.exec();
         }
-    }
+//    }
     return 0;
 }
 

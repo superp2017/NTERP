@@ -114,7 +114,7 @@ Ret Http::fetch(std::string url, QJsonObject para, bool &success, QString host, 
         std::cout << "error_code:" << ret << std::endl;
         success = false;
     }
-    QJsonDocument& json = QJsonDocument::fromJson(reponse_data.data());
+    QJsonDocument json = QJsonDocument::fromJson(reponse_data.data());
     Ret  retData;
     //    std::cout<<reponse_data<<std::endl;
     if(!json.isNull()&&json.isObject()){

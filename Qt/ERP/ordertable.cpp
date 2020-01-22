@@ -63,7 +63,7 @@ OrderTable::OrderTable(QString status, QWidget *w):
         this->hideColumn(9);
     }
     checkAuthor(dataCenter::instance()->pub_CurUser().Author);
-   /////神州专用//////////////////
+    /////神州专用//////////////////
     this->hideColumn(0);
     this->hideColumn(1);
     //////////////////////
@@ -76,8 +76,8 @@ void OrderTable::initOrder(QVector<Order> list)
 {
     baravalue = this->verticalScrollBar()->value();
     removeAllRow();
-    for(int i = list.size()-1;i>=0;--i){
-         appendOrder(list.at(i));
+    for(int i =0;i<list.size();++i){
+        appendOrder(list.at(i));
     }
     this->verticalScrollBar()->setValue(baravalue);
 }
