@@ -72,8 +72,8 @@ void OrderTable::initOrder(QVector<Order> list)
 {
     baravalue = this->verticalScrollBar()->value();
     removeAllRow();
-    for(int i = list.size()-1;i>=0;--i){
-         appendOrder(list.at(i));
+    for(int i = 0;i<list.size();++i){
+        appendOrder(list.at(i));
     }
     this->verticalScrollBar()->setValue(baravalue);
 }

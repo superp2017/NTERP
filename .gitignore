@@ -10,8 +10,11 @@ bin/
 *pdb
 *lik
 matlab
+pkg/
+github.com/
 debug/
 release/
+
 *.bak
 *.qmake
 *.qmake.stash

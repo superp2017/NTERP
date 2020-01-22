@@ -479,7 +479,7 @@ func GetGlobalOrders(session *JHttp.Session) {
 	lenData := len(data)
 	if lenData > 0 {
 		sort.Slice(data, func(i, j int) bool {
-			return data[i].CreatStamp <= data[j].CreatStamp
+			return data[i].CreatStamp > data[j].CreatStamp //最新创建的放前面
 		})
 	}
 

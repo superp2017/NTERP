@@ -1,20 +1,15 @@
-
+#ROOT = "D:/worksapce/libs/boost_1_59_0"
 #INCLUDEPATH += $${ROOT}/boost
 #QMAKE_INCDIR += $${ROOT}/boost
 #QMAKE_LIBDIR += $${ROOT}/lib64
 #LIBS += boost_system-vc140-mt-1_59.lib
 #LIBS += boost_thread-vc140-mt-1_59.lib
-#ROOT = "../libs/boost_1_67_vs2017"
 
 
-ROOT = "D:/workspace/libs/boost_1_67_vs2017"
 
-DEPENDPATH   += D:/workspace/libs/boost_1_67_vs2017/include/boost-1_67
-INCLUDEPATH  += D:/workspace/libs/boost_1_67_vs2017/include/boost-1_67
-QMAKE_INCDIR += D:/workspace/libs/boost_1_67_vs2017/include/boost-1_67
-QMAKE_LIBDIR += D:/workspace/libs/boost_1_67_vs2017/lib
+ROOT = "D:/worksapce/libs/boost_1_67_vs2017"
 
-INCLUDEPATH += $${ROOT}/include/boost-1_67
+INCLUDEPATH  += $${ROOT}/include/boost-1_67
 QMAKE_INCDIR += $${ROOT}/include/boost-1_67
 QMAKE_LIBDIR += $${ROOT}/lib
 

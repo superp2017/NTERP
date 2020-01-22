@@ -55,7 +55,7 @@ int version::checkVersion(QWidget *w)
     if(m_net_ok){
         if(m_net_ver.VersionNum>m_cur_ver.VersionNum){
             DialogVersionUpdate v;
-            v.setVersion( m_net_ver);
+            v.setVersion(m_net_ver);
             int ret = v.exec();
             return ret;
         }
