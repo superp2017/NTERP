@@ -10,7 +10,7 @@ class SERVICESHARED_EXPORT update : public QObject
 {
     Q_OBJECT
 public:
-    explicit update(QObject *parent = 0);
+    explicit update(QObject *parent = nullptr);
     static int HeartBeat(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static VersionInfo GetVersion(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static void SetVersion(const QJsonObject para, bool &ok, QString hostname, QString hostport);

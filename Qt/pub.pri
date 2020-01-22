@@ -1,11 +1,11 @@
 
-
 #INCLUDEPATH += $${ROOT}/boost
 #QMAKE_INCDIR += $${ROOT}/boost
 #QMAKE_LIBDIR += $${ROOT}/lib64
 #LIBS += boost_system-vc140-mt-1_59.lib
 #LIBS += boost_thread-vc140-mt-1_59.lib
 #ROOT = "../libs/boost_1_67_vs2017"
+
 
 ROOT = "D:/workspace/libs/boost_1_67_vs2017"
 
@@ -20,6 +20,7 @@ QMAKE_LIBDIR += $${ROOT}/lib
 
 LIBS += libboost_system-vc141-mt-x64-1_67.lib
 LIBS += libboost_thread-vc141-mt-x64-1_67.lib
+
 
 DESTDIR = ../../bin
 QMAKE_LIBDIR += ../../bin

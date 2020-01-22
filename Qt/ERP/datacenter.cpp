@@ -821,7 +821,7 @@ void dataCenter::net_HeartBeat(int index)
 void dataCenter::net_getVersion(const QJsonObject para)
 {
     bool ok;
-    VersionInfo v =update::GetVersion(QJsonObject(),ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    VersionInfo v = update::GetVersion(QJsonObject(),ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     m_version_manager.setNetVersion(v,ok);
 }
 

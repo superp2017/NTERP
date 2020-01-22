@@ -31,16 +31,16 @@ int main(int argc, char *argv[])
     registerMetaType();
     dataCenter::instance()->initData();
     NLogin login;
-    if (dataCenter::instance()->checkVersion(&login)!=123){
-        login.showFullScreen();
-        if (login.exec()==123){
-            MainWindow w;
-            w.setMinimumSize(800,800);
-            dataCenter::instance()->TimerUpdate();
-            w.showMaximized();
-            return a.exec();
-        }
+    //    if (dataCenter::instance()->checkVersion(&login)!=123){
+    login.showFullScreen();
+    if (login.exec()==123){
+        MainWindow w;
+        w.setMinimumSize(800,800);
+        dataCenter::instance()->TimerUpdate();
+        w.showMaximized();
+        return a.exec();
     }
+    //    }
     return 0;
 }
 
