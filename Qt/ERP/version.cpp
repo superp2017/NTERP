@@ -22,6 +22,7 @@ void version::setNetVersion(VersionInfo &info, bool ok)
 void version::loadVersion()
 {
     QSettings m_settings("./VERSION",QSettings::IniFormat);
+    m_settings.setIniCodec("utf-8");
     m_settings.beginGroup("VERSION");
     m_cur_ver.Version = m_settings.value("Version").toString();
     m_cur_ver.VersionNum = m_settings.value("VersionNum").toInt();
@@ -36,6 +37,7 @@ void version::loadVersion()
 void version::saveVersion()
 {
     QSettings m_settings("./VERSION",QSettings::IniFormat);
+    m_settings.setIniCodec("utf-8");
     m_settings.beginGroup("VERSION");
     m_settings.setValue("Version",m_cur_ver.Version);
     m_settings.setValue("VersionNum",m_cur_ver.VersionNum);
