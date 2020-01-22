@@ -50,7 +50,7 @@ NLogin::NLogin(QWidget *parent) :
     ui->n_useNameLine->setCompleter(acc);
     connect(ui->n_useNameLine,SIGNAL(textChanged(QString)),ui->n_usePwdLine,SLOT(clear()));
     ui->n_useNameLine->setText(dataCenter::instance()->CurSettings().Account);
-    ui->n_usePwdLine->setText(dataCenter::instance()->CurSettings().Code);
+    ui->n_usePwdLine->setText("");
 
 
 }

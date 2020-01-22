@@ -64,7 +64,7 @@ void nSysConfig::setSetting(SysSetting set)
     m_settings.setValue("HOST_NAME",set.Host_name);
     m_settings.setValue("HOST_PORT",set.Host_port);
     m_settings.setValue("Account",set.Account);
-    m_settings.setValue("Code",set.Code);
+    m_settings.setValue("Code","");
     m_settings.endGroup();
     m_settings.beginGroup("Accounts");
     QStringList list = QStringList::fromSet(m_accounts);
