@@ -38,10 +38,10 @@ func SetVersion(session *JHttp.Session) {
 		return
 	}
 	n := version2Num(st.Version)
-	if n == -1 || n <= data.VersionNum {
-		session.Forward("1", "sucess", nil)
-		return
-	}
+	//if n == -1 || n <= data.VersionNum {
+	//	session.Forward("1", "sucess", nil)
+	//	return
+	//}
 	st.VersionNum = n
 	st.Date = CurDate()
 	if err := JRedis.Redis_set("Version", st); err != nil {
