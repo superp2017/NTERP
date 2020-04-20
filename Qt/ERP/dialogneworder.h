@@ -26,9 +26,9 @@ private slots:
     void on_pushButton_ok_clicked();
     void on_pushButton_cancel_clicked();
     void newOrderCb(Order order, bool ok);
-    void modOrderCb(Order order,bool ok); 
-    void materielIDChange(QString id);
+    void modOrderCb(Order order,bool ok);
     void materielIDChange(int index);
+    void materielIDChange(QString id);
     void companyNameChange(int index);
 private:
     void initCombox(QSet<QString> batch,QVector<Materiel>mater);
@@ -36,7 +36,6 @@ private:
     void changeModel();
     void clearCurMater();
     void setCurMater();
-
     Ui::DialogNewOrder *ui;
     Order    curorder;
     bool     m_isNewMode;//是否是新建或者修改

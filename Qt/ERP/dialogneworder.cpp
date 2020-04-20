@@ -27,15 +27,17 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
 
     connect(ui->comboBox_mater_number,SIGNAL(currentIndexChanged(int)),this,SLOT(materielIDChange(int)));
     connect(ui->comboBox_mater_number,SIGNAL(currentTextChanged(QString)),this,SLOT(materielIDChange(QString)));
+    connect(ui->comboBox_company_name,SIGNAL(currentIndexChanged(int)),this,SLOT(companyNameChange(int)));
+
     //    QRegExp regx("[a-zA-Z0-9-~!@#$%^&*\(\)_+=;:,.<>]+$");
     //    QValidator *validator = new QRegExpValidator(regx, this );
     //    ui->lineEdit_custombatch->setValidator(validator);
 
     /////神州专用//////////////////
-    //    ui->lineEdit_fatory->setHidden(true);
-    //    ui->lineEdit_productline->setHidden(true);
-    //    ui->label_fac_name->setHidden(true);
-    //    ui->label_line_name->setHidden(true);
+    ui->lineEdit_fatory->setHidden(true);
+    ui->lineEdit_productline->setHidden(true);
+    ui->label_fac_name->setHidden(true);
+    ui->label_line_name->setHidden(true);
     /////神州专用//////////////////
 }
 
@@ -46,6 +48,7 @@ DialogNewOrder::~DialogNewOrder()
 
 void DialogNewOrder::initCombox(QSet<QString> batch,QVector<Materiel>mater)
 {
+    m_company_mater.clear();
     ui->comboBox_orderType->addItem("普通订单","1");
     ui->comboBox_orderType->addItem("试样订单","2");
     ui->comboBox_orderType->addItem("返工订单","3");
@@ -56,6 +59,9 @@ void DialogNewOrder::initCombox(QSet<QString> batch,QVector<Materiel>mater)
     QStringList materlist;
     QSet<QString> mlist;
     for(Materiel ma:mater){
+        //        if(!m_company_mater.contains(ma.ComponentSolid)){
+        //            m_company_mater[ma.ComponentSolid] =QVector<QString>();
+        //        }
         m_company_mater[ma.ComponentSolid].push_back(ma.CustomName);
         if(!mlist.contains(ma.ComponentSolid))
             materlist<<ma.ComponentSolid;
@@ -99,6 +105,7 @@ void DialogNewOrder::initOrder(Order order)
 void DialogNewOrder::setModel(bool isNew)
 {
     m_isNewMode = isNew;
+
     changeModel();
 }
 void DialogNewOrder::changeModel()
@@ -115,26 +122,6 @@ void DialogNewOrder::changeModel()
         ui->comboBox_orderType->setEnabled(false);
         ui->comboBox_mater_number->setEnabled(false);
     }
-}
-
-void DialogNewOrder::clearCurMater()
-{
-    curMater.MaterDes="";
-    curMater.MaterID="";
-    curMater.Factory= "";
-    curMater.ProductionLine="";
-    curMater.Unit="";
-    curMater.CustomName="";
-    curMater.CID="";
-    curMater.Money=0;
-}
-
-void DialogNewOrder::setCurMater()
-{
-    ui->lineEdit_fatory->setText(curMater.Factory);
-    ui->lineEdit_MaterielDes->setText(curMater.MaterDes);
-    ui->lineEdit_productline->setText(curMater.ProductionLine);
-    ui->lineEdit_unit->setText(curMater.Unit);
 }
 
 
@@ -219,7 +206,6 @@ void DialogNewOrder::modOrderCb(Order order,bool ok)
 }
 
 
-
 bool DialogNewOrder::checkOrder(Order order,bool ismod)
 {
     if(order.MaterielID==""||order.MaterielDes==""){
@@ -264,6 +250,27 @@ void DialogNewOrder::on_pushButton_cancel_clicked()
     done(-1);
 }
 
+void DialogNewOrder::clearCurMater()
+{
+    curMater.MaterDes="";
+    curMater.MaterID="";
+    curMater.Factory= "";
+    curMater.ProductionLine="";
+    curMater.Unit="";
+    curMater.CustomName="";
+    curMater.CID="";
+    curMater.Money=0;
+}
+
+void DialogNewOrder::setCurMater()
+{
+    ui->lineEdit_fatory->setText(curMater.Factory);
+    ui->lineEdit_MaterielDes->setText(curMater.MaterDes);
+    ui->lineEdit_productline->setText(curMater.ProductionLine);
+    ui->lineEdit_unit->setText(curMater.Unit);
+}
+
+
 void DialogNewOrder::companyNameChange(int index)
 {
     clearCurMater();
@@ -279,8 +286,9 @@ void DialogNewOrder::companyNameChange(int index)
     setCurMater();
 }
 
+
 void DialogNewOrder::materielIDChange(int index)
-{
+{  
     if(m_company_mater.count(ui->comboBox_mater_number->currentText())==0){
         clearCurMater();
         setCurMater();
@@ -291,6 +299,7 @@ void DialogNewOrder::materielIDChange(int index)
         ui->comboBox_company_name->setEnabled(false);
         return;
     }
+
     QVector<QString> ls = m_company_mater[ui->comboBox_mater_number->currentText()];
     ui->comboBox_company_name->setEnabled(ls.size()>0);
     ui->comboBox_company_name->blockSignals(true);
@@ -315,8 +324,6 @@ void DialogNewOrder::materielIDChange(QString id)
         return;
     }
 }
-
-
 
 
 
