@@ -25,9 +25,9 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_modOrder(Order,bool)),this,SLOT(modOrderCb(Order,bool)));
 
 
-    connect(ui->comboBox_mater_number,SIGNAL(currentIndexChanged(int)),this,SLOT(materielIDChange(int)));
-    connect(ui->comboBox_mater_number,SIGNAL(currentTextChanged(QString)),this,SLOT(materielIDChange(QString)));
     connect(ui->comboBox_company_name,SIGNAL(currentIndexChanged(int)),this,SLOT(companyNameChange(int)));
+    connect(ui->comboBox_company_name,SIGNAL(currentTextChanged(QString)),this,SLOT(companyNameChange(QString)));
+    connect(ui->comboBox_company_name,SIGNAL(currentIndexChanged(int)),this,SLOT(materielIDChange(int)));
 
     //    QRegExp regx("[a-zA-Z0-9-~!@#$%^&*\(\)_+=;:,.<>]+$");
     //    QValidator *validator = new QRegExpValidator(regx, this );
@@ -59,20 +59,17 @@ void DialogNewOrder::initCombox(QSet<QString> batch,QVector<Materiel>mater)
     QStringList materlist;
     QSet<QString> mlist;
     for(Materiel ma:mater){
-        //        if(!m_company_mater.contains(ma.ComponentSolid)){
-        //            m_company_mater[ma.ComponentSolid] =QVector<QString>();
-        //        }
-        m_company_mater[ma.ComponentSolid].push_back(ma.CustomName);
-        if(!mlist.contains(ma.ComponentSolid))
-            materlist<<ma.ComponentSolid;
-        mlist.insert(ma.ComponentSolid);
+        m_company_mater[ma.CustomName].push_back(ma.ComponentSolid);
+        if(!mlist.contains(ma.CustomName))
+            materlist<<ma.CustomName;
+        mlist.insert(ma.CustomName);
     }
-    ui->comboBox_mater_number->addItems(materlist);
-    ui->comboBox_mater_number->setEditable(true);
+    ui->comboBox_company_name->addItems(materlist);
+    ui->comboBox_company_name->setEditable(true);
     QCompleter *completermater = new QCompleter(materlist, this);
-    ui->comboBox_mater_number->setCompleter(completermater);
-    ui->comboBox_mater_number->setCurrentIndex(-1);
-    ui->comboBox_mater_number->blockSignals(false);
+    ui->comboBox_company_name->setCompleter(completermater);
+    ui->comboBox_company_name->setCurrentIndex(-1);
+    ui->comboBox_company_name->blockSignals(false);
 
     QCompleter *completerBatch = new QCompleter(batch.toList(), this);
     ui->lineEdit_custombatch->setCompleter(completerBatch);
@@ -91,7 +88,7 @@ void DialogNewOrder::initOrder(Order order)
         ui->comboBox_orderType->setCurrentIndex(2);
     }
     ui->comboBox_mater_number->setCurrentText(order.ComponentSolid);
-    materielIDChange(0);
+    companyNameChange(0);
 
     ui->doubleSpinBox_num->setValue(order.OrderNum);
     ui->doubleSpinBox_num_confirm->setValue(order.OrderNum);
@@ -271,11 +268,11 @@ void DialogNewOrder::setCurMater()
 }
 
 
-void DialogNewOrder::companyNameChange(int index)
+void DialogNewOrder::materielIDChange(int index)
 {
     clearCurMater();
-    QString CName = ui->comboBox_company_name->currentText();
-    QString MaterID=ui->comboBox_mater_number->currentText();
+    QString CName   = ui->comboBox_company_name->currentText();
+    QString MaterID = ui->comboBox_mater_number->currentText();
     QVector<Materiel> ls = dataCenter::instance()->pub_getMaterielFromSolidID(MaterID);
     for(Materiel ma:ls){
         if(ma.CustomName==CName){
@@ -287,40 +284,40 @@ void DialogNewOrder::companyNameChange(int index)
 }
 
 
-void DialogNewOrder::materielIDChange(int index)
+void DialogNewOrder::companyNameChange(int index)
 {  
-    if(m_company_mater.count(ui->comboBox_mater_number->currentText())==0){
+    if(m_company_mater.count(ui->comboBox_company_name->currentText())==0){
         clearCurMater();
         setCurMater();
 
-        ui->comboBox_company_name->blockSignals(true);
-        ui->comboBox_company_name->clear();
-        ui->comboBox_company_name->blockSignals(false);
-        ui->comboBox_company_name->setEnabled(false);
+        ui->comboBox_mater_number->blockSignals(true);
+        ui->comboBox_mater_number->clear();
+        ui->comboBox_mater_number->blockSignals(false);
+        ui->comboBox_mater_number->setEnabled(false);
         return;
     }
 
-    QVector<QString> ls = m_company_mater[ui->comboBox_mater_number->currentText()];
-    ui->comboBox_company_name->setEnabled(ls.size()>0);
-    ui->comboBox_company_name->blockSignals(true);
-    ui->comboBox_company_name->clear();
+    QVector<QString> ls = m_company_mater[ui->comboBox_company_name->currentText()];
+    ui->comboBox_mater_number->setEnabled(ls.size()>0);
+    ui->comboBox_mater_number->blockSignals(true);
+    ui->comboBox_mater_number->clear();
     for(QString m:ls){
-        ui->comboBox_company_name->addItem(m);
+        ui->comboBox_mater_number->addItem(m);
     }
-    ui->comboBox_company_name->blockSignals(false);
-    companyNameChange(0);
+    ui->comboBox_mater_number->blockSignals(false);
+    materielIDChange(0);
 }
 
-void DialogNewOrder::materielIDChange(QString id)
+void DialogNewOrder::companyNameChange(QString id)
 {
-    if(m_company_mater.count(ui->comboBox_mater_number->currentText())==0){
+    if(m_company_mater.count(ui->comboBox_company_name->currentText())==0){
         clearCurMater();
         setCurMater();
 
-        ui->comboBox_company_name->blockSignals(true);
-        ui->comboBox_company_name->clear();
-        ui->comboBox_company_name->blockSignals(false);
-        ui->comboBox_company_name->setEnabled(false);
+        ui->comboBox_mater_number->blockSignals(true);
+        ui->comboBox_mater_number->clear();
+        ui->comboBox_mater_number->blockSignals(false);
+        ui->comboBox_mater_number->setEnabled(false);
         return;
     }
 }
