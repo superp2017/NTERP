@@ -27,9 +27,9 @@ private slots:
     void on_pushButton_cancel_clicked();
     void newOrderCb(Order order, bool ok);
     void modOrderCb(Order order,bool ok);
-    void materielIDChange(int index);
-    void materielIDChange(QString id);
     void companyNameChange(int index);
+    void companyNameChange(QString id);
+    void materielIDChange(int index);
 private:
     void initCombox(QSet<QString> batch,QVector<Materiel>mater);
     bool checkOrder(Order curorder, bool ismod);

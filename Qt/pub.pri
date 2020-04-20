@@ -1,6 +1,6 @@
 
-ROOT = "D:/worksapce/libs/boost_1_67_vs2017"
 
+ROOT = "./../../../libs/boost_1_67_vs2017"
 
 INCLUDEPATH += $${ROOT}/include/boost-1_67
 QMAKE_INCDIR += $${ROOT}/include/boost-1_67
