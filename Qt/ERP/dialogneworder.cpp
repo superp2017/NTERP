@@ -27,7 +27,7 @@ DialogNewOrder::DialogNewOrder(QWidget *parent) :
 
     connect(ui->comboBox_company_name,SIGNAL(currentIndexChanged(int)),this,SLOT(companyNameChange(int)));
     connect(ui->comboBox_company_name,SIGNAL(currentTextChanged(QString)),this,SLOT(companyNameChange(QString)));
-    connect(ui->comboBox_company_name,SIGNAL(currentIndexChanged(int)),this,SLOT(materielIDChange(int)));
+    connect(ui->comboBox_mater_number,SIGNAL(currentIndexChanged(int)),this,SLOT(materielIDChange(int)));
 
     //    QRegExp regx("[a-zA-Z0-9-~!@#$%^&*\(\)_+=;:,.<>]+$");
     //    QValidator *validator = new QRegExpValidator(regx, this );
