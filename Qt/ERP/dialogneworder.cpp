@@ -285,7 +285,7 @@ void DialogNewOrder::materielIDChange(int index)
 
 
 void DialogNewOrder::companyNameChange(int index)
-{  
+{
     if(m_company_mater.count(ui->comboBox_company_name->currentText())==0){
         clearCurMater();
         setCurMater();
@@ -301,9 +301,15 @@ void DialogNewOrder::companyNameChange(int index)
     ui->comboBox_mater_number->setEnabled(ls.size()>0);
     ui->comboBox_mater_number->blockSignals(true);
     ui->comboBox_mater_number->clear();
+    QStringList materlist;
     for(QString m:ls){
         ui->comboBox_mater_number->addItem(m);
+        materlist<<m;
     }
+    ui->comboBox_mater_number->setEditable(true);
+    QCompleter *completermater = new QCompleter(materlist, this);
+    ui->comboBox_mater_number->setCompleter(completermater);
+
     ui->comboBox_mater_number->blockSignals(false);
     materielIDChange(0);
 }
