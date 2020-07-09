@@ -74,9 +74,9 @@ OrderTable::OrderTable(QString status, QWidget *w):
 //初始化所有数据
 void OrderTable::initOrder(QVector<Order> list)
 {
+    this->setSortingEnabled(false);
     baravalue = this->verticalScrollBar()->value();
     removeAllRow();
-    this->setSortingEnabled(false);
     for(int i =0;i<list.size();++i){
         appendOrder(list.at(i));
     }
@@ -87,9 +87,9 @@ void OrderTable::initOrder(QVector<Order> list)
 //更新所有数据
 void OrderTable::updateOrder(QVector<Order> list)
 {
+     this->setSortingEnabled(false);
     baravalue = this->verticalScrollBar()->value();
-    this->setRowCount(list.size());
-    this->setSortingEnabled(false);
+   this->setRowCount(list.size());
     for(int i=list.size()-1;i>=0;--i){
         setRowData(list.at(i),i);
     }
@@ -111,28 +111,28 @@ void OrderTable::appendOrder(Order para)
 void OrderTable::modOrder(Order para)
 {
     bool ok = false;
+    this->setSortingEnabled(false);
     int count = this->rowCount();
     for(int i=0;i<count;++i){
         QTableWidgetItem *item0 =  this->item(i,2);
         if(item0!=NULL&&item0->text()==para.OrderID){
-            this->setSortingEnabled(false);
+
             setRowData(para,i);
-            this->setSortingEnabled(true);
             ok = true;
             break;
         }
     }
     if(!ok){
-        this->setSortingEnabled(false);
         appendOrder(para);
-        this->setSortingEnabled(true);
     }
+    this->setSortingEnabled(true);
 }
 
 //移除一行
 void OrderTable::removeOrder(Order para)
 {
     int count = this->rowCount();
+    this->setSortingEnabled(false);
     for(int i=0;i<count;++i){
         QTableWidgetItem *item0 =  this->item(i,2);
         if(item0!=NULL&&item0->text()==para.OrderID){
@@ -140,14 +140,17 @@ void OrderTable::removeOrder(Order para)
             break;
         }
     }
+    this->setSortingEnabled(true);
 }
 
 void OrderTable::showAllRow()
 {
+    this->setSortingEnabled(false);
     int count = this->rowCount();
     for(int i=0;i<count;++i){
         this->setRowHidden(i,false);
     }
+    this->setSortingEnabled(true);
 }
 
 int  OrderTable::getTimeColNum()
