@@ -8,7 +8,7 @@
 #include "orderservice.h"
 #include <QFileDialog>
 #include "boost/thread.hpp"
-
+#include <QCompleter>
 FormFinance::FormFinance(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FormFinance)
@@ -66,9 +66,17 @@ void FormFinance::checkAuthor(int author)
 void FormFinance::initUI()
 {
 
+    QStringList cuslist;
     for(Customer cus: dataCenter::instance()->pub_Customers()){
         ui->comboBox_company->addItem(cus.Name);
+        cuslist<<cus.Name;
     }
+    ui->comboBox_company->setEditable(true);
+    QCompleter *completermater = new QCompleter(cuslist, this);
+    completermater->setCaseSensitivity(Qt::CaseInsensitive);
+    completermater->setFilterMode(Qt::MatchContains);
+    ui->comboBox_company->setCompleter(completermater);
+
     ui->comboBox_order_type->addItem("普通订单","1");
     ui->comboBox_order_type->addItem("试样订单","2");
     ui->comboBox_order_type->addItem("返工订单","3");

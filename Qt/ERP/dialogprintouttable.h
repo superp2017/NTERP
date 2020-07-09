@@ -21,7 +21,6 @@ public:
     ~DialogPrintOutTable();
 
 private slots:
-    void on_pushButton_cancle_clicked();
 
     void on_pushButton_preview_clicked();
 
@@ -40,8 +39,14 @@ private slots:
 
     void orderSearchCb(QVector<Order>list,bool ok);
 
+    void on_pushButton_go_clicked();
+
+    void on_pushButton_up_page_clicked();
+
+    void on_pushButton_down_page_clicked();
+
 private:
-    void initOrder(QVector<Order> list);
+    void initOrder();
     void setRowData(Order para, int row);
     QVector<Order> getSelectOrder();
     void clearSelect();
@@ -51,7 +56,9 @@ private:
     printer m_printer;
     QVector<QCheckBox*> m_boxs;
     QMap<QCheckBox*,Order> m_data;
-
+    QVector<Order>  m_searchOrder;
+    int             m_CurNum;
+    int             m_MaxSearch;
 };
 
 #endif // DIALOGPRINTOUTTABLE_H

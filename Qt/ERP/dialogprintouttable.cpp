@@ -4,6 +4,8 @@
 #include <QMessageBox>
 #include "boost/thread.hpp"
 #include <QToolTip>
+#include <QIntValidator>
+#include <QCompleter>
 DialogPrintOutTable::DialogPrintOutTable(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogPrintOutTable)
@@ -25,10 +27,25 @@ DialogPrintOutTable::DialogPrintOutTable(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_searchOutOrder(QVector<Order>,bool)),this,SLOT(orderSearchCb(QVector<Order>,bool)));
 
 
-    //    for(Order o:dataCenter::instance()->pub_StatusOrders(Status_Success)){
-    //        appendOrder(o);
-    //    }
+    ui->dateEdit_start->setDate(QDate::currentDate().addDays(-30));
+    ui->dateEdit_end->setDate(QDate::currentDate());
 
+    QStringList cuslist;
+    for(Customer cus: dataCenter::instance()->pub_Customers()){
+        ui->comboBox_company->addItem(cus.Name);
+        cuslist<<cus.Name;
+    }
+    ui->comboBox_company->setEditable(true);
+    QCompleter *completermater = new QCompleter(cuslist, this);
+    completermater->setCaseSensitivity(Qt::CaseInsensitive);
+    completermater->setFilterMode(Qt::MatchContains);
+    ui->comboBox_company->setCompleter(completermater);
+
+    QIntValidator* IntValidator = new QIntValidator();
+    IntValidator->setRange(1, 999999);
+    ui->lineEdit_curpage->setValidator(IntValidator);
+    m_CurNum = 0;
+    m_MaxSearch = 0;
     dataCenter::instance()->net_getPrintNumber();
 }
 
@@ -207,14 +224,10 @@ void DialogPrintOutTable::setRowData(Order para, int row)
     item6->setTextAlignment(Qt::AlignCenter);
 }
 
-void DialogPrintOutTable::on_pushButton_cancle_clicked()
-{
-    done(-1);
-}
-
 
 void DialogPrintOutTable::do_search(bool isCom,bool isTime,qint64 start,qint64 end,QString comName)
 {
+    ui->pushButton_search->setEnabled(false);
     QJsonObject para;
     para.insert("CusName",comName);
     para.insert("StartStamp",start);
@@ -230,6 +243,16 @@ void DialogPrintOutTable::on_pushButton_search_clicked()
     qint64 start = 0;
     qint64 end   = 0;
 
+    if(!ui->groupBox_company->isChecked()&&!ui->groupBox_time->isChecked()){
+        QMessageBox::warning(this,"提示","请至少选择一种搜索方式!");
+        return ;
+    }
+
+    if(ui->groupBox_company->isChecked()&&ui->comboBox_company->currentText()==""){
+        QToolTip::showText(ui->comboBox_company->mapToGlobal(QPoint(100, 0)), "请至少选择一个公司!");
+        return;
+    }
+
     if(ui->groupBox_time->isChecked()){
         start = ui->dateEdit_start->dateTime().toSecsSinceEpoch();
         end   = ui->dateEdit_end->dateTime().toSecsSinceEpoch();
@@ -238,10 +261,7 @@ void DialogPrintOutTable::on_pushButton_search_clicked()
             return;
         }
     }
-    if(ui->groupBox_company->isChecked()&&ui->comboBox_company->currentText()==""){
-        QToolTip::showText(ui->comboBox_company->mapToGlobal(QPoint(100, 0)), "请至少选择一个公司!");
-        return;
-    }
+
     ui->tableWidget->removeAllRow();
     do_search(ui->groupBox_company->isChecked(),\
               ui->groupBox_time->isChecked(), start,end,\
@@ -250,18 +270,70 @@ void DialogPrintOutTable::on_pushButton_search_clicked()
 
 void DialogPrintOutTable::orderSearchCb(QVector<Order> list, bool ok)
 {
+    ui->pushButton_search->setEnabled(true);
     dataCenter::instance()->pub_hideLoadding();
-    initOrder(list);
+    qDebug()<<"orderSearchCb"<<ok<<list.size();
+    m_searchOrder = list;
+    m_MaxSearch = m_searchOrder.size()/50+1;
+    m_CurNum    = 1;
+    ui->label_curPage->setText(QString("%1").arg(0));
+    ui->label_numPage->setText(QString("%1").arg(0));
+    initOrder();
     if(!ok){
         dataCenter::instance()->pub_showMessage("搜索失败!",2000);
     }
-    qDebug()<<"orderSearchCb"<<ok<<list.size();
 }
 
-void DialogPrintOutTable::initOrder(QVector<Order> list)
+void DialogPrintOutTable::initOrder()
 {
-    ui->tableWidget->removeAllRow();
-    for(Order o:list){
-        appendOrder(o);
+    if(m_CurNum<=0||m_CurNum>m_MaxSearch||m_searchOrder.size()==0){
+        return;
     }
+    ui->tableWidget->removeAllRow();
+
+    for(int i = m_CurNum*50-1;i>=(m_CurNum-1)*50;--i){
+        if(i<=m_searchOrder.size()-1)
+            appendOrder(m_searchOrder.at(i));
+    }
+
+
+    ui->label_curPage->setText(QString("%1").arg(m_CurNum));
+    ui->label_numPage->setText(QString("%1").arg(m_MaxSearch));
+}
+
+void DialogPrintOutTable::on_pushButton_go_clicked()
+{
+    int page = ui->lineEdit_curpage->text().trimmed().toInt();
+    if(ui->lineEdit_curpage->text().isEmpty()||page<=0||page>m_MaxSearch){
+        QToolTip::showText(ui->lineEdit_curpage->mapToGlobal(QPoint(100, 0)), "请输入有效页码!");
+        return;
+    }
+    m_CurNum = page;
+    ui->pushButton_go->setEnabled(false);
+    initOrder();
+    ui->pushButton_go->setEnabled(true);
+}
+
+void DialogPrintOutTable::on_pushButton_up_page_clicked()
+{
+    if(m_CurNum<=1){
+        QToolTip::showText(ui->pushButton_up_page->mapToGlobal(QPoint(100, 0)), "已经第一页!");
+        return;
+    }
+    ui->pushButton_up_page->setEnabled(false);
+    --m_CurNum;
+    initOrder();
+    ui->pushButton_up_page->setEnabled(true);
+}
+
+void DialogPrintOutTable::on_pushButton_down_page_clicked()
+{
+    if(m_CurNum>=m_MaxSearch){
+        QToolTip::showText(ui->pushButton_up_page->mapToGlobal(QPoint(100, 0)), "已经最后一页!");
+        return;
+    }
+    ui->pushButton_down_page->setEnabled(false);
+    ++m_CurNum;
+    initOrder();
+    ui->pushButton_down_page->setEnabled(true);
 }
