@@ -34,7 +34,7 @@ DialogPrintOutTable::DialogPrintOutTable(QWidget *parent) :
         ui->comboBox_company->addItem(cus.Name);
         cuslist<<cus.Name;
     }
-     ui->comboBox_company->setEditable(true);
+    ui->comboBox_company->setEditable(true);
     QCompleter *completermater = new QCompleter(cuslist, this);
     completermater->setCaseSensitivity(Qt::CaseInsensitive);
     completermater->setFilterMode(Qt::MatchContains);
@@ -276,6 +276,7 @@ void DialogPrintOutTable::orderSearchCb(QVector<Order> list, bool ok)
     m_MaxSearch = m_searchOrder.size()/50+1;
     m_CurNum    = 1;
     ui->label_curPage->setText(QString("%1").arg(0));
+    ui->label_numPage->setText(QString("%1").arg(0));
     initOrder();
     if(!ok){
         dataCenter::instance()->pub_showMessage("搜索失败!",2000);
@@ -289,10 +290,12 @@ void DialogPrintOutTable::initOrder()
         return;
     }
     ui->tableWidget->removeAllRow();
-    for(int i = (m_CurNum-1)*50;i<m_CurNum*50;++i){
+
+    for(int i = m_CurNum*50-1;i>=(m_CurNum-1)*50;--i){
         if(i<=m_searchOrder.size()-1)
             appendOrder(m_searchOrder.at(i));
     }
+
 
     ui->label_curPage->setText(QString("%1").arg(m_CurNum));
     ui->label_numPage->setText(QString("%1").arg(m_MaxSearch));
@@ -307,7 +310,9 @@ void DialogPrintOutTable::on_pushButton_go_clicked()
         return;
     }
     m_CurNum = page;
+    ui->pushButton_go->setEnabled(false);
     initOrder();
+    ui->pushButton_go->setEnabled(true);
 }
 
 void DialogPrintOutTable::on_pushButton_up_page_clicked()
@@ -316,10 +321,11 @@ void DialogPrintOutTable::on_pushButton_up_page_clicked()
         QToolTip::showText(ui->pushButton_up_page->mapToGlobal(QPoint(100, 0)), "已经第一页!");
         return;
     }
+    ui->pushButton_up_page->setEnabled(false);
     --m_CurNum;
     initOrder();
+    ui->pushButton_up_page->setEnabled(true);
 }
-
 
 void DialogPrintOutTable::on_pushButton_down_page_clicked()
 {
@@ -327,6 +333,8 @@ void DialogPrintOutTable::on_pushButton_down_page_clicked()
         QToolTip::showText(ui->pushButton_up_page->mapToGlobal(QPoint(100, 0)), "已经最后一页!");
         return;
     }
+    ui->pushButton_down_page->setEnabled(false);
     ++m_CurNum;
     initOrder();
+    ui->pushButton_down_page->setEnabled(true);
 }
