@@ -76,7 +76,7 @@ void FormFinance::initUI()
         ui->comboBox_company->addItem(cus.Name);
         cuslist<<cus.Name;
     }
-     ui->comboBox_company->setEditable(true);
+    ui->comboBox_company->setEditable(true);
     QCompleter *completermater = new QCompleter(cuslist, this);
     completermater->setCaseSensitivity(Qt::CaseInsensitive);
     completermater->setFilterMode(Qt::MatchContains);
@@ -168,11 +168,10 @@ void FormFinance::on_pushButton_search_clicked()
               ui->comboBox_factort->currentText(),\
               start,end,\
               ui->groupBox_company->isChecked(),\
-              ui->groupBox_order_Status->isChecked(),\
               ui->groupBox_order_type->isChecked(),\
+              ui->groupBox_order_Status->isChecked(),\
               ui->groupBox_factory->isChecked(),\
               ui->groupBox_time->isChecked());
-
 }
 
 void FormFinance::on_pushButton_export_clicked()
