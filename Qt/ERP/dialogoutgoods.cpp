@@ -35,6 +35,8 @@ void DialogOutGoods::initCombox()
         id_list<<g.ID;
     }
     QCompleter *completer_id= new QCompleter(id_list, this);
+    completer_id->setCaseSensitivity(Qt::CaseInsensitive);
+    completer_id->setFilterMode(Qt::MatchContains);
     ui->comboBox_goods_id->clear();
     ui->comboBox_goods_id->setEditable(true);
     ui->comboBox_goods_id->addItems(id_list);
@@ -51,6 +53,8 @@ void DialogOutGoods::initCombox()
     }
     depart_list<<"涂覆线"<<"滚镀锌线"<<"磷化线"<<"镀铜镀锡线"<<"挂镀锌线"<<"挂镀锌镍线";
     QCompleter *completer_de= new QCompleter(depart_list, this);
+    completer_de->setCaseSensitivity(Qt::CaseInsensitive);
+    completer_de->setFilterMode(Qt::MatchContains);
     ui->comboBox_department->clear();
     ui->comboBox_department->setEditable(true);
     ui->comboBox_department->addItems(depart_list);
@@ -64,6 +68,8 @@ void DialogOutGoods::initCombox()
     }
     ui->comboBox_userName->setEditable(true);
     QCompleter *completer_user= new QCompleter(user_list, this);
+    completer_user->setCaseSensitivity(Qt::CaseInsensitive);
+    completer_user->setFilterMode(Qt::MatchContains);
     ui->comboBox_userName->setCompleter(completer_user);
 
 
@@ -72,6 +78,8 @@ void DialogOutGoods::initCombox()
         unit_list<<g;
     }
     QCompleter *completer_unit= new QCompleter(unit_list, this);
+    completer_unit->setCaseSensitivity(Qt::CaseInsensitive);
+    completer_unit->setFilterMode(Qt::MatchContains);
     ui->comboBox_unit->clear();
     ui->comboBox_unit->setEditable(true);
     ui->comboBox_unit->addItems(unit_list);
@@ -80,6 +88,8 @@ void DialogOutGoods::initCombox()
     QStringList store_list;
     store_list<<"总仓库"<<"涂覆仓库"<<"滚镀仓库"<<"挂镀仓库";
     QCompleter *completer_store= new QCompleter(store_list, this);
+    completer_store->setCaseSensitivity(Qt::CaseInsensitive);
+    completer_store->setFilterMode(Qt::MatchContains);
     ui->comboBox_storeName->clear();
     ui->comboBox_storeName->setEditable(true);
     ui->comboBox_storeName->addItems(store_list);

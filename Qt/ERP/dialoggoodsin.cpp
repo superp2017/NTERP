@@ -25,6 +25,8 @@ void DialogGoodsIn::initCombox()
         ids <<g.ID;
     }
     QCompleter *complete_ID = new QCompleter(ids, this);
+    complete_ID->setCaseSensitivity(Qt::CaseInsensitive);
+    complete_ID->setFilterMode(Qt::MatchContains);
     ui->comboBox_goodID->clear();
     ui->comboBox_goodID->addItems(ids);
     ui->comboBox_goodID->setEditable(true);

@@ -142,8 +142,14 @@ void FormFinance::on_pushButton_search_clicked()
             return;
         }
     }
-    if(ui->comboBox_company->currentText()==""){
+
+    if(ui->groupBox_company->isChecked()&&ui->comboBox_company->currentText()==""){
         QToolTip::showText(ui->comboBox_company->mapToGlobal(QPoint(100, 0)), "请至少选择一个公司!");
+        return;
+    }
+
+    if(ui->groupBox_factory->isChecked()&&ui->comboBox_factort->currentText()==""){
+        QToolTip::showText(ui->comboBox_factort->mapToGlobal(QPoint(100, 0)), "请至少选择一个工厂!");
         return;
     }
 
@@ -153,8 +159,8 @@ void FormFinance::on_pushButton_search_clicked()
               ui->comboBox_factort->currentText(),\
               start,end,\
               ui->groupBox_company->isChecked(),\
-              ui->groupBox_order_Status->isChecked(),\
               ui->groupBox_order_type->isChecked(),\
+              ui->groupBox_order_Status->isChecked(),\
               ui->groupBox_factory->isChecked(),\
               ui->groupBox_time->isChecked());
 

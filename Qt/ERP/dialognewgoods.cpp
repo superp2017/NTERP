@@ -131,6 +131,8 @@ void DialogNewGoods::initCombox(QVector<Supplier> sup, QVector<QString> type, QV
     ui->comboBox_type->addItems(type.toList());
     ui->comboBox_type->setEditable(true);
     QCompleter *typeCompleter = new QCompleter(type.toList(), this);
+    typeCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+    typeCompleter->setFilterMode(Qt::MatchContains);
     ui->comboBox_type->setCompleter(typeCompleter);
     ui->comboBox_type->addItem(ItemNewType);
     ui->comboBox_type->setCurrentIndex(-1);
@@ -141,6 +143,8 @@ void DialogNewGoods::initCombox(QVector<Supplier> sup, QVector<QString> type, QV
     ui->comboBox_unit->addItems(units.toList());
     ui->comboBox_unit->setEditable(true);
     QCompleter *unitCompleter = new QCompleter(units.toList(), this);
+    unitCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+    unitCompleter->setFilterMode(Qt::MatchContains);
     ui->comboBox_unit->setCompleter(unitCompleter);
     ui->comboBox_unit->addItem(ItemNewUnit);
     ui->comboBox_unit->setCurrentIndex(-1);

@@ -196,6 +196,8 @@ void DialogNewMateriel::initCommbox()
         format<<"";
     if(solid.size()>0){
         QCompleter *completersolid= new QCompleter(solid, this);
+        completersolid->setCaseSensitivity(Qt::CaseInsensitive);
+        completersolid->setFilterMode(Qt::MatchContains);
         ui->comboBox_solid->clear();
         ui->comboBox_solid->setEditable(true);
         ui->comboBox_solid->addItems(solid);
@@ -203,6 +205,8 @@ void DialogNewMateriel::initCommbox()
     }
     if(format.size()>0){
         QCompleter *completerformat = new QCompleter(format, this);
+        completerformat->setCaseSensitivity(Qt::CaseInsensitive);
+        completerformat->setFilterMode(Qt::MatchContains);
         ui->comboBox_format->clear();
         ui->comboBox_format->setEditable(true);
         ui->comboBox_format->addItems(format);
@@ -215,6 +219,8 @@ void DialogNewMateriel::initCommbox()
         type <<p;
     }
     QCompleter *completertype = new QCompleter(type, this);
+    completertype->setCaseSensitivity(Qt::CaseInsensitive);
+    completertype->setFilterMode(Qt::MatchContains);
     ui->comboBox_type->clear();
     ui->comboBox_type->addItems(type);
     //    ui->comboBox_type->setEditable(true);
@@ -223,6 +229,8 @@ void DialogNewMateriel::initCommbox()
     QStringList friction;
     friction<<"0.06~0.09"<<"0.09~0.15"<<"0.08~0.14"<<"0.10~0.16"<<"0.12~0.18"<<"0.18以上";
     QCompleter *completerCus = new QCompleter(friction, this);
+    completerCus->setCaseSensitivity(Qt::CaseInsensitive);
+    completerCus->setFilterMode(Qt::MatchContains);
     ui->comboBox_friction->clear();
     ui->comboBox_friction->setEditable(true);
     ui->comboBox_friction->addItems(friction);
@@ -231,6 +239,8 @@ void DialogNewMateriel::initCommbox()
     QStringList salt;
     salt<<"120h"<<"480h"<<"500h"<<"1000h"<<"120/240h"<<"240/720h"<<"840h"<<"240/1000h";
     QCompleter *completersalt = new QCompleter(salt, this);
+    completersalt->setCaseSensitivity(Qt::CaseInsensitive);
+    completersalt->setFilterMode(Qt::MatchContains);
     ui->comboBox_Salt->clear();
     ui->comboBox_Salt->setEditable(true);
     ui->comboBox_Salt->addItems(salt);
@@ -239,6 +249,8 @@ void DialogNewMateriel::initCommbox()
     QStringList thick;
     thick<<"5um以上"<<"8um以上"<<"10um以上"<<"12um以上"<<"13um以上"<<"8~20um"<<"10~25um"<<"12~25um"<<"10~20um"<<"6~20um";
     QCompleter *completerThickness= new QCompleter(thick, this);
+    completerThickness->setCaseSensitivity(Qt::CaseInsensitive);
+    completerThickness->setFilterMode(Qt::MatchContains);
     ui->comboBox_thickness->clear();
     ui->comboBox_thickness->setEditable(true);
     ui->comboBox_thickness->addItems(thick);
@@ -250,6 +262,8 @@ void DialogNewMateriel::initCommbox()
     ui->comboBox_unit->setEditable(true);
     ui->comboBox_unit->addItems(unit.toList());
     QCompleter *unit_com= new QCompleter(unit.toList(), this);
+    unit_com->setCaseSensitivity(Qt::CaseInsensitive);
+    unit_com->setFilterMode(Qt::MatchContains);
     ui->comboBox_unit->setCompleter(unit_com);
 
     ui->comboBox_solid->blockSignals(false);

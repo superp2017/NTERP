@@ -571,6 +571,54 @@ func SearchOrder(session *JHttp.Session) {
 	session.Forward("0", "success", data)
 }
 
+func SearchOutOrder(session *JHttp.Session) {
+	type Para struct {
+		CusName    string
+		StartStamp int64
+		EndStamp   int64
+		IsCus      bool
+		IsTime     bool
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	list, err := JRedis.Redis_hkeys(Hash_Order)
+	if err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	data := []*Order{}
+	for _, v := range list {
+		if v == Key_LastOrderDate {
+			continue
+		}
+		d := &Order{}
+		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
+			if !d.IsDel {
+				if d.Current.Status != Status_Success {
+					continue
+				}
+				if st.IsCus && st.CusName != d.CustomName {
+					continue
+				}
+				if st.IsTime && (d.CreatStamp < st.StartStamp || d.CreatStamp > st.EndStamp) {
+					continue
+				}
+				data = append(data, d)
+			}
+		}
+	}
+	lenData := len(data)
+	if lenData > 0 {
+		sort.Slice(data, func(i, j int) bool {
+			return data[i].CreatStamp <= data[j].CreatStamp
+		})
+	}
+	session.Forward("0", "success", data)
+}
+
 //获取打印号
 func GetPrintNum(session *JHttp.Session) {
 	err, num := setPrintNumber(false)

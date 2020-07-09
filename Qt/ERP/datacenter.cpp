@@ -190,9 +190,16 @@ void dataCenter::net_getGlobalUsers(const QJsonObject para)
 
 void dataCenter::net_searchOrder(const QJsonObject para)
 {
-    bool ok =false;
+    bool ok = false;
     QVector<Order>  list = OrderService::SearchOrder(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
     emit sig_searchOrder(list,ok);
+}
+
+void dataCenter::net_searchOutOrder(const QJsonObject para)
+{
+    bool ok =false;
+    QVector<Order>  list = OrderService::SearchOutOrder(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_searchOutOrder(list,ok);
 }
 
 
