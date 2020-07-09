@@ -195,6 +195,13 @@ void dataCenter::net_searchOrder(const QJsonObject para)
     emit sig_searchOrder(list,ok);
 }
 
+void dataCenter::net_searchOutOrder(const QJsonObject para)
+{
+    bool ok =false;
+    QVector<Order>  list = OrderService::SearchOutOrder(para,ok,m_Config.HOST_NAME(),m_Config.HOST_PORT());
+    emit sig_searchOutOrder(list,ok);
+}
+
 
 void dataCenter::net_newDepartment(const QJsonObject para)
 {

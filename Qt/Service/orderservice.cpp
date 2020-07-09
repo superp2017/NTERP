@@ -249,6 +249,29 @@ QVector<Order> OrderService::SearchOrder(const QJsonObject para, bool &ok,  QStr
     return list;
 }
 
+QVector<Order> OrderService::SearchOutOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport)
+{
+    QVector<Order> list;
+    std::string url = Net_SearhOutOrders;
+    bool r   = false;
+    Ret ret  = Http::fetch(url,para,r,hostname,hostport);
+    if(r&&ret.ret){
+        if(ret.data.isArray()){
+            QJsonArray arr = ret.data.toArray();
+            for(QJsonValue v:arr){
+                Order r = fromJsonObject(v.toObject());
+                list.push_back(r);
+            }
+        }
+        ok = true;
+        return  list;
+    }
+    if(!ret.ret)
+        qDebug()<<"SearchOutOrder ret is not 0"<<endl;
+    ok = false;
+    return list;
+}
+
 
 QJsonObject OrderService::toJsonObject(Order order)
 {

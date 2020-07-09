@@ -20,6 +20,8 @@ public:
     static QVector<Order> updatePrintNum(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QString setPrintNumber(const QJsonObject para, bool &ok, QString hostname, QString hostport);
     static QVector<Order> SearchOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+    static QVector<Order> SearchOutOrder(const QJsonObject para, bool &ok, QString hostname, QString hostport);
+
     static QJsonObject toJsonObject(Order order);
     static Order fromJsonObject(QJsonObject obj);
 

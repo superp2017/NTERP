@@ -3,6 +3,7 @@
 #include "datacenter.h"
 #include <QMessageBox>
 #include "boost/thread.hpp"
+#include <QToolTip>
 
 DialogPrintOutTable::DialogPrintOutTable(QWidget *parent) :
     QDialog(parent),
@@ -22,9 +23,11 @@ DialogPrintOutTable::DialogPrintOutTable(QWidget *parent) :
     connect(&m_printer,SIGNAL(updateOrderPrintNum(QVector<Order>)),this,SLOT(updatePrintNum(QVector<Order>)));
     connect(dataCenter::instance(),SIGNAL(sig_updatePrintNum(QVector<Order>,bool)),this,SLOT(updatePrintNumCb(QVector<Order>,bool)));
 
-    for(Order o:dataCenter::instance()->pub_StatusOrders(Status_Success)){
-        appendOrder(o);
-    }
+    connect(dataCenter::instance(),SIGNAL(sig_searchOutOrder(QVector<Order>,bool)),this,SLOT(orderSearchCb(QVector<Order>,bool)));
+
+//    for(Order o:dataCenter::instance()->pub_StatusOrders(Status_Success)){
+//        appendOrder(o);
+//    }
     dataCenter::instance()->net_getPrintNumber();
 }
 
@@ -51,6 +54,18 @@ void DialogPrintOutTable::clearSelect()
     }
     ui->tableWidget->clearSelection();
     ui->tableWidget->checkSelect();
+}
+
+void DialogPrintOutTable::do_search(bool isCom, bool isTime, qint64 start, qint64 end, QString comName)
+{
+    QJsonObject para;
+    para.insert("CusName",comName);
+    para.insert("StartStamp",start);
+    para.insert("EndStamp",end);
+    para.insert("IsCus",isCom);
+    para.insert("IsTime",isTime);
+    boost::thread (boost::bind(&dataCenter::net_searchOutOrder,dataCenter::instance(),para)).detach();
+    dataCenter::instance()->pub_showLoadding("正在网络请求...",5000,Qt::black);
 }
 
 void DialogPrintOutTable::on_pushButton_preview_clicked()
@@ -208,4 +223,45 @@ void DialogPrintOutTable::setRowData(Order para, int row)
 void DialogPrintOutTable::on_pushButton_cancle_clicked()
 {
     done(-1);
+}
+
+void DialogPrintOutTable::on_pushButton_search_clicked()
+{
+    qint64 start = 0;
+      qint64 end   = 0;
+
+      if(ui->groupBox_time->isChecked()){
+          start = ui->dateEdit_start->dateTime().toSecsSinceEpoch();
+          end   = ui->dateEdit_end->dateTime().toSecsSinceEpoch();
+          if(end<start){
+              QToolTip::showText(ui->dateEdit_end->mapToGlobal(QPoint(100, 0)), "结束时间不能小于开始时间!");
+              return;
+          }
+      }
+      if(ui->groupBox_company->isChecked()&&ui->comboBox_company->currentText()==""){
+          QToolTip::showText(ui->comboBox_company->mapToGlobal(QPoint(100, 0)), "请至少选择一个公司!");
+          return;
+      }
+      ui->tableWidget->removeAllRow();
+      do_search(ui->groupBox_company->isChecked(),\
+                ui->groupBox_time->isChecked(), start,end,\
+                ui->comboBox_company->currentText());
+}
+
+void DialogPrintOutTable::orderSearchCb(QVector<Order> list, bool ok)
+{
+    dataCenter::instance()->pub_hideLoadding();
+    initOrder(list);
+    if(!ok){
+        dataCenter::instance()->pub_showMessage("搜索失败!",2000);
+    }
+    qDebug()<<"orderSearchCb"<<ok<<list.size();
+}
+
+void DialogPrintOutTable::initOrder(QVector<Order> list)
+{
+    ui->tableWidget->removeAllRow();
+    for(Order o:list){
+        appendOrder(o);
+    }
 }

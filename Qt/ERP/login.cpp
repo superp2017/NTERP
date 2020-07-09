@@ -47,6 +47,8 @@ NLogin::NLogin(QWidget *parent) :
     connect(dataCenter::instance(),SIGNAL(sig_login(bool)),this,SLOT(loginCb(bool)));
     QStringList list = QStringList::fromSet(dataCenter::instance()->Accounts());
     QCompleter *acc = new QCompleter(list,this);
+    acc->setCaseSensitivity(Qt::CaseInsensitive);
+    acc->setFilterMode(Qt::MatchContains);
     ui->n_useNameLine->setCompleter(acc);
     connect(ui->n_useNameLine,SIGNAL(textChanged(QString)),ui->n_usePwdLine,SLOT(clear()));
     ui->n_useNameLine->setText(dataCenter::instance()->CurSettings().Account);

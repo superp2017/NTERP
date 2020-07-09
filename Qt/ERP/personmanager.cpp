@@ -98,7 +98,9 @@ void PersonManager::new_employee()
     newuser.clearUI();
     if(newuser.exec()==123){
         User user = newuser.CurUser();
+        ui->tableWidget->setSortingEnabled(false);
         ui->tableWidget->appendUser(user);
+        ui->tableWidget->setSortingEnabled(true);
     }
 }
 

@@ -18,14 +18,14 @@ userTable::userTable(QWidget *w):M_TableWidget(w)
     connect(this,SIGNAL(cellPressed(int,int)),this,SLOT(clickRow(int,int)));
 
     m_menu      = new QMenu();
-//    m_new       = new  QAction("新增");
+    //    m_new       = new  QAction("新增");
     m_mod       = new QAction("修改");
     m_out       = new QAction("离职");
     m_del       = new QAction("删除");
     m_giveup    = new QAction("放弃");
 
 
-//    connect(m_new,SIGNAL(triggered(bool)),this,SIGNAL(newUser()));
+    //    connect(m_new,SIGNAL(triggered(bool)),this,SIGNAL(newUser()));
     connect(m_mod,SIGNAL(triggered(bool)),this,SIGNAL(modUser()));
     connect(m_out,SIGNAL(triggered(bool)),this,SIGNAL(outUser()));
     connect(m_del,SIGNAL(triggered(bool)),this,SIGNAL(delUser()));
@@ -41,7 +41,7 @@ void userTable::checkAuthor(int author)
         this->hideColumn(5);
         this->hideColumn(6);
         this->hideColumn(9);
-//        m_new->setEnabled(false);
+        //        m_new->setEnabled(false);
         m_mod->setEnabled(false);
         m_out->setEnabled(false);
         m_del->setEnabled(false);
@@ -51,7 +51,7 @@ void userTable::checkAuthor(int author)
         this->hideColumn(5);
         this->hideColumn(6);
         this->hideColumn(9);
-//        m_new->setEnabled(false);
+        //        m_new->setEnabled(false);
         m_mod->setEnabled(false);
         m_out->setEnabled(false);
         m_del->setEnabled(false);
@@ -60,7 +60,7 @@ void userTable::checkAuthor(int author)
     case 2:
         this->hideColumn(5);
         this->hideColumn(6);
-//        m_new->setEnabled(false);
+        //        m_new->setEnabled(false);
         m_mod->setEnabled(false);
         m_out->setEnabled(false);
         m_del->setEnabled(false);
@@ -74,18 +74,22 @@ void userTable::checkAuthor(int author)
 
 void userTable::initUser(QVector<User> list)
 {
+    this->setSortingEnabled(false);
     removeAllRow();
     for(User o:list){
         appendUser(o);
     }
+    this->setSortingEnabled(true);
 }
 
 void userTable::updateUser(QVector<User> list)
 {
+    this->setSortingEnabled(false);
     this->setRowCount(list.size());
     for(int i=0;i<list.size();++i){
         setRowData(list.at(i),i);
     }
+    this->setSortingEnabled(true);
 }
 
 void userTable::appendUser(User para)
@@ -97,6 +101,7 @@ void userTable::appendUser(User para)
 
 void userTable::modUser(User para)
 {
+    this->setSortingEnabled(false);
     int count = this->rowCount();
     for(int i=0;i<count;++i){
         QTableWidgetItem *item0 =  this->item(i,0);
@@ -105,10 +110,12 @@ void userTable::modUser(User para)
             break;
         }
     }
+    this->setSortingEnabled(true);
 }
 
 void userTable::removeUser(QString para)
 {
+    this->setSortingEnabled(false);
     int count = this->rowCount();
     for(int i=0;i<count;++i){
         QTableWidgetItem *item0 =  this->item(i,0);
@@ -117,6 +124,7 @@ void userTable::removeUser(QString para)
             break;
         }
     }
+    this->setSortingEnabled(true);
 }
 
 
@@ -159,9 +167,9 @@ void userTable::mousePressEvent(QMouseEvent *e)
                         //                        m_mod->setEnabled(true);
                         //                        m_out->setEnabled(true);
                         //                        m_del->setEnabled(true);
-//                        if(m_new->isEnabled()){
-//                            m_menu->addAction(m_new);
-//                        }
+                        //                        if(m_new->isEnabled()){
+                        //                            m_menu->addAction(m_new);
+                        //                        }
                         if(m_mod->isEnabled()){
                             m_menu->addAction(m_mod);
                         }
@@ -177,9 +185,9 @@ void userTable::mousePressEvent(QMouseEvent *e)
                         //                        m_mod->setEnabled(false);
                         //                        m_out->setEnabled(false);
                         //                        m_del->setEnabled(true);
-//                        if(m_new->isEnabled()){
-//                            m_menu->addAction(m_new);
-//                        }
+                        //                        if(m_new->isEnabled()){
+                        //                            m_menu->addAction(m_new);
+                        //                        }
                         if(m_del->isEnabled()){
                             m_menu->addAction(m_del);
                         }

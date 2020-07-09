@@ -101,10 +101,12 @@ void FormFinance::initOrder(QVector<Order> list)
     ui->tableWidget->removeAllRow();
     double money=0;
     ui->tableWidget->setRowCount(list.size());
+    ui->tableWidget->setSortingEnabled(false);
     for(int i=0;i<list.size();++i){
         setRowData(list.at(i),i);
         money += list.at(i).TotleMoney;
     }
+    ui->tableWidget->setSortingEnabled(true);
     ui->label_order_num->setText(QString("%1").arg(list.size()));
     ui->label_order_money->setText(QString("%1 元").arg(money,0,'f',2));
     ui->tableWidget->checkSelect();

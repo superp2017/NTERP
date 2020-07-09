@@ -76,9 +76,11 @@ void OrderTable::initOrder(QVector<Order> list)
 {
     baravalue = this->verticalScrollBar()->value();
     removeAllRow();
+    this->setSortingEnabled(false);
     for(int i =0;i<list.size();++i){
         appendOrder(list.at(i));
     }
+    this->setSortingEnabled(true);
     this->verticalScrollBar()->setValue(baravalue);
 }
 
@@ -87,9 +89,11 @@ void OrderTable::updateOrder(QVector<Order> list)
 {
     baravalue = this->verticalScrollBar()->value();
     this->setRowCount(list.size());
+    this->setSortingEnabled(false);
     for(int i=list.size()-1;i>=0;--i){
         setRowData(list.at(i),i);
     }
+    this->setSortingEnabled(true);
     this->verticalScrollBar()->setValue(baravalue);
 }
 
@@ -111,13 +115,17 @@ void OrderTable::modOrder(Order para)
     for(int i=0;i<count;++i){
         QTableWidgetItem *item0 =  this->item(i,2);
         if(item0!=NULL&&item0->text()==para.OrderID){
+            this->setSortingEnabled(false);
             setRowData(para,i);
+            this->setSortingEnabled(true);
             ok = true;
             break;
         }
     }
     if(!ok){
+        this->setSortingEnabled(false);
         appendOrder(para);
+        this->setSortingEnabled(true);
     }
 }
 

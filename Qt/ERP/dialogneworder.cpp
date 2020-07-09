@@ -67,11 +67,15 @@ void DialogNewOrder::initCombox(QSet<QString> batch,QVector<Materiel>mater)
     ui->comboBox_company_name->addItems(materlist);
     ui->comboBox_company_name->setEditable(true);
     QCompleter *completermater = new QCompleter(materlist, this);
+    completermater->setCaseSensitivity(Qt::CaseInsensitive);
+    completermater->setFilterMode(Qt::MatchContains);
     ui->comboBox_company_name->setCompleter(completermater);
     ui->comboBox_company_name->setCurrentIndex(-1);
     ui->comboBox_company_name->blockSignals(false);
 
     QCompleter *completerBatch = new QCompleter(batch.toList(), this);
+    completerBatch->setCaseSensitivity(Qt::CaseInsensitive);
+    completerBatch->setFilterMode(Qt::MatchContains);
     ui->lineEdit_custombatch->setCompleter(completerBatch);
 
 }
@@ -308,6 +312,8 @@ void DialogNewOrder::companyNameChange(int index)
     }
     ui->comboBox_mater_number->setEditable(true);
     QCompleter *completermater = new QCompleter(materlist, this);
+    completermater->setCaseSensitivity(Qt::CaseInsensitive);
+    completermater->setFilterMode(Qt::MatchContains);
     ui->comboBox_mater_number->setCompleter(completermater);
 
     ui->comboBox_mater_number->blockSignals(false);
