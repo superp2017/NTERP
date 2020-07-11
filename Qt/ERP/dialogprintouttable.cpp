@@ -57,7 +57,7 @@ QVector<Order> DialogPrintOutTable::getSelectOrder()
 {
     QVector<Order> data;
     for (QCheckBox* box:m_boxs){
-        if(box->isChecked()){
+        if(box&&box->isChecked()){
             data.push_back(m_data[box]);
         }
     }
@@ -67,6 +67,7 @@ QVector<Order> DialogPrintOutTable::getSelectOrder()
 void DialogPrintOutTable::clearSelect()
 {
     for(QCheckBox*box:m_boxs){
+       if(box)
         box->setChecked(false);
     }
     ui->tableWidget->clearSelection();
@@ -123,7 +124,7 @@ void DialogPrintOutTable::checkboxChecked()
 
     int selected = 0;
     for (QCheckBox* box:m_boxs){
-        if(b!=box&&box->isChecked()){
+        if(b&&box&&b!=box&&box->isChecked()){
             if(m_data[box].CustomName!=customName){
                 b->setChecked(false);
                 QMessageBox::warning(this,"提示","不同公司的送货单不能同时打印!");
@@ -166,7 +167,7 @@ void DialogPrintOutTable::updatePrintNumCb(QVector<Order> list, bool ok)
             QWidget *w=  ui->tableWidget->cellWidget(i,0);
             if(w!=NULL){
                 QCheckBox * box =reinterpret_cast<QCheckBox *>(w);
-                if(box->text()==o.OrderID){
+                if(box&&box->text()==o.OrderID){
                     setRowData(o,i);
                 }
             }
@@ -291,11 +292,13 @@ void DialogPrintOutTable::initOrder()
     }
     ui->tableWidget->removeAllRow();
 
+    m_boxs.clear();
+    m_data.clear();
+
     for(int i = m_CurNum*50-1;i>=(m_CurNum-1)*50;--i){
         if(i<=m_searchOrder.size()-1)
             appendOrder(m_searchOrder.at(i));
     }
-
 
     ui->label_curPage->setText(QString("%1").arg(m_CurNum));
     ui->label_numPage->setText(QString("%1").arg(m_MaxSearch));
