@@ -1,8 +1,6 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 bin/
-JY_bin/
-SZ_bin/
 .idea
 *.exe
 *.user
