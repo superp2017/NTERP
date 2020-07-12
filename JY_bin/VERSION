@@ -1,0 +1,8 @@
+[VERSION]
+Version=2.41
+VersionNum=2041
+Date=2020-07-12
+Des="1.解决打印出库单,程序崩溃的bug\n2.查询当日出库订单的优化"
+
+[DOWNLOAD]
+Url=http://www.jiangyucoating.com/download/NTERP-Setup-V2.0.exe
