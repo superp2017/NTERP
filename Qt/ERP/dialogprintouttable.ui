@@ -325,7 +325,7 @@
          <property name="checked">
           <bool>false</bool>
          </property>
-         <layout class="QGridLayout" name="gridLayout" columnstretch="2,3">
+         <layout class="QGridLayout" name="gridLayout" columnstretch="1,2">
           <property name="rightMargin">
            <number>6</number>
           </property>
@@ -430,7 +430,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="spacing">
-        <number>15</number>
+        <number>30</number>
        </property>
        <item>
         <widget class="QPushButton" name="pushButton_preview">

@@ -607,7 +607,7 @@ func SearchOutOrder(session *JHttp.Session) {
 				if st.IsCus && st.CusName != d.CustomName {
 					continue
 				}
-				if st.IsTime && (d.CreatStamp < st.StartStamp || d.CreatStamp > st.EndStamp) {
+				if st.IsTime && (d.LastTime < st.StartStamp || d.LastTime > st.EndStamp) {
 					continue
 				}
 				data = append(data, d)

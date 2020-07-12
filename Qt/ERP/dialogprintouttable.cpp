@@ -26,8 +26,8 @@ DialogPrintOutTable::DialogPrintOutTable(QWidget *parent) :
 
     connect(dataCenter::instance(),SIGNAL(sig_searchOutOrder(QVector<Order>,bool)),this,SLOT(orderSearchCb(QVector<Order>,bool)));
 
-    ui->dateEdit_start->setDate(QDate::currentDate().addDays(-30));
-    ui->dateEdit_end->setDate(QDate::currentDate());
+    ui->dateEdit_start->setDate(QDate::currentDate());
+    ui->dateEdit_end->setDate(QDate::currentDate().addDays(1));
 
     QStringList cuslist;
     for(Customer cus: dataCenter::instance()->pub_Customers()){
