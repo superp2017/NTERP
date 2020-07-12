@@ -67,8 +67,8 @@ QVector<Order> DialogPrintOutTable::getSelectOrder()
 void DialogPrintOutTable::clearSelect()
 {
     for(QCheckBox*box:m_boxs){
-       if(box)
-        box->setChecked(false);
+        if(box)
+            box->setChecked(false);
     }
     ui->tableWidget->clearSelection();
     ui->tableWidget->checkSelect();
