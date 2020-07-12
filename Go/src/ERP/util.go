@@ -112,6 +112,13 @@ func CurStamp() int64 {
 	return time.Now().Unix()
 }
 
+//获取今天0点和明天0点时间戳
+func TT0Stamp() (int64, int64) {
+	timeStr := time.Now().Format("2006-01-02")
+	t, _ := time.Parse("2006-01-02", timeStr)
+	return t.Unix(), t.AddDate(0, 0, 1).Unix()
+}
+
 func IDer(db string) string {
 	id := JUuid.NewV4().String()
 	for b, e := JRedis.Redis_hexists(db, id); b; {

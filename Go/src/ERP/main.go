@@ -67,8 +67,8 @@ func initRoute() {
 	JHttp.WhiteHttp("/setversion", SetVersion)                   //设置版本
 	JHttp.WhiteHttp("/searchorder", SearchOrder)                 //订单搜索
 	JHttp.WhiteHttp("/searchoutorder", SearchOutOrder)           //出库的订单搜索
-
-	JHttp.WhiteHttp("/updateall", updateAll) //更新所有时间戳
+	JHttp.WhiteHttp("/gettodayorder", GetTodayOrder)             //出库的订单搜索
+	JHttp.WhiteHttp("/updateall", updateAll)                     //更新所有时间戳
 
 }
 
