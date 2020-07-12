@@ -325,7 +325,7 @@
          <property name="checked">
           <bool>false</bool>
          </property>
-         <layout class="QGridLayout" name="gridLayout" columnstretch="2,3">
+         <layout class="QGridLayout" name="gridLayout" columnstretch="1,2">
           <property name="rightMargin">
            <number>6</number>
           </property>
