@@ -107,6 +107,13 @@ func CurDate() string {
 	return time.Unix(time.Now().Unix(), 0).Format("2006-01-02")
 }
 
+//获取今天0点和明天0点时间戳
+func TT0Stamp() (int64, int64) {
+	timeStr := time.Now().Format("2006-01-02")
+	t, _ := time.Parse("2006-01-02", timeStr)
+	return t.Unix(), t.AddDate(0, 0, 1).Unix()
+}
+
 ///当前时间的时间戳
 func CurStamp() int64 {
 	return time.Now().Unix()
