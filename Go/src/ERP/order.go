@@ -432,7 +432,7 @@ func SuccessOrder(session *JHttp.Session) {
 func GetGlobalOrders(session *JHttp.Session) {
 	st := &AllPara{}
 	if err := session.GetPara(st); err != nil {
-		session.Forward("1", err.Error(), nil)
+		session.Forward("1", "GetPara:"+err.Error(), nil)
 		return
 	}
 	if st.Type < 0 || st.Type > 3 || st.Type == 2 && st.Num <= 0 {
@@ -585,7 +585,7 @@ func SearchOutOrder(session *JHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
-		session.Forward("1", err.Error(), nil)
+		session.Forward("1", "GetPara:"+err.Error(), nil)
 		return
 	}
 	list, err := JRedis.Redis_hkeys(Hash_Order)
@@ -608,6 +608,51 @@ func SearchOutOrder(session *JHttp.Session) {
 					continue
 				}
 				if st.IsTime && (d.LastTime < st.StartStamp || d.LastTime > st.EndStamp) {
+					continue
+				}
+				data = append(data, d)
+			}
+		}
+	}
+	lenData := len(data)
+	if lenData > 0 {
+		sort.Slice(data, func(i, j int) bool {
+			return data[i].CreatStamp <= data[j].CreatStamp
+		})
+	}
+	session.Forward("0", "success", data)
+}
+
+//获取当日订单
+func GetTodayOrder(session *JHttp.Session) {
+	type Para struct {
+		Status string
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", "GetPara:"+err.Error(), nil)
+		return
+	}
+	list, err := JRedis.Redis_hkeys(Hash_Order)
+	if err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	data := []*Order{}
+
+	curStart, curEnd := TT0Stamp()
+
+	for _, v := range list {
+		if v == Key_LastOrderDate {
+			continue
+		}
+		d := &Order{}
+		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
+			if !d.IsDel {
+				if st.Status != "" && d.Current.Status != st.Status {
+					continue
+				}
+				if d.LastTime < curStart || d.LastTime > curEnd {
 					continue
 				}
 				data = append(data, d)
