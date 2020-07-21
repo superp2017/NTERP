@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -215,6 +216,8 @@ func (this *Session) IsExpired(token string) bool {
 //获取前端给的数据
 func (this *Session) GetPara(v interface{}) error {
 	data := this.Req.FormValue("data")
+	log.Printf("GetPara::Form %v", this.Req.Form)
+	log.Printf("GetPara:: body %v", this.Req.PostForm)
 
 	if data != "" {
 		return json.Unmarshal([]byte(data), v)
