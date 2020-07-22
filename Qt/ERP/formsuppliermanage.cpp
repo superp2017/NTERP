@@ -121,7 +121,7 @@ void FormSupplierManage::on_pushButton_export_clicked()
         return;
     }
 
-    QString filepath= QFileDialog::getSaveFileName(NULL,"Save orders",".","Microsoft Office 2007 (*.xlsx)");//获取保存路径
+    QString filepath= QFileDialog::getSaveFileName(NULL,"Save orders",".","Microsoft Office (*.xls)");//获取保存路径
     if(!filepath.isEmpty()){
         boost::thread t(boost::bind(&FormSupplierManage::doExport,this,ls,filepath));
         t.detach();

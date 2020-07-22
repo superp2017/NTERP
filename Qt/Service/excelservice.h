@@ -14,6 +14,7 @@ public:
    static bool dataExport(QString filepath, QVector<QVariant>title, QVector<QVector<QVariant>> data,bool isOpen=false);
    static bool dataExportEx(QString filepath, QVector<QVariant>title, QVector<QVector<QVariant>> data, QVector<QVector<QVariant> > exData, bool isOpen=false);
 
+
 };
 
 #endif // EXCELSERVICE_H
