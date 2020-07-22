@@ -69,14 +69,55 @@ bool export_normal(QString filepath, QVector<QVariant> title, QVector<QVector<QV
     return true;
 }
 
+bool export_ex(QString filepath, QVector<QVariant> title,\
+               QVector<QVector<QVariant> > data, QVector<QVector<QVariant>> exData, bool isOpen){
+    QFile file(filepath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return false;
+    ///写表头
+    QTextStream out(&file);
+    if(title.size()>0){
+        for(QVariant h:title){
+            out<<h.toString()<<" \t";
+        }
+        out<<endl;
+    }
+    //写正文
+    for(QVector<QVariant> info:data){
+        if(info.size()>0){
+            for(QVariant s:info){
+                out<<s.toString()<<" \t";
+            }
+            out<<endl;
+        }
+    }
+    out<<endl;
+    out<<endl;
+    //写结尾
+    for(QVector<QVariant> info:exData){
+        if(info.size()>0){
+            for(QVariant s:info){
+                out<<s.toString()<<" \t";
+            }
+            out<<endl;
+        }
+    }
+
+    out.flush();
+    file.close();
+    if(isOpen)
+        openExcel(filepath);
+    return true;
+}
+
 bool ExcelService::dataExport(QString filepath, QVector<QVariant> title, QVector<QVector<QVariant>> data, bool isOpen)
 {
-#if 0
+#if 1
     return export_normal(filepath,title,data,isOpen);
 
 #endif
 
-#if 1
+#if 0
     //    HRESULT r = OleInitialize(0);
     //    if (r != S_OK && r != S_FALSE)
     //    {qWarning("Qt:初始化Ole失败（error %x）",(unsigned int)r);}
@@ -139,6 +180,11 @@ bool ExcelService::dataExport(QString filepath, QVector<QVariant> title, QVector
 bool ExcelService::dataExportEx(QString filepath, QVector<QVariant> title,\
                                 QVector<QVector<QVariant> > data, QVector<QVector<QVariant>> exData, bool isOpen)
 {
+#if 1
+    return export_ex(filepath,title,data,exData,isOpen);
+ #endif
+
+#if 0
     //    HRESULT r = OleInitialize(0);
     //    if (r != S_OK && r != S_FALSE)
     //    {qWarning("Qt:初始化Ole失败（error %x）",(unsigned int)r);}
@@ -211,4 +257,5 @@ bool ExcelService::dataExportEx(QString filepath, QVector<QVariant> title,\
     if(isOpen)
         openExcel(filepath);
     return true;
+#endif
 }
