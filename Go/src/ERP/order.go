@@ -489,9 +489,11 @@ func GetGlobalOrders(session *JHttp.Session) {
 
 	if st.Type == 2 {
 		startIndex := -1
-		for i, v := range data {
-			if v.OrderID == st.Start {
-				startIndex = i
+		if st.Start != "" {
+			for i, v := range data {
+				if v.OrderID == st.Start {
+					startIndex = i
+				}
 			}
 		}
 		if startIndex == -1 && st.Start != "" {
