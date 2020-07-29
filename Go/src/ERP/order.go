@@ -485,9 +485,11 @@ func GetGlobalOrders(session *JHttp.Session) {
 
 	if st.Type == 2 {
 		startIndex := -1
-		for i, v := range data {
-			if v.OrderID == st.Start {
-				startIndex = i
+		if st.Start != "" {
+			for i, v := range data {
+				if v.OrderID == st.Start {
+					startIndex = i
+				}
 			}
 		}
 		if startIndex == -1 && st.Start != "" {
@@ -619,6 +621,68 @@ func SearchOutOrder(session *JHttp.Session) {
 	session.Forward("0", "success", data)
 }
 
+//获取某一天订单
+func GetOneDayOrder(session *JHttp.Session) {
+	type Para struct {
+		Status string
+		Date   string
+	}
+	st := &Para{}
+	if err := session.GetPara(st); err != nil {
+		session.Forward("1", "GetPara:"+err.Error(), nil)
+		return
+	}
+	if st.Date == "" {
+		session.Forward("1", "date is empty!", nil)
+		return
+	}
+	list, err := JRedis.Redis_hkeys(Hash_Order)
+	if err != nil {
+		session.Forward("1", err.Error(), nil)
+		return
+	}
+	data := []*Order{}
+
+	var curStart int64
+	var curEnd int64
+	curStart = 0
+	curEnd = 0
+	if t, e := time.Parse("2006-01-02", st.Date); e == nil {
+		curStart = t.Unix()
+		curEnd = t.AddDate(0, 0, 1).Unix()
+	}
+
+	if curStart == 0 || curEnd == 0 {
+		session.Forward("1", "date Parse error!", nil)
+		return
+	}
+
+	for _, v := range list {
+		if v == Key_LastOrderDate {
+			continue
+		}
+		d := &Order{}
+		if err := JRedis.Redis_hget(Hash_Order, v, d); err == nil {
+			if !d.IsDel {
+				if st.Status != "" && d.Current.Status != st.Status {
+					continue
+				}
+				if d.LastTime < curStart || d.LastTime > curEnd {
+					continue
+				}
+				data = append(data, d)
+			}
+		}
+	}
+	lenData := len(data)
+	if lenData > 0 {
+		sort.Slice(data, func(i, j int) bool {
+			return data[i].CreatStamp <= data[j].CreatStamp
+		})
+	}
+	session.Forward("0", "success", data)
+}
+
 //获取当日订单
 func GetTodayOrder(session *JHttp.Session) {
 	type Para struct {
@@ -626,7 +690,7 @@ func GetTodayOrder(session *JHttp.Session) {
 	}
 	st := &Para{}
 	if err := session.GetPara(st); err != nil {
-		session.Forward("1", err.Error(), nil)
+		session.Forward("1", "GetPara:"+err.Error(), nil)
 		return
 	}
 	list, err := JRedis.Redis_hkeys(Hash_Order)

@@ -67,8 +67,69 @@ func initRoute() {
 	JHttp.WhiteHttp("/setversion", SetVersion)                   //设置版本
 	JHttp.WhiteHttp("/searchorder", SearchOrder)                 //订单搜索
 	JHttp.WhiteHttp("/searchoutorder", SearchOutOrder)           //出库的订单搜索
-	JHttp.WhiteHttp("/gettodayorder", GetTodayOrder)             //出库的订单搜索
 	JHttp.WhiteHttp("/updateall", updateAll)                     //更新所有时间戳
+	JHttp.WhiteHttp("/gettodayorder", GetTodayOrder)             //获取当日订单
+	JHttp.WhiteHttp("/getonedayorder", GetOneDayOrder)           //获取某一日的订单
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	JHttp.Https("/login", Login)                             //登录
+	JHttp.Https("/neworder", NewOrder)                       //新建订单
+	JHttp.Https("/modorder", ModOrder)                       //修改订单
+	JHttp.Https("/delorder", DelOrder)                       //删除订单
+	JHttp.Https("/modorderprice", ModOrderPrice)             //修改订单价格
+	JHttp.Https("/updateprintnum", UpdatePrintNum)           //修改订单打印次数
+	JHttp.Https("/getprintnumber", GetPrintNum)              //获取打印编号
+	JHttp.Https("/cancleorder", CancelOrder)                 //取消订单
+	JHttp.Https("/produceorder", PorduceOrder)               //订单生产
+	JHttp.Https("/successorder", SuccessOrder)               //订单完成
+	JHttp.Https("/getglobalorders", GetGlobalOrders)         //获取所有订单
+	JHttp.Https("/newmaterial", NewMaterial)                 //创建一个物料
+	JHttp.Https("/modMaterial", ModMaterial)                 //修改物料
+	JHttp.Https("/querymaterial", QueryMaterial)             //查询物料
+	JHttp.Https("/delmaterial", DelMaterial)                 //删除一个物料
+	JHttp.Https("/newcustomer", NewCustomer)                 //新增一个客户
+	JHttp.Https("/modcustomer", ModCustomer)                 //修改客户
+	JHttp.Https("/updowncustomer", UpDownCustomer)           //解约或合作客户
+	JHttp.Https("/delcustomer", DelCustomer)                 //删除一个客户
+	JHttp.Https("/getallcustomers", GetAllCustomer)          //获取所有客户
+	JHttp.Https("/newsupplier", NewSupplier)                 //新增一个供应商
+	JHttp.Https("/modsupplier", ModSupplier)                 //修改供应商
+	JHttp.Https("/updownsupplier", UpDownSupplier)           //解约或合作客户
+	JHttp.Https("/delsupplier", DelSupplier)                 //删除一个供应商
+	JHttp.Https("/getallsuppliers", GetAllSupplier)          //获取所有供应商
+	JHttp.Https("/newemployee", NewEmployee)                 //新建一个员工
+	JHttp.Https("/modemployee", ModEmployee)                 //修改员工信息
+	JHttp.Https("/outemployee", OutEmployee)                 //员工离职
+	JHttp.Https("/delemployee", DelEmployee)                 //删除一个员工
+	JHttp.Https("/getallemployeess", GetAllEmployee)         //获取所有的员工信息
+	JHttp.Https("/newunit", NewUnit)                         //新建一个单位
+	JHttp.Https("/delunit", DelUnit)                         //删除一个单位
+	JHttp.Https("/getallunits", GetAllUnit)                  //获取所有的单位
+	JHttp.Https("/getallmaterials", GetAllMaterial)          //获取所有的物料
+	JHttp.Https("/getglobalgoods", GetGlobalGoods)           //获取仓库商品
+	JHttp.Https("/newgoods", NewGoods)                       //新建一个商品
+	JHttp.Https("/querygoods", QueryGoods)                   //获取商品信息
+	JHttp.Https("/delgoods", DelGoods)                       //删除一个商品
+	JHttp.Https("/addgoodsnum", AddGoodsNum)                 //商品入库
+	JHttp.Https("/newstorageoutrecord", NewOutRecord)        //新增一个仓库出库记录
+	JHttp.Https("/getallstorageoutrecords", GetAllOutRecord) //获取所有的仓库出库记录
+	JHttp.Https("/modifygoods", ModGoods)                    //修改商品
+	JHttp.Https("/removegoodstype", RemoveGoodsType)         //删除商品的分类
+	JHttp.Https("/newgoodstype", AddGoodsType)               //新建商品的分类
+	JHttp.Https("/getallgoodstype", GetAllGoodsType)         //获取所有商品分类
+	JHttp.Https("/newdepartment", NewDepartment)             //新建一个部门
+	JHttp.Https("/removedepartment", RemoveDepartment)       //删除一个部门
+	JHttp.Https("/getalldepartment", GetAllDepartment)       //获取所有的部门
+	JHttp.Https("/newplating", NewPlating)                   //新建一个镀种
+	JHttp.Https("/delplating", DelPlating)                   //删除一个镀种
+	JHttp.Https("/getallplating", GetAllPlating)             //获取所有的镀种
+	JHttp.Https("/heartbeat", HeartBeat)                     //客户端心跳
+	JHttp.Https("/getversion", GetVertion)                   //获取版本
+	JHttp.Https("/setversion", SetVersion)                   //设置版本
+	JHttp.Https("/searchorder", SearchOrder)                 //订单搜索
+	JHttp.Https("/searchoutorder", SearchOutOrder)           //出库的订单搜索
+	JHttp.Https("/updateall", updateAll)                     //更新所有时间戳
+	JHttp.Https("/gettodayorder", GetTodayOrder)             //获取当日订单
+	JHttp.Https("/getonedayorder", GetOneDayOrder)           //获取某一日的订单
 
 }
 
