@@ -1091,7 +1091,7 @@ void dataCenter::TimerUpdate(bool istart)
     }
 }
 
-void dataCenter::pub_getAllOrders(int type,QString start,int num)
+void dataCenter:: pub_getAllOrders(int type,QString start,int num)
 {
     //////////////初始化所有订单///////////////////
     QJsonObject order_obj;

@@ -199,7 +199,7 @@ public:
     void pub_getAllMateriels(int type, QString start="", int num=0);
     void pub_GetAllCustomers(int type, QString start="", int num=0);
     void pub_getAllGoods(int type, QString  start="", int num=0);
-    void pub_getAllOrders(int type, QString start="", int num=100);
+    void pub_getAllOrders(int type, QString start="", int num=1000);
     int  checkVersion(QWidget *W=nullptr);
     bool isOrderOver() const;
 
